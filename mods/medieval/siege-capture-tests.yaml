@@ -1,0 +1,14 @@
+World:
+	MedievalSiegeCaptureValidation:
+
+^MDWORKER:
+	MedievalNeedsFood:
+		MealInterval: 100000
+		StarvationDelay: 1000000
+
+md.siegetarget:
+	Inherits: md.warehouse
+	RenderSprites:
+		Image: md.warehouse
+	Health:
+		HP: 1000000

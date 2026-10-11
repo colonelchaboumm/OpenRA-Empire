@@ -1,0 +1,10 @@
+World:
+	MedievalWeatherPolishValidation:
+	MedievalWeather:
+		FirstRainTicks: 1
+		RainTicks: 6000
+		MinimumRainPermille: 850
+	MedievalSeasons:
+		SeasonTicks: 3000
+	MedievalDayNight:
+		DayTicks: 100000

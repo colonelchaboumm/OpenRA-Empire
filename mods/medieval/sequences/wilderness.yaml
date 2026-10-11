@@ -1,0 +1,17 @@
+md.wild-rabbit:
+	idle:
+		Filename: medieval|art/wild-rabbit.png
+		Offset: 0, -12
+		Length: 192
+
+md.wild-deer:
+	idle:
+		Filename: medieval|art/wild-deer.png
+		Offset: 0, -24
+		Length: 192
+
+md.wild-undergrowth:
+	idle:
+		Filename: medieval|art/wild-undergrowth.png
+		Offset: 0, -12
+		Length: 48

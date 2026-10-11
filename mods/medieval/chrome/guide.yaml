@@ -1,0 +1,73 @@
+Background@MD_GUIDE:
+	Logic: MedievalGuideLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 900
+	Height: 550
+	Children:
+		Label@GUIDE_TITLE:
+			X: 26
+			Y: 20
+			Width: 840
+			Height: 30
+			Font: BigBold
+			Text: md-menu-guide
+			TextColor: DAC08A
+		Button@GUIDE_TAB_0:
+			X: 26
+			Y: 70
+			Width: 164
+			Height: 34
+			Text: md-guide-tab-0
+			Font: Bold
+		Button@GUIDE_TAB_1:
+			X: 196
+			Y: 70
+			Width: 164
+			Height: 34
+			Text: md-guide-tab-1
+			Font: Bold
+		Button@GUIDE_TAB_2:
+			X: 366
+			Y: 70
+			Width: 164
+			Height: 34
+			Text: md-guide-tab-2
+			Font: Bold
+		Button@GUIDE_TAB_3:
+			X: 536
+			Y: 70
+			Width: 164
+			Height: 34
+			Text: md-guide-tab-3
+			Font: Bold
+		Button@GUIDE_TAB_4:
+			X: 706
+			Y: 70
+			Width: 164
+			Height: 34
+			Text: md-guide-tab-4
+			Font: Bold
+		Label@GUIDE_HEADING:
+			X: 30
+			Y: 130
+			Width: 830
+			Height: 28
+			Font: MediumBold
+			TextColor: DAC08A
+		Label@GUIDE_TEXT:
+			X: 30
+			Y: 182
+			Width: 830
+			Height: 285
+			Font: Regular
+			WordWrap: True
+			VAlign: Top
+		Button@GUIDE_CLOSE:
+			X: 694
+			Y: 490
+			Width: 176
+			Height: 34
+			Font: Bold
+			Text: md-menu-back
+			Key: escape

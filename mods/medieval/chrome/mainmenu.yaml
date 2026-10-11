@@ -1,0 +1,221 @@
+Container@MAINMENU:
+	Logic: MedievalMainMenuLogic
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Children:
+		MedievalBackdrop@MD_BACKDROP:
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT
+		LogicKeyListener@GLOBAL_KEYHANDLER:
+			Logic: ScreenshotHotkeyLogic, MuteHotkeyLogic
+				TakeScreenshotKey: TakeScreenshot
+				MuteAudioKey: ToggleMute
+		MedievalTitle@MD_TITLE:
+			X: WINDOW_WIDTH / 16
+			Y: (WINDOW_HEIGHT - 560) / 2
+			Width: 320
+			Height: 168
+		Container@MENUS:
+			X: WINDOW_WIDTH / 16
+			Y: (WINDOW_HEIGHT - 560) / 2 + 198
+			Width: 310
+			Height: 330
+			Children:
+				Background@MAIN_MENU:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Background: md-menu-panel
+					Children:
+						Label@MAIN_MENU_TITLE:
+							X: 16
+							Y: 13
+							Width: 278
+							Height: 26
+							Text: md-menu-welcome
+							Font: Bold
+							TextColor: DAC08A
+						Button@SINGLEPLAYER_BUTTON:
+							X: 16
+							Y: 48
+							Width: 278
+							Height: 34
+							Text: md-menu-solo
+							Font: Bold
+						Button@MULTIPLAYER_BUTTON:
+							X: 16
+							Y: 92
+							Width: 278
+							Height: 34
+							Text: md-menu-multi
+							Font: Bold
+						Button@CONTENT_BUTTON:
+							X: 16
+							Y: 136
+							Width: 278
+							Height: 34
+							Text: md-menu-guide
+							Font: Bold
+						Button@SETTINGS_BUTTON:
+							X: 16
+							Y: 180
+							Width: 278
+							Height: 34
+							Text: md-menu-settings
+							Font: Bold
+						Button@EXTRAS_BUTTON:
+							X: 16
+							Y: 224
+							Width: 278
+							Height: 34
+							Text: md-menu-extras
+							Font: Bold
+						Button@QUIT_BUTTON:
+							X: 16
+							Y: 268
+							Width: 278
+							Height: 34
+							Text: md-menu-quit
+							Font: Bold
+				Background@SINGLEPLAYER_MENU:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Background: md-menu-panel
+					Children:
+						Label@SINGLEPLAYER_MENU_TITLE:
+							X: 16
+							Y: 13
+							Width: 278
+							Height: 26
+							Text: md-menu-solo
+							Font: Bold
+							TextColor: DAC08A
+						Button@MISSIONS_BUTTON:
+							X: 16
+							Y: 48
+							Width: 278
+							Height: 34
+							Text: md-menu-quick
+							Font: Bold
+						Button@SKIRMISH_BUTTON:
+							X: 16
+							Y: 92
+							Width: 278
+							Height: 34
+							Text: md-menu-choose
+							Font: Bold
+						Button@LOAD_BUTTON:
+							X: 16
+							Y: 136
+							Width: 278
+							Height: 34
+							Text: md-menu-load
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: 16
+							Y: 180
+							Width: 278
+							Height: 34
+							Text: md-menu-back
+							Font: Bold
+							Key: escape
+				Background@EXTRAS_MENU:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Background: md-menu-panel
+					Children:
+						Label@EXTRAS_MENU_TITLE:
+							X: 16
+							Y: 13
+							Width: 278
+							Height: 26
+							Text: md-menu-extras
+							Font: Bold
+							TextColor: DAC08A
+						Button@REPLAYS_BUTTON:
+							X: 16
+							Y: 48
+							Width: 278
+							Height: 34
+							Text: md-menu-replays
+							Font: Bold
+						Button@MAP_EDITOR_BUTTON:
+							X: 16
+							Y: 92
+							Width: 278
+							Height: 34
+							Text: md-menu-editor
+							Font: Bold
+						Button@ASSETBROWSER_BUTTON:
+							X: 16
+							Y: 136
+							Width: 278
+							Height: 34
+							Text: md-menu-assets
+							Font: Bold
+						Button@CREDITS_BUTTON:
+							X: 16
+							Y: 180
+							Width: 278
+							Height: 34
+							Text: md-menu-credits
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: 16
+							Y: 224
+							Width: 278
+							Height: 34
+							Text: md-menu-back
+							Font: Bold
+							Key: escape
+						Button@MUSIC_BUTTON:
+							X: 16
+							Y: 268
+							Width: 278
+							Height: 34
+							Text: md-menu-hidden-music
+							Font: Bold
+							Visible: False
+				Background@MAP_EDITOR_MENU:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Background: md-menu-panel
+					Children:
+						Label@MAP_EDITOR_MENU_TITLE:
+							X: 16
+							Y: 13
+							Width: 278
+							Height: 26
+							Text: md-menu-editor
+							Font: Bold
+							TextColor: DAC08A
+						Button@NEW_MAP_BUTTON:
+							X: 16
+							Y: 48
+							Width: 278
+							Height: 34
+							Text: md-menu-new-map
+							Font: Bold
+						Button@LOAD_MAP_BUTTON:
+							X: 16
+							Y: 92
+							Width: 278
+							Height: 34
+							Text: md-menu-open-map
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: 16
+							Y: 136
+							Width: 278
+							Height: 34
+							Text: md-menu-back
+							Font: Bold
+							Key: escape
+		Label@MD_FOOTER:
+			X: WINDOW_WIDTH / 16
+			Y: WINDOW_HEIGHT - 34
+			Width: 500
+			Height: 20
+			Text: md-menu-footer
+			Font: Tiny
+			TextColor: C3B694
+			Shadow: True

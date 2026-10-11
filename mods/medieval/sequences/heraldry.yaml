@@ -1,0 +1,419 @@
+md.heraldic-banner-0:
+	Defaults:
+		Filename: medieval|art/heraldic-banner-0.png
+		Offset: 0, -28
+	idle:
+		Length: 12
+		Tick: 100
+	construction:
+		Start: 12
+
+md.heraldic-standardbearer-0:
+	Defaults:
+		Filename: medieval|art/heraldic-standardbearer-0.png
+		Offset: 0, -26
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	idle:
+		Start: 0
+		Length: 8
+		Facings: 8
+
+md.heraldic-banner-1:
+	Defaults:
+		Filename: medieval|art/heraldic-banner-1.png
+		Offset: 0, -28
+	idle:
+		Length: 12
+		Tick: 100
+	construction:
+		Start: 12
+
+md.heraldic-standardbearer-1:
+	Defaults:
+		Filename: medieval|art/heraldic-standardbearer-1.png
+		Offset: 0, -26
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	idle:
+		Start: 0
+		Length: 8
+		Facings: 8
+
+md.heraldic-banner-2:
+	Defaults:
+		Filename: medieval|art/heraldic-banner-2.png
+		Offset: 0, -28
+	idle:
+		Length: 12
+		Tick: 100
+	construction:
+		Start: 12
+
+md.heraldic-standardbearer-2:
+	Defaults:
+		Filename: medieval|art/heraldic-standardbearer-2.png
+		Offset: 0, -26
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	idle:
+		Start: 0
+		Length: 8
+		Facings: 8
+
+md.heraldic-banner-3:
+	Defaults:
+		Filename: medieval|art/heraldic-banner-3.png
+		Offset: 0, -28
+	idle:
+		Length: 12
+		Tick: 100
+	construction:
+		Start: 12
+
+md.heraldic-standardbearer-3:
+	Defaults:
+		Filename: medieval|art/heraldic-standardbearer-3.png
+		Offset: 0, -26
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	idle:
+		Start: 0
+		Length: 8
+		Facings: 8
+
+md.heraldic-banner-4:
+	Defaults:
+		Filename: medieval|art/heraldic-banner-4.png
+		Offset: 0, -28
+	idle:
+		Length: 12
+		Tick: 100
+	construction:
+		Start: 12
+
+md.heraldic-standardbearer-4:
+	Defaults:
+		Filename: medieval|art/heraldic-standardbearer-4.png
+		Offset: 0, -26
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	idle:
+		Start: 0
+		Length: 8
+		Facings: 8
+
+md.heraldic-banner-5:
+	Defaults:
+		Filename: medieval|art/heraldic-banner-5.png
+		Offset: 0, -28
+	idle:
+		Length: 12
+		Tick: 100
+	construction:
+		Start: 12
+
+md.heraldic-standardbearer-5:
+	Defaults:
+		Filename: medieval|art/heraldic-standardbearer-5.png
+		Offset: 0, -26
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	idle:
+		Start: 0
+		Length: 8
+		Facings: 8
+
+md.heraldry-icons:
+	Defaults:
+		Filename: medieval|art/heraldry-icons.png
+	idle:
+		Length: 6

@@ -1,0 +1,7 @@
+World:
+	MedievalSiegeHeraldryValidation:
+
+^MDWORKER:
+	MedievalNeedsFood:
+		MealInterval: 100000
+		StarvationDelay: 1000000

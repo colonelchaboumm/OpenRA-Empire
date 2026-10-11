@@ -1,0 +1,7 @@
+World:
+	MedievalNightPatrolValidation:
+	MedievalDayNight:
+		DayTicks: 1000
+		NightTicks: 500
+	MedievalWeather:
+		FirstRainTicks: 10000

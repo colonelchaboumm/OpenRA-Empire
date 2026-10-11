@@ -1,0 +1,8 @@
+World:
+	MedievalSaveValidation:
+	MedievalSeasons:
+		SeasonTicks: 45000
+	MedievalWeather:
+		FirstRainTicks: 1
+		RainTicks: 1500
+		MinimumRainPermille: 850

@@ -1,0 +1,46 @@
+World:
+	MedievalFireEnvironment:
+
+md.militia:
+	MedievalFireWatch:
+
+md.campfire:
+	Inherits: ^MDBUILDING
+	-MedievalBurnable:
+	Tooltip:
+		Name: medieval-campfire
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	Health:
+		HP: 10000
+	IsometricSelectable:
+		Height: 20
+	MedievalBuilding:
+		Cost: 25, 0, 0, 10
+		Work: 16
+	MedievalFireSource:
+	RevealsShroud:
+		Range: 4c0
+		RequiresCondition: built
+	MedievalStockDisplay:
+		LabelHeight: 52
+
+md.cauldron:
+	Inherits: ^MDSIEGE
+	-MedievalNeedsFood:
+	-MedievalRecruitable:
+	-MedievalSiegeArmament:
+	-MedievalSiegeAttack:
+	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
+	Tooltip:
+		Name: medieval-cauldron
+	Health:
+		HP: 16000
+	Mobile:
+		Speed: 30
+	MedievalSiegeEngine:
+		Cauldron: True
+	MedievalFireSource:
+		Cauldron: True

@@ -1,0 +1,33 @@
+md.caravan:
+	Inherits: ^MDWORKER
+	-MedievalWorker:
+	Tooltip:
+		Name: medieval-caravan
+	Mobile:
+		Speed: 42
+	Selectable:
+		Bounds: 2300, 2400, 0, -600
+	Health:
+		HP: 12000
+	MedievalFoundingCaravan:
+	MedievalStockpile:
+		Capacity: 300, 200, 120, 150
+		Initial: 280, 120, 0, 100
+	MedievalFoodProvider:
+		Radius: 4c0
+	MedievalNeedsFood:
+		MealInterval: 250
+	ProvidesRadar:
+
+md.foundingmarket:
+	Inherits: md.market
+	RenderSprites:
+		Image: md.market
+	Tooltip:
+		Name: medieval-foundingmarket
+	MedievalBuilding:
+		Population: 3
+	MedievalStockpile:
+		Capacity: 300, 200, 120, 150
+	ProvidesRadar:
+		RequiresCondition: built

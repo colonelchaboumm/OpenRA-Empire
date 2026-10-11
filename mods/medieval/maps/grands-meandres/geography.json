@@ -1,0 +1,109 @@
+{
+  "folder": "grands-meandres",
+  "title": "Les Grands Meandres",
+  "width": 256,
+  "height": 512,
+  "seed": 12891,
+  "areaMultiplier": 16,
+  "actors": 4452,
+  "trees": 3200,
+  "stoneDeposits": 357,
+  "bridges": [
+    {
+      "start": [
+        183,
+        -125
+      ],
+      "end": [
+        200,
+        -125
+      ],
+      "center": [
+        191,
+        -125
+      ],
+      "length": 14
+    },
+    {
+      "start": [
+        211,
+        -61
+      ],
+      "end": [
+        228,
+        -61
+      ],
+      "center": [
+        219,
+        -61
+      ],
+      "length": 14
+    },
+    {
+      "start": [
+        238,
+        20
+      ],
+      "end": [
+        238,
+        36
+      ],
+      "center": [
+        238,
+        28
+      ],
+      "length": 13
+    },
+    {
+      "start": [
+        326,
+        40
+      ],
+      "end": [
+        326,
+        56
+      ],
+      "center": [
+        326,
+        48
+      ],
+      "length": 13
+    },
+    {
+      "start": [
+        377,
+        74
+      ],
+      "end": [
+        395,
+        74
+      ],
+      "center": [
+        386,
+        74
+      ],
+      "length": 15
+    }
+  ],
+  "terrain": {
+    "61003": 62155,
+    "255": 64197,
+    "61001": 4513,
+    "61002": 207
+  },
+  "reachableCells": 118444,
+  "landCells": 118447,
+  "start": [
+    108,
+    10
+  ],
+  "starts": [
+    [
+      108,
+      10
+    ]
+  ],
+  "players": 1,
+  "finiteWood": 643600,
+  "finiteStone": 126700
+}

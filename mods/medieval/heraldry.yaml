@@ -1,0 +1,70 @@
+^BaseWorld:
+	MedievalHeraldryPalettes:
+
+Player:
+	MedievalHeraldry:
+
+^MDWORKER:
+	RenderSprites:
+		-Palette:
+		PlayerPalette: md-livery
+
+md.market:
+	MedievalHeraldryMarket:
+	RenderSprites:
+		-Palette:
+		PlayerPalette: md-market-livery
+
+md.marketstall:
+	MedievalHeraldryMarket:
+	RenderSprites:
+		-Palette:
+		PlayerPalette: md-market-livery
+
+md.banner:
+	RenderSprites:
+		Image: md.heraldic-banner-0
+		-Palette:
+		PlayerPalette: md-livery
+	MedievalHeraldicImage:
+
+md.siegeworkshop:
+	RenderSprites:
+		-Palette:
+		PlayerPalette: md-livery
+
+md.supplycart:
+	MedievalCartHeraldry:
+
+md.stonecart:
+	MedievalCartHeraldry:
+		Style: Stone
+
+md.caravan:
+	MedievalCartHeraldry:
+		Style: Caravan
+
+md.ram:
+	MedievalSiegeHeraldry:
+
+md.trebuchet:
+	MedievalSiegeHeraldry:
+
+md.standardbearer:
+	Inherits: ^MDWORKER
+	-MedievalWorker:
+	RenderSprites:
+		Image: md.heraldic-standardbearer-0
+	Tooltip:
+		Name: medieval-standardbearer
+	Selectable:
+		Bounds: 1024, 1900, 0, -650
+	MedievalRecruitable:
+		Food: 25
+	Health:
+		HP: 7000
+	MedievalNeedsFood:
+		HungryFirepowerPercent: 100
+	MedievalMorale:
+	MedievalStandardBearer:
+		Radius: 5c0

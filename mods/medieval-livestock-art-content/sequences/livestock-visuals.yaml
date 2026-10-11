@@ -1,0 +1,232 @@
+md.livestock-cow:
+	idle:
+		Filename: herd-art-preview|art/herd-cow.png
+		Offset: 0, -16
+		Length: 320
+
+md.livestock-cow-young:
+	idle:
+		Filename: herd-art-preview|art/herd-calf.png
+		Offset: 0, -16
+		Length: 320
+
+md.livestock-sheep:
+	idle:
+		Filename: herd-art-preview|art/herd-sheep.png
+		Offset: 0, -16
+		Length: 320
+
+md.livestock-sheep-young:
+	idle:
+		Filename: herd-art-preview|art/herd-lamb.png
+		Offset: 0, -16
+		Length: 320
+
+md.breeder:
+	catch:
+		Filename: herd-art-preview|art/herding-breeder.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: herd-art-preview|art/herding-breeder.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: herd-art-preview|art/herding-breeder.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.shepherd:
+	Defaults:
+		Filename: herd-art-preview|art/shepherd.png
+	catch:
+		Filename: herd-art-preview|art/herding-shepherd.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: herd-art-preview|art/herding-shepherd.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: herd-art-preview|art/herding-shepherd.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.militia:
+	catch:
+		Filename: herd-art-preview|art/herding-militia.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: herd-art-preview|art/herding-militia.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: herd-art-preview|art/herding-militia.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.swordsman:
+	catch:
+		Filename: herd-art-preview|art/herding-swordsman.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: herd-art-preview|art/herding-swordsman.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: herd-art-preview|art/herding-swordsman.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.manatarms:
+	catch:
+		Filename: herd-art-preview|art/herding-manatarms.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: herd-art-preview|art/herding-manatarms.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: herd-art-preview|art/herding-manatarms.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.archer:
+	catch:
+		Filename: herd-art-preview|art/herding-archer.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: herd-art-preview|art/herding-archer.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: herd-art-preview|art/herding-archer.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.elitearcher:
+	catch:
+		Filename: herd-art-preview|art/herding-elitearcher.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: herd-art-preview|art/herding-elitearcher.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: herd-art-preview|art/herding-elitearcher.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.royalguard:
+	catch:
+		Filename: herd-art-preview|art/herding-royalguard.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: herd-art-preview|art/herding-royalguard.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: herd-art-preview|art/herding-royalguard.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.commander:
+	catch:
+		Filename: herd-art-preview|art/herding-commander.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: herd-art-preview|art/herding-commander.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: herd-art-preview|art/herding-commander.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120

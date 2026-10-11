@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-09",
+  "mode": "Built-in image_gen.imagegen",
+  "asset": "siege-workshop-isometric.png",
+  "transparent_background": true,
+  "reference_geometry": "siege-projection-guide.png",
+  "geometry_generator": "../tools/siege_projection_guide.py",
+  "style_reference": "siege-workshop.png",
+  "iterations": [
+    {
+      "selected": false,
+      "prompt": "Use case: precise-object-edit. Create a corrected transparent isometric game sprite for the medieval siege workshop. Image 1 is the OLD WORKSHOP: preserve its warm timber, weathered plaster, slate-blue shingle roof, restrained blue banners and finely painted classic RTS visual style. Image 2 is the EXACT GEOMETRY AND COMPOSITION GUIDE: follow its camera, long roof ridge angle, facade angle, floor diamond corners and empty gantry placement. Rebuild the first image around the second image's exact orthographic 2:1 dimetric geometry. ALL parallel ground edges and roof ridge lines must stay parallel, slopes exactly plus or minus 0.5; vertical posts stay perfectly vertical. The whole rectangular footprint is 4 by 3 tiles, no perspective convergence, camera higher than the old image. Use a SQUARE canvas matching the guide. On the 1024-square guide, footprint corners are (460,506), (876,714), (564,870), (148,662); keep the same normalized positions. Back half roof, open front work bay, right gable wall, small stone foundations, two workbenches, tidy small lumber stacks tucked into back bays and a few tools. The front gantry must be a simple EMPTY fixed oak frame at precisely the guide's placement: no rope, no suspended load, no pulley, no worker, no moving components baked into this still image; we will animate these separately. Leave the central front yard around the gantry open for animated siege assembly. Light from upper left, clear readable shapes at 170 pixels wide, no excessive clutter. Remove the old left side protruding annex; the rectangular guide is the only footprint. Keep entire roof and building fully visible with generous transparent margins. Real transparent background outside the foundation, no opaque background, no glow, no diffuse halo, no environment, no text, no captions, no arrows, no guide lines. This is one final painted workshop, NOT the flat-color diagram, NOT multiple panels. Preserve true alpha transparency.",
+      "source": "C:/Users/valen/.codex/generated_images/01a114d1-ec6d-75a1-8506-e817242f29ec/exec-8f93321b-f5a4-48b5-809c-de10d287e7b0.png"
+    },
+    {
+      "selected": true,
+      "prompt": "Use case: style-transfer. IMAGE 1 is the EDIT TARGET: the exact geometry guide. IMAGE 2 is ONLY a MATERIAL AND PAINTING STYLE reference; do not copy its silhouette or framing. Paint the flat model in IMAGE 1 as a beautiful detailed medieval siege workshop game asset, using timber beams, slate-blue shingles, warm plaster and stone footings like IMAGE 2. Do NOT change IMAGE 1's geometry, shape, viewing angle, camera framing or placement at all. Keep the entire object in the same central area with the same broad transparent margins, same rectangle footprint, same roof ridge and edge coordinates, same gantry coordinates. It is a four-by-three tile workshop under strict 2:1 orthographic projection. In normalized 1024 square coordinates, the floor corners MUST remain (460,506), (876,714), (564,870), (148,662). Roof ridge runs from (387,262) to (803,470), all ground-axis edges have 0.5 slope or -0.5 slope, and all verticals are perfectly vertical. Add painted detail WITHIN these volumes, while keeping the ground plane flat. Open front bay, wooden benches against the back wall, tidy timber tucked into back bays, a small blue banner on the right gable. No left annex or side wing. Keep the entire FRONT HALF OF THE YARD EMPTY: no timber piles, no tree stumps, no stone piles, no people or carts. Keep the front gantry an EMPTY plain static oak beam and two posts, no rope/pulley/load/hoist components; those will be animated in code. Fully transparent background outside the foundation; NO halo or glow, NO environment, NO caption, NO lines or symbols, NO watercolor fade. Finely painted classic medieval RTS artwork, physically plausible light from upper left, detailed but readable at 168 pixels wide. One final painted sprite on a square transparent canvas; not a diagram.",
+      "source": "C:/Users/valen/.codex/generated_images/01a114d1-ec6d-75a1-8506-e817242f29ec/exec-6f532d75-4284-4278-8ed9-f921bba72e03.png"
+    }
+  ],
+  "registration": {
+    "source_size": [
+      1280,
+      1280
+    ],
+    "foundation_center": [
+      632,
+      793
+    ],
+    "foundation_width": 904,
+    "world_footprint": [
+      4,
+      3
+    ],
+    "frame_size": [
+      224,
+      224
+    ],
+    "ground_anchor": [
+      112,
+      164
+    ],
+    "world_ground_width": 168,
+    "sequence_offset": [
+      0,
+      -52
+    ]
+  },
+  "animation": "Native articulated overlay from tools/siege_art.py. One idle frame, one construction frame, sixteen requested-order frames and nine sixteen-frame assembly cycles (three stages for each of three products). Roof and foundation pixels remain fixed. Source bitmap only resampled and packed; no baked image warp."
+}

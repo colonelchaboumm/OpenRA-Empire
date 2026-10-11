@@ -1,0 +1,16 @@
+World:
+	MedievalCampingValidation:
+	MedievalDayNight:
+		DayTicks: 2800
+		NightTicks: 700
+	MedievalWeather:
+		FirstRainTicks: 800
+		RainTicks: 3200
+		DryTicks: 400
+
+md.campguard:
+	Inherits: md.militia
+	RenderSprites:
+		Image: md.militia
+	AutoTarget:
+		InitialStance: HoldFire

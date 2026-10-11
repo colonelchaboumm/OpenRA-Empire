@@ -1,0 +1,10 @@
+World:
+	MedievalHeraldryValidation:
+
+md.heraldrytroop:
+	Inherits: md.manatarms
+	RenderSprites:
+		Image: md.manatarms
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire

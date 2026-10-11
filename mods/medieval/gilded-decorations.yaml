@@ -1,0 +1,117 @@
+md.gildedknight:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gildedknight
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	IsometricSelectable:
+		Height: 65
+		DecorationHeight: 65
+	MedievalBuilding:
+		Cost: 8, 0, 0, 40, 20
+		Work: 22
+
+md.gildedlion:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gildedlion
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	IsometricSelectable:
+		Height: 40
+		DecorationHeight: 40
+	MedievalBuilding:
+		Cost: 6, 0, 0, 32, 14
+		Work: 18
+
+md.gildedplaza:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gildedplaza
+	Building:
+		Dimensions: 2,2
+		Footprint: == ==
+	IsometricSelectable:
+		Height: 0
+		DecorationHeight: 4
+	MedievalBuilding:
+		Cost: 0, 0, 0, 24, 12
+		Work: 9
+	MedievalDecoration:
+		Ground: True
+
+md.gildedplazalarge:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gildedplazalarge
+	Building:
+		Dimensions: 3,3
+		Footprint: === === ===
+	IsometricSelectable:
+		Height: 0
+		DecorationHeight: 4
+	MedievalBuilding:
+		Cost: 0, 0, 0, 45, 25
+		Work: 16
+	MedievalDecoration:
+		Ground: True
+
+md.gildedfence:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gildedfence
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	IsometricSelectable:
+		Height: 24
+		DecorationHeight: 24
+	MedievalBuilding:
+		Cost: 2, 0, 0, 4, 2
+		Work: 5
+	MedievalGardenFence:
+
+md.gildedfencey:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gildedfencey
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	IsometricSelectable:
+		Height: 24
+		DecorationHeight: 24
+	MedievalBuilding:
+		Cost: 2, 0, 0, 4, 2
+		Work: 5
+	MedievalGardenFence:
+
+md.gildedgate:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gildedgate
+	Building:
+		Dimensions: 1,1
+		Footprint: =
+	IsometricSelectable:
+		Height: 24
+		DecorationHeight: 24
+	MedievalBuilding:
+		Cost: 4, 0, 0, 6, 3
+		Work: 7
+
+md.gildedgatey:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gildedgatey
+	Building:
+		Dimensions: 1,1
+		Footprint: =
+	IsometricSelectable:
+		Height: 24
+		DecorationHeight: 24
+	MedievalBuilding:
+		Cost: 4, 0, 0, 6, 3
+		Work: 7

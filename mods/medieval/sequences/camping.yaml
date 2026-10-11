@@ -1,0 +1,1940 @@
+md.sheepfold:
+	Defaults:
+		Filename: medieval|art/sheepfold.png
+		Offset: 0, -48
+	idle:
+	working:
+		Start: 1
+		Length: 32
+		Tick: 120
+	construction:
+		Start: 33
+
+md.tentweaver:
+	Defaults:
+		Filename: medieval|art/tentweaver.png
+		Offset: 0, -48
+	idle:
+	working:
+		Start: 1
+		Length: 32
+		Tick: 120
+	construction:
+		Start: 33
+
+md.militarytent:
+	Defaults:
+		Filename: medieval|art/militarytent.png
+		Offset: 0, -48
+	idle:
+		Length: 8
+		Tick: 160
+	construction:
+		Start: 8
+
+md.torch:
+	Defaults:
+		Filename: medieval|art/torch.png
+		Offset: 0, -24
+	idle:
+	construction:
+		Start: 1
+
+md.campgoods:
+	Defaults:
+		Filename: medieval|art/campgoods.png
+	wool:
+	tent:
+		Start: 1
+
+md.shepherd:
+	Defaults:
+		Filename: medieval|art/shepherd.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 384
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 512
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.weaver:
+	Defaults:
+		Filename: medieval|art/weaver.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 384
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 512
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.sheeppasture:
+	Defaults:
+		Filename: medieval|art/sheeppasture.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.2x3:
+	Defaults:
+		Filename: medieval|art/sheeppasture.2x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.2x4:
+	Defaults:
+		Filename: medieval|art/sheeppasture.2x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.2x5:
+	Defaults:
+		Filename: medieval|art/sheeppasture.2x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.2x6:
+	Defaults:
+		Filename: medieval|art/sheeppasture.2x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.2x7:
+	Defaults:
+		Filename: medieval|art/sheeppasture.2x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.2x8:
+	Defaults:
+		Filename: medieval|art/sheeppasture.2x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.2x9:
+	Defaults:
+		Filename: medieval|art/sheeppasture.2x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.2x10:
+	Defaults:
+		Filename: medieval|art/sheeppasture.2x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.3x2:
+	Defaults:
+		Filename: medieval|art/sheeppasture.3x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.3x3:
+	Defaults:
+		Filename: medieval|art/sheeppasture.3x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.3x4:
+	Defaults:
+		Filename: medieval|art/sheeppasture.3x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.3x5:
+	Defaults:
+		Filename: medieval|art/sheeppasture.3x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.3x6:
+	Defaults:
+		Filename: medieval|art/sheeppasture.3x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.3x7:
+	Defaults:
+		Filename: medieval|art/sheeppasture.3x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.3x8:
+	Defaults:
+		Filename: medieval|art/sheeppasture.3x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.3x9:
+	Defaults:
+		Filename: medieval|art/sheeppasture.3x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.3x10:
+	Defaults:
+		Filename: medieval|art/sheeppasture.3x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.4x2:
+	Defaults:
+		Filename: medieval|art/sheeppasture.4x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.4x3:
+	Defaults:
+		Filename: medieval|art/sheeppasture.4x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.4x4:
+	Defaults:
+		Filename: medieval|art/sheeppasture.4x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.4x5:
+	Defaults:
+		Filename: medieval|art/sheeppasture.4x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.4x6:
+	Defaults:
+		Filename: medieval|art/sheeppasture.4x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.4x7:
+	Defaults:
+		Filename: medieval|art/sheeppasture.4x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.4x8:
+	Defaults:
+		Filename: medieval|art/sheeppasture.4x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.4x9:
+	Defaults:
+		Filename: medieval|art/sheeppasture.4x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.4x10:
+	Defaults:
+		Filename: medieval|art/sheeppasture.4x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.5x2:
+	Defaults:
+		Filename: medieval|art/sheeppasture.5x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.5x3:
+	Defaults:
+		Filename: medieval|art/sheeppasture.5x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.5x4:
+	Defaults:
+		Filename: medieval|art/sheeppasture.5x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.5x5:
+	Defaults:
+		Filename: medieval|art/sheeppasture.5x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.5x6:
+	Defaults:
+		Filename: medieval|art/sheeppasture.5x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.5x7:
+	Defaults:
+		Filename: medieval|art/sheeppasture.5x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.5x8:
+	Defaults:
+		Filename: medieval|art/sheeppasture.5x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.5x9:
+	Defaults:
+		Filename: medieval|art/sheeppasture.5x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.5x10:
+	Defaults:
+		Filename: medieval|art/sheeppasture.5x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.6x2:
+	Defaults:
+		Filename: medieval|art/sheeppasture.6x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.6x3:
+	Defaults:
+		Filename: medieval|art/sheeppasture.6x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.6x4:
+	Defaults:
+		Filename: medieval|art/sheeppasture.6x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.6x5:
+	Defaults:
+		Filename: medieval|art/sheeppasture.6x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.6x6:
+	Defaults:
+		Filename: medieval|art/sheeppasture.6x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.6x7:
+	Defaults:
+		Filename: medieval|art/sheeppasture.6x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.6x8:
+	Defaults:
+		Filename: medieval|art/sheeppasture.6x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.6x9:
+	Defaults:
+		Filename: medieval|art/sheeppasture.6x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.6x10:
+	Defaults:
+		Filename: medieval|art/sheeppasture.6x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.7x2:
+	Defaults:
+		Filename: medieval|art/sheeppasture.7x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.7x3:
+	Defaults:
+		Filename: medieval|art/sheeppasture.7x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.7x4:
+	Defaults:
+		Filename: medieval|art/sheeppasture.7x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.7x5:
+	Defaults:
+		Filename: medieval|art/sheeppasture.7x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.7x6:
+	Defaults:
+		Filename: medieval|art/sheeppasture.7x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.7x7:
+	Defaults:
+		Filename: medieval|art/sheeppasture.7x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.7x8:
+	Defaults:
+		Filename: medieval|art/sheeppasture.7x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.7x9:
+	Defaults:
+		Filename: medieval|art/sheeppasture.7x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.7x10:
+	Defaults:
+		Filename: medieval|art/sheeppasture.7x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.8x2:
+	Defaults:
+		Filename: medieval|art/sheeppasture.8x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.8x3:
+	Defaults:
+		Filename: medieval|art/sheeppasture.8x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.8x4:
+	Defaults:
+		Filename: medieval|art/sheeppasture.8x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.8x5:
+	Defaults:
+		Filename: medieval|art/sheeppasture.8x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.8x6:
+	Defaults:
+		Filename: medieval|art/sheeppasture.8x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.8x7:
+	Defaults:
+		Filename: medieval|art/sheeppasture.8x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.8x8:
+	Defaults:
+		Filename: medieval|art/sheeppasture.8x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.8x9:
+	Defaults:
+		Filename: medieval|art/sheeppasture.8x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.8x10:
+	Defaults:
+		Filename: medieval|art/sheeppasture.8x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.9x2:
+	Defaults:
+		Filename: medieval|art/sheeppasture.9x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.9x3:
+	Defaults:
+		Filename: medieval|art/sheeppasture.9x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.9x4:
+	Defaults:
+		Filename: medieval|art/sheeppasture.9x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.9x5:
+	Defaults:
+		Filename: medieval|art/sheeppasture.9x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.9x6:
+	Defaults:
+		Filename: medieval|art/sheeppasture.9x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.9x7:
+	Defaults:
+		Filename: medieval|art/sheeppasture.9x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.9x8:
+	Defaults:
+		Filename: medieval|art/sheeppasture.9x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.9x9:
+	Defaults:
+		Filename: medieval|art/sheeppasture.9x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.9x10:
+	Defaults:
+		Filename: medieval|art/sheeppasture.9x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.10x2:
+	Defaults:
+		Filename: medieval|art/sheeppasture.10x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.10x3:
+	Defaults:
+		Filename: medieval|art/sheeppasture.10x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.10x4:
+	Defaults:
+		Filename: medieval|art/sheeppasture.10x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.10x5:
+	Defaults:
+		Filename: medieval|art/sheeppasture.10x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.10x6:
+	Defaults:
+		Filename: medieval|art/sheeppasture.10x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.10x7:
+	Defaults:
+		Filename: medieval|art/sheeppasture.10x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.10x8:
+	Defaults:
+		Filename: medieval|art/sheeppasture.10x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.10x9:
+	Defaults:
+		Filename: medieval|art/sheeppasture.10x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180
+
+md.sheeppasture.10x10:
+	Defaults:
+		Filename: medieval|art/sheeppasture.10x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Start: 0
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+		Length: 1
+		Tick: 180

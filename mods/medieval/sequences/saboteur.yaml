@@ -1,0 +1,85 @@
+md.saboteur:
+	Defaults:
+		Filename: medieval|art/saboteur.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 384
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 512
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Length: 8
+		Facings: 8
+		Tick: 120
+	catch:
+		Start: 640
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Start: 704
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Start: 768
+		Length: 8
+		Facings: 8
+		Tick: 120
+	ignite:
+		Start: 832
+		Length: 8
+		Facings: 8
+		Tick: 120
+	slaughter:
+		Start: 896
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.sabotage-fire:
+	idle:
+		Filename: medieval|art/sabotage-fire.png
+		Offset: 0, -48
+		Length: 16

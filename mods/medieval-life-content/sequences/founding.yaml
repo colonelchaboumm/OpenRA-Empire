@@ -1,0 +1,54 @@
+md.caravan:
+	Defaults:
+		Filename: medieval|art/caravan.png
+		Offset: 0, -15
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120

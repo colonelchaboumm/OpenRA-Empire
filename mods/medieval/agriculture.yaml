@@ -1,0 +1,1919 @@
+md.field.2x3:
+	Inherits: md.field
+	Building:
+		Dimensions: 2,3
+		Footprint: == == ==
+	MedievalBuilding:
+		Cost: 23, 0, 0, 0
+		Work: 18
+	MedievalSource:
+		Amount: 60
+		CultivationWork: 2
+
+md.field.2x4:
+	Inherits: md.field
+	Building:
+		Dimensions: 2,4
+		Footprint: == == == ==
+	MedievalBuilding:
+		Cost: 30, 0, 0, 0
+		Work: 24
+	MedievalSource:
+		Amount: 80
+		CultivationWork: 2
+
+md.field.2x5:
+	Inherits: md.field
+	Building:
+		Dimensions: 2,5
+		Footprint: == == == == ==
+	MedievalBuilding:
+		Cost: 38, 0, 0, 0
+		Work: 30
+	MedievalSource:
+		Amount: 100
+		CultivationWork: 3
+
+md.field.2x6:
+	Inherits: md.field
+	Building:
+		Dimensions: 2,6
+		Footprint: == == == == == ==
+	MedievalBuilding:
+		Cost: 45, 0, 0, 0
+		Work: 36
+	MedievalSource:
+		Amount: 120
+		CultivationWork: 3
+
+md.field.2x7:
+	Inherits: md.field
+	Building:
+		Dimensions: 2,7
+		Footprint: == == == == == == ==
+	MedievalBuilding:
+		Cost: 53, 0, 0, 0
+		Work: 42
+	MedievalSource:
+		Amount: 140
+		CultivationWork: 4
+
+md.field.2x8:
+	Inherits: md.field
+	Building:
+		Dimensions: 2,8
+		Footprint: == == == == == == == ==
+	MedievalBuilding:
+		Cost: 60, 0, 0, 0
+		Work: 48
+	MedievalSource:
+		Amount: 160
+		CultivationWork: 4
+
+md.field.2x9:
+	Inherits: md.field
+	Building:
+		Dimensions: 2,9
+		Footprint: == == == == == == == == ==
+	MedievalBuilding:
+		Cost: 68, 0, 0, 0
+		Work: 54
+	MedievalSource:
+		Amount: 180
+		CultivationWork: 5
+
+md.field.2x10:
+	Inherits: md.field
+	Building:
+		Dimensions: 2,10
+		Footprint: == == == == == == == == == ==
+	MedievalBuilding:
+		Cost: 75, 0, 0, 0
+		Work: 60
+	MedievalSource:
+		Amount: 200
+		CultivationWork: 5
+
+md.field.3x2:
+	Inherits: md.field
+	Building:
+		Dimensions: 3,2
+		Footprint: === ===
+	MedievalBuilding:
+		Cost: 23, 0, 0, 0
+		Work: 18
+	MedievalSource:
+		Amount: 60
+		CultivationWork: 2
+
+md.field.3x3:
+	Inherits: md.field
+	Building:
+		Dimensions: 3,3
+		Footprint: === === ===
+	MedievalBuilding:
+		Cost: 34, 0, 0, 0
+		Work: 27
+	MedievalSource:
+		Amount: 90
+		CultivationWork: 3
+
+md.field.3x4:
+	Inherits: md.field
+	Building:
+		Dimensions: 3,4
+		Footprint: === === === ===
+	MedievalBuilding:
+		Cost: 45, 0, 0, 0
+		Work: 36
+	MedievalSource:
+		Amount: 120
+		CultivationWork: 3
+
+md.field.3x5:
+	Inherits: md.field
+	Building:
+		Dimensions: 3,5
+		Footprint: === === === === ===
+	MedievalBuilding:
+		Cost: 57, 0, 0, 0
+		Work: 45
+	MedievalSource:
+		Amount: 150
+		CultivationWork: 4
+
+md.field.3x6:
+	Inherits: md.field
+	Building:
+		Dimensions: 3,6
+		Footprint: === === === === === ===
+	MedievalBuilding:
+		Cost: 68, 0, 0, 0
+		Work: 54
+	MedievalSource:
+		Amount: 180
+		CultivationWork: 5
+
+md.field.3x7:
+	Inherits: md.field
+	Building:
+		Dimensions: 3,7
+		Footprint: === === === === === === ===
+	MedievalBuilding:
+		Cost: 79, 0, 0, 0
+		Work: 63
+	MedievalSource:
+		Amount: 210
+		CultivationWork: 6
+
+md.field.3x8:
+	Inherits: md.field
+	Building:
+		Dimensions: 3,8
+		Footprint: === === === === === === === ===
+	MedievalBuilding:
+		Cost: 90, 0, 0, 0
+		Work: 72
+	MedievalSource:
+		Amount: 240
+		CultivationWork: 6
+
+md.field.3x9:
+	Inherits: md.field
+	Building:
+		Dimensions: 3,9
+		Footprint: === === === === === === === === ===
+	MedievalBuilding:
+		Cost: 102, 0, 0, 0
+		Work: 81
+	MedievalSource:
+		Amount: 270
+		CultivationWork: 7
+
+md.field.3x10:
+	Inherits: md.field
+	Building:
+		Dimensions: 3,10
+		Footprint: === === === === === === === === === ===
+	MedievalBuilding:
+		Cost: 113, 0, 0, 0
+		Work: 90
+	MedievalSource:
+		Amount: 300
+		CultivationWork: 8
+
+md.field.4x2:
+	Inherits: md.field
+	Building:
+		Dimensions: 4,2
+		Footprint: ==== ====
+	MedievalBuilding:
+		Cost: 30, 0, 0, 0
+		Work: 24
+	MedievalSource:
+		Amount: 80
+		CultivationWork: 2
+
+md.field.4x3:
+	Inherits: md.field
+	Building:
+		Dimensions: 4,3
+		Footprint: ==== ==== ====
+	MedievalBuilding:
+		Cost: 45, 0, 0, 0
+		Work: 36
+	MedievalSource:
+		Amount: 120
+		CultivationWork: 3
+
+md.field.4x4:
+	Inherits: md.field
+	Building:
+		Dimensions: 4,4
+		Footprint: ==== ==== ==== ====
+	MedievalBuilding:
+		Cost: 60, 0, 0, 0
+		Work: 48
+	MedievalSource:
+		Amount: 160
+		CultivationWork: 4
+
+md.field.4x5:
+	Inherits: md.field
+	Building:
+		Dimensions: 4,5
+		Footprint: ==== ==== ==== ==== ====
+	MedievalBuilding:
+		Cost: 75, 0, 0, 0
+		Work: 60
+	MedievalSource:
+		Amount: 200
+		CultivationWork: 5
+
+md.field.4x6:
+	Inherits: md.field
+	Building:
+		Dimensions: 4,6
+		Footprint: ==== ==== ==== ==== ==== ====
+	MedievalBuilding:
+		Cost: 90, 0, 0, 0
+		Work: 72
+	MedievalSource:
+		Amount: 240
+		CultivationWork: 6
+
+md.field.4x7:
+	Inherits: md.field
+	Building:
+		Dimensions: 4,7
+		Footprint: ==== ==== ==== ==== ==== ==== ====
+	MedievalBuilding:
+		Cost: 105, 0, 0, 0
+		Work: 84
+	MedievalSource:
+		Amount: 280
+		CultivationWork: 7
+
+md.field.4x8:
+	Inherits: md.field
+	Building:
+		Dimensions: 4,8
+		Footprint: ==== ==== ==== ==== ==== ==== ==== ====
+	MedievalBuilding:
+		Cost: 120, 0, 0, 0
+		Work: 96
+	MedievalSource:
+		Amount: 320
+		CultivationWork: 8
+
+md.field.4x9:
+	Inherits: md.field
+	Building:
+		Dimensions: 4,9
+		Footprint: ==== ==== ==== ==== ==== ==== ==== ==== ====
+	MedievalBuilding:
+		Cost: 135, 0, 0, 0
+		Work: 108
+	MedievalSource:
+		Amount: 360
+		CultivationWork: 9
+
+md.field.4x10:
+	Inherits: md.field
+	Building:
+		Dimensions: 4,10
+		Footprint: ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
+	MedievalBuilding:
+		Cost: 150, 0, 0, 0
+		Work: 120
+	MedievalSource:
+		Amount: 400
+		CultivationWork: 10
+
+md.field.5x2:
+	Inherits: md.field
+	Building:
+		Dimensions: 5,2
+		Footprint: ===== =====
+	MedievalBuilding:
+		Cost: 38, 0, 0, 0
+		Work: 30
+	MedievalSource:
+		Amount: 100
+		CultivationWork: 3
+
+md.field.5x3:
+	Inherits: md.field
+	Building:
+		Dimensions: 5,3
+		Footprint: ===== ===== =====
+	MedievalBuilding:
+		Cost: 57, 0, 0, 0
+		Work: 45
+	MedievalSource:
+		Amount: 150
+		CultivationWork: 4
+
+md.field.5x4:
+	Inherits: md.field
+	Building:
+		Dimensions: 5,4
+		Footprint: ===== ===== ===== =====
+	MedievalBuilding:
+		Cost: 75, 0, 0, 0
+		Work: 60
+	MedievalSource:
+		Amount: 200
+		CultivationWork: 5
+
+md.field.5x5:
+	Inherits: md.field
+	Building:
+		Dimensions: 5,5
+		Footprint: ===== ===== ===== ===== =====
+	MedievalBuilding:
+		Cost: 94, 0, 0, 0
+		Work: 75
+	MedievalSource:
+		Amount: 250
+		CultivationWork: 7
+
+md.field.5x6:
+	Inherits: md.field
+	Building:
+		Dimensions: 5,6
+		Footprint: ===== ===== ===== ===== ===== =====
+	MedievalBuilding:
+		Cost: 113, 0, 0, 0
+		Work: 90
+	MedievalSource:
+		Amount: 300
+		CultivationWork: 8
+
+md.field.5x7:
+	Inherits: md.field
+	Building:
+		Dimensions: 5,7
+		Footprint: ===== ===== ===== ===== ===== ===== =====
+	MedievalBuilding:
+		Cost: 132, 0, 0, 0
+		Work: 105
+	MedievalSource:
+		Amount: 350
+		CultivationWork: 9
+
+md.field.5x8:
+	Inherits: md.field
+	Building:
+		Dimensions: 5,8
+		Footprint: ===== ===== ===== ===== ===== ===== ===== =====
+	MedievalBuilding:
+		Cost: 150, 0, 0, 0
+		Work: 120
+	MedievalSource:
+		Amount: 400
+		CultivationWork: 10
+
+md.field.5x9:
+	Inherits: md.field
+	Building:
+		Dimensions: 5,9
+		Footprint: ===== ===== ===== ===== ===== ===== ===== ===== =====
+	MedievalBuilding:
+		Cost: 169, 0, 0, 0
+		Work: 135
+	MedievalSource:
+		Amount: 450
+		CultivationWork: 12
+
+md.field.5x10:
+	Inherits: md.field
+	Building:
+		Dimensions: 5,10
+		Footprint: ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+	MedievalBuilding:
+		Cost: 188, 0, 0, 0
+		Work: 150
+	MedievalSource:
+		Amount: 500
+		CultivationWork: 13
+
+md.field.6x2:
+	Inherits: md.field
+	Building:
+		Dimensions: 6,2
+		Footprint: ====== ======
+	MedievalBuilding:
+		Cost: 45, 0, 0, 0
+		Work: 36
+	MedievalSource:
+		Amount: 120
+		CultivationWork: 3
+
+md.field.6x3:
+	Inherits: md.field
+	Building:
+		Dimensions: 6,3
+		Footprint: ====== ====== ======
+	MedievalBuilding:
+		Cost: 68, 0, 0, 0
+		Work: 54
+	MedievalSource:
+		Amount: 180
+		CultivationWork: 5
+
+md.field.6x4:
+	Inherits: md.field
+	Building:
+		Dimensions: 6,4
+		Footprint: ====== ====== ====== ======
+	MedievalBuilding:
+		Cost: 90, 0, 0, 0
+		Work: 72
+	MedievalSource:
+		Amount: 240
+		CultivationWork: 6
+
+md.field.6x5:
+	Inherits: md.field
+	Building:
+		Dimensions: 6,5
+		Footprint: ====== ====== ====== ====== ======
+	MedievalBuilding:
+		Cost: 113, 0, 0, 0
+		Work: 90
+	MedievalSource:
+		Amount: 300
+		CultivationWork: 8
+
+md.field.6x6:
+	Inherits: md.field
+	Building:
+		Dimensions: 6,6
+		Footprint: ====== ====== ====== ====== ====== ======
+	MedievalBuilding:
+		Cost: 135, 0, 0, 0
+		Work: 108
+	MedievalSource:
+		Amount: 360
+		CultivationWork: 9
+
+md.field.6x7:
+	Inherits: md.field
+	Building:
+		Dimensions: 6,7
+		Footprint: ====== ====== ====== ====== ====== ====== ======
+	MedievalBuilding:
+		Cost: 158, 0, 0, 0
+		Work: 126
+	MedievalSource:
+		Amount: 420
+		CultivationWork: 11
+
+md.field.6x8:
+	Inherits: md.field
+	Building:
+		Dimensions: 6,8
+		Footprint: ====== ====== ====== ====== ====== ====== ====== ======
+	MedievalBuilding:
+		Cost: 180, 0, 0, 0
+		Work: 144
+	MedievalSource:
+		Amount: 480
+		CultivationWork: 12
+
+md.field.6x9:
+	Inherits: md.field
+	Building:
+		Dimensions: 6,9
+		Footprint: ====== ====== ====== ====== ====== ====== ====== ====== ======
+	MedievalBuilding:
+		Cost: 203, 0, 0, 0
+		Work: 162
+	MedievalSource:
+		Amount: 540
+		CultivationWork: 14
+
+md.field.6x10:
+	Inherits: md.field
+	Building:
+		Dimensions: 6,10
+		Footprint: ====== ====== ====== ====== ====== ====== ====== ====== ====== ======
+	MedievalBuilding:
+		Cost: 225, 0, 0, 0
+		Work: 180
+	MedievalSource:
+		Amount: 600
+		CultivationWork: 15
+
+md.field.7x2:
+	Inherits: md.field
+	Building:
+		Dimensions: 7,2
+		Footprint: ======= =======
+	MedievalBuilding:
+		Cost: 53, 0, 0, 0
+		Work: 42
+	MedievalSource:
+		Amount: 140
+		CultivationWork: 4
+
+md.field.7x3:
+	Inherits: md.field
+	Building:
+		Dimensions: 7,3
+		Footprint: ======= ======= =======
+	MedievalBuilding:
+		Cost: 79, 0, 0, 0
+		Work: 63
+	MedievalSource:
+		Amount: 210
+		CultivationWork: 6
+
+md.field.7x4:
+	Inherits: md.field
+	Building:
+		Dimensions: 7,4
+		Footprint: ======= ======= ======= =======
+	MedievalBuilding:
+		Cost: 105, 0, 0, 0
+		Work: 84
+	MedievalSource:
+		Amount: 280
+		CultivationWork: 7
+
+md.field.7x5:
+	Inherits: md.field
+	Building:
+		Dimensions: 7,5
+		Footprint: ======= ======= ======= ======= =======
+	MedievalBuilding:
+		Cost: 132, 0, 0, 0
+		Work: 105
+	MedievalSource:
+		Amount: 350
+		CultivationWork: 9
+
+md.field.7x6:
+	Inherits: md.field
+	Building:
+		Dimensions: 7,6
+		Footprint: ======= ======= ======= ======= ======= =======
+	MedievalBuilding:
+		Cost: 158, 0, 0, 0
+		Work: 126
+	MedievalSource:
+		Amount: 420
+		CultivationWork: 11
+
+md.field.7x7:
+	Inherits: md.field
+	Building:
+		Dimensions: 7,7
+		Footprint: ======= ======= ======= ======= ======= ======= =======
+	MedievalBuilding:
+		Cost: 184, 0, 0, 0
+		Work: 147
+	MedievalSource:
+		Amount: 490
+		CultivationWork: 13
+
+md.field.7x8:
+	Inherits: md.field
+	Building:
+		Dimensions: 7,8
+		Footprint: ======= ======= ======= ======= ======= ======= ======= =======
+	MedievalBuilding:
+		Cost: 210, 0, 0, 0
+		Work: 168
+	MedievalSource:
+		Amount: 560
+		CultivationWork: 14
+
+md.field.7x9:
+	Inherits: md.field
+	Building:
+		Dimensions: 7,9
+		Footprint: ======= ======= ======= ======= ======= ======= ======= ======= =======
+	MedievalBuilding:
+		Cost: 237, 0, 0, 0
+		Work: 189
+	MedievalSource:
+		Amount: 630
+		CultivationWork: 16
+
+md.field.7x10:
+	Inherits: md.field
+	Building:
+		Dimensions: 7,10
+		Footprint: ======= ======= ======= ======= ======= ======= ======= ======= ======= =======
+	MedievalBuilding:
+		Cost: 263, 0, 0, 0
+		Work: 210
+	MedievalSource:
+		Amount: 700
+		CultivationWork: 18
+
+md.field.8x2:
+	Inherits: md.field
+	Building:
+		Dimensions: 8,2
+		Footprint: ======== ========
+	MedievalBuilding:
+		Cost: 60, 0, 0, 0
+		Work: 48
+	MedievalSource:
+		Amount: 160
+		CultivationWork: 4
+
+md.field.8x3:
+	Inherits: md.field
+	Building:
+		Dimensions: 8,3
+		Footprint: ======== ======== ========
+	MedievalBuilding:
+		Cost: 90, 0, 0, 0
+		Work: 72
+	MedievalSource:
+		Amount: 240
+		CultivationWork: 6
+
+md.field.8x4:
+	Inherits: md.field
+	Building:
+		Dimensions: 8,4
+		Footprint: ======== ======== ======== ========
+	MedievalBuilding:
+		Cost: 120, 0, 0, 0
+		Work: 96
+	MedievalSource:
+		Amount: 320
+		CultivationWork: 8
+
+md.field.8x5:
+	Inherits: md.field
+	Building:
+		Dimensions: 8,5
+		Footprint: ======== ======== ======== ======== ========
+	MedievalBuilding:
+		Cost: 150, 0, 0, 0
+		Work: 120
+	MedievalSource:
+		Amount: 400
+		CultivationWork: 10
+
+md.field.8x6:
+	Inherits: md.field
+	Building:
+		Dimensions: 8,6
+		Footprint: ======== ======== ======== ======== ======== ========
+	MedievalBuilding:
+		Cost: 180, 0, 0, 0
+		Work: 144
+	MedievalSource:
+		Amount: 480
+		CultivationWork: 12
+
+md.field.8x7:
+	Inherits: md.field
+	Building:
+		Dimensions: 8,7
+		Footprint: ======== ======== ======== ======== ======== ======== ========
+	MedievalBuilding:
+		Cost: 210, 0, 0, 0
+		Work: 168
+	MedievalSource:
+		Amount: 560
+		CultivationWork: 14
+
+md.field.8x8:
+	Inherits: md.field
+	Building:
+		Dimensions: 8,8
+		Footprint: ======== ======== ======== ======== ======== ======== ======== ========
+	MedievalBuilding:
+		Cost: 240, 0, 0, 0
+		Work: 192
+	MedievalSource:
+		Amount: 640
+		CultivationWork: 16
+
+md.field.8x9:
+	Inherits: md.field
+	Building:
+		Dimensions: 8,9
+		Footprint: ======== ======== ======== ======== ======== ======== ======== ======== ========
+	MedievalBuilding:
+		Cost: 270, 0, 0, 0
+		Work: 216
+	MedievalSource:
+		Amount: 720
+		CultivationWork: 18
+
+md.field.8x10:
+	Inherits: md.field
+	Building:
+		Dimensions: 8,10
+		Footprint: ======== ======== ======== ======== ======== ======== ======== ======== ======== ========
+	MedievalBuilding:
+		Cost: 300, 0, 0, 0
+		Work: 240
+	MedievalSource:
+		Amount: 800
+		CultivationWork: 20
+
+md.field.9x2:
+	Inherits: md.field
+	Building:
+		Dimensions: 9,2
+		Footprint: ========= =========
+	MedievalBuilding:
+		Cost: 68, 0, 0, 0
+		Work: 54
+	MedievalSource:
+		Amount: 180
+		CultivationWork: 5
+
+md.field.9x3:
+	Inherits: md.field
+	Building:
+		Dimensions: 9,3
+		Footprint: ========= ========= =========
+	MedievalBuilding:
+		Cost: 102, 0, 0, 0
+		Work: 81
+	MedievalSource:
+		Amount: 270
+		CultivationWork: 7
+
+md.field.9x4:
+	Inherits: md.field
+	Building:
+		Dimensions: 9,4
+		Footprint: ========= ========= ========= =========
+	MedievalBuilding:
+		Cost: 135, 0, 0, 0
+		Work: 108
+	MedievalSource:
+		Amount: 360
+		CultivationWork: 9
+
+md.field.9x5:
+	Inherits: md.field
+	Building:
+		Dimensions: 9,5
+		Footprint: ========= ========= ========= ========= =========
+	MedievalBuilding:
+		Cost: 169, 0, 0, 0
+		Work: 135
+	MedievalSource:
+		Amount: 450
+		CultivationWork: 12
+
+md.field.9x6:
+	Inherits: md.field
+	Building:
+		Dimensions: 9,6
+		Footprint: ========= ========= ========= ========= ========= =========
+	MedievalBuilding:
+		Cost: 203, 0, 0, 0
+		Work: 162
+	MedievalSource:
+		Amount: 540
+		CultivationWork: 14
+
+md.field.9x7:
+	Inherits: md.field
+	Building:
+		Dimensions: 9,7
+		Footprint: ========= ========= ========= ========= ========= ========= =========
+	MedievalBuilding:
+		Cost: 237, 0, 0, 0
+		Work: 189
+	MedievalSource:
+		Amount: 630
+		CultivationWork: 16
+
+md.field.9x8:
+	Inherits: md.field
+	Building:
+		Dimensions: 9,8
+		Footprint: ========= ========= ========= ========= ========= ========= ========= =========
+	MedievalBuilding:
+		Cost: 270, 0, 0, 0
+		Work: 216
+	MedievalSource:
+		Amount: 720
+		CultivationWork: 18
+
+md.field.9x9:
+	Inherits: md.field
+	Building:
+		Dimensions: 9,9
+		Footprint: ========= ========= ========= ========= ========= ========= ========= ========= =========
+	MedievalBuilding:
+		Cost: 304, 0, 0, 0
+		Work: 243
+	MedievalSource:
+		Amount: 810
+		CultivationWork: 21
+
+md.field.9x10:
+	Inherits: md.field
+	Building:
+		Dimensions: 9,10
+		Footprint: ========= ========= ========= ========= ========= ========= ========= ========= ========= =========
+	MedievalBuilding:
+		Cost: 338, 0, 0, 0
+		Work: 270
+	MedievalSource:
+		Amount: 900
+		CultivationWork: 23
+
+md.field.10x2:
+	Inherits: md.field
+	Building:
+		Dimensions: 10,2
+		Footprint: ========== ==========
+	MedievalBuilding:
+		Cost: 75, 0, 0, 0
+		Work: 60
+	MedievalSource:
+		Amount: 200
+		CultivationWork: 5
+
+md.field.10x3:
+	Inherits: md.field
+	Building:
+		Dimensions: 10,3
+		Footprint: ========== ========== ==========
+	MedievalBuilding:
+		Cost: 113, 0, 0, 0
+		Work: 90
+	MedievalSource:
+		Amount: 300
+		CultivationWork: 8
+
+md.field.10x4:
+	Inherits: md.field
+	Building:
+		Dimensions: 10,4
+		Footprint: ========== ========== ========== ==========
+	MedievalBuilding:
+		Cost: 150, 0, 0, 0
+		Work: 120
+	MedievalSource:
+		Amount: 400
+		CultivationWork: 10
+
+md.field.10x5:
+	Inherits: md.field
+	Building:
+		Dimensions: 10,5
+		Footprint: ========== ========== ========== ========== ==========
+	MedievalBuilding:
+		Cost: 188, 0, 0, 0
+		Work: 150
+	MedievalSource:
+		Amount: 500
+		CultivationWork: 13
+
+md.field.10x6:
+	Inherits: md.field
+	Building:
+		Dimensions: 10,6
+		Footprint: ========== ========== ========== ========== ========== ==========
+	MedievalBuilding:
+		Cost: 225, 0, 0, 0
+		Work: 180
+	MedievalSource:
+		Amount: 600
+		CultivationWork: 15
+
+md.field.10x7:
+	Inherits: md.field
+	Building:
+		Dimensions: 10,7
+		Footprint: ========== ========== ========== ========== ========== ========== ==========
+	MedievalBuilding:
+		Cost: 263, 0, 0, 0
+		Work: 210
+	MedievalSource:
+		Amount: 700
+		CultivationWork: 18
+
+md.field.10x8:
+	Inherits: md.field
+	Building:
+		Dimensions: 10,8
+		Footprint: ========== ========== ========== ========== ========== ========== ========== ==========
+	MedievalBuilding:
+		Cost: 300, 0, 0, 0
+		Work: 240
+	MedievalSource:
+		Amount: 800
+		CultivationWork: 20
+
+md.field.10x9:
+	Inherits: md.field
+	Building:
+		Dimensions: 10,9
+		Footprint: ========== ========== ========== ========== ========== ========== ========== ========== ==========
+	MedievalBuilding:
+		Cost: 338, 0, 0, 0
+		Work: 270
+	MedievalSource:
+		Amount: 900
+		CultivationWork: 23
+
+md.field.10x10:
+	Inherits: md.field
+	Building:
+		Dimensions: 10,10
+		Footprint: ========== ========== ========== ========== ========== ========== ========== ========== ========== ==========
+	MedievalBuilding:
+		Cost: 375, 0, 0, 0
+		Work: 300
+	MedievalSource:
+		Amount: 1000
+		CultivationWork: 25
+
+md.pasture.2x3:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 2,3
+		Footprint: xx xx x=
+	MedievalBuilding:
+		Cost: 32, 0, 0, 7
+		Work: 18
+	MedievalSource:
+		Amount: 30
+		CultivationWork: 1
+
+md.pasture.2x4:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 2,4
+		Footprint: xx xx xx x=
+	MedievalBuilding:
+		Cost: 38, 0, 0, 8
+		Work: 24
+	MedievalSource:
+		Amount: 60
+		CultivationWork: 1
+
+md.pasture.2x5:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 2,5
+		Footprint: xx xx xx xx x=
+	MedievalBuilding:
+		Cost: 44, 0, 0, 9
+		Work: 30
+	MedievalSource:
+		Amount: 60
+		CultivationWork: 2
+
+md.pasture.2x6:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 2,6
+		Footprint: xx xx xx xx xx x=
+	MedievalBuilding:
+		Cost: 50, 0, 0, 10
+		Work: 36
+	MedievalSource:
+		Amount: 90
+		CultivationWork: 2
+
+md.pasture.2x7:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 2,7
+		Footprint: xx xx xx xx xx xx x=
+	MedievalBuilding:
+		Cost: 57, 0, 0, 12
+		Work: 42
+	MedievalSource:
+		Amount: 90
+		CultivationWork: 2
+
+md.pasture.2x8:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 2,8
+		Footprint: xx xx xx xx xx xx xx x=
+	MedievalBuilding:
+		Cost: 63, 0, 0, 13
+		Work: 48
+	MedievalSource:
+		Amount: 120
+		CultivationWork: 2
+
+md.pasture.2x9:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 2,9
+		Footprint: xx xx xx xx xx xx xx xx x=
+	MedievalBuilding:
+		Cost: 69, 0, 0, 14
+		Work: 54
+	MedievalSource:
+		Amount: 120
+		CultivationWork: 3
+
+md.pasture.2x10:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 2,10
+		Footprint: xx xx xx xx xx xx xx xx xx x=
+	MedievalBuilding:
+		Cost: 75, 0, 0, 15
+		Work: 60
+	MedievalSource:
+		Amount: 150
+		CultivationWork: 3
+
+md.pasture.3x2:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 3,2
+		Footprint: xxx x=x
+	MedievalBuilding:
+		Cost: 32, 0, 0, 7
+		Work: 18
+	MedievalSource:
+		Amount: 30
+		CultivationWork: 1
+
+md.pasture.3x3:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 3,3
+		Footprint: xxx x=x x=x
+	MedievalBuilding:
+		Cost: 38, 0, 0, 8
+		Work: 27
+	MedievalSource:
+		Amount: 60
+		CultivationWork: 2
+
+md.pasture.3x4:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 3,4
+		Footprint: xxx x=x x=x x=x
+	MedievalBuilding:
+		Cost: 44, 0, 0, 9
+		Work: 36
+	MedievalSource:
+		Amount: 90
+		CultivationWork: 2
+
+md.pasture.3x5:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 3,5
+		Footprint: xxx x=x x=x x=x x=x
+	MedievalBuilding:
+		Cost: 50, 0, 0, 10
+		Work: 45
+	MedievalSource:
+		Amount: 90
+		CultivationWork: 2
+
+md.pasture.3x6:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 3,6
+		Footprint: xxx x=x x=x x=x x=x x=x
+	MedievalBuilding:
+		Cost: 57, 0, 0, 12
+		Work: 54
+	MedievalSource:
+		Amount: 120
+		CultivationWork: 3
+
+md.pasture.3x7:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 3,7
+		Footprint: xxx x=x x=x x=x x=x x=x x=x
+	MedievalBuilding:
+		Cost: 63, 0, 0, 13
+		Work: 63
+	MedievalSource:
+		Amount: 150
+		CultivationWork: 3
+
+md.pasture.3x8:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 3,8
+		Footprint: xxx x=x x=x x=x x=x x=x x=x x=x
+	MedievalBuilding:
+		Cost: 69, 0, 0, 14
+		Work: 72
+	MedievalSource:
+		Amount: 180
+		CultivationWork: 3
+
+md.pasture.3x9:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 3,9
+		Footprint: xxx x=x x=x x=x x=x x=x x=x x=x x=x
+	MedievalBuilding:
+		Cost: 75, 0, 0, 15
+		Work: 81
+	MedievalSource:
+		Amount: 180
+		CultivationWork: 4
+
+md.pasture.3x10:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 3,10
+		Footprint: xxx x=x x=x x=x x=x x=x x=x x=x x=x x=x
+	MedievalBuilding:
+		Cost: 82, 0, 0, 17
+		Work: 90
+	MedievalSource:
+		Amount: 210
+		CultivationWork: 4
+
+md.pasture.4x2:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 4,2
+		Footprint: xxxx xx=x
+	MedievalBuilding:
+		Cost: 38, 0, 0, 8
+		Work: 24
+	MedievalSource:
+		Amount: 60
+		CultivationWork: 1
+
+md.pasture.4x3:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 4,3
+		Footprint: xxxx x==x xx=x
+	MedievalBuilding:
+		Cost: 44, 0, 0, 9
+		Work: 36
+	MedievalSource:
+		Amount: 90
+		CultivationWork: 2
+
+md.pasture.4x4:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 4,4
+		Footprint: xxxx x==x x==x xx=x
+	MedievalBuilding:
+		Cost: 50, 0, 0, 10
+		Work: 48
+	MedievalSource:
+		Amount: 120
+		CultivationWork: 2
+
+md.pasture.4x5:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 4,5
+		Footprint: xxxx x==x x==x x==x xx=x
+	MedievalBuilding:
+		Cost: 57, 0, 0, 12
+		Work: 60
+	MedievalSource:
+		Amount: 150
+		CultivationWork: 3
+
+md.pasture.4x6:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 4,6
+		Footprint: xxxx x==x x==x x==x x==x xx=x
+	MedievalBuilding:
+		Cost: 63, 0, 0, 13
+		Work: 72
+	MedievalSource:
+		Amount: 180
+		CultivationWork: 3
+
+md.pasture.4x7:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 4,7
+		Footprint: xxxx x==x x==x x==x x==x x==x xx=x
+	MedievalBuilding:
+		Cost: 69, 0, 0, 14
+		Work: 84
+	MedievalSource:
+		Amount: 210
+		CultivationWork: 4
+
+md.pasture.4x8:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 4,8
+		Footprint: xxxx x==x x==x x==x x==x x==x x==x xx=x
+	MedievalBuilding:
+		Cost: 75, 0, 0, 15
+		Work: 96
+	MedievalSource:
+		Amount: 240
+		CultivationWork: 4
+
+md.pasture.4x9:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 4,9
+		Footprint: xxxx x==x x==x x==x x==x x==x x==x x==x xx=x
+	MedievalBuilding:
+		Cost: 82, 0, 0, 17
+		Work: 108
+	MedievalSource:
+		Amount: 270
+		CultivationWork: 5
+
+md.pasture.4x10:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 4,10
+		Footprint: xxxx x==x x==x x==x x==x x==x x==x x==x x==x xx=x
+	MedievalBuilding:
+		Cost: 88, 0, 0, 18
+		Work: 120
+	MedievalSource:
+		Amount: 300
+		CultivationWork: 5
+
+md.pasture.5x2:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 5,2
+		Footprint: xxxxx xx=xx
+	MedievalBuilding:
+		Cost: 44, 0, 0, 9
+		Work: 30
+	MedievalSource:
+		Amount: 60
+		CultivationWork: 2
+
+md.pasture.5x3:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 5,3
+		Footprint: xxxxx x===x xx=xx
+	MedievalBuilding:
+		Cost: 50, 0, 0, 10
+		Work: 45
+	MedievalSource:
+		Amount: 90
+		CultivationWork: 2
+
+md.pasture.5x4:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 5,4
+		Footprint: xxxxx x===x x===x xx=xx
+	MedievalBuilding:
+		Cost: 57, 0, 0, 12
+		Work: 60
+	MedievalSource:
+		Amount: 150
+		CultivationWork: 3
+
+md.pasture.5x5:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 5,5
+		Footprint: xxxxx x===x x===x x===x xx=xx
+	MedievalBuilding:
+		Cost: 63, 0, 0, 13
+		Work: 75
+	MedievalSource:
+		Amount: 180
+		CultivationWork: 4
+
+md.pasture.5x6:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 5,6
+		Footprint: xxxxx x===x x===x x===x x===x xx=xx
+	MedievalBuilding:
+		Cost: 69, 0, 0, 14
+		Work: 90
+	MedievalSource:
+		Amount: 210
+		CultivationWork: 4
+
+md.pasture.5x7:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 5,7
+		Footprint: xxxxx x===x x===x x===x x===x x===x xx=xx
+	MedievalBuilding:
+		Cost: 75, 0, 0, 15
+		Work: 105
+	MedievalSource:
+		Amount: 240
+		CultivationWork: 5
+
+md.pasture.5x8:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 5,8
+		Footprint: xxxxx x===x x===x x===x x===x x===x x===x xx=xx
+	MedievalBuilding:
+		Cost: 82, 0, 0, 17
+		Work: 120
+	MedievalSource:
+		Amount: 300
+		CultivationWork: 5
+
+md.pasture.5x9:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 5,9
+		Footprint: xxxxx x===x x===x x===x x===x x===x x===x x===x xx=xx
+	MedievalBuilding:
+		Cost: 88, 0, 0, 18
+		Work: 135
+	MedievalSource:
+		Amount: 330
+		CultivationWork: 6
+
+md.pasture.5x10:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 5,10
+		Footprint: xxxxx x===x x===x x===x x===x x===x x===x x===x x===x xx=xx
+	MedievalBuilding:
+		Cost: 94, 0, 0, 19
+		Work: 150
+	MedievalSource:
+		Amount: 360
+		CultivationWork: 7
+
+md.pasture.6x2:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 6,2
+		Footprint: xxxxxx xxx=xx
+	MedievalBuilding:
+		Cost: 50, 0, 0, 10
+		Work: 36
+	MedievalSource:
+		Amount: 90
+		CultivationWork: 2
+
+md.pasture.6x3:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 6,3
+		Footprint: xxxxxx x====x xxx=xx
+	MedievalBuilding:
+		Cost: 57, 0, 0, 12
+		Work: 54
+	MedievalSource:
+		Amount: 120
+		CultivationWork: 3
+
+md.pasture.6x4:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 6,4
+		Footprint: xxxxxx x====x x====x xxx=xx
+	MedievalBuilding:
+		Cost: 63, 0, 0, 13
+		Work: 72
+	MedievalSource:
+		Amount: 180
+		CultivationWork: 3
+
+md.pasture.6x5:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 6,5
+		Footprint: xxxxxx x====x x====x x====x xxx=xx
+	MedievalBuilding:
+		Cost: 69, 0, 0, 14
+		Work: 90
+	MedievalSource:
+		Amount: 210
+		CultivationWork: 4
+
+md.pasture.6x6:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 6,6
+		Footprint: xxxxxx x====x x====x x====x x====x xxx=xx
+	MedievalBuilding:
+		Cost: 75, 0, 0, 15
+		Work: 108
+	MedievalSource:
+		Amount: 270
+		CultivationWork: 5
+
+md.pasture.6x7:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 6,7
+		Footprint: xxxxxx x====x x====x x====x x====x x====x xxx=xx
+	MedievalBuilding:
+		Cost: 82, 0, 0, 17
+		Work: 126
+	MedievalSource:
+		Amount: 300
+		CultivationWork: 6
+
+md.pasture.6x8:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 6,8
+		Footprint: xxxxxx x====x x====x x====x x====x x====x x====x xxx=xx
+	MedievalBuilding:
+		Cost: 88, 0, 0, 18
+		Work: 144
+	MedievalSource:
+		Amount: 360
+		CultivationWork: 6
+
+md.pasture.6x9:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 6,9
+		Footprint: xxxxxx x====x x====x x====x x====x x====x x====x x====x xxx=xx
+	MedievalBuilding:
+		Cost: 94, 0, 0, 19
+		Work: 162
+	MedievalSource:
+		Amount: 390
+		CultivationWork: 7
+
+md.pasture.6x10:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 6,10
+		Footprint: xxxxxx x====x x====x x====x x====x x====x x====x x====x x====x xxx=xx
+	MedievalBuilding:
+		Cost: 100, 0, 0, 20
+		Work: 180
+	MedievalSource:
+		Amount: 450
+		CultivationWork: 8
+
+md.pasture.7x2:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 7,2
+		Footprint: xxxxxxx xxx=xxx
+	MedievalBuilding:
+		Cost: 57, 0, 0, 12
+		Work: 42
+	MedievalSource:
+		Amount: 90
+		CultivationWork: 2
+
+md.pasture.7x3:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 7,3
+		Footprint: xxxxxxx x=====x xxx=xxx
+	MedievalBuilding:
+		Cost: 63, 0, 0, 13
+		Work: 63
+	MedievalSource:
+		Amount: 150
+		CultivationWork: 3
+
+md.pasture.7x4:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 7,4
+		Footprint: xxxxxxx x=====x x=====x xxx=xxx
+	MedievalBuilding:
+		Cost: 69, 0, 0, 14
+		Work: 84
+	MedievalSource:
+		Amount: 210
+		CultivationWork: 4
+
+md.pasture.7x5:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 7,5
+		Footprint: xxxxxxx x=====x x=====x x=====x xxx=xxx
+	MedievalBuilding:
+		Cost: 75, 0, 0, 15
+		Work: 105
+	MedievalSource:
+		Amount: 240
+		CultivationWork: 5
+
+md.pasture.7x6:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 7,6
+		Footprint: xxxxxxx x=====x x=====x x=====x x=====x xxx=xxx
+	MedievalBuilding:
+		Cost: 82, 0, 0, 17
+		Work: 126
+	MedievalSource:
+		Amount: 300
+		CultivationWork: 6
+
+md.pasture.7x7:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 7,7
+		Footprint: xxxxxxx x=====x x=====x x=====x x=====x x=====x xxx=xxx
+	MedievalBuilding:
+		Cost: 88, 0, 0, 18
+		Work: 147
+	MedievalSource:
+		Amount: 360
+		CultivationWork: 7
+
+md.pasture.7x8:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 7,8
+		Footprint: xxxxxxx x=====x x=====x x=====x x=====x x=====x x=====x xxx=xxx
+	MedievalBuilding:
+		Cost: 94, 0, 0, 19
+		Work: 168
+	MedievalSource:
+		Amount: 420
+		CultivationWork: 7
+
+md.pasture.7x9:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 7,9
+		Footprint: xxxxxxx x=====x x=====x x=====x x=====x x=====x x=====x x=====x xxx=xxx
+	MedievalBuilding:
+		Cost: 100, 0, 0, 20
+		Work: 189
+	MedievalSource:
+		Amount: 450
+		CultivationWork: 8
+
+md.pasture.7x10:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 7,10
+		Footprint: xxxxxxx x=====x x=====x x=====x x=====x x=====x x=====x x=====x x=====x xxx=xxx
+	MedievalBuilding:
+		Cost: 107, 0, 0, 22
+		Work: 210
+	MedievalSource:
+		Amount: 510
+		CultivationWork: 9
+
+md.pasture.8x2:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 8,2
+		Footprint: xxxxxxxx xxxx=xxx
+	MedievalBuilding:
+		Cost: 63, 0, 0, 13
+		Work: 48
+	MedievalSource:
+		Amount: 120
+		CultivationWork: 2
+
+md.pasture.8x3:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 8,3
+		Footprint: xxxxxxxx x======x xxxx=xxx
+	MedievalBuilding:
+		Cost: 69, 0, 0, 14
+		Work: 72
+	MedievalSource:
+		Amount: 180
+		CultivationWork: 3
+
+md.pasture.8x4:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 8,4
+		Footprint: xxxxxxxx x======x x======x xxxx=xxx
+	MedievalBuilding:
+		Cost: 75, 0, 0, 15
+		Work: 96
+	MedievalSource:
+		Amount: 240
+		CultivationWork: 4
+
+md.pasture.8x5:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 8,5
+		Footprint: xxxxxxxx x======x x======x x======x xxxx=xxx
+	MedievalBuilding:
+		Cost: 82, 0, 0, 17
+		Work: 120
+	MedievalSource:
+		Amount: 300
+		CultivationWork: 5
+
+md.pasture.8x6:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 8,6
+		Footprint: xxxxxxxx x======x x======x x======x x======x xxxx=xxx
+	MedievalBuilding:
+		Cost: 88, 0, 0, 18
+		Work: 144
+	MedievalSource:
+		Amount: 360
+		CultivationWork: 6
+
+md.pasture.8x7:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 8,7
+		Footprint: xxxxxxxx x======x x======x x======x x======x x======x xxxx=xxx
+	MedievalBuilding:
+		Cost: 94, 0, 0, 19
+		Work: 168
+	MedievalSource:
+		Amount: 420
+		CultivationWork: 7
+
+md.pasture.8x8:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 8,8
+		Footprint: xxxxxxxx x======x x======x x======x x======x x======x x======x xxxx=xxx
+	MedievalBuilding:
+		Cost: 100, 0, 0, 20
+		Work: 192
+	MedievalSource:
+		Amount: 480
+		CultivationWork: 8
+
+md.pasture.8x9:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 8,9
+		Footprint: xxxxxxxx x======x x======x x======x x======x x======x x======x x======x xxxx=xxx
+	MedievalBuilding:
+		Cost: 107, 0, 0, 22
+		Work: 216
+	MedievalSource:
+		Amount: 540
+		CultivationWork: 9
+
+md.pasture.8x10:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 8,10
+		Footprint: xxxxxxxx x======x x======x x======x x======x x======x x======x x======x x======x xxxx=xxx
+	MedievalBuilding:
+		Cost: 113, 0, 0, 23
+		Work: 240
+	MedievalSource:
+		Amount: 600
+		CultivationWork: 10
+
+md.pasture.9x2:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 9,2
+		Footprint: xxxxxxxxx xxxx=xxxx
+	MedievalBuilding:
+		Cost: 69, 0, 0, 14
+		Work: 54
+	MedievalSource:
+		Amount: 120
+		CultivationWork: 3
+
+md.pasture.9x3:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 9,3
+		Footprint: xxxxxxxxx x=======x xxxx=xxxx
+	MedievalBuilding:
+		Cost: 75, 0, 0, 15
+		Work: 81
+	MedievalSource:
+		Amount: 180
+		CultivationWork: 4
+
+md.pasture.9x4:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 9,4
+		Footprint: xxxxxxxxx x=======x x=======x xxxx=xxxx
+	MedievalBuilding:
+		Cost: 82, 0, 0, 17
+		Work: 108
+	MedievalSource:
+		Amount: 270
+		CultivationWork: 5
+
+md.pasture.9x5:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 9,5
+		Footprint: xxxxxxxxx x=======x x=======x x=======x xxxx=xxxx
+	MedievalBuilding:
+		Cost: 88, 0, 0, 18
+		Work: 135
+	MedievalSource:
+		Amount: 330
+		CultivationWork: 6
+
+md.pasture.9x6:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 9,6
+		Footprint: xxxxxxxxx x=======x x=======x x=======x x=======x xxxx=xxxx
+	MedievalBuilding:
+		Cost: 94, 0, 0, 19
+		Work: 162
+	MedievalSource:
+		Amount: 390
+		CultivationWork: 7
+
+md.pasture.9x7:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 9,7
+		Footprint: xxxxxxxxx x=======x x=======x x=======x x=======x x=======x xxxx=xxxx
+	MedievalBuilding:
+		Cost: 100, 0, 0, 20
+		Work: 189
+	MedievalSource:
+		Amount: 450
+		CultivationWork: 8
+
+md.pasture.9x8:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 9,8
+		Footprint: xxxxxxxxx x=======x x=======x x=======x x=======x x=======x x=======x xxxx=xxxx
+	MedievalBuilding:
+		Cost: 107, 0, 0, 22
+		Work: 216
+	MedievalSource:
+		Amount: 540
+		CultivationWork: 9
+
+md.pasture.9x9:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 9,9
+		Footprint: xxxxxxxxx x=======x x=======x x=======x x=======x x=======x x=======x x=======x xxxx=xxxx
+	MedievalBuilding:
+		Cost: 113, 0, 0, 23
+		Work: 243
+	MedievalSource:
+		Amount: 600
+		CultivationWork: 11
+
+md.pasture.9x10:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 9,10
+		Footprint: xxxxxxxxx x=======x x=======x x=======x x=======x x=======x x=======x x=======x x=======x xxxx=xxxx
+	MedievalBuilding:
+		Cost: 119, 0, 0, 24
+		Work: 270
+	MedievalSource:
+		Amount: 660
+		CultivationWork: 12
+
+md.pasture.10x2:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 10,2
+		Footprint: xxxxxxxxxx xxxxx=xxxx
+	MedievalBuilding:
+		Cost: 75, 0, 0, 15
+		Work: 60
+	MedievalSource:
+		Amount: 150
+		CultivationWork: 3
+
+md.pasture.10x3:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 10,3
+		Footprint: xxxxxxxxxx x========x xxxxx=xxxx
+	MedievalBuilding:
+		Cost: 82, 0, 0, 17
+		Work: 90
+	MedievalSource:
+		Amount: 210
+		CultivationWork: 4
+
+md.pasture.10x4:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 10,4
+		Footprint: xxxxxxxxxx x========x x========x xxxxx=xxxx
+	MedievalBuilding:
+		Cost: 88, 0, 0, 18
+		Work: 120
+	MedievalSource:
+		Amount: 300
+		CultivationWork: 5
+
+md.pasture.10x5:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 10,5
+		Footprint: xxxxxxxxxx x========x x========x x========x xxxxx=xxxx
+	MedievalBuilding:
+		Cost: 94, 0, 0, 19
+		Work: 150
+	MedievalSource:
+		Amount: 360
+		CultivationWork: 7
+
+md.pasture.10x6:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 10,6
+		Footprint: xxxxxxxxxx x========x x========x x========x x========x xxxxx=xxxx
+	MedievalBuilding:
+		Cost: 100, 0, 0, 20
+		Work: 180
+	MedievalSource:
+		Amount: 450
+		CultivationWork: 8
+
+md.pasture.10x7:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 10,7
+		Footprint: xxxxxxxxxx x========x x========x x========x x========x x========x xxxxx=xxxx
+	MedievalBuilding:
+		Cost: 107, 0, 0, 22
+		Work: 210
+	MedievalSource:
+		Amount: 510
+		CultivationWork: 9
+
+md.pasture.10x8:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 10,8
+		Footprint: xxxxxxxxxx x========x x========x x========x x========x x========x x========x xxxxx=xxxx
+	MedievalBuilding:
+		Cost: 113, 0, 0, 23
+		Work: 240
+	MedievalSource:
+		Amount: 600
+		CultivationWork: 10
+
+md.pasture.10x9:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 10,9
+		Footprint: xxxxxxxxxx x========x x========x x========x x========x x========x x========x x========x xxxxx=xxxx
+	MedievalBuilding:
+		Cost: 119, 0, 0, 24
+		Work: 270
+	MedievalSource:
+		Amount: 660
+		CultivationWork: 12
+
+md.pasture.10x10:
+	Inherits: md.pasture
+	Building:
+		Dimensions: 10,10
+		Footprint: xxxxxxxxxx x========x x========x x========x x========x x========x x========x x========x x========x xxxxx=xxxx
+	MedievalBuilding:
+		Cost: 125, 0, 0, 25
+		Work: 300
+	MedievalSource:
+		Amount: 750
+		CultivationWork: 13

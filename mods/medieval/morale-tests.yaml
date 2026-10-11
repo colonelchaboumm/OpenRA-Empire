@@ -1,0 +1,17 @@
+World:
+	MedievalMoraleValidation:
+
+md.moraletroop:
+	Inherits: md.militia
+	RenderSprites:
+		Image: md.militia
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
+
+md.moraledummy:
+	Inherits: md.moraletroop
+	-MedievalNeedsFood:
+	-MedievalMorale:
+	Health:
+		HP: 100000

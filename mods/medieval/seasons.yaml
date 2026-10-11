@@ -1,0 +1,81 @@
+World:
+	MedievalSeasons:
+		SeasonTicks: 45000
+	MedievalHuntingGrounds:
+
+^MDWORKER:
+	MedievalSeasonEffects:
+
+^MDBUILDING:
+	MedievalSnowCover:
+
+md.tree:
+	MedievalSeasonAppearance:
+
+md.birch:
+	MedievalSeasonAppearance:
+
+md.pine:
+	MedievalSeasonAppearance:
+
+md.grasses:
+	MedievalSeasonAppearance:
+
+md.flowers:
+	MedievalSeasonAppearance:
+
+md.shrub:
+	MedievalSeasonAppearance:
+
+md.huntinglodge:
+	Inherits: ^MDBUILDING
+	MedievalChimney:
+		ChimneyOffset: -21, -86
+	IsometricSelectable:
+		Height: 82
+	MedievalStockDisplay:
+		LabelHeight: 84
+	Tooltip:
+		Name: medieval-huntinglodge
+	MedievalBuilding:
+		Cost: 55, 0, 0, 10
+	MedievalStockpile:
+		Capacity: 0, 100, 0, 0
+		Profession: hunter
+
+md.hunter:
+	Inherits: ^MDWORKER
+	MedievalFirefighter:
+	Tooltip:
+		Name: medieval-hunter
+	MedievalWorker:
+		Profession: hunter
+		Resource: Food
+		Capacity: 12
+		WorkTicks: 18
+
+md.game-deer:
+	Inherits: ^MDANIMAL
+	-MedievalAnimal:
+	-MedievalActorAudio:
+	Tooltip:
+		Name: medieval-game-deer
+	MedievalGameAnimal:
+	MedievalSource:
+		Resource: Food
+		Amount: 24
+	MedievalStockDisplay:
+		LabelHeight: 40
+
+md.game-rabbit:
+	Inherits: md.game-deer
+	Tooltip:
+		Name: medieval-game-rabbit
+	MedievalGameAnimal:
+		Image: md.wild-rabbit
+	MedievalSource:
+		Amount: 6
+	Selectable:
+		Bounds: 500, 500, 0, -150
+	Health:
+		HP: 1000

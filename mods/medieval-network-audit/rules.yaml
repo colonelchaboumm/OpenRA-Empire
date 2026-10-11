@@ -1,0 +1,11 @@
+World:
+	NetworkAudit:
+		StormRefuge: True
+	MedievalWeather:
+		FirstRainTicks: 2000
+		RainTicks: 1600
+		MinimumRainPermille: 850
+	MedievalSeasons:
+		SeasonTicks: 1500
+md.militia:
+	MedievalCombatProbe:

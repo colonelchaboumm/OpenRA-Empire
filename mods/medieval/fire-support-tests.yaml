@@ -1,0 +1,11 @@
+World:
+	MedievalFireSupportValidation:
+	MedievalWeather:
+		FirstRainTicks: 100000
+
+md.firetarget:
+	Inherits: md.house
+	RenderSprites:
+		Image: md.house
+	Health:
+		HP: 1000000

@@ -1,0 +1,347 @@
+button:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 0, 0, 4, 4, 56, 56, 4, 4
+
+button-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+button-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+button-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+button-highlighted:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4
+
+button-highlighted-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+button-highlighted-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+button-highlighted-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+md-button:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 0, 0, 4, 4, 56, 56, 4, 4
+
+md-button-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+md-button-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+md-button-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+md-button-highlighted:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4
+
+md-button-highlighted-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+md-button-highlighted-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+md-button-highlighted-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+checkbox:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 0, 0, 4, 4, 56, 56, 4, 4
+
+checkbox-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+checkbox-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+checkbox-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+checkbox-highlighted:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4
+
+checkbox-highlighted-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+checkbox-highlighted-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+checkbox-highlighted-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-allies:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 0, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-allies-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-allies-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-allies-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-allies-highlighted:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-allies-highlighted-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-allies-highlighted-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-allies-highlighted-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-soviet:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 0, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-soviet-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-soviet-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-soviet-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-soviet-highlighted:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-soviet-highlighted-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-soviet-highlighted-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-soviet-highlighted-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-observer:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 0, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-observer-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-observer-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-observer-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-observer-highlighted:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-observer-highlighted-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-observer-highlighted-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+sidebar-button-observer-highlighted-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+command-button-allies:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 0, 0, 4, 4, 56, 56, 4, 4
+
+command-button-allies-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+command-button-allies-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+command-button-allies-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+command-button-allies-highlighted:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4
+
+command-button-allies-highlighted-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+command-button-allies-highlighted-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+command-button-allies-highlighted-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+command-button-soviet:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 0, 0, 4, 4, 56, 56, 4, 4
+
+command-button-soviet-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+command-button-soviet-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+command-button-soviet-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+command-button-soviet-highlighted:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4
+
+command-button-soviet-highlighted-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+command-button-soviet-highlighted-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+command-button-soviet-highlighted-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+dialog:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 320, 0, 4, 4, 56, 56, 4, 4
+
+dialog2:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 0, 0, 4, 4, 56, 56, 4, 4
+
+dialog3:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+dialog4:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 320, 0, 4, 4, 56, 56, 4, 4
+
+dialog5:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 320, 0, 4, 4, 56, 56, 4, 4
+
+md-panel:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 320, 0, 4, 4, 56, 56, 4, 4
+
+md-menu-panel:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 384, 0, 4, 4, 56, 56, 4, 4
+
+textfield:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+textfield-focused:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4
+
+textfield-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+textfield-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+scrollpanel-bg:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 448, 0, 4, 4, 56, 56, 4, 4
+
+scrollpanel-button:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 0, 0, 4, 4, 56, 56, 4, 4
+
+scrollpanel-button-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 64, 0, 4, 4, 56, 56, 4, 4
+
+scrollpanel-button-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+scrollpanel-button-disabled:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 192, 0, 4, 4, 56, 56, 4, 4
+
+scrollitem-hover:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 0, 0, 4, 4, 56, 56, 4, 4
+
+scrollitem-pressed:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+scrollitem-highlighted:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4
+
+scrollheader:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 128, 0, 4, 4, 56, 56, 4, 4
+
+scrollheader-highlighted:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4
+
+progressbar-bg:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 448, 0, 4, 4, 56, 56, 4, 4
+
+progressbar-thumb:
+	Image: medieval|art/menu/panels.png
+	PanelRegion: 256, 0, 4, 4, 56, 56, 4, 4

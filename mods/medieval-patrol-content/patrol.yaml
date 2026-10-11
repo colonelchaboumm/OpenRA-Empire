@@ -1,0 +1,7 @@
+^MDFIGHTER:
+	AutoTarget:
+		ScanRadius: 6
+
+md.militia:
+	MedievalPatrol:
+	MedievalTorch:

@@ -1,0 +1,9 @@
+{
+  "tool": "Built-in image_gen",
+  "mode": "generate with style reference",
+  "prompt": "Use case: stylized-concept. Asset type: one production game sprite on a genuinely transparent background. The attached image is a STYLE REFERENCE ONLY for a medieval isometric RTS in the spirit of classic Red Alert. Generate exactly ONE wooden defensive watchtower, centered, fully visible with margin, no other buildings or sprite atlas. Orthographic 2:1 dimetric view, ground edges slope exactly 1 vertical to 2 horizontal, visible front and right sides. A tall square wooden tower standing on thick oak logs, cross braces, enclosed plank lower body, narrow access ladder, high open fighting platform with chunky pointed timber parapets and arrow slits, two tiny blue-clothed bowmen visibly stationed behind the parapet, small plain blue pennant. No stone base, no roof over platform. Base compact and square, tower about 1.7 times as tall as its projected width. Hand-painted pre-rendered strategy-game aesthetic matching the reference: warm honey oak, weathered dark grain, strong readable silhouette, fine restrained details that survive small sprite scale, directional top-left sunlight, darker right face. Ground contact only, minimal tight shadow. No large ground diamond, no grass island, no background, no text, no labels, no watermark. True alpha transparency.",
+  "reference": "buildings-isometric.png",
+  "source": "C:/Users/valen/.codex/generated_images/01a114d1-ec6d-75a1-8506-e817242f29ec/exec-a351a799-4f7e-42d1-937e-e46d704be5ec.png",
+  "saved": "woodtower-isometric.png",
+  "packing": "Alpha bounds crop, proportional resize and frame packing in tools/fortification_art.py; original alpha retained."
+}

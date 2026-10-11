@@ -1,0 +1,16 @@
+bin/
+obj/
+.distribution/
+.tools/
+bin-*/
+analysis/
+Support/
+.vs/
+.vscode/
+__pycache__/
+*.pyc
+*.log
+*.user
+*.tmp
+.env*
+TestResults/

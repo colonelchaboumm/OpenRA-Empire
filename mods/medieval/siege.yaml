@@ -1,0 +1,130 @@
+^MDBUILDING:
+	MedievalSiegeDamage:
+	HitShape:
+		UseTargetableCellsOffsets: True
+
+^MDFIGHTER:
+	MedievalSiegeCrew:
+	CaptureManager:
+		CapturingCondition: siege-capturing
+	MedievalSiegeCapture:
+		CaptureTypes: medieval-siege
+		CaptureDelay: 150
+		ConsumedByCapture: False
+		ValidRelationships: Enemy
+		EnterCursor: capture
+		Voice:
+	AutoTarget:
+		RequiresCondition: !siege-crew && !siege-capturing
+
+md.siegeworkshop:
+	Inherits: ^MDBUILDING
+	Tooltip:
+		Name: medieval-siegeworkshop
+	Building:
+		Dimensions: 4,3
+		Footprint: xxxx xxxx xxxx
+	MedievalBuilding:
+		Cost: 160, 0, 0, 80
+		Work: 80
+	MedievalSiegeWorkshop:
+	MedievalSiegeWorkshopAnimation:
+	MedievalStockDisplay:
+		LabelHeight: 132
+	IsometricSelectable:
+		Height: 60
+
+^MDSIEGE:
+	Inherits: ^MDWORKER
+	-MedievalWorker:
+	-WithMedievalInfantryBody:
+	WithMedievalSiegeBody:
+	QuantizeFacingsFromSequence:
+		Sequence: idle
+	Selectable:
+		Bounds: 2560, 2048, 0, -512
+	Health:
+		HP: 36000
+	Armor:
+		Type: Wood
+	Targetable:
+		TargetTypes: GroundActor, Vehicle
+	HitShape:
+		Type: Circle
+			Radius: 600
+	Mobile:
+		Speed: 32
+		PauseOnCondition: siege-fixed
+		ImmovableCondition: siege-fixed
+	MedievalSiegeEngine:
+	CaptureManager:
+	Capturable:
+		Types: medieval-siege
+		CancelActivity: True
+	CapturableProgressBar:
+	MedievalSiegeArmament:
+		Weapon: MedievalRam
+	MedievalSiegeAttack:
+		Voice:
+		FacingTolerance: 64
+	AutoTarget:
+		InitialStance: Defend
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Structure
+
+md.ram:
+	Inherits: ^MDSIEGE
+	-MedievalNeedsFood:
+	-MedievalRecruitable:
+	Tooltip:
+		Name: medieval-ram
+	Health:
+		HP: 50000
+
+md.trebuchet:
+	Inherits: ^MDSIEGE
+	-Selectable:
+	MedievalSiegeSelectable:
+		Bounds: 2560, 2048, 0, -512
+	MedievalSiegeAttack:
+		FacingTolerance: 512
+	Tooltip:
+		Name: medieval-trebuchet
+	MedievalSiegeEngine:
+		Trebuchet: True
+	MedievalSiegeArmament:
+		Weapon: MedievalTrebuchet
+		LocalOffset: 0,0,1800
+	MedievalRecruitable:
+		Food: 20
+	MedievalStockpile:
+		Capacity: 0, 0, 0, 60
+	MedievalStockDisplay:
+		LabelHeight: 135
+
+md.stonecart:
+	Inherits: ^MDWORKER
+	-MedievalWorker:
+	-WithMedievalInfantryBody:
+	WithMedievalSiegeBody:
+	QuantizeFacingsFromSequence:
+		Sequence: idle
+	Tooltip:
+		Name: medieval-stonecart
+	Selectable:
+		Bounds: 1536, 1536, 0, -256
+	Mobile:
+		Speed: 44
+	Health:
+		HP: 8000
+	MedievalRecruitable:
+		Food: 20
+	MedievalStockpile:
+		Capacity: 0, 0, 0, 60
+	MedievalStoneCart:
+
+md.siegebrace:
+	Immobile:
+		OccupiesSpace: True
+	BodyOrientation:
+		QuantizedFacings: 1

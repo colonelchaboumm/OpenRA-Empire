@@ -1,0 +1,13 @@
+World:
+	MedievalDemolitionAreaValidation:
+	MedievalWeather:
+		FirstRainTicks: 100000
+	MedievalWildHerds:
+		SpawnAnimals: False
+	MedievalHuntingGrounds:
+		MaximumAnimals: 0
+
+^MDWORKER:
+	MedievalNeedsFood:
+		MealInterval: 100000
+		StarvationDelay: 1000000

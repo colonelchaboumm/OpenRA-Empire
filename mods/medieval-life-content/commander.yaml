@@ -1,0 +1,22 @@
+md.commander:
+	Inherits: md.manatarms
+	-MedievalSiegeCrew:
+	-MedievalSiegeCapture:
+	-CaptureManager:
+	Tooltip:
+		Name: medieval-commander
+	MedievalRecruitable:
+		Food: 40
+		Meat: 15
+		Elite: True
+	MedievalCampStore:
+		Capacity: 0, 1, 0, 0
+	MedievalCommander:
+	AutoTarget:
+		RequiresCondition: !sleeping && !commander-working
+	AttackFrontal:
+		RequiresCondition: !sleeping && !commander-working
+
+md.militarytent:
+	MedievalCampArea:
+		Radius: 6c0

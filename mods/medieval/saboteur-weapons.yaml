@@ -1,0 +1,5 @@
+MedievalSaboteurDagger:
+	Inherits: MedievalClub
+	ReloadDelay: 40
+	Warhead@Damage: TargetDamage
+		Damage: 500

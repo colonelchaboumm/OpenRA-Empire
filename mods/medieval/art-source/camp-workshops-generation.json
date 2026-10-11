@@ -1,0 +1,16 @@
+{
+  "mode": "built-in image_gen",
+  "assets": [
+    {
+      "path": "tentweaver-isometric.png",
+      "source": "exec-7816afb2-db7c-4e7f-beab-8d54faaa012c.png",
+      "prompt": "Use the provided sheepfold ONLY AS A STYLE REFERENCE. Create a DIFFERENT medieval building: a tentmaker/weaver's workshop, isolated game sprite on fully transparent background. Same high-quality hand-painted pre-rendered late-1990s isometric RTS look, light from upper left, orthographic ground axes slope ±26.565 degrees. Compact 3 by 2 tile rectangular footprint. Cream plaster, dark weathered timber frame, stone foundation, handsome blue-grey slate gabled roof, copper small chimney. The whole front facade is an open working bay under the roof, with a dark empty interior, a timber platform, and two structural posts framing the bay. NO LOOM or people inside the bay: leave the floor and working bay EMPTY because an animated loom and craftsman will be composited there by the game. At the right outside wall hang one ivory canvas sheet with a dark red decorative stripe, and a small hanging wooden sign showing a tent silhouette (no letters). At the left side keep one fixed bundle of rolled fabric and a wicker wool basket. The open front bay must be large and clearly visible, not blocked by roof or accessories. Lively crafted silhouette, tactile stone, slate and wood, shaded forms, readable at 150 pixels. No fence, no trees, no sheep, no terrain patch or scenery, no ground plane, no diffuse glow or background. Only one building on TRANSPARENT alpha. Entire building visible with generous clear padding."
+    },
+    {
+      "path": "sheepfold-animation-base.png",
+      "source": "exec-607a6fcd-af62-4a82-a572-6549414cb7aa.png",
+      "prompt": "Edit target: the supplied sheepfold sprite. Make a clean stationary animation background. Remove ONLY the two white sheep: one sheep in the left doorway, and the sheep under the right lean-to. Inpaint their silhouettes with the dark barn interior and hay/wood floor that would be behind them. Preserve every other detail, especially the exact roof, roof beams, walls, foundation, doorway outlines, foreground fence posts and bars, wool basket, lantern, footprint, camera angle, canvas dimensions and building registration. Do not move, resize or redesign the building. No new animals or people. Alpha-transparent background preserved exactly. This is a game animation clean plate; the two sheep will be animated separately. Output one transparent PNG."
+    }
+  ],
+  "animation": "Static registered plates with procedural articulated overlays, packed by camp_building_art.py"
+}

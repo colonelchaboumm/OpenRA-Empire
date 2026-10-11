@@ -1,0 +1,33 @@
+{
+  "tool": "image_gen.imagegen",
+  "transparent_background": true,
+  "reference": "buildings-isometric.png",
+  "date": "2026-10-08",
+  "variants": [
+    {
+      "name": "cottage",
+      "prompt": "Create ONE isolated medieval HOUSE game sprite on genuinely transparent background, using the attached atlas ONLY as a style reference. Match its late-1990s hand-painted isometric RTS architecture, crisp dark edges, natural material textures, warm upper-left daylight, pale plaster and oak beams, restrained blue door accents. Exact orthographic 2:1 isometric ground axes (diagonals rise one for two across), no perspective vanishing, show front-left entrance facade and right side, upright verticals. Entire roof, chimney and base visible with generous transparent margin. One compact village residential plot. One stone chimney with a clearly visible dark open mouth, NO smoke (animated by game). Small attached details only, no broad landscape, ground slab, people, text, lettering, panels or other buildings. Sharp readable design at small game scale. A SMALL modest single-storey thatched cottage, squat and low, pale cream plaster, thick golden straw roof, uneven exposed oak timbers, one blue front door, two little windows with shutters, stacked logs, a tiny herb pot. Roof covers a compact square footprint. Low chimney on the upper-left roof side.",
+      "output": "house-cottage.png"
+    },
+    {
+      "name": "townhouse",
+      "prompt": "Create ONE isolated medieval HOUSE game sprite on genuinely transparent background, using the attached atlas ONLY as a style reference. Match its late-1990s hand-painted isometric RTS architecture, crisp dark edges, natural material textures, warm upper-left daylight, pale plaster and oak beams, restrained blue door accents. Exact orthographic 2:1 isometric ground axes (diagonals rise one for two across), no perspective vanishing, show front-left entrance facade and right side, upright verticals. Entire roof, chimney and base visible with generous transparent margin. One compact village residential plot. One stone chimney with a clearly visible dark open mouth, NO smoke (animated by game). Small attached details only, no broad landscape, ground slab, people, text, lettering, panels or other buildings. Sharp readable design at small game scale. A TALL narrow THREE-STOREY medieval townhouse, clearly three stacked window levels, overhanging timber upper storeys and cream infill, high steep charcoal slate roof, small dormer and a chimney near the upper-left of the roof. Narrow square ground footprint. Keep the height substantially greater than its width. A residential house, no store or signs.",
+      "output": "house-townhouse.png"
+    },
+    {
+      "name": "longhouse",
+      "prompt": "Create ONE isolated medieval HOUSE game sprite on genuinely transparent background, using the attached atlas ONLY as a style reference. Match its late-1990s hand-painted isometric RTS architecture, crisp dark edges, natural material textures, warm upper-left daylight, pale plaster and oak beams, restrained blue door accents. Exact orthographic 2:1 isometric ground axes (diagonals rise one for two across), no perspective vanishing, show front-left entrance facade and right side, upright verticals. Entire roof, chimney and base visible with generous transparent margin. One compact village residential plot. One stone chimney with a clearly visible dark open mouth, NO smoke (animated by game). Small attached details only, no broad landscape, ground slab, people, text, lettering, panels or other buildings. Sharp readable design at small game scale. A LARGE broad wealthy two-storey village house with a wide rectangular body and two connected asymmetric red terracotta gables, stone ground floor and cream timber upper floor, several small leaded windows, strong oak door painted muted blue, little front entrance steps. Big substantial domestic volume, no castle tower. One left-side chimney.",
+      "output": "house-longhouse.png"
+    },
+    {
+      "name": "courtyard",
+      "prompt": "Create ONE isolated medieval HOUSE game sprite on genuinely transparent background, using the attached atlas ONLY as a style reference. Match its late-1990s hand-painted isometric RTS architecture, crisp dark edges, natural material textures, warm upper-left daylight, pale plaster and oak beams, restrained blue door accents. Exact orthographic 2:1 isometric ground axes (diagonals rise one for two across), no perspective vanishing, show front-left entrance facade and right side, upright verticals. Entire roof, chimney and base visible with generous transparent margin. One compact village residential plot. One stone chimney with a clearly visible dark open mouth, NO smoke (animated by game). Small attached details only, no broad landscape, ground slab, people, text, lettering, panels or other buildings. Sharp readable design at small game scale. A cozy medium one-storey red-tiled house with a SMALL ATTACHED FRONT GARDEN COURTYARD, low wooden picket fence around a tiny lawn, pink and white flower beds, stone doorstep, open front gate and two terracotta pots. House at rear half of a compact square plot, garden in front half; everything within one compact residential lot. One stone chimney upper-left. No people.",
+      "output": "house-courtyard.png"
+    },
+    {
+      "name": "balcony",
+      "prompt": "Create ONE isolated medieval HOUSE game sprite on genuinely transparent background, using the attached atlas ONLY as a style reference. Match its late-1990s hand-painted isometric RTS architecture, crisp dark edges, natural material textures, warm upper-left daylight, pale plaster and oak beams, restrained blue door accents. Exact orthographic 2:1 isometric ground axes (diagonals rise one for two across), no perspective vanishing, show front-left entrance facade and right side, upright verticals. Entire roof, chimney and base visible with generous transparent margin. One compact village residential plot. One stone chimney with a clearly visible dark open mouth, NO smoke (animated by game). Small attached details only, no broad landscape, ground slab, people, text, lettering, panels or other buildings. Sharp readable design at small game scale. A charming TWO-STOREY timber-framed house with a VERY VISIBLE projecting carved wooden BALCONY across the front upper floor, wooden balustrade, blue shutters, hanging flower boxes and support braces. Cream plaster and chestnut beams, mossy muted dark slate gabled roof, stone ground floor, blue front door and small front steps. Balcony must read clearly as usable projecting floor, not merely a window box. One chimney at the rear-left.",
+      "output": "house-balcony.png"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+md.pasture:
+	MedievalLivestock:
+
+md.sheeppasture:
+	MedievalLivestock:
+		Image: md.livestock-sheep
+
+md.stonepath:
+	MedievalDecoration:
+		Ground: True
+
+md.plaza:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-plaza
+	Building:
+		Dimensions: 2,2
+		Footprint: == ==
+	IsometricSelectable:
+		Height: 0
+		DecorationHeight: 4
+	MedievalBuilding:
+		Cost: 0, 0, 0, 12
+		Work: 4
+	MedievalDecoration:
+		Ground: True
+
+md.plazalarge:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-plazalarge
+	Building:
+		Dimensions: 3,3
+		Footprint: === === ===
+	IsometricSelectable:
+		Height: 0
+		DecorationHeight: 4
+	MedievalBuilding:
+		Cost: 0, 0, 0, 27
+		Work: 9
+	MedievalDecoration:
+		Ground: True
+
+md.statueknight:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-statueknight
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	IsometricSelectable:
+		Height: 65
+		DecorationHeight: 65
+	MedievalBuilding:
+		Cost: 5, 0, 0, 30
+		Work: 15
+
+md.statuelion:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-statuelion
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	IsometricSelectable:
+		Height: 40
+		DecorationHeight: 40
+	MedievalBuilding:
+		Cost: 4, 0, 0, 24
+		Work: 12
+
+md.plantedoak:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-plantedoak
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	IsometricSelectable:
+		Height: 76
+		DecorationHeight: 76
+	MedievalBuilding:
+		Cost: 12, 0, 0, 6
+		Work: 8
+
+md.plantedcypress:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-plantedcypress
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	IsometricSelectable:
+		Height: 80
+		DecorationHeight: 80
+	MedievalBuilding:
+		Cost: 10, 0, 0, 6
+		Work: 8

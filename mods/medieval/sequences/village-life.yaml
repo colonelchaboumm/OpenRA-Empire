@@ -1,0 +1,1033 @@
+md.livestock-cow:
+	idle:
+		Filename: medieval|art/livestock-cow.png
+		Offset: 0, -16
+		Length: 128
+
+md.livestock-sheep:
+	idle:
+		Filename: medieval|art/livestock-sheep.png
+		Offset: 0, -16
+		Length: 128
+
+md.pasture:
+	fence:
+		Filename: medieval|art/pasture-fence.2x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.2x3:
+	fence:
+		Filename: medieval|art/pasture-fence.2x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.2x4:
+	fence:
+		Filename: medieval|art/pasture-fence.2x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.2x5:
+	fence:
+		Filename: medieval|art/pasture-fence.2x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.2x6:
+	fence:
+		Filename: medieval|art/pasture-fence.2x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.2x7:
+	fence:
+		Filename: medieval|art/pasture-fence.2x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.2x8:
+	fence:
+		Filename: medieval|art/pasture-fence.2x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.2x9:
+	fence:
+		Filename: medieval|art/pasture-fence.2x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.2x10:
+	fence:
+		Filename: medieval|art/pasture-fence.2x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.3x2:
+	fence:
+		Filename: medieval|art/pasture-fence.3x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.3x3:
+	fence:
+		Filename: medieval|art/pasture-fence.3x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.3x4:
+	fence:
+		Filename: medieval|art/pasture-fence.3x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.3x5:
+	fence:
+		Filename: medieval|art/pasture-fence.3x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.3x6:
+	fence:
+		Filename: medieval|art/pasture-fence.3x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.3x7:
+	fence:
+		Filename: medieval|art/pasture-fence.3x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.3x8:
+	fence:
+		Filename: medieval|art/pasture-fence.3x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.3x9:
+	fence:
+		Filename: medieval|art/pasture-fence.3x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.3x10:
+	fence:
+		Filename: medieval|art/pasture-fence.3x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.4x2:
+	fence:
+		Filename: medieval|art/pasture-fence.4x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.4x3:
+	fence:
+		Filename: medieval|art/pasture-fence.4x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.4x4:
+	fence:
+		Filename: medieval|art/pasture-fence.4x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.4x5:
+	fence:
+		Filename: medieval|art/pasture-fence.4x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.4x6:
+	fence:
+		Filename: medieval|art/pasture-fence.4x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.4x7:
+	fence:
+		Filename: medieval|art/pasture-fence.4x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.4x8:
+	fence:
+		Filename: medieval|art/pasture-fence.4x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.4x9:
+	fence:
+		Filename: medieval|art/pasture-fence.4x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.4x10:
+	fence:
+		Filename: medieval|art/pasture-fence.4x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.5x2:
+	fence:
+		Filename: medieval|art/pasture-fence.5x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.5x3:
+	fence:
+		Filename: medieval|art/pasture-fence.5x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.5x4:
+	fence:
+		Filename: medieval|art/pasture-fence.5x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.5x5:
+	fence:
+		Filename: medieval|art/pasture-fence.5x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.5x6:
+	fence:
+		Filename: medieval|art/pasture-fence.5x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.5x7:
+	fence:
+		Filename: medieval|art/pasture-fence.5x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.5x8:
+	fence:
+		Filename: medieval|art/pasture-fence.5x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.5x9:
+	fence:
+		Filename: medieval|art/pasture-fence.5x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.5x10:
+	fence:
+		Filename: medieval|art/pasture-fence.5x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.6x2:
+	fence:
+		Filename: medieval|art/pasture-fence.6x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.6x3:
+	fence:
+		Filename: medieval|art/pasture-fence.6x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.6x4:
+	fence:
+		Filename: medieval|art/pasture-fence.6x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.6x5:
+	fence:
+		Filename: medieval|art/pasture-fence.6x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.6x6:
+	fence:
+		Filename: medieval|art/pasture-fence.6x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.6x7:
+	fence:
+		Filename: medieval|art/pasture-fence.6x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.6x8:
+	fence:
+		Filename: medieval|art/pasture-fence.6x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.6x9:
+	fence:
+		Filename: medieval|art/pasture-fence.6x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.6x10:
+	fence:
+		Filename: medieval|art/pasture-fence.6x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.7x2:
+	fence:
+		Filename: medieval|art/pasture-fence.7x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.7x3:
+	fence:
+		Filename: medieval|art/pasture-fence.7x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.7x4:
+	fence:
+		Filename: medieval|art/pasture-fence.7x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.7x5:
+	fence:
+		Filename: medieval|art/pasture-fence.7x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.7x6:
+	fence:
+		Filename: medieval|art/pasture-fence.7x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.7x7:
+	fence:
+		Filename: medieval|art/pasture-fence.7x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.7x8:
+	fence:
+		Filename: medieval|art/pasture-fence.7x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.7x9:
+	fence:
+		Filename: medieval|art/pasture-fence.7x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.7x10:
+	fence:
+		Filename: medieval|art/pasture-fence.7x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.8x2:
+	fence:
+		Filename: medieval|art/pasture-fence.8x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.8x3:
+	fence:
+		Filename: medieval|art/pasture-fence.8x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.8x4:
+	fence:
+		Filename: medieval|art/pasture-fence.8x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.8x5:
+	fence:
+		Filename: medieval|art/pasture-fence.8x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.8x6:
+	fence:
+		Filename: medieval|art/pasture-fence.8x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.8x7:
+	fence:
+		Filename: medieval|art/pasture-fence.8x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.8x8:
+	fence:
+		Filename: medieval|art/pasture-fence.8x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.8x9:
+	fence:
+		Filename: medieval|art/pasture-fence.8x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.8x10:
+	fence:
+		Filename: medieval|art/pasture-fence.8x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.9x2:
+	fence:
+		Filename: medieval|art/pasture-fence.9x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.9x3:
+	fence:
+		Filename: medieval|art/pasture-fence.9x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.9x4:
+	fence:
+		Filename: medieval|art/pasture-fence.9x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.9x5:
+	fence:
+		Filename: medieval|art/pasture-fence.9x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.9x6:
+	fence:
+		Filename: medieval|art/pasture-fence.9x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.9x7:
+	fence:
+		Filename: medieval|art/pasture-fence.9x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.9x8:
+	fence:
+		Filename: medieval|art/pasture-fence.9x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.9x9:
+	fence:
+		Filename: medieval|art/pasture-fence.9x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.9x10:
+	fence:
+		Filename: medieval|art/pasture-fence.9x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.10x2:
+	fence:
+		Filename: medieval|art/pasture-fence.10x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.10x3:
+	fence:
+		Filename: medieval|art/pasture-fence.10x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.10x4:
+	fence:
+		Filename: medieval|art/pasture-fence.10x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.10x5:
+	fence:
+		Filename: medieval|art/pasture-fence.10x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.10x6:
+	fence:
+		Filename: medieval|art/pasture-fence.10x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.10x7:
+	fence:
+		Filename: medieval|art/pasture-fence.10x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.10x8:
+	fence:
+		Filename: medieval|art/pasture-fence.10x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.10x9:
+	fence:
+		Filename: medieval|art/pasture-fence.10x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.pasture.10x10:
+	fence:
+		Filename: medieval|art/pasture-fence.10x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.2x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.2x3:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.2x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.2x4:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.2x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.2x5:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.2x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.2x6:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.2x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.2x7:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.2x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.2x8:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.2x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.2x9:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.2x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.2x10:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.2x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.3x2:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.3x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.3x3:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.3x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.3x4:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.3x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.3x5:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.3x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.3x6:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.3x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.3x7:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.3x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.3x8:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.3x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.3x9:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.3x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.3x10:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.3x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.4x2:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.4x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.4x3:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.4x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.4x4:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.4x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.4x5:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.4x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.4x6:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.4x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.4x7:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.4x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.4x8:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.4x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.4x9:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.4x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.4x10:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.4x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.5x2:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.5x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.5x3:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.5x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.5x4:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.5x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.5x5:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.5x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.5x6:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.5x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.5x7:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.5x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.5x8:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.5x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.5x9:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.5x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.5x10:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.5x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.6x2:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.6x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.6x3:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.6x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.6x4:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.6x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.6x5:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.6x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.6x6:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.6x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.6x7:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.6x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.6x8:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.6x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.6x9:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.6x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.6x10:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.6x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.7x2:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.7x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.7x3:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.7x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.7x4:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.7x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.7x5:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.7x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.7x6:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.7x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.7x7:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.7x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.7x8:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.7x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.7x9:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.7x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.7x10:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.7x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.8x2:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.8x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.8x3:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.8x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.8x4:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.8x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.8x5:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.8x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.8x6:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.8x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.8x7:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.8x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.8x8:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.8x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.8x9:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.8x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.8x10:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.8x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.9x2:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.9x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.9x3:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.9x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.9x4:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.9x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.9x5:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.9x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.9x6:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.9x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.9x7:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.9x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.9x8:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.9x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.9x9:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.9x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.9x10:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.9x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.10x2:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.10x2.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.10x3:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.10x3.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.10x4:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.10x4.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.10x5:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.10x5.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.10x6:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.10x6.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.10x7:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.10x7.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.10x8:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.10x8.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.10x9:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.10x9.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.sheeppasture.10x10:
+	fence:
+		Filename: medieval|art/sheeppasture-fence.10x10.png
+		Offset: 0, -6
+		ZOffset: 0
+
+md.plaza:
+	Defaults:
+		Filename: medieval|art/plaza.png
+		Offset: 0, -32
+		ZOffset: -8c0
+	idle:
+	construction:
+		Start: 1
+
+md.plazalarge:
+	Defaults:
+		Filename: medieval|art/plazalarge.png
+		Offset: 0, -32
+		ZOffset: -8c0
+	idle:
+	construction:
+		Start: 1
+
+md.statueknight:
+	Defaults:
+		Filename: medieval|art/statueknight.png
+		Offset: 0, -32
+	idle:
+	construction:
+		Start: 1
+
+md.statuelion:
+	Defaults:
+		Filename: medieval|art/statuelion.png
+		Offset: 0, -32
+	idle:
+	construction:
+		Start: 1
+
+md.plantedoak:
+	Defaults:
+		Filename: medieval|art/plantedoak.png
+		Offset: 0, -32
+	idle:
+	construction:
+		Start: 1
+
+md.plantedcypress:
+	Defaults:
+		Filename: medieval|art/plantedcypress.png
+		Offset: 0, -32
+	idle:
+	construction:
+		Start: 1

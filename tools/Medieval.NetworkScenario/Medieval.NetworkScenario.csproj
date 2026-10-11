@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>OpenRA.Mods.NetworkTest</AssemblyName>
+    <EngineRootPath>../..</EngineRootPath>
+    <OutputPath>../../bin-medieval-network-test</OutputPath>
+    <AuditBinaryPath Condition="'$(AuditBinaryPath)' == ''">../../bin-medieval</AuditBinaryPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Medieval.NetworkTest/NetworkScenario.cs" Link="NetworkScenario.cs" />
+    <Reference Include="OpenRA.Game"><HintPath>$(AuditBinaryPath)/OpenRA.Game.dll</HintPath></Reference>
+    <Reference Include="OpenRA.Mods.Common"><HintPath>$(AuditBinaryPath)/OpenRA.Mods.Common.dll</HintPath></Reference>
+    <Reference Include="OpenRA.Mods.Medieval"><HintPath>$(AuditBinaryPath)/OpenRA.Mods.Medieval.dll</HintPath></Reference>
+    <Reference Include="Eluant"><HintPath>$(AuditBinaryPath)/Eluant.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

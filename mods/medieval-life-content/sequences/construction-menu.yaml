@@ -1,0 +1,5 @@
+md.construction-icons:
+	Defaults:
+		Filename: medieval|art/construction-icons.png
+	idle:
+		Length: 96

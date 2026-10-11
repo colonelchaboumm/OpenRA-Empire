@@ -1,0 +1,18 @@
+World:
+	MedievalStormRefugeValidation:
+	MedievalWeather:
+		FirstRainTicks: 1
+		RainTicks: 650
+		DryTicks: 30000
+		MinimumRainPermille: 850
+	MedievalDayNight:
+		DayTicks: 100000
+	MedievalSeasons:
+		SeasonTicks: 3000
+	MedievalWildHerds:
+		SpawnAnimals: False
+
+^MDWORKER:
+	MedievalNeedsFood:
+		MealInterval: 30000
+		StarvationDelay: 60000

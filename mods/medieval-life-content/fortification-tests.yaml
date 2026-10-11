@@ -1,0 +1,10 @@
+World:
+	MedievalFortificationValidation:
+
+md.forttarget:
+	Inherits: md.militia
+	RenderSprites:
+		Image: md.militia
+	-MedievalNeedsFood:
+	AutoTarget:
+		InitialStance: HoldFire

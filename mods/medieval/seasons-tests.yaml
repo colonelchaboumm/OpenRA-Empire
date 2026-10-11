@@ -1,0 +1,12 @@
+World:
+	MedievalSeasons:
+		SeasonTicks: 600
+	MedievalSeasonsValidation:
+	MedievalHuntingGrounds:
+		MaximumAnimals: 0
+	MedievalDayNight:
+		DayTicks: 100000
+	MedievalWeather:
+		FirstRainTicks: 150
+		DryTicks: 150
+		RainTicks: 600

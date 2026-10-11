@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>OpenRA.Platforms.NetworkTest</AssemblyName>
+    <EngineRootPath>../..</EngineRootPath>
+    <OutputPath>../../bin-medieval-network-test</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="NetworkScenario.cs" />
+    <Reference Include="Eluant"><HintPath>../../bin-medieval/Eluant.dll</HintPath></Reference>
+    <Compile Include="../../OpenRA.Platforms.Default/DummySoundEngine.cs" Link="DummySoundEngine.cs" />
+    <Reference Include="OpenRA.Game"><HintPath>../../bin-medieval/OpenRA.Game.dll</HintPath></Reference>
+    <Reference Include="OpenRA.Mods.Common"><HintPath>../../bin-medieval/OpenRA.Mods.Common.dll</HintPath></Reference>
+    <Reference Include="OpenRA.Mods.Medieval"><HintPath>../../bin-medieval/OpenRA.Mods.Medieval.dll</HintPath></Reference>
+    <Reference Include="OpenRA.Platforms.Default"><HintPath>../../bin-medieval/OpenRA.Platforms.Default.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

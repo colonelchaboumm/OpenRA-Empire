@@ -1,0 +1,126 @@
+md.huntinglodge:
+	Defaults:
+		Filename: medieval|art/huntinglodge.png
+		Offset: 0, -48
+	idle:
+		Length: 8
+		Tick: 150
+	construction:
+		Start: 8
+
+md.hunter:
+	Defaults:
+		Filename: medieval|art/hunter.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 384
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 512
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Start: 640
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Start: 704
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Start: 768
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Start: 832
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Start: 896
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-stand:
+		Start: 960
+		Length: 8
+		Facings: 8
+		Tick: 120
+	hunt-stalk:
+		Start: 1024
+		Length: 8
+		Facings: 8
+		Tick: 120
+	hunt-aim:
+		Start: 1088
+		Length: 8
+		Facings: 8
+		Tick: 120
+	hunt-release:
+		Start: 1152
+		Length: 8
+		Facings: 8
+		Tick: 120
+	hunt-gather:
+		Start: 1216
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.wild-deer-fall:
+	idle:
+		Filename: medieval|art/wild-deer-fall.png
+		Offset: 0, -24
+		Length: 96
+
+md.wild-rabbit-fall:
+	idle:
+		Filename: medieval|art/wild-rabbit-fall.png
+		Offset: 0, -12
+		Length: 96

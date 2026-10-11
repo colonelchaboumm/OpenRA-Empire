@@ -1,0 +1,105 @@
+MedievalClub:
+	ValidTargets: GroundActor
+	ReloadDelay: 25
+	Range: 1c512
+	TargetActorCenter: True
+	Projectile: InstantHit
+	Warhead@Damage: TargetDamage
+		ValidTargets: GroundActor
+		Damage: 1000
+		Versus:
+			None: 100
+			Wood: 40
+			Light: 70
+			Heavy: 40
+			Concrete: 20
+		DamageTypes: DefaultDeath
+
+MedievalSword:
+	Inherits: MedievalClub
+	ReloadDelay: 20
+	Warhead@Damage: TargetDamage
+		Damage: 1800
+		Versus:
+			Heavy: 70
+
+MedievalArrow:
+	ValidTargets: GroundActor
+	ReloadDelay: 35
+	Range: 7c0
+	TargetActorCenter: True
+	Projectile: MedievalFireArrow
+		Speed: 420
+		LaunchAngle: 70
+		Image: md.arrow
+		Palette: player
+		IsPlayerPalette: True
+		Blockable: False
+	Warhead@Damage: TargetDamage
+		Spread: 384
+		ValidTargets: GroundActor
+		Damage: 1400
+		Versus:
+			None: 100
+			Wood: 25
+			Light: 80
+			Heavy: 45
+			Concrete: 10
+		DamageTypes: DefaultDeath
+
+MedievalBow:
+	Inherits: MedievalArrow
+	Range: 5c0
+	ReloadDelay: 40
+	Warhead@Damage: TargetDamage
+		Damage: 1000
+
+MedievalLongbow:
+	Inherits: MedievalBow
+	Range: 6c0
+	ReloadDelay: 38
+	Warhead@Damage: TargetDamage
+		Damage: 1500
+
+MedievalRoyalSword:
+	Inherits: MedievalSword
+	Warhead@Damage: TargetDamage
+		Damage: 2400
+
+MedievalRam:
+	ValidTargets: Structure
+	ReloadDelay: 65
+	Range: 3c0
+	TargetActorCenter: True
+	Projectile: MedievalRamStrike
+	Warhead@Damage: TargetDamage
+		ValidTargets: Structure
+		Damage: 8500
+		Versus:
+			Wood: 150
+			Concrete: 80
+		DamageTypes: DefaultDeath, MedievalRamImpact
+
+MedievalTrebuchet:
+	ValidTargets: GroundActor
+	ReloadDelay: 150
+	MinRange: 4c0
+	Range: 16c0
+	TargetActorCenter: True
+	Projectile: MedievalSiegeStone
+		Speed: 220
+		LaunchAngle: 130
+		Image: md.siegestone
+		Palette: player
+		Blockable: False
+	Warhead@Damage: SpreadDamage
+		ValidTargets: GroundActor
+		Spread: 512
+		Damage: 11000
+		Versus:
+			None: 35
+			Wood: 125
+			Light: 45
+			Heavy: 35
+			Concrete: 100
+		DamageTypes: DefaultDeath, MedievalSiegeImpact

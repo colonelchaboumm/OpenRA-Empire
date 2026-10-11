@@ -1,0 +1,6 @@
+World:
+	MedievalWildHerds:
+		SpawnAnimals: False
+	MedievalHuntingGrounds:
+		MaximumAnimals: 0
+	MedievalConstructionMenuValidation:

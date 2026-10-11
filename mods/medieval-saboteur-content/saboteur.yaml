@@ -1,0 +1,42 @@
+^MDBUILDING:
+	MedievalBurnable:
+
+md.militia:
+	DetectCloaked@SABOTEUR:
+		DetectionTypes: MedievalSaboteur
+		Range: 4c0
+		RequiresCondition: !sleeping
+
+md.saboteur:
+	Inherits: ^MDFIGHTER
+	-MedievalSiegeCrew:
+	-MedievalSiegeCapture:
+	-CaptureManager:
+	-MedievalStockDisplay:
+	Tooltip:
+		Name: medieval-saboteur
+	Health:
+		HP: 4500
+	Mobile:
+		Speed: 44
+	MedievalRecruitable:
+		Food: 35
+		Meat: 10
+		Elite: True
+	MedievalSaboteur:
+	MedievalHerding:
+		CaptureTicks: 200
+	Cloak:
+		InitialDelay: 25
+		CloakDelay: 125
+		DetectionTypes: MedievalSaboteur
+		UncloakOn: Attack, Damage
+		CloakedAlpha: 0.72
+		RequiresCondition: !sleeping
+	AutoTarget:
+		InitialStance: HoldFire
+		RequiresCondition: !sleeping && !herding && !sabotaging
+	AttackFrontal:
+		RequiresCondition: !sleeping && !herding && !sabotaging
+	Armament:
+		Weapon: MedievalSaboteurDagger

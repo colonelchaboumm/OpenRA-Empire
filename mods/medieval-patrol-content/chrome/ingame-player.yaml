@@ -1,0 +1,4002 @@
+Container@PLAYER_WIDGETS:
+	Logic: LoadIngameChatLogic, MedievalEconomyLogic, MedievalMessengerLogic, MedievalLocalityLogic, MedievalSiegeLogic, MedievalHeraldryLogic, MedievalCampLogic, MedievalConstructionMenuLogic, MedievalPatrolLogic
+	Children:
+		Container@CHAT_ROOT:
+		LogicKeyListener@PLAYER_KEYHANDLER:
+			Logic: RemoveFromControlGroupHotkeyLogic
+				RemoveFromControlGroupKey: RemoveFromControlGroup
+		ControlGroups@CONTROLGROUPS:
+			SelectGroupKeyPrefix: ControlGroupSelect
+			CreateGroupKeyPrefix: ControlGroupCreate
+			AddToGroupKeyPrefix: ControlGroupAddTo
+			CombineWithGroupKeyPrefix: ControlGroupCombineWith
+			JumpToGroupKeyPrefix: ControlGroupJumpTo
+		LogicTicker@SIDEBAR_TICKER:
+		Container@SUPPORT_POWERS:
+			Logic: SupportPowerBinLogic
+			X: 10
+			Y: 10
+			Children:
+				SupportPowers@SUPPORT_PALETTE:
+					IconSize: 62, 46
+					IconSpriteOffset: -1, -1
+					TooltipContainer: TOOLTIP_CONTAINER
+					ReadyText: supportpowers-support-powers-palette.ready
+					HoldText: supportpowers-support-powers-palette.hold
+					HotkeyPrefix: SupportPower
+					HotkeyCount: 6
+				Container@PALETTE_FOREGROUND:
+					Children:
+						Image@ICON_TEMPLATE:
+							Logic: AddFactionSuffixLogic
+							X: 0 - 2
+							Y: 0 - 2
+							Width: 62
+							Height: 46
+							IgnoreMouseOver: true
+							ImageCollection: sidebar
+							ImageName: background-supportoverlay
+		SupportPowerTimer@SUPPORT_POWER_TIMER:
+			X: 80
+			Y: 10
+			Order: Descending
+		Image@COMMAND_BAR_BACKGROUND:
+			X: 5
+			Y: WINDOW_HEIGHT - HEIGHT - 5
+			Width: 434
+			Height: 44
+			ImageCollection: commandbar
+			ImageName: background
+			ClickThrough: False
+		Container@COMMAND_BAR:
+			Logic: CommandBarLogic
+			X: 14
+			Y: WINDOW_HEIGHT - HEIGHT - 14
+			Width: 275
+			Height: 26
+			Children:
+				LogicKeyListener@MODIFIER_OVERRIDES:
+				Button@ATTACK_MOVE:
+					Logic: AddFactionSuffixLogic
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					Key: AttackMove
+					DisableKeySound: true
+					TooltipText: button-command-bar-attack-move.tooltip
+					TooltipDesc: button-command-bar-attack-move.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: attack-move
+				Button@FORCE_MOVE:
+					Logic: AddFactionSuffixLogic
+					X: 34
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					DisableKeySound: true
+					TooltipText: button-command-bar-force-move.tooltip
+					TooltipDesc: button-command-bar-force-move.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: force-move
+				Button@FORCE_ATTACK:
+					Logic: AddFactionSuffixLogic
+					X: 68
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					DisableKeySound: true
+					TooltipText: button-command-bar-force-attack.tooltip
+					TooltipDesc: button-command-bar-force-attack.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: force-attack
+				Button@GUARD:
+					Logic: AddFactionSuffixLogic
+					X: 102
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					Key: Guard
+					DisableKeySound: true
+					TooltipText: button-command-bar-guard.tooltip
+					TooltipDesc: button-command-bar-guard.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: guard
+				Button@DEPLOY:
+					Logic: AddFactionSuffixLogic
+					X: 136
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					Key: Deploy
+					DisableKeyRepeat: true
+					DisableKeySound: true
+					TooltipText: button-command-bar-deploy.tooltip
+					TooltipDesc: button-command-bar-deploy.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: deploy
+				Button@SCATTER:
+					Logic: AddFactionSuffixLogic
+					X: 170
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					Key: Scatter
+					DisableKeyRepeat: true
+					DisableKeySound: true
+					TooltipText: button-command-bar-scatter.tooltip
+					TooltipDesc: button-command-bar-scatter.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: scatter
+				Button@STOP:
+					Logic: AddFactionSuffixLogic
+					X: 204
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					Key: Stop
+					DisableKeyRepeat: true
+					DisableKeySound: true
+					TooltipText: button-command-bar-stop.tooltip
+					TooltipDesc: button-command-bar-stop.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: stop
+				Button@QUEUE_ORDERS:
+					Logic: AddFactionSuffixLogic
+					X: 238
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					DisableKeySound: true
+					TooltipText: button-command-bar-queue-orders.tooltip
+					TooltipDesc: button-command-bar-queue-orders.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: queue-orders
+		Container@STANCE_BAR:
+			Logic: StanceSelectorLogic
+			X: 294
+			Y: WINDOW_HEIGHT - HEIGHT - 14
+			Width: 138
+			Height: 26
+			Children:
+				Button@STANCE_ATTACKANYTHING:
+					Logic: AddFactionSuffixLogic
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					Key: StanceAttackAnything
+					DisableKeyRepeat: true
+					DisableKeySound: true
+					TooltipText: button-stance-bar-attackanything.tooltip
+					TooltipDesc: button-stance-bar-attackanything.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: attack-anything
+				Button@STANCE_DEFEND:
+					Logic: AddFactionSuffixLogic
+					X: 34
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					Key: StanceDefend
+					DisableKeyRepeat: true
+					DisableKeySound: true
+					TooltipText: button-stance-bar-defend.tooltip
+					TooltipDesc: button-stance-bar-defend.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: defend
+				Button@STANCE_RETURNFIRE:
+					Logic: AddFactionSuffixLogic
+					X: 68
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					Key: StanceReturnFire
+					DisableKeyRepeat: true
+					DisableKeySound: true
+					TooltipText: button-stance-bar-returnfire.tooltip
+					TooltipDesc: button-stance-bar-returnfire.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: return-fire
+				Button@STANCE_HOLDFIRE:
+					Logic: AddFactionSuffixLogic
+					X: 102
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					Key: StanceHoldFire
+					DisableKeyRepeat: true
+					DisableKeySound: true
+					TooltipText: button-stance-bar-holdfire.tooltip
+					TooltipDesc: button-stance-bar-holdfire.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: hold-fire
+		Container@MUTE_INDICATOR:
+			Logic: MuteIndicatorLogic
+			X: WINDOW_WIDTH - WIDTH - 260
+			Y: 10
+			Width: 200
+			Height: 25
+			Children:
+				Image@ICON:
+					X: PARENT_WIDTH - WIDTH
+					Y: 1
+					Width: 24
+					Height: 24
+					ImageCollection: sidebar-bits
+					ImageName: indicator-muted
+				Label@LABEL:
+					Width: PARENT_WIDTH - 30
+					Height: 25
+					Align: Right
+					Text: label-mute-indicator
+					Contrast: true
+		Image@SIDEBAR_BACKGROUND_TOP:
+			Logic: AddFactionSuffixLogic
+			X: WINDOW_WIDTH - 250
+			Y: 10
+			Width: 238
+			Height: 262
+			ImageCollection: sidebar
+			ImageName: background-top
+			ClickThrough: false
+			Children:
+				Container@TOP_BUTTONS:
+					Logic: MenuButtonsChromeLogic
+					X: 9
+					Y: 7
+					Children:
+						Button@BEACON_BUTTON:
+							Logic: BeaconOrderButtonLogic, AddFactionSuffixLogic
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							Key: PlaceBeacon
+							TooltipText: button-top-buttons-beacon-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+						Button@SELL_BUTTON:
+							Logic: SellOrderButtonLogic, AddFactionSuffixLogic
+							X: 32
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							Key: Sell
+							TooltipText: button-top-buttons-sell-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+						Button@POWER_BUTTON:
+							Logic: PowerdownOrderButtonLogic, AddFactionSuffixLogic
+							X: 64
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							Key: PowerDown
+							TooltipText: button-top-buttons-power-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+						Button@REPAIR_BUTTON:
+							Logic: RepairOrderButtonLogic, AddFactionSuffixLogic
+							X: 96
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							Key: Repair
+							TooltipText: button-top-buttons-repair-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+						MenuButton@OPTIONS_BUTTON:
+							Logic: AddFactionSuffixLogic
+							X: 192
+							Width: 28
+							Height: 28
+							Background: sidebar-button
+							Key: escape
+							TooltipText: button-top-buttons-options-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							DisableWorldSounds: true
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+									ImageName: options
+				Image@RADAR:
+					Logic: AddFactionSuffixLogic, IngameRadarDisplayLogic
+					X: 8
+					Y: 40
+					ImageCollection: sidebar
+					ImageName: radar
+					Children:
+						LogicTicker@RADAR_TICKER:
+						ColorBlock@RADAR_FADETOBLACK:
+							Width: 222
+							Height: 222
+						Radar@RADAR_MINIMAP:
+							WorldInteractionController: INTERACTION_CONTROLLER
+							X: 1
+							Y: 1
+							Width: 220
+							Height: 220
+							SoundUp: RadarUp
+							SoundDown: RadarDown
+							Children:
+						VideoPlayer@PLAYER:
+							X: 1
+							Y: 1
+							Width: 220
+							Height: 220
+							Skippable: false
+		Container@SIDEBAR_PRODUCTION:
+			Logic: ClassicProductionLogic
+			X: WINDOW_WIDTH - 250
+			Y: 300
+			Width: 238
+			Height: 250
+			Children:
+				Container@PALETTE_BACKGROUND:
+					Children:
+						Container@ROW_TEMPLATE:
+							Width: 238
+							Height: 47
+							ClickThrough: false
+							Children:
+								Image@ROW_BGND:
+									Logic: AddFactionSuffixLogic
+									X: 40
+									Width: 190
+									Height: 47
+									ImageCollection: sidebar
+									ImageName: background-iconbg
+						Image@BOTTOM_CAP:
+							Logic: AddFactionSuffixLogic
+							Width: 238
+							Height: 8
+							ClickThrough: false
+							ImageCollection: sidebar
+							ImageName: background-bottom
+				LogicTicker@PRODUCTION_TICKER:
+				ProductionPalette@PRODUCTION_PALETTE:
+					X: 42
+					Y: 1
+					TooltipContainer: TOOLTIP_CONTAINER
+					ReadyText: productionpalette-sidebar-production-palette.ready
+					HoldText: productionpalette-sidebar-production-palette.hold
+					IconSize: 62, 46
+					IconMargin: 1, 1
+					IconSpriteOffset: -1, -1
+					HotkeyPrefix: Production
+					HotkeyCount: 24
+					SelectProductionBuildingHotkey: SelectProductionBuilding
+				Container@PALETTE_FOREGROUND:
+					Children:
+						Image@ROW_TEMPLATE:
+							Logic: AddFactionSuffixLogic
+							Width: 238
+							Height: 47
+							IgnoreMouseOver: true
+							ImageCollection: sidebar
+							ImageName: background-iconrow
+				Container@PRODUCTION_TYPES:
+					X: 7
+					Y: 2
+					Width: 29
+					Height: 240
+					Children:
+						ProductionTypeButton@BUILDING:
+							Logic: AddFactionSuffixLogic
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: button-production-types-building-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Building
+							Key: ProductionTypeBuilding
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons
+						ProductionTypeButton@DEFENSE:
+							Logic: AddFactionSuffixLogic
+							Y: 31
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: button-production-types-defense-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Defense
+							Key: ProductionTypeDefense
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons
+						ProductionTypeButton@INFANTRY:
+							Logic: AddFactionSuffixLogic
+							Y: 62
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: button-production-types-infantry-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Infantry
+							Key: ProductionTypeInfantry
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons
+						ProductionTypeButton@VEHICLE:
+							Logic: AddFactionSuffixLogic
+							Y: 93
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: button-production-types-vehicle-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Vehicle
+							Key: ProductionTypeVehicle
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons
+						ProductionTypeButton@AIRCRAFT:
+							Logic: AddFactionSuffixLogic
+							Y: 124
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: button-production-types-aircraft-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Aircraft
+							Key: ProductionTypeAircraft
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons
+						ProductionTypeButton@NAVAL:
+							Logic: AddFactionSuffixLogic
+							Y: 155
+							Width: 28
+							Height: 28
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: button-production-types-naval-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Ship
+							Key: ProductionTypeNaval
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: production-icons
+						Button@SCROLL_UP_BUTTON:
+							Logic: AddFactionSuffixLogic
+							Y: 186
+							Width: 28
+							Height: 22
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: button-production-types-scroll-up-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 3
+									ImageCollection: scrollpanel-decorations
+									ImageName: up
+						Button@SCROLL_DOWN_BUTTON:
+							Logic: AddFactionSuffixLogic
+							Y: 211
+							Width: 28
+							Height: 22
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: button-production-types-scroll-down-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 3
+									ImageCollection: scrollpanel-decorations
+									ImageName: down
+		Image@SIDEBAR_MONEYBIN:
+			Logic: AddFactionSuffixLogic
+			X: WINDOW_WIDTH - 250
+			Y: 272
+			Width: 238
+			Height: 28
+			ImageCollection: sidebar
+			ImageName: background-moneybin
+			ClickThrough: false
+			Children:
+				Label@GAME_TIMER:
+					Logic: GameTimerLogic
+					X: 3
+					Y: 3
+					Width: PARENT_WIDTH
+					Height: 23
+					Align: Center
+					Font: TinyBold
+				LabelWithTooltip@CASH:
+					Logic: IngameCashCounterLogic
+					X: 35
+					Y: 2
+					Width: 50
+					Height: 23
+					Font: Bold
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+					Children:
+						Image@CASH_ICON:
+							X: -21
+							Y: 4
+							ImageCollection: cash-icons
+							ImageName: cash-normal
+				LabelWithTooltip@POWER:
+					Logic: IngamePowerCounterLogic
+					X: PARENT_WIDTH - WIDTH - 30
+					Y: 2
+					Width: 50
+					Height: 23
+					Align: Right
+					Font: Bold
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+					Children:
+						Image@POWER_ICON:
+							X: PARENT_WIDTH + 4
+							Y: 4
+							ImageCollection: power-icons
+							ImageName: power-normal
+		Container@HPF_ROOT:
+			Logic: LoadIngameHierarchicalPathFinderOverlayLogic
+			X: WINDOW_WIDTH - WIDTH - 260
+			Y: 40
+			Width: 175
+		Background@MD_PANEL:
+			X: WINDOW_WIDTH - 250
+			Y: 274
+			Width: 238
+			Height: 510
+			Background: md-panel
+			Children:
+				Image@MD_RESOURCE_ICON_0:
+					X: 7
+					Y: 6
+					Width: 16
+					Height: 16
+					ImageCollection: md-resources
+					ImageName: wood
+				Label@MD_RESOURCE_0:
+					X: 26
+					Y: 4
+					Width: 94
+					Height: 20
+					Font: TinyBold
+				Image@MD_RESOURCE_ICON_1:
+					X: 124
+					Y: 6
+					Width: 16
+					Height: 16
+					ImageCollection: md-resources
+					ImageName: food
+				Label@MD_RESOURCE_1:
+					X: 143
+					Y: 4
+					Width: 94
+					Height: 20
+					Font: TinyBold
+				Image@MD_RESOURCE_ICON_2:
+					X: 7
+					Y: 26
+					Width: 16
+					Height: 16
+					ImageCollection: md-resources
+					ImageName: meat
+				Label@MD_RESOURCE_2:
+					X: 26
+					Y: 24
+					Width: 94
+					Height: 20
+					Font: TinyBold
+				Image@MD_RESOURCE_ICON_3:
+					X: 124
+					Y: 26
+					Width: 16
+					Height: 16
+					ImageCollection: md-resources
+					ImageName: stone
+				Label@MD_RESOURCE_3:
+					X: 143
+					Y: 24
+					Width: 94
+					Height: 20
+					Font: TinyBold
+				Label@MD_POP:
+					X: 7
+					Y: 46
+					Width: 126
+					Height: 20
+					Font: TinyBold
+				Button@MD_FORT_OPEN:
+					X: 139
+					Y: 46
+					Width: 92
+					Height: 20
+					Font: TinyBold
+					Background: md-button
+				Button@MD_BUILD_0:
+					X: 5
+					Y: 70
+					Width: 112
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BUILD_0_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: house
+						Label@MD_BUILD_0_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BUILD_0_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BUILD_1:
+					X: 121
+					Y: 70
+					Width: 112
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BUILD_1_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: warehouse
+						Label@MD_BUILD_1_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BUILD_1_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BUILD_2:
+					X: 5
+					Y: 108
+					Width: 112
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BUILD_2_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: sawmill
+						Label@MD_BUILD_2_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BUILD_2_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BUILD_3:
+					X: 121
+					Y: 108
+					Width: 112
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BUILD_3_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: quarry
+						Label@MD_BUILD_3_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BUILD_3_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BUILD_4:
+					X: 5
+					Y: 146
+					Width: 112
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BUILD_4_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: farm
+						Label@MD_BUILD_4_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BUILD_4_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BUILD_5:
+					X: 121
+					Y: 146
+					Width: 112
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BUILD_5_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: field
+						Label@MD_BUILD_5_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BUILD_5_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BUILD_6:
+					X: 5
+					Y: 184
+					Width: 112
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BUILD_6_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: ranch
+						Label@MD_BUILD_6_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BUILD_6_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BUILD_7:
+					X: 121
+					Y: 184
+					Width: 112
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BUILD_7_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: pasture
+						Label@MD_BUILD_7_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BUILD_7_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BUILD_8:
+					X: 5
+					Y: 222
+					Width: 112
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BUILD_8_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: market
+						Label@MD_BUILD_8_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BUILD_8_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_DECOR_OPEN:
+					X: 121
+					Y: 222
+					Width: 112
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_DECOR_OPEN_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: well
+						Label@MD_DECOR_OPEN_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_DECOR_OPEN_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Label@MD_RECRUIT_COST:
+					X: 7
+					Y: 260
+					Width: 225
+					Height: 20
+					Font: TinyBold
+				Button@MD_RECRUIT_0:
+					X: 5
+					Y: 282
+					Width: 112
+					Height: 34
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_RECRUIT_0_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: builder
+						Label@MD_RECRUIT_0_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_RECRUIT_0_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_RECRUIT_1:
+					X: 121
+					Y: 282
+					Width: 112
+					Height: 34
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_RECRUIT_1_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: hauler
+						Label@MD_RECRUIT_1_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_RECRUIT_1_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_RECRUIT_2:
+					X: 5
+					Y: 318
+					Width: 112
+					Height: 34
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_RECRUIT_2_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: lumberjack
+						Label@MD_RECRUIT_2_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_RECRUIT_2_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_RECRUIT_3:
+					X: 121
+					Y: 318
+					Width: 112
+					Height: 34
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_RECRUIT_3_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: stonecutter
+						Label@MD_RECRUIT_3_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_RECRUIT_3_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_RECRUIT_4:
+					X: 5
+					Y: 354
+					Width: 112
+					Height: 34
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_RECRUIT_4_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: farmer
+						Label@MD_RECRUIT_4_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_RECRUIT_4_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_RECRUIT_5:
+					X: 121
+					Y: 354
+					Width: 112
+					Height: 34
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_RECRUIT_5_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: breeder
+						Label@MD_RECRUIT_5_NAME:
+							X: 35
+							Y: 2
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_RECRUIT_5_COST:
+							X: 35
+							Y: 17
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Label@MD_MILITIA_COST:
+					X: 7
+					Y: 391
+					Width: 225
+					Height: 20
+					Font: TinyBold
+				Label@MD_ARMS_COST:
+					X: 7
+					Y: 408
+					Width: 225
+					Height: 20
+					Font: TinyBold
+				Button@MD_RECRUIT_6:
+					X: 5
+					Y: 430
+					Width: 112
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_RECRUIT_7:
+					X: 121
+					Y: 430
+					Width: 112
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_MENU_TAB_0:
+					X: 5
+					Y: 72
+					Width: 74
+					Height: 24
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MENU_TAB_1:
+					X: 82
+					Y: 72
+					Width: 74
+					Height: 24
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MENU_TAB_2:
+					X: 159
+					Y: 72
+					Width: 74
+					Height: 24
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MENU_TAB_3:
+					X: 5
+					Y: 99
+					Width: 74
+					Height: 24
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MENU_TAB_4:
+					X: 82
+					Y: 99
+					Width: 74
+					Height: 24
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MENU_TAB_5:
+					X: 159
+					Y: 99
+					Width: 74
+					Height: 24
+					Font: TinyBold
+					Background: md-button
+				Label@MD_MENU_TITLE:
+					X: 7
+					Y: 128
+					Width: 224
+					Height: 20
+					Font: TinyBold
+				Button@MD_MENU_ITEM_0:
+					X: 5
+					Y: 154
+					Width: 112
+					Height: 42
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Sprite@MD_MENU_ITEM_0_ICON:
+							X: 3
+							Y: 4
+							Width: 32
+							Height: 34
+						Label@MD_MENU_ITEM_0_NAME:
+							X: 37
+							Y: 4
+							Width: 73
+							Height: 17
+							Font: TinyBold
+						Label@MD_MENU_ITEM_0_COST:
+							X: 37
+							Y: 22
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: B6AE91
+				Button@MD_MENU_ITEM_1:
+					X: 121
+					Y: 154
+					Width: 112
+					Height: 42
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Sprite@MD_MENU_ITEM_1_ICON:
+							X: 3
+							Y: 4
+							Width: 32
+							Height: 34
+						Label@MD_MENU_ITEM_1_NAME:
+							X: 37
+							Y: 4
+							Width: 73
+							Height: 17
+							Font: TinyBold
+						Label@MD_MENU_ITEM_1_COST:
+							X: 37
+							Y: 22
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: B6AE91
+				Button@MD_MENU_ITEM_2:
+					X: 5
+					Y: 200
+					Width: 112
+					Height: 42
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Sprite@MD_MENU_ITEM_2_ICON:
+							X: 3
+							Y: 4
+							Width: 32
+							Height: 34
+						Label@MD_MENU_ITEM_2_NAME:
+							X: 37
+							Y: 4
+							Width: 73
+							Height: 17
+							Font: TinyBold
+						Label@MD_MENU_ITEM_2_COST:
+							X: 37
+							Y: 22
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: B6AE91
+				Button@MD_MENU_ITEM_3:
+					X: 121
+					Y: 200
+					Width: 112
+					Height: 42
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Sprite@MD_MENU_ITEM_3_ICON:
+							X: 3
+							Y: 4
+							Width: 32
+							Height: 34
+						Label@MD_MENU_ITEM_3_NAME:
+							X: 37
+							Y: 4
+							Width: 73
+							Height: 17
+							Font: TinyBold
+						Label@MD_MENU_ITEM_3_COST:
+							X: 37
+							Y: 22
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: B6AE91
+				Button@MD_MENU_ITEM_4:
+					X: 5
+					Y: 246
+					Width: 112
+					Height: 42
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Sprite@MD_MENU_ITEM_4_ICON:
+							X: 3
+							Y: 4
+							Width: 32
+							Height: 34
+						Label@MD_MENU_ITEM_4_NAME:
+							X: 37
+							Y: 4
+							Width: 73
+							Height: 17
+							Font: TinyBold
+						Label@MD_MENU_ITEM_4_COST:
+							X: 37
+							Y: 22
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: B6AE91
+				Button@MD_MENU_ITEM_5:
+					X: 121
+					Y: 246
+					Width: 112
+					Height: 42
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Sprite@MD_MENU_ITEM_5_ICON:
+							X: 3
+							Y: 4
+							Width: 32
+							Height: 34
+						Label@MD_MENU_ITEM_5_NAME:
+							X: 37
+							Y: 4
+							Width: 73
+							Height: 17
+							Font: TinyBold
+						Label@MD_MENU_ITEM_5_COST:
+							X: 37
+							Y: 22
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: B6AE91
+				Button@MD_MENU_ITEM_6:
+					X: 5
+					Y: 292
+					Width: 112
+					Height: 42
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Sprite@MD_MENU_ITEM_6_ICON:
+							X: 3
+							Y: 4
+							Width: 32
+							Height: 34
+						Label@MD_MENU_ITEM_6_NAME:
+							X: 37
+							Y: 4
+							Width: 73
+							Height: 17
+							Font: TinyBold
+						Label@MD_MENU_ITEM_6_COST:
+							X: 37
+							Y: 22
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: B6AE91
+				Button@MD_MENU_ITEM_7:
+					X: 121
+					Y: 292
+					Width: 112
+					Height: 42
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Sprite@MD_MENU_ITEM_7_ICON:
+							X: 3
+							Y: 4
+							Width: 32
+							Height: 34
+						Label@MD_MENU_ITEM_7_NAME:
+							X: 37
+							Y: 4
+							Width: 73
+							Height: 17
+							Font: TinyBold
+						Label@MD_MENU_ITEM_7_COST:
+							X: 37
+							Y: 22
+							Width: 73
+							Height: 16
+							Font: TinyBold
+							TextColor: B6AE91
+				Button@MD_MENU_PREV:
+					X: 5
+					Y: 340
+					Width: 86
+					Height: 22
+					Font: TinyBold
+					Background: md-button
+				Label@MD_MENU_PAGE:
+					X: 94
+					Y: 340
+					Width: 46
+					Height: 22
+					Font: TinyBold
+				Button@MD_MENU_NEXT:
+					X: 145
+					Y: 340
+					Width: 88
+					Height: 22
+					Font: TinyBold
+					Background: md-button
+				Label@MD_MENU_HINT:
+					X: 7
+					Y: 366
+					Width: 224
+					Height: 28
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Button@MD_MENU_ROTATE:
+					X: 5
+					Y: 397
+					Width: 112
+					Height: 24
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MENU_REMOVE:
+					X: 121
+					Y: 397
+					Width: 112
+					Height: 24
+					Font: TinyBold
+					Background: md-button
+				Label@MD_MENU_STOCK:
+					X: 7
+					Y: 426
+					Width: 224
+					Height: 28
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Button@MD_CART_CREATE:
+					X: 5
+					Y: 457
+					Width: 112
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_CART_RELOAD:
+					X: 121
+					Y: 457
+					Width: 112
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_RESUME:
+					X: 5
+					Y: 483
+					Width: 112
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					Text: medieval-resume
+				Button@MD_CANCEL:
+					X: 121
+					Y: 483
+					Width: 112
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					Text: medieval-cancel
+		Background@MD_FOOD_PANEL:
+			X: 12
+			Y: 12
+			Width: 410
+			Height: 132
+			Background: md-panel
+			Children:
+				Label@MD_FOOD_TITLE:
+					X: 9
+					Y: 5
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_FOOD_FLOW:
+					X: 9
+					Y: 25
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_FOOD_BALANCE:
+					X: 9
+					Y: 45
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_FOOD_RESERVE:
+					X: 9
+					Y: 65
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_FOOD_STATUS:
+					X: 9
+					Y: 85
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_FOOD_DEATHS:
+					X: 9
+					Y: 105
+					Width: 394
+					Height: 20
+					Font: TinyBold
+		Background@MD_CART_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 176
+			Background: md-panel
+			Children:
+				Label@MD_CART_TITLE:
+					X: 9
+					Y: 4
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Button@MD_CART_CARGO_1:
+					X: 9
+					Y: 28
+					Width: 112
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_CART_CARGO_0:
+					X: 141
+					Y: 28
+					Width: 112
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_CART_CARGO_3:
+					X: 273
+					Y: 28
+					Width: 112
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Label@MD_CART_STOCK:
+					X: 9
+					Y: 58
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_CART_HINT:
+					X: 9
+					Y: 82
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Button@MD_CONVOY_ASSIGN:
+					X: 9
+					Y: 108
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_CONVOY_STOP:
+					X: 207
+					Y: 108
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Label@MD_CONVOY_STATUS:
+					X: 9
+					Y: 144
+					Width: 394
+					Height: 20
+					Font: TinyBold
+		Background@MD_YARD_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 158
+			Background: md-panel
+			Children:
+				Label@MD_YARD_TITLE:
+					X: 9
+					Y: 4
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Button@MD_YARD_PLACE:
+					X: 9
+					Y: 28
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_YARD_REMOVE:
+					X: 207
+					Y: 28
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Label@MD_YARD_STOCK:
+					X: 9
+					Y: 58
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_YARD_MORE:
+					X: 9
+					Y: 78
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_YARD_EQUIPMENT:
+					X: 9
+					Y: 100
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_YARD_HINT:
+					X: 9
+					Y: 127
+					Width: 394
+					Height: 20
+					Font: TinyBold
+		Background@MD_LOCALITY_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 120
+			Background: md-panel
+			Children:
+				Label@MD_LOCALITY_TITLE:
+					X: 9
+					Y: 5
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				TextField@MD_LOCALITY_INPUT:
+					X: 9
+					Y: 31
+					Width: 282
+					Height: 28
+					Font: TinyBold
+					MaxLength: 32
+				Button@MD_LOCALITY_RENAME:
+					X: 299
+					Y: 31
+					Width: 102
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Label@MD_LOCALITY_STATS:
+					X: 9
+					Y: 66
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_LOCALITY_HINT:
+					X: 9
+					Y: 90
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+		Background@MD_TRADE_PANEL:
+			X: 12
+			Y: 284
+			Width: 410
+			Height: 326
+			Background: md-panel
+			Children:
+				Label@MD_TRADE_TITLE:
+					X: 9
+					Y: 4
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Button@MD_TRADE_LINK:
+					X: 9
+					Y: 28
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_TRADE_UNLINK:
+					X: 207
+					Y: 28
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Label@MD_TRADE_PARTNER:
+					X: 9
+					Y: 58
+					Width: 394
+					Height: 38
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_TRADE_EXPORT_LABEL:
+					X: 9
+					Y: 100
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Button@MD_TRADE_EXPORT_1:
+					X: 9
+					Y: 122
+					Width: 94
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_TRADE_EXPORT_0:
+					X: 107
+					Y: 122
+					Width: 94
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_TRADE_EXPORT_3:
+					X: 205
+					Y: 122
+					Width: 94
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_TRADE_EXPORT_2:
+					X: 303
+					Y: 122
+					Width: 94
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Label@MD_TRADE_IMPORTS:
+					X: 9
+					Y: 154
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Button@MD_TRADE_CREATE:
+					X: 9
+					Y: 178
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_TRADE_OTHER:
+					X: 207
+					Y: 178
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Label@MD_TRADE_STATUS:
+					X: 9
+					Y: 210
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_TRADE_HINT:
+					X: 9
+					Y: 232
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_TRADE_EQUIPMENT:
+					X: 9
+					Y: 255
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Button@MD_BUILD_9:
+					X: 9
+					Y: 283
+					Width: 392
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BUILD_9_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: marketstall
+						Label@MD_BUILD_9_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BUILD_9_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+		Background@MD_STALL_PANEL:
+			X: 12
+			Y: 284
+			Width: 410
+			Height: 260
+			Background: md-panel
+			Children:
+				Label@MD_STALL_TITLE:
+					X: 9
+					Y: 4
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_STALL_LINK:
+					X: 9
+					Y: 28
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_STALL_STOCK:
+					X: 9
+					Y: 52
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_STALL_DEMAND:
+					X: 9
+					Y: 76
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_STALL_HINT:
+					X: 9
+					Y: 100
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_STALL_EQUIPMENT:
+					X: 9
+					Y: 124
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Button@MD_STALL_RELINK:
+					X: 9
+					Y: 162
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_STALL_YARD_PLACE:
+					X: 9
+					Y: 196
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_STALL_YARD_REMOVE:
+					X: 207
+					Y: 196
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Label@MD_STALL_YARD_HINT:
+					X: 9
+					Y: 230
+					Width: 392
+					Height: 20
+					Font: TinyBold
+		Background@MD_TRADER_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 216
+			Background: md-panel
+			Children:
+				Label@MD_TRADER_TITLE:
+					X: 9
+					Y: 4
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Button@MD_TRADER_ASSIGN:
+					X: 9
+					Y: 28
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_TRADER_PAUSE:
+					X: 207
+					Y: 28
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_TRADER_RECOVER:
+					X: 9
+					Y: 60
+					Width: 388
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Label@MD_TRADER_ROUTE:
+					X: 9
+					Y: 96
+					Width: 394
+					Height: 38
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_TRADER_STOCK:
+					X: 9
+					Y: 138
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_TRADER_STATUS:
+					X: 9
+					Y: 164
+					Width: 394
+					Height: 44
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+		Background@MD_DECOR_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 284
+			Background: md-panel
+			Children:
+				Label@MD_DECOR_TITLE:
+					X: 9
+					Y: 4
+					Width: 260
+					Height: 20
+					Font: TinyBold
+				Button@MD_DECOR_CLOSE:
+					X: 310
+					Y: 4
+					Width: 90
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_DECOR_0:
+					X: 9
+					Y: 36
+					Width: 190
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_DECOR_0_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: well
+						Label@MD_DECOR_0_NAME:
+							X: 35
+							Y: 2
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_DECOR_0_COST:
+							X: 35
+							Y: 17
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_DECOR_1:
+					X: 207
+					Y: 36
+					Width: 190
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_DECOR_1_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: gardenfence
+						Label@MD_DECOR_1_NAME:
+							X: 35
+							Y: 2
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_DECOR_1_COST:
+							X: 35
+							Y: 17
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_DECOR_2:
+					X: 9
+					Y: 76
+					Width: 190
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_DECOR_2_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: gardengate
+						Label@MD_DECOR_2_NAME:
+							X: 35
+							Y: 2
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_DECOR_2_COST:
+							X: 35
+							Y: 17
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_DECOR_3:
+					X: 207
+					Y: 76
+					Width: 190
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_DECOR_3_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: flowerbed
+						Label@MD_DECOR_3_NAME:
+							X: 35
+							Y: 2
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_DECOR_3_COST:
+							X: 35
+							Y: 17
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_DECOR_4:
+					X: 9
+					Y: 116
+					Width: 190
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_DECOR_4_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: banner
+						Label@MD_DECOR_4_NAME:
+							X: 35
+							Y: 2
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_DECOR_4_COST:
+							X: 35
+							Y: 17
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_DECOR_5:
+					X: 207
+					Y: 116
+					Width: 190
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_DECOR_5_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: stonepath
+						Label@MD_DECOR_5_NAME:
+							X: 35
+							Y: 2
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_DECOR_5_COST:
+							X: 35
+							Y: 17
+							Width: 151
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_DECOR_ROTATE:
+					X: 9
+					Y: 161
+					Width: 240
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_DECOR_REMOVE:
+					X: 255
+					Y: 161
+					Width: 146
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_DECOR_HINT:
+					X: 9
+					Y: 197
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_DECOR_HINT2:
+					X: 9
+					Y: 219
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Button@MD_DECOR_TORCH:
+					X: 9
+					Y: 245
+					Width: 392
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+		Background@MD_FORT_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 280
+			Background: md-panel
+			Children:
+				Label@MD_FORT_TITLE:
+					X: 9
+					Y: 4
+					Width: 280
+					Height: 20
+					Font: TinyBold
+				Button@MD_FORT_CLOSE:
+					X: 310
+					Y: 4
+					Width: 90
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_FORT_0:
+					X: 9
+					Y: 36
+					Width: 392
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_FORT_0_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: palisade
+						Label@MD_FORT_0_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_FORT_0_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_FORT_1:
+					X: 9
+					Y: 76
+					Width: 392
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_FORT_1_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: woodgate
+						Label@MD_FORT_1_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_FORT_1_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_FORT_2:
+					X: 9
+					Y: 116
+					Width: 392
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_FORT_2_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: woodtower
+						Label@MD_FORT_2_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_FORT_2_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_SIEGE_BUILD:
+					X: 9
+					Y: 156
+					Width: 392
+					Height: 36
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_SIEGE_BUILD_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: siegeworkshop
+						Label@MD_SIEGE_BUILD_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_SIEGE_BUILD_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_FORT_ROTATE:
+					X: 9
+					Y: 201
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_FORT_HINT:
+					X: 9
+					Y: 233
+					Width: 394
+					Height: 20
+					Font: TinyBold
+				Label@MD_FORT_HINT2:
+					X: 9
+					Y: 255
+					Width: 394
+					Height: 20
+					Font: TinyBold
+		Background@MD_FORGE_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 342
+			Background: md-panel
+			Children:
+				Label@MD_FORGE_TITLE:
+					X: 9
+					Y: 4
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Button@MD_FORGE_STAFF:
+					X: 9
+					Y: 30
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_FORGE_MINUS_0:
+					X: 9
+					Y: 70
+					Width: 30
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_FORGE_TARGET_0:
+					X: 47
+					Y: 70
+					Width: 310
+					Height: 20
+					Font: TinyBold
+				Button@MD_FORGE_PLUS_0:
+					X: 367
+					Y: 70
+					Width: 34
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_FORGE_RECIPE_0:
+					X: 47
+					Y: 95
+					Width: 348
+					Height: 20
+					Font: TinyBold
+				Button@MD_FORGE_MINUS_1:
+					X: 9
+					Y: 126
+					Width: 30
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_FORGE_TARGET_1:
+					X: 47
+					Y: 126
+					Width: 310
+					Height: 20
+					Font: TinyBold
+				Button@MD_FORGE_PLUS_1:
+					X: 367
+					Y: 126
+					Width: 34
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_FORGE_RECIPE_1:
+					X: 47
+					Y: 151
+					Width: 348
+					Height: 20
+					Font: TinyBold
+				Button@MD_FORGE_MINUS_2:
+					X: 9
+					Y: 182
+					Width: 30
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_FORGE_TARGET_2:
+					X: 47
+					Y: 182
+					Width: 310
+					Height: 20
+					Font: TinyBold
+				Button@MD_FORGE_PLUS_2:
+					X: 367
+					Y: 182
+					Width: 34
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_FORGE_RECIPE_2:
+					X: 47
+					Y: 207
+					Width: 348
+					Height: 20
+					Font: TinyBold
+				Label@MD_FORGE_STATUS:
+					X: 9
+					Y: 244
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_FORGE_WORKER:
+					X: 9
+					Y: 266
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_FORGE_INPUTS:
+					X: 9
+					Y: 288
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_FORGE_HINT:
+					X: 9
+					Y: 313
+					Width: 392
+					Height: 20
+					Font: TinyBold
+		Background@MD_BARRACKS_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 534
+			Background: md-panel
+			Children:
+				Label@MD_BARRACKS_TITLE:
+					X: 9
+					Y: 4
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Button@MD_BARRACKS_STAFF:
+					X: 9
+					Y: 30
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_BARRACKS_RECRUIT_0:
+					X: 9
+					Y: 66
+					Width: 392
+					Height: 40
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BARRACKS_RECRUIT_0_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: militia
+						Label@MD_BARRACKS_RECRUIT_0_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BARRACKS_RECRUIT_0_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BARRACKS_RECRUIT_1:
+					X: 9
+					Y: 108
+					Width: 392
+					Height: 40
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BARRACKS_RECRUIT_1_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: archer
+						Label@MD_BARRACKS_RECRUIT_1_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BARRACKS_RECRUIT_1_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BARRACKS_RECRUIT_2:
+					X: 9
+					Y: 150
+					Width: 392
+					Height: 40
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BARRACKS_RECRUIT_2_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: swordsman
+						Label@MD_BARRACKS_RECRUIT_2_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BARRACKS_RECRUIT_2_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BARRACKS_RECRUIT_3:
+					X: 9
+					Y: 192
+					Width: 392
+					Height: 40
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BARRACKS_RECRUIT_3_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: manatarms
+						Label@MD_BARRACKS_RECRUIT_3_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BARRACKS_RECRUIT_3_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BARRACKS_RECRUIT_4:
+					X: 9
+					Y: 234
+					Width: 392
+					Height: 40
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BARRACKS_RECRUIT_4_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: elitearcher
+						Label@MD_BARRACKS_RECRUIT_4_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BARRACKS_RECRUIT_4_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BARRACKS_RECRUIT_5:
+					X: 9
+					Y: 276
+					Width: 392
+					Height: 40
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BARRACKS_RECRUIT_5_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: royalguard
+						Label@MD_BARRACKS_RECRUIT_5_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BARRACKS_RECRUIT_5_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BARRACKS_RECRUIT_6:
+					X: 9
+					Y: 318
+					Width: 392
+					Height: 40
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_BARRACKS_RECRUIT_6_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: drummer
+						Label@MD_BARRACKS_RECRUIT_6_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_BARRACKS_RECRUIT_6_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_BARRACKS_MESSENGER:
+					X: 9
+					Y: 362
+					Width: 193
+					Height: 32
+					Font: TinyBold
+					Background: md-button
+				Button@MD_BARRACKS_STANDARD:
+					X: 207
+					Y: 362
+					Width: 194
+					Height: 32
+					Font: TinyBold
+					Background: md-button
+				Button@MD_BARRACKS_COMMANDER:
+					X: 9
+					Y: 400
+					Width: 258
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+				Button@MD_BARRACKS_CANCEL:
+					X: 275
+					Y: 400
+					Width: 126
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_BARRACKS_STATUS:
+					X: 9
+					Y: 434
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_BARRACKS_WORKER:
+					X: 9
+					Y: 456
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_BARRACKS_INPUTS:
+					X: 9
+					Y: 478
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_BARRACKS_HINT:
+					X: 9
+					Y: 506
+					Width: 392
+					Height: 20
+					Font: TinyBold
+		Background@MD_MAIL_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 452
+			Background: md-panel
+			Children:
+				Label@MD_MAIL_TITLE:
+					X: 9
+					Y: 6
+					Width: 392
+					Height: 20
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_MAIL_STATUS:
+					X: 9
+					Y: 30
+					Width: 392
+					Height: 36
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_MAIL_ROUTE:
+					X: 9
+					Y: 70
+					Width: 392
+					Height: 20
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_MAIL_BODY:
+					X: 9
+					Y: 96
+					Width: 392
+					Height: 102
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_MAIL_INPUT_LABEL:
+					X: 9
+					Y: 204
+					Width: 392
+					Height: 20
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				TextField@MD_MAIL_INPUT:
+					X: 9
+					Y: 228
+					Width: 392
+					Height: 28
+					Font: TinyBold
+					MaxLength: 320
+				Button@MD_MAIL_SEND:
+					X: 9
+					Y: 266
+					Width: 194
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MAIL_READ:
+					X: 207
+					Y: 266
+					Width: 194
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MAIL_REPLY:
+					X: 9
+					Y: 300
+					Width: 194
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MAIL_RETURN:
+					X: 207
+					Y: 300
+					Width: 194
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MAIL_RECALL:
+					X: 9
+					Y: 334
+					Width: 194
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MAIL_RESUME:
+					X: 207
+					Y: 334
+					Width: 194
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_MAIL_CLEAR:
+					X: 9
+					Y: 368
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_MAIL_HINT:
+					X: 9
+					Y: 404
+					Width: 392
+					Height: 40
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+		Button@MD_MAIL_ALERT:
+			X: 440
+			Y: 12
+			Width: 360
+			Height: 28
+			Font: TinyBold
+			Background: md-button
+		Background@MD_STATUS_PANEL:
+			X: 8
+			Y: WINDOW_HEIGHT - 100
+			Width: WINDOW_WIDTH - 270
+			Height: 49
+			Background: md-panel
+			Children:
+				Label@MD_MESSAGE:
+					X: 7
+					Y: 3
+					Width: PARENT_WIDTH - 14
+					Height: 20
+					Font: TinyBold
+				Label@MD_SELECTION:
+					X: 7
+					Y: 25
+					Width: PARENT_WIDTH - 14
+					Height: 20
+					Font: TinyBold
+		Button@MD_PLACES_OPEN:
+			X: 440
+			Y: 48
+			Width: 180
+			Height: 28
+			Font: TinyBold
+			Background: md-button
+		Background@MD_PLACES_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 516
+			Background: md-panel
+			Children:
+				Label@MD_PLACES_TITLE:
+					X: 9
+					Y: 5
+					Width: 315
+					Height: 20
+					Font: TinyBold
+				Button@MD_PLACES_CLOSE:
+					X: 330
+					Y: 4
+					Width: 71
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_PLACES_TOWNS:
+					X: 9
+					Y: 37
+					Width: 190
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_PLACES_ROUTES:
+					X: 207
+					Y: 37
+					Width: 194
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_PLACES_NAME_0:
+					X: 9
+					Y: 74
+					Width: 317
+					Height: 32
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PLACES_DETAIL_0:
+					X: 9
+					Y: 107
+					Width: 317
+					Height: 20
+					Font: TinyBold
+				Button@MD_PLACES_VIEW_0:
+					X: 334
+					Y: 78
+					Width: 67
+					Height: 46
+					Font: TinyBold
+					Background: md-button
+				Label@MD_PLACES_NAME_1:
+					X: 9
+					Y: 134
+					Width: 317
+					Height: 32
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PLACES_DETAIL_1:
+					X: 9
+					Y: 167
+					Width: 317
+					Height: 20
+					Font: TinyBold
+				Button@MD_PLACES_VIEW_1:
+					X: 334
+					Y: 138
+					Width: 67
+					Height: 46
+					Font: TinyBold
+					Background: md-button
+				Label@MD_PLACES_NAME_2:
+					X: 9
+					Y: 194
+					Width: 317
+					Height: 32
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PLACES_DETAIL_2:
+					X: 9
+					Y: 227
+					Width: 317
+					Height: 20
+					Font: TinyBold
+				Button@MD_PLACES_VIEW_2:
+					X: 334
+					Y: 198
+					Width: 67
+					Height: 46
+					Font: TinyBold
+					Background: md-button
+				Label@MD_PLACES_NAME_3:
+					X: 9
+					Y: 254
+					Width: 317
+					Height: 32
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PLACES_DETAIL_3:
+					X: 9
+					Y: 287
+					Width: 317
+					Height: 20
+					Font: TinyBold
+				Button@MD_PLACES_VIEW_3:
+					X: 334
+					Y: 258
+					Width: 67
+					Height: 46
+					Font: TinyBold
+					Background: md-button
+				Label@MD_PLACES_NAME_4:
+					X: 9
+					Y: 314
+					Width: 317
+					Height: 32
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PLACES_DETAIL_4:
+					X: 9
+					Y: 347
+					Width: 317
+					Height: 20
+					Font: TinyBold
+				Button@MD_PLACES_VIEW_4:
+					X: 334
+					Y: 318
+					Width: 67
+					Height: 46
+					Font: TinyBold
+					Background: md-button
+				Label@MD_PLACES_NAME_5:
+					X: 9
+					Y: 374
+					Width: 317
+					Height: 32
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PLACES_DETAIL_5:
+					X: 9
+					Y: 407
+					Width: 317
+					Height: 20
+					Font: TinyBold
+				Button@MD_PLACES_VIEW_5:
+					X: 334
+					Y: 378
+					Width: 67
+					Height: 46
+					Font: TinyBold
+					Background: md-button
+				Button@MD_PLACES_PREVIOUS:
+					X: 9
+					Y: 440
+					Width: 94
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_PLACES_NEXT:
+					X: 307
+					Y: 440
+					Width: 94
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_PLACES_COUNT:
+					X: 113
+					Y: 443
+					Width: 190
+					Height: 20
+					Font: TinyBold
+				Label@MD_PLACES_HINT:
+					X: 9
+					Y: 479
+					Width: 392
+					Height: 32
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+		Background@MD_SIEGE_WORKSHOP:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 348
+			Background: md-panel
+			Children:
+				Label@MD_SIEGE_TITLE:
+					X: 9
+					Y: 5
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Button@MD_SIEGE_PRODUCT_0:
+					X: 9
+					Y: 33
+					Width: 392
+					Height: 40
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_SIEGE_PRODUCT_0_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: ram
+						Label@MD_SIEGE_PRODUCT_0_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_SIEGE_PRODUCT_0_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_SIEGE_PRODUCT_1:
+					X: 9
+					Y: 77
+					Width: 392
+					Height: 40
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_SIEGE_PRODUCT_1_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: trebuchet
+						Label@MD_SIEGE_PRODUCT_1_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_SIEGE_PRODUCT_1_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_SIEGE_PRODUCT_2:
+					X: 9
+					Y: 121
+					Width: 392
+					Height: 40
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@MD_SIEGE_PRODUCT_2_ICON:
+							X: 2
+							Y: 2
+							Width: 32
+							Height: 32
+							ImageCollection: md-icons
+							ImageName: stonecart
+						Label@MD_SIEGE_PRODUCT_2_NAME:
+							X: 35
+							Y: 2
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: EEE9D4
+						Label@MD_SIEGE_PRODUCT_2_COST:
+							X: 35
+							Y: 17
+							Width: 353
+							Height: 16
+							Font: TinyBold
+							TextColor: C8AD74
+				Button@MD_SIEGE_CANCEL:
+					X: 9
+					Y: 171
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_SIEGE_STATUS:
+					X: 9
+					Y: 205
+					Width: 392
+					Height: 36
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_SIEGE_INPUTS:
+					X: 9
+					Y: 246
+					Width: 392
+					Height: 36
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_SIEGE_HINT:
+					X: 9
+					Y: 289
+					Width: 392
+					Height: 52
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+		Background@MD_SIEGE_UNIT:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 359
+			Background: md-panel
+			Children:
+				Label@MD_ENGINE_TITLE:
+					X: 9
+					Y: 5
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_ENGINE_STATUS:
+					X: 9
+					Y: 32
+					Width: 392
+					Height: 38
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Button@MD_ENGINE_ACTION:
+					X: 9
+					Y: 80
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_ENGINE_RELEASE:
+					X: 9
+					Y: 114
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_ENGINE_AMMO:
+					X: 9
+					Y: 149
+					Width: 392
+					Height: 34
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_ENGINE_HINT:
+					X: 9
+					Y: 286
+					Width: 392
+					Height: 64
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_ENGINE_CREW:
+					X: 9
+					Y: 190
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					WordWrap: True
+				Button@MD_ENGINE_ADD_CREW:
+					X: 9
+					Y: 219
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_ENGINE_FREE_CREW:
+					X: 9
+					Y: 253
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+		Background@MD_STONE_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 282
+			Background: md-panel
+			Children:
+				Label@MD_STONE_TITLE:
+					X: 9
+					Y: 5
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Button@MD_STONE_ASSIGN:
+					X: 9
+					Y: 34
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_STONE_PAUSE:
+					X: 9
+					Y: 68
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_STONE_RECOVER:
+					X: 9
+					Y: 102
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_STONE_STATUS:
+					X: 9
+					Y: 138
+					Width: 392
+					Height: 36
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_STONE_STOCK:
+					X: 9
+					Y: 180
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_STONE_HINT:
+					X: 9
+					Y: 214
+					Width: 392
+					Height: 60
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+		Background@MD_CREW_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 218
+			Background: md-panel
+			Children:
+				Label@MD_CREW_TITLE:
+					X: 9
+					Y: 5
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Button@MD_CREW_LEAVE:
+					X: 9
+					Y: 68
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_CREW_ASSIGN:
+					X: 9
+					Y: 34
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_CREW_STATUS:
+					X: 9
+					Y: 103
+					Width: 392
+					Height: 52
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_CREW_CAPTURE_HINT:
+					X: 9
+					Y: 158
+					Width: 392
+					Height: 52
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+		Background@MD_FOUNDING_PANEL:
+			X: 12
+			Y: 154
+			Width: 470
+			Height: 210
+			Background: md-panel
+			Children:
+				Label@MD_FOUNDING_TITLE:
+					X: 10
+					Y: 6
+					Width: 450
+					Height: 20
+					Font: TinyBold
+				Button@MD_FOUNDING_DEPLOY:
+					X: 10
+					Y: 34
+					Width: 450
+					Height: 28
+					Font: Bold
+					Background: md-button
+				Label@MD_FOUNDING_STATUS:
+					X: 10
+					Y: 74
+					Width: 450
+					Height: 45
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_FOUNDING_HINT:
+					X: 10
+					Y: 127
+					Width: 450
+					Height: 78
+					Font: Tiny
+					WordWrap: True
+					VAlign: Top
+		Button@MD_HERALDRY_OPEN:
+			X: 440
+			Y: 94
+			Width: 280
+			Height: 28
+			Font: TinyBold
+			Background: md-button
+		Background@MD_HERALDRY_PANEL:
+			X: 440
+			Y: 132
+			Width: 560
+			Height: 462
+			Background: md-panel
+			Children:
+				Label@MD_HERALDRY_TITLE:
+					X: 14
+					Y: 10
+					Width: 520
+					Height: 20
+					Font: TinyBold
+				Label@MD_HERALDRY_HINT:
+					X: 14
+					Y: 38
+					Width: 530
+					Height: 36
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_HERALDRY_COUNTRY_LABEL:
+					X: 14
+					Y: 82
+					Width: 140
+					Height: 22
+					Font: TinyBold
+				TextField@MD_HERALDRY_COUNTRY:
+					X: 155
+					Y: 76
+					Width: 385
+					Height: 30
+					Font: TinyBold
+					MaxLength: 32
+				Button@MD_HERALDRY_EMBLEM_0:
+					X: 14
+					Y: 126
+					Width: 170
+					Height: 66
+					Font: TinyBold
+					Background: md-button
+					Children:
+						Sprite@MD_HERALDRY_ICON_0:
+							X: 2
+							Y: 8
+							Width: 64
+							Height: 48
+						Label@MD_HERALDRY_NAME_0:
+							X: 66
+							Y: 22
+							Width: 102
+							Height: 24
+							Font: TinyBold
+				Button@MD_HERALDRY_EMBLEM_1:
+					X: 192
+					Y: 126
+					Width: 170
+					Height: 66
+					Font: TinyBold
+					Background: md-button
+					Children:
+						Sprite@MD_HERALDRY_ICON_1:
+							X: 2
+							Y: 8
+							Width: 64
+							Height: 48
+						Label@MD_HERALDRY_NAME_1:
+							X: 66
+							Y: 22
+							Width: 102
+							Height: 24
+							Font: TinyBold
+				Button@MD_HERALDRY_EMBLEM_2:
+					X: 370
+					Y: 126
+					Width: 170
+					Height: 66
+					Font: TinyBold
+					Background: md-button
+					Children:
+						Sprite@MD_HERALDRY_ICON_2:
+							X: 2
+							Y: 8
+							Width: 64
+							Height: 48
+						Label@MD_HERALDRY_NAME_2:
+							X: 66
+							Y: 22
+							Width: 102
+							Height: 24
+							Font: TinyBold
+				Button@MD_HERALDRY_EMBLEM_3:
+					X: 14
+					Y: 198
+					Width: 170
+					Height: 66
+					Font: TinyBold
+					Background: md-button
+					Children:
+						Sprite@MD_HERALDRY_ICON_3:
+							X: 2
+							Y: 8
+							Width: 64
+							Height: 48
+						Label@MD_HERALDRY_NAME_3:
+							X: 66
+							Y: 22
+							Width: 102
+							Height: 24
+							Font: TinyBold
+				Button@MD_HERALDRY_EMBLEM_4:
+					X: 192
+					Y: 198
+					Width: 170
+					Height: 66
+					Font: TinyBold
+					Background: md-button
+					Children:
+						Sprite@MD_HERALDRY_ICON_4:
+							X: 2
+							Y: 8
+							Width: 64
+							Height: 48
+						Label@MD_HERALDRY_NAME_4:
+							X: 66
+							Y: 22
+							Width: 102
+							Height: 24
+							Font: TinyBold
+				Button@MD_HERALDRY_EMBLEM_5:
+					X: 370
+					Y: 198
+					Width: 170
+					Height: 66
+					Font: TinyBold
+					Background: md-button
+					Children:
+						Sprite@MD_HERALDRY_ICON_5:
+							X: 2
+							Y: 8
+							Width: 64
+							Height: 48
+						Label@MD_HERALDRY_NAME_5:
+							X: 66
+							Y: 22
+							Width: 102
+							Height: 24
+							Font: TinyBold
+				Label@MD_HERALDRY_LABEL:
+					X: 14
+					Y: 282
+					Width: 170
+					Height: 22
+					Font: TinyBold
+				TextField@MD_HERALDRY_COLOR:
+					X: 185
+					Y: 276
+					Width: 156
+					Height: 30
+					Font: TinyBold
+					MaxLength: 7
+				ColorBlock@MD_HERALDRY_SWATCH:
+					X: 355
+					Y: 277
+					Width: 70
+					Height: 28
+				ColorBlock@MD_HERALDRY_PRESET_0:
+					X: 14
+					Y: 326
+					Width: 56
+					Height: 28
+				ColorBlock@MD_HERALDRY_PRESET_1:
+					X: 80
+					Y: 326
+					Width: 56
+					Height: 28
+				ColorBlock@MD_HERALDRY_PRESET_2:
+					X: 146
+					Y: 326
+					Width: 56
+					Height: 28
+				ColorBlock@MD_HERALDRY_PRESET_3:
+					X: 212
+					Y: 326
+					Width: 56
+					Height: 28
+				ColorBlock@MD_HERALDRY_PRESET_4:
+					X: 278
+					Y: 326
+					Width: 56
+					Height: 28
+				ColorBlock@MD_HERALDRY_PRESET_5:
+					X: 344
+					Y: 326
+					Width: 56
+					Height: 28
+				ColorBlock@MD_HERALDRY_PRESET_6:
+					X: 410
+					Y: 326
+					Width: 56
+					Height: 28
+				ColorBlock@MD_HERALDRY_PRESET_7:
+					X: 476
+					Y: 326
+					Width: 56
+					Height: 28
+				Label@MD_HERALDRY_STATUS:
+					X: 14
+					Y: 373
+					Width: 530
+					Height: 32
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Button@MD_HERALDRY_APPLY:
+					X: 14
+					Y: 418
+					Width: 330
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Button@MD_HERALDRY_CLOSE:
+					X: 355
+					Y: 418
+					Width: 185
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+		Label@MD_CAMP_CLOCK:
+			X: 440
+			Y: 14
+			Width: 300
+			Height: 24
+			Font: TinyBold
+		Button@MD_CAMP_OPEN:
+			X: 630
+			Y: 50
+			Width: 240
+			Height: 28
+			Font: TinyBold
+			Background: md-button
+		Background@MD_CAMP_PANEL:
+			X: 440
+			Y: 132
+			Width: 560
+			Height: 382
+			Background: md-panel
+			Children:
+				Label@MD_CAMP_TITLE:
+					X: 14
+					Y: 10
+					Width: 530
+					Height: 22
+					Font: TinyBold
+				Label@MD_CAMP_HINT:
+					X: 14
+					Y: 38
+					Width: 530
+					Height: 34
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_CAMP_STOCK:
+					X: 14
+					Y: 86
+					Width: 530
+					Height: 24
+					Font: TinyBold
+				Label@MD_CAMP_RECIPE:
+					X: 14
+					Y: 116
+					Width: 530
+					Height: 34
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_CAMP_TARGET:
+					X: 14
+					Y: 158
+					Width: 430
+					Height: 30
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Button@MD_CAMP_LESS:
+					X: 458
+					Y: 158
+					Width: 36
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_CAMP_MORE:
+					X: 503
+					Y: 158
+					Width: 36
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_CAMP_LOAD:
+					X: 14
+					Y: 198
+					Width: 258
+					Height: 30
+					Font: TinyBold
+					Background: md-button
+				Button@MD_CAMP_DEPLOY:
+					X: 282
+					Y: 198
+					Width: 258
+					Height: 30
+					Font: TinyBold
+					Background: md-button
+				Button@MD_CAMP_PACK:
+					X: 14
+					Y: 234
+					Width: 258
+					Height: 30
+					Font: TinyBold
+					Background: md-button
+				Button@MD_CAMP_REST:
+					X: 282
+					Y: 234
+					Width: 258
+					Height: 30
+					Font: TinyBold
+					Background: md-button
+				Label@MD_CAMP_STATUS:
+					X: 14
+					Y: 282
+					Width: 530
+					Height: 48
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Button@MD_CAMP_CLOSE:
+					X: 360
+					Y: 340
+					Width: 180
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+		Background@MD_COMMAND_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 234
+			Background: md-panel
+			Children:
+				Label@MD_COMMAND_TITLE:
+					X: 9
+					Y: 10
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Label@MD_COMMAND_HINT:
+					X: 9
+					Y: 38
+					Width: 392
+					Height: 48
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Button@MD_COMMAND_DEPLOY:
+					X: 9
+					Y: 94
+					Width: 392
+					Height: 30
+					Font: TinyBold
+					Background: md-button
+				Button@MD_COMMAND_REST:
+					X: 9
+					Y: 132
+					Width: 193
+					Height: 30
+					Font: TinyBold
+					Background: md-button
+				Button@MD_COMMAND_WAKE:
+					X: 207
+					Y: 132
+					Width: 194
+					Height: 30
+					Font: TinyBold
+					Background: md-button
+				Label@MD_COMMAND_STATUS:
+					X: 9
+					Y: 174
+					Width: 392
+					Height: 48
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+		Background@MD_PATROL_PANEL:
+			X: 12
+			Y: 398
+			Width: 410
+			Height: 240
+			Background: md-panel
+			Children:
+				Label@MD_PATROL_TITLE:
+					X: 9
+					Y: 8
+					Width: 392
+					Height: 20
+					Font: TinyBold
+				Button@MD_PATROL_STANCE_0:
+					X: 9
+					Y: 34
+					Width: 128
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+				Button@MD_PATROL_STANCE_1:
+					X: 141
+					Y: 34
+					Width: 128
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+				Button@MD_PATROL_STANCE_2:
+					X: 273
+					Y: 34
+					Width: 128
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+				Label@MD_PATROL_HINT:
+					X: 9
+					Y: 72
+					Width: 392
+					Height: 38
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Button@MD_PATROL_DRAW:
+					X: 9
+					Y: 118
+					Width: 193
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Button@MD_PATROL_START:
+					X: 207
+					Y: 118
+					Width: 194
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Button@MD_PATROL_NIGHT:
+					X: 9
+					Y: 152
+					Width: 193
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+				Button@MD_PATROL_STOP:
+					X: 207
+					Y: 152
+					Width: 194
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Label@MD_PATROL_STATUS:
+					X: 9
+					Y: 187
+					Width: 392
+					Height: 44
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top

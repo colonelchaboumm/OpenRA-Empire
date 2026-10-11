@@ -1,0 +1,250 @@
+md.church:
+	Defaults:
+		Filename: medieval|art/church.png
+		Offset: 0, -88
+	idle:
+	construction:
+		Start: 1
+
+md.goldmine:
+	Defaults:
+		Filename: medieval|art/goldmine.png
+		Offset: 0, -48
+	idle:
+	construction:
+		Start: 1
+
+md.gold:
+	idle:
+		Filename: medieval|art/gold.png
+		Offset: 0, -12
+	empty:
+		Filename: medieval|art/gold-rubble.png
+		Offset: 0, -12
+
+md.goldrubble:
+	Defaults:
+		Filename: medieval|art/gold-rubble.png
+		Offset: 0, -12
+	idle:
+
+md.goldminer:
+	Defaults:
+		Filename: medieval|art/goldminer.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 384
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 512
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Length: 8
+		Facings: 8
+		Tick: 120
+	catch:
+		Start: 640
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Start: 704
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Start: 768
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Start: 832
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Start: 896
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Start: 960
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Start: 1024
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Start: 1088
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-stand:
+		Start: 1152
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.priest:
+	heal:
+		Filename: medieval|art/priest-heal.png
+		Length: 16
+		Facings: 8
+		Tick: 120
+	Defaults:
+		Filename: medieval|art/priest.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	work:
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+	load:
+		Start: 384
+		Length: 8
+		Facings: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push:
+		Start: 512
+		Length: 8
+		Facings: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Length: 8
+		Facings: 8
+		Tick: 120
+	catch:
+		Start: 640
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Start: 704
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Start: 768
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Start: 832
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Start: 896
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Start: 960
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Start: 1024
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Start: 1088
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-stand:
+		Start: 1152
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.resources:
+	gold:
+		Filename: medieval|art/gold-icon.png
+		Start: 0
+
+md.piles:
+	gold:
+		Filename: medieval|art/gold-piles.png
+		Start: 0
+		Length: 4
+
+md.gold-stock:
+	idle:
+		Filename: medieval|art/gold-stock.png
+		Length: 101

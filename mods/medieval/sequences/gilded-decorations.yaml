@@ -1,0 +1,73 @@
+md.gildedknight:
+	Defaults:
+		Filename: medieval|art/gildedknight.png
+		Offset: 0, -32
+	idle:
+		Length: 1
+	construction:
+		Start: 1
+
+md.gildedlion:
+	Defaults:
+		Filename: medieval|art/gildedlion.png
+		Offset: 0, -32
+	idle:
+		Length: 1
+	construction:
+		Start: 1
+
+md.gildedplaza:
+	Defaults:
+		Filename: medieval|art/gildedplaza.png
+		Offset: 0, -32
+		ZOffset: -8c0
+	idle:
+		Length: 1
+	construction:
+		Start: 1
+
+md.gildedplazalarge:
+	Defaults:
+		Filename: medieval|art/gildedplazalarge.png
+		Offset: 0, -32
+		ZOffset: -8c0
+	idle:
+		Length: 1
+	construction:
+		Start: 1
+
+md.gildedfence:
+	Defaults:
+		Filename: medieval|art/gildedfence.png
+		Offset: 0, -28
+	idle:
+		Length: 16
+	construction:
+		Start: 16
+
+md.gildedfencey:
+	Defaults:
+		Filename: medieval|art/gildedfencey.png
+		Offset: 0, -28
+	idle:
+		Length: 16
+	construction:
+		Start: 16
+
+md.gildedgate:
+	Defaults:
+		Filename: medieval|art/gildedgate.png
+		Offset: 0, -28
+	idle:
+		Length: 1
+	construction:
+		Start: 1
+
+md.gildedgatey:
+	Defaults:
+		Filename: medieval|art/gildedgatey.png
+		Offset: 0, -28
+	idle:
+		Length: 1
+	construction:
+		Start: 1

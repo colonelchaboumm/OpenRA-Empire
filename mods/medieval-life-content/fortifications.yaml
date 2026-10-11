@@ -1,0 +1,116 @@
+^MDFORTIFICATION:
+	Inherits: ^MDBUILDING
+	MedievalFortification:
+	MedievalStockDisplay:
+		LabelHeight: 58
+
+md.palisade:
+	Inherits: ^MDFORTIFICATION
+	Tooltip:
+		Name: medieval-palisade
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	IsometricSelectable:
+		Height: 36
+		Priority: 2
+	Health:
+		HP: 18000
+	HitShape:
+		Type: Circle
+			Radius: 384
+	MedievalBuilding:
+		Cost: 8, 0, 0, 0
+		Work: 8
+	-WithSpriteBody:
+	WithWallSpriteBody:
+		RequiresCondition: built
+		Type: medieval-wood
+	RevealsShroud:
+		Range: 1c0
+
+md.palisadey:
+	Inherits: md.palisade
+	Tooltip:
+		Name: medieval-palisadey
+
+md.woodgate:
+	Inherits: ^MDFORTIFICATION
+	Tooltip:
+		Name: medieval-woodgate
+	Building:
+		Dimensions: 3,1
+		Footprint: xxx
+	IsometricSelectable:
+		Height: 50
+	Health:
+		HP: 24000
+	HitShape:
+		UseTargetableCellsOffsets: True
+		Type: Rectangle
+			-Radius:
+			LocalYaw: -128
+			TopLeft: -1536,-384
+			BottomRight: 1536,384
+	MedievalBuilding:
+		Cost: 30, 0, 0, 0
+		Work: 20
+	-WithSpriteBody:
+	WithGateSpriteBody:
+		RequiresCondition: built
+		Type: medieval-wood
+		WallConnections: -1,0, 3,0
+	Gate:
+		RequiresCondition: built
+		TransitionDelay: 20
+		CloseDelay: 50
+		BlocksProjectilesHeight: 768
+	RevealsShroud:
+		Range: 2c0
+
+md.woodgatey:
+	Inherits: md.woodgate
+	Building:
+		Dimensions: 1,3
+		Footprint: x x x
+	Tooltip:
+		Name: medieval-woodgatey
+	WithGateSpriteBody:
+		WallConnections: 0,-1, 0,3
+	HitShape:
+		Type: Rectangle
+			TopLeft: -384,-1536
+			BottomRight: 384,1536
+
+md.woodtower:
+	Inherits: ^MDFORTIFICATION
+	Tooltip:
+		Name: medieval-woodtower
+	IsometricSelectable:
+		Height: 145
+	MedievalStockDisplay:
+		LabelHeight: 174
+	Health:
+		HP: 45000
+	MedievalBuilding:
+		Cost: 100, 0, 0, 0
+		Work: 70
+	RevealsShroud:
+		Range: 9c0
+		RequiresCondition: built
+	Armament:
+		Weapon: MedievalArrow
+		LocalOffset: 0,0,6144
+		RequiresCondition: built
+	AttackOmni:
+		RequiresCondition: built
+		Voice:
+	AutoTarget:
+		RequiresCondition: built
+		InitialStance: Defend
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: GroundActor
+	WithRangeCircle:
+		Range: 7c0
+		Color: E6C16BA0
+		RequiresCondition: built

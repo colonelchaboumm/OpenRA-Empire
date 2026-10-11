@@ -1,0 +1,26 @@
+md.campfire:
+	Defaults:
+		Filename: medieval|art/campfire.png
+		Offset: 0, -28
+	idle:
+	construction:
+		Start: 1
+
+md.cauldron:
+	Defaults:
+		Filename: medieval|art/cauldron.png
+		Offset: 0, -32
+	idle:
+		Length: 8
+		Facings: 8
+		Tick: 80
+	run:
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 80
+
+md.fire-icons:
+	idle:
+		Filename: medieval|art/fire-icons.png
+		Length: 2

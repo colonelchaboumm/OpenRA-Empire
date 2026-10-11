@@ -1,0 +1,154 @@
+Player:
+	MedievalEquipmentEconomy:
+	MedievalCorrespondence:
+
+^MDFIGHTER:
+	MedievalMorale:
+	MedievalNeedsFood:
+		HungryFirepowerPercent: 100
+
+md.warehouse:
+	MedievalEquipmentStore:
+		Public: True
+
+md.market:
+	MedievalEquipmentStore:
+		Public: True
+		Capacity: 60, 60, 60, 0
+
+md.marketstall:
+	MedievalEquipmentStore:
+		Public: True
+		Capacity: 20, 20, 20, 0
+
+md.forge:
+	Inherits: ^MDBUILDING
+	Tooltip:
+		Name: medieval-forge
+	Building:
+		Dimensions: 3,2
+		Footprint: xxx xxx
+	MedievalBuilding:
+		Cost: 80, 0, 0, 20
+		Work: 50
+	MedievalMilitaryWorkshop:
+		Forge: True
+		MaxStaff: 3
+		WorkSteps: 40
+	MedievalEquipmentStore:
+		Capacity: 1, 1, 1, 0
+	MedievalStockDisplay:
+		LabelHeight: 110
+
+md.barracks:
+	Inherits: ^MDBUILDING
+	Tooltip:
+		Name: medieval-barracks
+	Building:
+		Dimensions: 3,3
+		Footprint: xxx xxx xxx
+	MedievalBuilding:
+		Cost: 100, 0, 0, 40
+		Work: 65
+	MedievalMilitaryWorkshop:
+		WorkSteps: 50
+	MedievalEquipmentStore:
+		Capacity: 1, 1, 1, 0
+	MedievalStockDisplay:
+		LabelHeight: 110
+
+md.blacksmith:
+	Inherits: ^MDWORKER
+	Tooltip:
+		Name: medieval-blacksmith
+	MedievalWorker:
+		Profession: blacksmith
+
+md.messenger:
+	Inherits: ^MDWORKER
+	-MedievalWorker:
+	Tooltip:
+		Name: medieval-messenger
+	MedievalRecruitable:
+		Food: 20
+	Health:
+		HP: 4500
+	Mobile:
+		Speed: 80
+	MedievalMessenger:
+
+md.recruiter:
+	Inherits: ^MDWORKER
+	Tooltip:
+		Name: medieval-recruiter
+	MedievalWorker:
+		Profession: recruiter
+
+md.archer:
+	Inherits: ^MDFIGHTER
+	Tooltip:
+		Name: medieval-archer
+	Health:
+		HP: 6500
+	Armament:
+		Weapon: MedievalBow
+		LocalOffset: 0,0,640
+
+md.swordsman:
+	Inherits: ^MDFIGHTER
+	Tooltip:
+		Name: medieval-swordsman
+	MedievalRecruitable:
+		Food: 25
+	Health:
+		HP: 10000
+	Armament:
+		Weapon: MedievalSword
+
+md.manatarms:
+	MedievalRecruitable:
+		Elite: True
+
+md.elitearcher:
+	Inherits: md.archer
+	Tooltip:
+		Name: medieval-elitearcher
+	MedievalRecruitable:
+		Food: 35
+		Meat: 15
+		Elite: True
+	Health:
+		HP: 9000
+	Armor:
+		Type: Light
+	Armament:
+		Weapon: MedievalLongbow
+
+md.royalguard:
+	Inherits: md.manatarms
+	Tooltip:
+		Name: medieval-royalguard
+	MedievalRecruitable:
+		Food: 40
+		Meat: 20
+	Health:
+		HP: 19000
+	Mobile:
+		Speed: 52
+	Armament:
+		Weapon: MedievalRoyalSword
+
+md.drummer:
+	Inherits: ^MDWORKER
+	-MedievalWorker:
+	Tooltip:
+		Name: medieval-drummer
+	MedievalRecruitable:
+		Food: 25
+	Health:
+		HP: 7000
+	MedievalNeedsFood:
+		HungryFirepowerPercent: 100
+	MedievalMorale:
+	MedievalDrummer:
+		Radius: 5c0

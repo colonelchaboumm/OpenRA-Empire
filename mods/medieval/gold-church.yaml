@@ -1,0 +1,128 @@
+World:
+	MedievalGoldDeposits:
+
+md.warehouse:
+	MedievalStockpile:
+		Capacity: 400, 250, 200, 300, 200
+	MedievalGoldYard:
+
+md.market:
+	MedievalStockpile:
+		Capacity: 120, 200, 120, 120, 120
+
+md.foundingmarket:
+	MedievalStockpile:
+		Capacity: 300, 200, 120, 150, 120
+
+md.marketstall:
+	MedievalStockpile:
+		Capacity: 60, 80, 0, 60, 60
+	MedievalGoldYard:
+
+md.supplycart:
+	MedievalStockpile:
+		Capacity: 60, 60, 0, 60, 40
+
+md.tradecart:
+	MedievalStockpile:
+		Capacity: 60, 60, 60, 60, 60
+
+md.salvage:
+	MedievalStockpile:
+		Capacity: 1000, 1000, 1000, 1000, 1000
+
+md.goldmine:
+	Inherits: ^MDBUILDING
+	MedievalGoldWorkshopAnimation:
+	Tooltip:
+		Name: medieval-goldmine
+	MedievalBuilding:
+		Cost: 70, 0, 0, 30, 0
+		Work: 55
+	MedievalStockpile:
+		Capacity: 0, 0, 0, 0, 100
+		Profession: goldminer
+	MedievalStockDisplay:
+		LabelHeight: 96
+
+md.gold:
+	Inherits: md.stone
+	Tooltip:
+		Name: medieval-gold
+	MedievalSource:
+		Resource: Gold
+		Amount: 300
+		RemnantActor: md.goldrubble
+
+md.goldrubble:
+	Inherits: md.rubble
+	-MedievalSeasonAppearance:
+
+md.goldminer:
+	Inherits: md.stonecutter
+	Tooltip:
+		Name: medieval-goldminer
+	MedievalWorker:
+		Profession: goldminer
+		Resource: Gold
+
+md.church:
+	Inherits: ^MDBUILDING
+	Tooltip:
+		Name: medieval-church
+	Building:
+		Dimensions: 3,3
+		Footprint: xxx xxx xxx
+	IsometricSelectable:
+		Height: 168
+	Health:
+		HP: 70000
+	Armor:
+		Type: Concrete
+	MedievalBuilding:
+		Cost: 120, 0, 0, 100, 60
+		Work: 100
+	MedievalChurch:
+	MedievalChurchAnimation:
+	MedievalStockDisplay:
+		LabelHeight: 180
+
+md.priest:
+	Inherits: ^MDWORKER
+	-MedievalWorker:
+	Tooltip:
+		Name: medieval-priest
+	MedievalRecruitable:
+		Food: 30
+	Health:
+		HP: 5500
+	MedievalPriest:
+
+^MDWORKER:
+	MedievalPatient:
+
+^MDFIGHTER:
+	MedievalPatient:
+		Condition: church-care
+	AutoTarget:
+		RequiresCondition: !sleeping && !herding && !siege-crew && !siege-capturing && !church-care
+	AttackFrontal:
+		PauseOnCondition: sleeping || herding || siege-crew || siege-capturing || church-care
+
+md.militia:
+	AutoTarget:
+		RequiresCondition: !sleeping && !herding && !firefighting && !siege-crew && !siege-capturing && !church-care
+	AttackFrontal:
+		PauseOnCondition: sleeping || herding || firefighting || siege-crew || siege-capturing || church-care
+
+md.commander:
+	AutoTarget:
+		RequiresCondition: !sleeping && !commander-working && !herding && !church-care
+	AttackFrontal:
+		PauseOnCondition: sleeping || commander-working || herding || church-care
+
+md.saboteur:
+	AutoTarget:
+		RequiresCondition: !sleeping && !herding && !sabotaging && !church-care
+	AttackFrontal:
+		PauseOnCondition: sleeping || herding || sabotaging || church-care

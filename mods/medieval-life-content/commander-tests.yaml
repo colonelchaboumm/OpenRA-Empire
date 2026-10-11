@@ -1,0 +1,14 @@
+World:
+	MedievalCommanderValidation:
+	MedievalDayNight:
+		DayTicks: 3500
+		NightTicks: 2000
+	MedievalWeather:
+		FirstRainTicks: 10000
+
+md.commandguard:
+	Inherits: md.militia
+	RenderSprites:
+		Image: md.militia
+	AutoTarget:
+		InitialStance: HoldFire

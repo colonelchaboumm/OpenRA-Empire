@@ -1,0 +1,32 @@
+{
+  "assets": {
+    "storm-surprise-1": {
+      "voice": "Microsoft Paul",
+      "text": "Oh ! Quel fracas !",
+      "source": "Windows local speech synthesis",
+      "seconds": 1.685,
+      "peak": 0.72,
+      "rms": 0.0859
+    },
+    "storm-surprise-2": {
+      "voice": "Microsoft Paul",
+      "text": "Par les cieux !",
+      "source": "Windows local speech synthesis",
+      "seconds": 0.615,
+      "peak": 0.72,
+      "rms": 0.1028
+    },
+    "storm-surprise-3": {
+      "voice": "Microsoft Paul",
+      "text": "Ah ! Cet orage !",
+      "source": "Windows local speech synthesis",
+      "seconds": 1.512,
+      "peak": 0.72,
+      "rms": 0.0846
+    }
+  },
+  "source": "French synthetic voices; voice_audio.ps1 + voice_audio.py",
+  "sampleRate": 22050,
+  "channels": 1,
+  "bits": 16
+}

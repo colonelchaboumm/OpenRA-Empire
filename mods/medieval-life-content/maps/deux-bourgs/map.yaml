@@ -1,0 +1,117 @@
+MapFormat: 12
+RequiresMod: medieval
+Title: Deux Bourgs - multijoueur
+Author: Projet medieval
+Tileset: TEMPERAT
+MapSize: 64,128
+Bounds: 2,2,60,124
+Visibility: Lobby
+Categories: Conquest
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Bourg0:
+		Name: Bourg0
+		Playable: True
+		AllowBots: False
+		Required: True
+		LockSpawn: True
+		Spawn: 1
+		LockFaction: True
+		Faction: england
+		Color: 6C91B3
+	PlayerReference@Bourg1:
+		Name: Bourg1
+		Playable: True
+		AllowBots: False
+		Required: True
+		LockSpawn: True
+		Spawn: 2
+		LockFaction: True
+		Faction: england
+		Color: B9634C
+Actors:
+	Actor0: mpspawn
+		Owner: Neutral
+		Location: 48,-13
+	Actor20: md.tree
+		Owner: Neutral
+		Location: 39,-18
+	Actor21: md.pine
+		Owner: Neutral
+		Location: 41,-18
+	Actor22: md.birch
+		Owner: Neutral
+		Location: 43,-18
+	Actor23: md.tree
+		Owner: Neutral
+		Location: 39,-16
+	Actor24: md.pine
+		Owner: Neutral
+		Location: 41,-16
+	Actor25: md.birch
+		Owner: Neutral
+		Location: 43,-16
+	Actor26: md.stone
+		Owner: Neutral
+		Location: 56,-16
+	Actor27: md.stone
+		Owner: Neutral
+		Location: 58,-16
+	Actor28: md.stone
+		Owner: Neutral
+		Location: 59,-14
+	Actor29: md.stone
+		Owner: Neutral
+		Location: 59,-12
+	Actor30: mpspawn
+		Owner: Neutral
+		Location: 76,-13
+	Actor50: md.tree
+		Owner: Neutral
+		Location: 67,-18
+	Actor51: md.pine
+		Owner: Neutral
+		Location: 69,-18
+	Actor52: md.birch
+		Owner: Neutral
+		Location: 71,-18
+	Actor53: md.tree
+		Owner: Neutral
+		Location: 67,-16
+	Actor54: md.pine
+		Owner: Neutral
+		Location: 69,-16
+	Actor55: md.birch
+		Owner: Neutral
+		Location: 71,-16
+	Actor56: md.stone
+		Owner: Neutral
+		Location: 84,-16
+	Actor57: md.stone
+		Owner: Neutral
+		Location: 86,-16
+	Actor58: md.stone
+		Owner: Neutral
+		Location: 87,-14
+	Actor59: md.stone
+		Owner: Neutral
+		Location: 87,-12
+	FoundersBourg0: md.caravan
+		Owner: Bourg0
+		Location: 49,-12
+	FoundersBourg1: md.caravan
+		Owner: Bourg1
+		Location: 77,-12
+Rules:
+	Player:
+		Shroud:
+			FogCheckboxEnabled: False
+			ExploredMapCheckboxEnabled: True

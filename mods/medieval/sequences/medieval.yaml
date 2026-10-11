@@ -1,0 +1,4499 @@
+md.well:
+	Defaults:
+		Filename: medieval|art/well.png
+		Offset: 0, -28
+	idle:
+		Length: 1
+		Tick: 100
+	construction:
+		Start: 1
+
+md.gardenfence:
+	Defaults:
+		Filename: medieval|art/gardenfence.png
+		Offset: 0, -28
+	idle:
+		Length: 16
+		Tick: 100
+	construction:
+		Start: 16
+
+md.gardenfencey:
+	Defaults:
+		Filename: medieval|art/gardenfencey.png
+		Offset: 0, -28
+	idle:
+		Length: 16
+		Tick: 100
+	construction:
+		Start: 16
+
+md.gardengate:
+	Defaults:
+		Filename: medieval|art/gardengate.png
+		Offset: 0, -28
+	idle:
+		Length: 1
+		Tick: 100
+	construction:
+		Start: 1
+
+md.gardengatey:
+	Defaults:
+		Filename: medieval|art/gardengatey.png
+		Offset: 0, -28
+	idle:
+		Length: 1
+		Tick: 100
+	construction:
+		Start: 1
+
+md.flowerbed:
+	Defaults:
+		Filename: medieval|art/flowerbed.png
+		Offset: 0, -28
+	idle:
+		Length: 1
+		Tick: 100
+	construction:
+		Start: 1
+
+md.banner:
+	Defaults:
+		Filename: medieval|art/banner.png
+		Offset: 0, -28
+	idle:
+		Length: 12
+		Tick: 100
+	construction:
+		Start: 12
+
+md.stonepath:
+	Defaults:
+		Filename: medieval|art/stonepath.png
+		Offset: 0, -28
+		ZOffset: -8c0
+	idle:
+		Length: 1
+		Tick: 100
+	construction:
+		Start: 1
+
+md.palisade:
+	Defaults:
+		Filename: medieval|art/palisade.png
+		Offset: 0, -44
+	idle:
+		Length: 16
+	construction:
+		Start: 16
+
+md.palisadey:
+	Defaults:
+		Filename: medieval|art/palisadey.png
+		Offset: 0, -44
+	idle:
+		Length: 16
+	construction:
+		Start: 16
+
+md.woodgate:
+	Defaults:
+		Filename: medieval|art/woodgate.png
+		Offset: 0, -32
+	idle:
+		Length: 9
+	construction:
+		Start: 9
+
+md.woodgatey:
+	Defaults:
+		Filename: medieval|art/woodgatey.png
+		Offset: 0, -32
+	idle:
+		Length: 9
+	construction:
+		Start: 9
+
+md.woodtower:
+	Defaults:
+		Filename: medieval|art/woodtower.png
+		Offset: 0, -66
+	idle:
+		Length: 1
+	construction:
+		Start: 1
+
+md.arrow:
+	idle:
+		Filename: medieval|art/arrow.png
+		Facings: 16
+
+md.siegeworkshop:
+	Defaults:
+		Filename: medieval|art/siegeworkshop.png
+		Offset: 0, -52
+	idle:
+	construction:
+		Start: 1
+	ordered:
+		Start: 2
+		Length: 16
+		Tick: 120
+	work-0-0:
+		Start: 18
+		Length: 16
+		Tick: 120
+	work-0-1:
+		Start: 34
+		Length: 16
+		Tick: 120
+	work-0-2:
+		Start: 50
+		Length: 16
+		Tick: 120
+	work-1-0:
+		Start: 66
+		Length: 16
+		Tick: 120
+	work-1-1:
+		Start: 82
+		Length: 16
+		Tick: 120
+	work-1-2:
+		Start: 98
+		Length: 16
+		Tick: 120
+	work-2-0:
+		Start: 114
+		Length: 16
+		Tick: 120
+	work-2-1:
+		Start: 130
+		Length: 16
+		Tick: 120
+	work-2-2:
+		Start: 146
+		Length: 16
+		Tick: 120
+
+md.ram:
+	Defaults:
+		Filename: medieval|art/ram.png
+		Offset: 0, -62
+	idle:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 80
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 80
+	fire:
+		Start: 128
+		Facings: 8
+		Length: 24
+		Tick: 80
+
+md.trebuchet:
+	Defaults:
+		Filename: medieval|art/trebuchet.png
+		Offset: 0, -72
+	idle:
+		Start: 0
+		Facings: 8
+		Length: 1
+		Tick: 80
+	run:
+		Start: 8
+		Facings: 8
+		Length: 8
+		Tick: 80
+	assemble:
+		Start: 72
+		Facings: 8
+		Length: 48
+		Tick: 80
+	deployed:
+		Start: 456
+		Facings: 8
+		Length: 1
+		Tick: 80
+	fire:
+		Start: 464
+		Facings: 8
+		Length: 32
+		Tick: 80
+
+md.stonecart:
+	Defaults:
+		Filename: medieval|art/stonecart.png
+		Offset: 0, -62
+	idle:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 80
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 80
+
+md.siegestone:
+	idle:
+		Filename: medieval|art/siegestone.png
+
+md.equipment:
+	Defaults:
+		Filename: medieval|art/equipment.png
+	bow:
+		Start: 0
+	sword:
+		Start: 1
+	armor:
+		Start: 2
+
+md.house:
+	Defaults:
+		Filename: medieval|art/house.png
+		Offset: 0, -48
+	idle:
+		Length: 6
+	construction:
+		Start: 6
+
+md.warehouse:
+	Defaults:
+		Filename: medieval|art/warehouse.png
+		Offset: 0, -48
+	idle:
+	construction:
+		Start: 1
+
+md.sawmill:
+	Defaults:
+		Filename: medieval|art/sawmill.png
+		Offset: 0, -48
+	idle:
+	working:
+		Start: 1
+		Length: 24
+		Tick: 120
+	construction:
+		Start: 25
+
+md.quarry:
+	Defaults:
+		Filename: medieval|art/quarry.png
+		Offset: 0, -48
+	idle:
+	working:
+		Start: 1
+		Length: 24
+		Tick: 120
+	construction:
+		Start: 25
+
+md.farm:
+	Defaults:
+		Filename: medieval|art/farm.png
+		Offset: 0, -48
+	idle:
+		Length: 16
+		Tick: 120
+	construction:
+		Start: 16
+
+md.ranch:
+	Defaults:
+		Filename: medieval|art/ranch.png
+		Offset: 0, -48
+	idle:
+	construction:
+		Start: 1
+
+md.market:
+	Defaults:
+		Filename: medieval|art/market.png
+		Offset: 0, -48
+	idle:
+	working:
+		Start: 1
+		Length: 24
+		Tick: 120
+	construction:
+		Start: 25
+
+md.marketstall:
+	Defaults:
+		Filename: medieval|art/marketstall.png
+		Offset: 0, -48
+	idle:
+	working:
+		Start: 1
+		Length: 24
+		Tick: 120
+	construction:
+		Start: 25
+
+md.forge:
+	Defaults:
+		Filename: medieval|art/forge.png
+		Offset: 0, -48
+	idle:
+	construction:
+		Start: 1
+
+md.barracks:
+	Defaults:
+		Filename: medieval|art/barracks.png
+		Offset: 0, -48
+	idle:
+	construction:
+		Start: 1
+
+md.field:
+	Defaults:
+		Filename: medieval|art/field.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture:
+	Defaults:
+		Filename: medieval|art/pasture.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.tree:
+	Defaults:
+		Filename: medieval|art/tree.png
+		Offset: 0, -44
+	idle:
+	growing:
+		Start: 1
+	empty:
+		Start: 1
+
+md.pine:
+	Defaults:
+		Filename: medieval|art/pine.png
+		Offset: 0, -44
+	idle:
+	growing:
+		Start: 1
+	empty:
+		Start: 1
+
+md.birch:
+	Defaults:
+		Filename: medieval|art/birch.png
+		Offset: 0, -44
+	idle:
+	growing:
+		Start: 1
+	empty:
+		Start: 1
+
+md.stone:
+	Defaults:
+		Filename: medieval|art/stone.png
+		Offset: 0, -12
+	idle:
+	growing:
+		Start: 1
+	empty:
+		Start: 1
+
+md.shrub:
+	Defaults:
+		Filename: medieval|art/shrub.png
+		Offset: 0, -8
+	idle:
+
+md.grasses:
+	Defaults:
+		Filename: medieval|art/grasses.png
+		Offset: 0, -8
+	idle:
+
+md.flowers:
+	Defaults:
+		Filename: medieval|art/flowers.png
+		Offset: 0, -8
+	idle:
+
+md.stump:
+	Defaults:
+		Filename: medieval|art/stump.png
+		Offset: 0, -44
+	idle:
+
+md.rubble:
+	Defaults:
+		Filename: medieval|art/rubble.png
+		Offset: 0, -12
+	idle:
+
+md.salvage:
+	Defaults:
+		Filename: medieval|art/salvage.png
+	idle:
+
+md.builder:
+	Defaults:
+		Filename: medieval|art/builder.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.hauler:
+	Defaults:
+		Filename: medieval|art/hauler.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.lumberjack:
+	Defaults:
+		Filename: medieval|art/lumberjack.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.stonecutter:
+	Defaults:
+		Filename: medieval|art/stonecutter.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.farmer:
+	Defaults:
+		Filename: medieval|art/farmer.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.breeder:
+	Defaults:
+		Filename: medieval|art/breeder.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.militia:
+	Defaults:
+		Filename: medieval|art/militia.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.manatarms:
+	Defaults:
+		Filename: medieval|art/manatarms.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.supplycart:
+	Defaults:
+		Filename: medieval|art/supplycart.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.blacksmith:
+	Defaults:
+		Filename: medieval|art/blacksmith.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.recruiter:
+	Defaults:
+		Filename: medieval|art/recruiter.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.archer:
+	Defaults:
+		Filename: medieval|art/archer.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.swordsman:
+	Defaults:
+		Filename: medieval|art/swordsman.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.elitearcher:
+	Defaults:
+		Filename: medieval|art/elitearcher.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.royalguard:
+	Defaults:
+		Filename: medieval|art/royalguard.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.drummer:
+	Defaults:
+		Filename: medieval|art/drummer.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.messenger:
+	Defaults:
+		Filename: medieval|art/messenger.png
+		Offset: 0, -12
+	stand:
+		Start: 0
+		Facings: 8
+		Length: 8
+		Tick: 120
+	run:
+		Start: 64
+		Facings: 8
+		Length: 8
+		Tick: 120
+	work:
+		Start: 128
+		Facings: 8
+		Length: 8
+		Tick: 120
+	harvest:
+		Start: 192
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-stand:
+		Start: 256
+		Facings: 8
+		Length: 8
+		Tick: 120
+	carry-run:
+		Start: 320
+		Facings: 8
+		Length: 8
+		Tick: 120
+	load:
+		Start: 384
+		Facings: 8
+		Length: 8
+		Tick: 120
+	attack:
+		Start: 448
+		Facings: 8
+		Length: 8
+		Tick: 60
+	push:
+		Start: 512
+		Facings: 8
+		Length: 8
+		Tick: 120
+	push-stand:
+		Start: 576
+		Facings: 8
+		Length: 8
+		Tick: 120
+
+md.field.2x3:
+	Defaults:
+		Filename: medieval|art/field.2x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.2x4:
+	Defaults:
+		Filename: medieval|art/field.2x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.2x5:
+	Defaults:
+		Filename: medieval|art/field.2x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.2x6:
+	Defaults:
+		Filename: medieval|art/field.2x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.2x7:
+	Defaults:
+		Filename: medieval|art/field.2x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.2x8:
+	Defaults:
+		Filename: medieval|art/field.2x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.2x9:
+	Defaults:
+		Filename: medieval|art/field.2x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.2x10:
+	Defaults:
+		Filename: medieval|art/field.2x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.3x2:
+	Defaults:
+		Filename: medieval|art/field.3x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.3x3:
+	Defaults:
+		Filename: medieval|art/field.3x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.3x4:
+	Defaults:
+		Filename: medieval|art/field.3x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.3x5:
+	Defaults:
+		Filename: medieval|art/field.3x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.3x6:
+	Defaults:
+		Filename: medieval|art/field.3x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.3x7:
+	Defaults:
+		Filename: medieval|art/field.3x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.3x8:
+	Defaults:
+		Filename: medieval|art/field.3x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.3x9:
+	Defaults:
+		Filename: medieval|art/field.3x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.3x10:
+	Defaults:
+		Filename: medieval|art/field.3x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.4x2:
+	Defaults:
+		Filename: medieval|art/field.4x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.4x3:
+	Defaults:
+		Filename: medieval|art/field.4x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.4x4:
+	Defaults:
+		Filename: medieval|art/field.4x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.4x5:
+	Defaults:
+		Filename: medieval|art/field.4x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.4x6:
+	Defaults:
+		Filename: medieval|art/field.4x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.4x7:
+	Defaults:
+		Filename: medieval|art/field.4x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.4x8:
+	Defaults:
+		Filename: medieval|art/field.4x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.4x9:
+	Defaults:
+		Filename: medieval|art/field.4x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.4x10:
+	Defaults:
+		Filename: medieval|art/field.4x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.5x2:
+	Defaults:
+		Filename: medieval|art/field.5x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.5x3:
+	Defaults:
+		Filename: medieval|art/field.5x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.5x4:
+	Defaults:
+		Filename: medieval|art/field.5x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.5x5:
+	Defaults:
+		Filename: medieval|art/field.5x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.5x6:
+	Defaults:
+		Filename: medieval|art/field.5x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.5x7:
+	Defaults:
+		Filename: medieval|art/field.5x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.5x8:
+	Defaults:
+		Filename: medieval|art/field.5x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.5x9:
+	Defaults:
+		Filename: medieval|art/field.5x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.5x10:
+	Defaults:
+		Filename: medieval|art/field.5x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.6x2:
+	Defaults:
+		Filename: medieval|art/field.6x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.6x3:
+	Defaults:
+		Filename: medieval|art/field.6x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.6x4:
+	Defaults:
+		Filename: medieval|art/field.6x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.6x5:
+	Defaults:
+		Filename: medieval|art/field.6x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.6x6:
+	Defaults:
+		Filename: medieval|art/field.6x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.6x7:
+	Defaults:
+		Filename: medieval|art/field.6x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.6x8:
+	Defaults:
+		Filename: medieval|art/field.6x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.6x9:
+	Defaults:
+		Filename: medieval|art/field.6x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.6x10:
+	Defaults:
+		Filename: medieval|art/field.6x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.7x2:
+	Defaults:
+		Filename: medieval|art/field.7x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.7x3:
+	Defaults:
+		Filename: medieval|art/field.7x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.7x4:
+	Defaults:
+		Filename: medieval|art/field.7x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.7x5:
+	Defaults:
+		Filename: medieval|art/field.7x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.7x6:
+	Defaults:
+		Filename: medieval|art/field.7x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.7x7:
+	Defaults:
+		Filename: medieval|art/field.7x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.7x8:
+	Defaults:
+		Filename: medieval|art/field.7x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.7x9:
+	Defaults:
+		Filename: medieval|art/field.7x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.7x10:
+	Defaults:
+		Filename: medieval|art/field.7x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.8x2:
+	Defaults:
+		Filename: medieval|art/field.8x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.8x3:
+	Defaults:
+		Filename: medieval|art/field.8x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.8x4:
+	Defaults:
+		Filename: medieval|art/field.8x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.8x5:
+	Defaults:
+		Filename: medieval|art/field.8x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.8x6:
+	Defaults:
+		Filename: medieval|art/field.8x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.8x7:
+	Defaults:
+		Filename: medieval|art/field.8x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.8x8:
+	Defaults:
+		Filename: medieval|art/field.8x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.8x9:
+	Defaults:
+		Filename: medieval|art/field.8x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.8x10:
+	Defaults:
+		Filename: medieval|art/field.8x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.9x2:
+	Defaults:
+		Filename: medieval|art/field.9x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.9x3:
+	Defaults:
+		Filename: medieval|art/field.9x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.9x4:
+	Defaults:
+		Filename: medieval|art/field.9x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.9x5:
+	Defaults:
+		Filename: medieval|art/field.9x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.9x6:
+	Defaults:
+		Filename: medieval|art/field.9x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.9x7:
+	Defaults:
+		Filename: medieval|art/field.9x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.9x8:
+	Defaults:
+		Filename: medieval|art/field.9x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.9x9:
+	Defaults:
+		Filename: medieval|art/field.9x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.9x10:
+	Defaults:
+		Filename: medieval|art/field.9x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.10x2:
+	Defaults:
+		Filename: medieval|art/field.10x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.10x3:
+	Defaults:
+		Filename: medieval|art/field.10x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.10x4:
+	Defaults:
+		Filename: medieval|art/field.10x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.10x5:
+	Defaults:
+		Filename: medieval|art/field.10x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.10x6:
+	Defaults:
+		Filename: medieval|art/field.10x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.10x7:
+	Defaults:
+		Filename: medieval|art/field.10x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.10x8:
+	Defaults:
+		Filename: medieval|art/field.10x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.10x9:
+	Defaults:
+		Filename: medieval|art/field.10x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.field.10x10:
+	Defaults:
+		Filename: medieval|art/field.10x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.2x3:
+	Defaults:
+		Filename: medieval|art/pasture.2x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.2x4:
+	Defaults:
+		Filename: medieval|art/pasture.2x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.2x5:
+	Defaults:
+		Filename: medieval|art/pasture.2x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.2x6:
+	Defaults:
+		Filename: medieval|art/pasture.2x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.2x7:
+	Defaults:
+		Filename: medieval|art/pasture.2x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.2x8:
+	Defaults:
+		Filename: medieval|art/pasture.2x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.2x9:
+	Defaults:
+		Filename: medieval|art/pasture.2x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.2x10:
+	Defaults:
+		Filename: medieval|art/pasture.2x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.3x2:
+	Defaults:
+		Filename: medieval|art/pasture.3x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.3x3:
+	Defaults:
+		Filename: medieval|art/pasture.3x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.3x4:
+	Defaults:
+		Filename: medieval|art/pasture.3x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.3x5:
+	Defaults:
+		Filename: medieval|art/pasture.3x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.3x6:
+	Defaults:
+		Filename: medieval|art/pasture.3x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.3x7:
+	Defaults:
+		Filename: medieval|art/pasture.3x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.3x8:
+	Defaults:
+		Filename: medieval|art/pasture.3x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.3x9:
+	Defaults:
+		Filename: medieval|art/pasture.3x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.3x10:
+	Defaults:
+		Filename: medieval|art/pasture.3x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.4x2:
+	Defaults:
+		Filename: medieval|art/pasture.4x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.4x3:
+	Defaults:
+		Filename: medieval|art/pasture.4x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.4x4:
+	Defaults:
+		Filename: medieval|art/pasture.4x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.4x5:
+	Defaults:
+		Filename: medieval|art/pasture.4x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.4x6:
+	Defaults:
+		Filename: medieval|art/pasture.4x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.4x7:
+	Defaults:
+		Filename: medieval|art/pasture.4x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.4x8:
+	Defaults:
+		Filename: medieval|art/pasture.4x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.4x9:
+	Defaults:
+		Filename: medieval|art/pasture.4x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.4x10:
+	Defaults:
+		Filename: medieval|art/pasture.4x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.5x2:
+	Defaults:
+		Filename: medieval|art/pasture.5x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.5x3:
+	Defaults:
+		Filename: medieval|art/pasture.5x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.5x4:
+	Defaults:
+		Filename: medieval|art/pasture.5x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.5x5:
+	Defaults:
+		Filename: medieval|art/pasture.5x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.5x6:
+	Defaults:
+		Filename: medieval|art/pasture.5x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.5x7:
+	Defaults:
+		Filename: medieval|art/pasture.5x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.5x8:
+	Defaults:
+		Filename: medieval|art/pasture.5x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.5x9:
+	Defaults:
+		Filename: medieval|art/pasture.5x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.5x10:
+	Defaults:
+		Filename: medieval|art/pasture.5x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.6x2:
+	Defaults:
+		Filename: medieval|art/pasture.6x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.6x3:
+	Defaults:
+		Filename: medieval|art/pasture.6x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.6x4:
+	Defaults:
+		Filename: medieval|art/pasture.6x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.6x5:
+	Defaults:
+		Filename: medieval|art/pasture.6x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.6x6:
+	Defaults:
+		Filename: medieval|art/pasture.6x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.6x7:
+	Defaults:
+		Filename: medieval|art/pasture.6x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.6x8:
+	Defaults:
+		Filename: medieval|art/pasture.6x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.6x9:
+	Defaults:
+		Filename: medieval|art/pasture.6x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.6x10:
+	Defaults:
+		Filename: medieval|art/pasture.6x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.7x2:
+	Defaults:
+		Filename: medieval|art/pasture.7x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.7x3:
+	Defaults:
+		Filename: medieval|art/pasture.7x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.7x4:
+	Defaults:
+		Filename: medieval|art/pasture.7x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.7x5:
+	Defaults:
+		Filename: medieval|art/pasture.7x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.7x6:
+	Defaults:
+		Filename: medieval|art/pasture.7x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.7x7:
+	Defaults:
+		Filename: medieval|art/pasture.7x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.7x8:
+	Defaults:
+		Filename: medieval|art/pasture.7x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.7x9:
+	Defaults:
+		Filename: medieval|art/pasture.7x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.7x10:
+	Defaults:
+		Filename: medieval|art/pasture.7x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.8x2:
+	Defaults:
+		Filename: medieval|art/pasture.8x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.8x3:
+	Defaults:
+		Filename: medieval|art/pasture.8x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.8x4:
+	Defaults:
+		Filename: medieval|art/pasture.8x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.8x5:
+	Defaults:
+		Filename: medieval|art/pasture.8x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.8x6:
+	Defaults:
+		Filename: medieval|art/pasture.8x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.8x7:
+	Defaults:
+		Filename: medieval|art/pasture.8x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.8x8:
+	Defaults:
+		Filename: medieval|art/pasture.8x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.8x9:
+	Defaults:
+		Filename: medieval|art/pasture.8x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.8x10:
+	Defaults:
+		Filename: medieval|art/pasture.8x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.9x2:
+	Defaults:
+		Filename: medieval|art/pasture.9x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.9x3:
+	Defaults:
+		Filename: medieval|art/pasture.9x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.9x4:
+	Defaults:
+		Filename: medieval|art/pasture.9x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.9x5:
+	Defaults:
+		Filename: medieval|art/pasture.9x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.9x6:
+	Defaults:
+		Filename: medieval|art/pasture.9x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.9x7:
+	Defaults:
+		Filename: medieval|art/pasture.9x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.9x8:
+	Defaults:
+		Filename: medieval|art/pasture.9x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.9x9:
+	Defaults:
+		Filename: medieval|art/pasture.9x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.9x10:
+	Defaults:
+		Filename: medieval|art/pasture.9x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.10x2:
+	Defaults:
+		Filename: medieval|art/pasture.10x2.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.10x3:
+	Defaults:
+		Filename: medieval|art/pasture.10x3.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.10x4:
+	Defaults:
+		Filename: medieval|art/pasture.10x4.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.10x5:
+	Defaults:
+		Filename: medieval|art/pasture.10x5.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.10x6:
+	Defaults:
+		Filename: medieval|art/pasture.10x6.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.10x7:
+	Defaults:
+		Filename: medieval|art/pasture.10x7.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.10x8:
+	Defaults:
+		Filename: medieval|art/pasture.10x8.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.10x9:
+	Defaults:
+		Filename: medieval|art/pasture.10x9.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.pasture.10x10:
+	Defaults:
+		Filename: medieval|art/pasture.10x10.png
+		Offset: 0, -6
+		ZOffset: -8c0
+	idle:
+		Length: 8
+		Tick: 180
+	growing:
+		Start: 8
+		Length: 8
+		Tick: 180
+	empty:
+		Start: 16
+		Length: 8
+		Tick: 180
+	construction:
+		Start: 24
+
+md.trails:
+	idle:
+		Filename: medieval|art/trails.png
+		Length: 48
+
+md.stockyard-floor:
+	idle:
+		Filename: medieval|art/stockyard-floor.png
+		Length: 4
+
+md.stockyard-stock:
+	Defaults:
+		Filename: medieval|art/stockyard-stock.png
+		Offset: 0, -16
+	wood:
+		Start: 0
+		Length: 101
+	food:
+		Start: 101
+		Length: 101
+	meat:
+		Start: 202
+		Length: 101
+	stone:
+		Start: 303
+		Length: 101
+
+md.resources:
+	Defaults:
+		Filename: medieval|art/resources.png
+	wood:
+		Start: 0
+	food:
+		Start: 1
+	meat:
+		Start: 2
+	stone:
+		Start: 3
+
+md.piles:
+	Defaults:
+		Filename: medieval|art/piles.png
+	wood:
+		Start: 0
+		Length: 4
+	food:
+		Start: 4
+		Length: 4
+	meat:
+		Start: 8
+		Length: 4
+	stone:
+		Start: 12
+		Length: 4

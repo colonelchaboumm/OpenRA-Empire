@@ -1,0 +1,25 @@
+OPENRA EMPIRE - LES TERRES DU BOURG
+
+1. Extrayez tout le ZIP dans Documents ou sur le Bureau.
+2. Double-cliquez sur Empire.exe.
+3. Le lanceur propose les nouvelles versions : Mettre a jour et jouer.
+
+Vous pouvez creer un raccourci vers Empire.exe. Gardez le dossier versions
+et current.json a cote de ce fichier. Aucun SDK .NET n'est a installer.
+Windows 64 bits est requis.
+
+Au premier lancement, OpenRA peut proposer le telechargement des ressources
+Red Alert necessaires. Choisissez le telechargement rapide dans cet ecran.
+Ces ressources sont installees une seule fois, en dehors des versions du jeu.
+
+Les reglages, sauvegardes et cartes personnelles restent dans le dossier de
+donnees OpenRA, habituellement %APPDATA%\OpenRA. Le lanceur ne les efface pas.
+Une ancienne sauvegarde peut devenir incompatible apres des changements du jeu.
+Le bouton Revenir a la version precedente permet de rejouer avec cette version.
+
+Sans Internet, attendez la fin de la verification puis cliquez sur Jouer avec
+la version installee. Un echec de mise a jour conserve votre jeu actuel.
+En multijoueur, utilisez la meme version que les autres joueurs.
+
+Versions et aide : https://github.com/colonelchaboumm/OpenRA-Empire/releases
+Licence et sources : https://github.com/colonelchaboumm/OpenRA-Empire

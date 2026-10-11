@@ -1,0 +1,12 @@
+World:
+	MedievalStressValidation:
+		SoldiersPerArmy: 500
+		WorkersPerArmy: 250
+		Duration: 4000
+		Output: dense-spatial
+
+^MDWORKER:
+	MedievalStressProbe:
+
+^MDBUILDING:
+	MedievalStressProbe:

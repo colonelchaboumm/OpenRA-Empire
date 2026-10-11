@@ -1,0 +1,232 @@
+md.livestock-cow:
+	idle:
+		Filename: medieval|art/herd-cow.png
+		Offset: 0, -16
+		Length: 320
+
+md.livestock-cow-young:
+	idle:
+		Filename: medieval|art/herd-calf.png
+		Offset: 0, -16
+		Length: 320
+
+md.livestock-sheep:
+	idle:
+		Filename: medieval|art/herd-sheep.png
+		Offset: 0, -16
+		Length: 320
+
+md.livestock-sheep-young:
+	idle:
+		Filename: medieval|art/herd-lamb.png
+		Offset: 0, -16
+		Length: 320
+
+md.breeder:
+	catch:
+		Filename: medieval|art/herding-breeder.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: medieval|art/herding-breeder.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: medieval|art/herding-breeder.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.shepherd:
+	Defaults:
+		Filename: medieval|art/shepherd.png
+	catch:
+		Filename: medieval|art/herding-shepherd.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: medieval|art/herding-shepherd.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: medieval|art/herding-shepherd.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.militia:
+	catch:
+		Filename: medieval|art/herding-militia.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: medieval|art/herding-militia.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: medieval|art/herding-militia.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.swordsman:
+	catch:
+		Filename: medieval|art/herding-swordsman.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: medieval|art/herding-swordsman.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: medieval|art/herding-swordsman.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.manatarms:
+	catch:
+		Filename: medieval|art/herding-manatarms.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: medieval|art/herding-manatarms.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: medieval|art/herding-manatarms.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.archer:
+	catch:
+		Filename: medieval|art/herding-archer.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: medieval|art/herding-archer.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: medieval|art/herding-archer.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.elitearcher:
+	catch:
+		Filename: medieval|art/herding-elitearcher.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: medieval|art/herding-elitearcher.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: medieval|art/herding-elitearcher.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.royalguard:
+	catch:
+		Filename: medieval|art/herding-royalguard.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: medieval|art/herding-royalguard.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: medieval|art/herding-royalguard.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.commander:
+	catch:
+		Filename: medieval|art/herding-commander.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead:
+		Filename: medieval|art/herding-commander.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	lead-stand:
+		Filename: medieval|art/herding-commander.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120

@@ -1,0 +1,9 @@
+World:
+	MedievalSiegeValidation:
+
+md.siegetarget:
+	Inherits: md.warehouse
+	RenderSprites:
+		Image: md.warehouse
+	Health:
+		HP: 1000000

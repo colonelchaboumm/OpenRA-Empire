@@ -1,0 +1,117 @@
+^MDDECORATION:
+	Inherits: ^MDBUILDING
+	MedievalDecoration:
+	-AppearsOnRadar:
+	-RevealsShroud:
+	Building:
+		Dimensions: 1,1
+	IsometricSelectable:
+		Priority: 1
+	MedievalStockDisplay:
+		LabelHeight: 32
+
+md.well:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-well
+	Building:
+		Footprint: x
+	IsometricSelectable:
+		Height: 58
+		DecorationHeight: 58
+	MedievalBuilding:
+		Cost: 15, 0, 0, 25
+		Work: 20
+
+md.gardenfence:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gardenfence
+	Building:
+		Footprint: x
+	IsometricSelectable:
+		Height: 16
+		DecorationHeight: 16
+	MedievalBuilding:
+		Cost: 3, 0, 0, 0
+		Work: 3
+	MedievalGardenFence:
+
+md.gardenfencey:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gardenfencey
+	Building:
+		Footprint: x
+	IsometricSelectable:
+		Height: 16
+		DecorationHeight: 16
+	MedievalBuilding:
+		Cost: 3, 0, 0, 0
+		Work: 3
+	MedievalGardenFence:
+
+md.gardengate:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gardengate
+	Building:
+		Footprint: =
+	IsometricSelectable:
+		Height: 16
+		DecorationHeight: 16
+	MedievalBuilding:
+		Cost: 5, 0, 0, 0
+		Work: 4
+
+md.gardengatey:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-gardengatey
+	Building:
+		Footprint: =
+	IsometricSelectable:
+		Height: 16
+		DecorationHeight: 16
+	MedievalBuilding:
+		Cost: 5, 0, 0, 0
+		Work: 4
+
+md.flowerbed:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-flowerbed
+	Building:
+		Footprint: =
+	IsometricSelectable:
+		Height: 12
+		DecorationHeight: 12
+	MedievalBuilding:
+		Cost: 4, 0, 0, 0
+		Work: 3
+
+md.banner:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-banner
+	Building:
+		Footprint: =
+	IsometricSelectable:
+		Height: 50
+		DecorationHeight: 50
+	MedievalBuilding:
+		Cost: 6, 0, 0, 0
+		Work: 5
+
+md.stonepath:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-stonepath
+	Building:
+		Footprint: =
+	IsometricSelectable:
+		Height: 0
+		DecorationHeight: 4
+	MedievalBuilding:
+		Cost: 0, 0, 0, 3
+		Work: 2

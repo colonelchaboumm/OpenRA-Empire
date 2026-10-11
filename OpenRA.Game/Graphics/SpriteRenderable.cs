@@ -1,0 +1,177 @@
+#region Copyright & License Information
+/*
+ * Copyright (c) The OpenRA Developers and Contributors
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Numerics;
+using OpenRA.Primitives;
+
+namespace OpenRA.Graphics
+{
+	public class SpriteRenderable : IPalettedRenderable, IModifyableRenderable, IFinalizedRenderable
+	{
+		public static readonly IEnumerable<IRenderable> None = [];
+
+		readonly Sprite sprite;
+		readonly WPos pos;
+		readonly float scale;
+		readonly WAngle rotation = WAngle.Zero;
+		public Matrix4x4? ScreenTransform { get; }
+
+		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, float alpha,
+			Vector3 tint, TintModifiers tintModifiers, bool isDecoration, WAngle rotation, Matrix4x4? screenTransform)
+		{
+			this.sprite = sprite;
+			this.pos = pos;
+			Offset = offset;
+			ZOffset = zOffset;
+			Palette = palette;
+			this.scale = scale;
+			this.rotation = rotation;
+			ScreenTransform = screenTransform;
+			Tint = tint;
+			IsDecoration = isDecoration;
+			TintModifiers = tintModifiers;
+			Alpha = alpha;
+
+			// PERF: Remove useless palette assignments for RGBA sprites
+			// HACK: This is working around the fact that palettes are defined on traits rather than sequences
+			// and can be removed once this has been fixed
+			if (sprite.Channel == TextureChannel.RGBA && !(palette?.HasColorShift ?? false))
+				Palette = null;
+		}
+
+		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, float alpha,
+			Vector3 tint, TintModifiers tintModifiers, bool isDecoration, WAngle rotation)
+			: this(sprite, pos, offset, zOffset, palette, scale, alpha, tint, tintModifiers, isDecoration, rotation, null) { }
+
+		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, float alpha,
+			Vector3 tint, TintModifiers tintModifiers, bool isDecoration)
+			: this(sprite, pos, offset, zOffset, palette, scale, alpha, tint, tintModifiers, isDecoration, WAngle.Zero) { }
+
+		public WPos Pos => pos + Offset;
+		public WVec Offset { get; }
+		public PaletteReference Palette { get; }
+		public int ZOffset { get; }
+		public bool IsDecoration { get; }
+
+		public float Alpha { get; }
+		public Vector3 Tint { get; }
+		public TintModifiers TintModifiers { get; }
+
+		public IPalettedRenderable WithPalette(PaletteReference newPalette)
+		{
+			return new SpriteRenderable(sprite, pos, Offset, ZOffset, newPalette, scale, Alpha, Tint, TintModifiers, IsDecoration, rotation, ScreenTransform);
+		}
+
+		public IRenderable WithZOffset(int newOffset)
+		{
+			return new SpriteRenderable(sprite, pos, Offset, newOffset, Palette, scale, Alpha, Tint, TintModifiers, IsDecoration, rotation, ScreenTransform);
+		}
+
+		public IRenderable OffsetBy(in WVec vec)
+		{
+			return new SpriteRenderable(sprite, pos + vec, Offset, ZOffset, Palette, scale, Alpha, Tint, TintModifiers, IsDecoration, rotation, ScreenTransform);
+		}
+
+		public IRenderable AsDecoration()
+		{
+			return new SpriteRenderable(sprite, pos, Offset, ZOffset, Palette, scale, Alpha, Tint, TintModifiers, true, rotation, ScreenTransform);
+		}
+
+		public IModifyableRenderable WithAlpha(float newAlpha)
+		{
+			return new SpriteRenderable(sprite, pos, Offset, ZOffset, Palette, scale, newAlpha, Tint, TintModifiers, IsDecoration, rotation, ScreenTransform);
+		}
+
+		public IModifyableRenderable WithTint(in Vector3 newTint, TintModifiers newTintModifiers)
+		{
+			return new SpriteRenderable(sprite, pos, Offset, ZOffset, Palette, scale, Alpha, newTint, newTintModifiers, IsDecoration, rotation, ScreenTransform);
+		}
+
+		// Transform screen geometry around the actor's ground origin. Texture pixels,
+		// palette remaps, depth sorting and the untransformed path remain unchanged.
+		public SpriteRenderable WithScreenTransform(in Matrix4x4 transform) =>
+			new(sprite, pos, Offset, ZOffset, Palette, scale, Alpha, Tint, TintModifiers, IsDecoration, rotation, transform);
+
+		void ScreenCorners(WorldRenderer wr, Span<Vector3> corners)
+		{
+			var topLeft = ScreenPosition(wr) + scale * sprite.Offset;
+			Util.RotateQuadInto(corners, topLeft, scale * sprite.Size, rotation.RendererRadians());
+			if (ScreenTransform is Matrix4x4 transform)
+			{
+				var origin = wr.Screen3DPxPosition(pos);
+				for (var i = 0; i < corners.Length; i++) corners[i] = origin + Vector3.Transform(corners[i] - origin, transform);
+			}
+		}
+
+		Vector3 ScreenPosition(WorldRenderer wr)
+		{
+			var s = 0.5f * scale * sprite.Size;
+			return wr.Screen3DPxPosition(pos) + wr.ScreenPxOffset(Offset).ToVector3() - new Vector3((int)s.X, (int)s.Y, s.Z);
+		}
+
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
+		public void Render(WorldRenderer wr)
+		{
+			var wsr = Game.Renderer.WorldSpriteRenderer;
+			var t = Alpha * Tint;
+			if (wr.TerrainLighting != null && (TintModifiers & TintModifiers.IgnoreWorldTint) == 0)
+				t *= wr.TerrainLighting.TintAt(pos);
+
+			// Shader interprets negative alpha as a flag to use the tint colour directly instead of multiplying the sprite colour
+			var a = Alpha;
+			if ((TintModifiers & TintModifiers.ReplaceColor) != 0)
+				a *= -1;
+
+			if (ScreenTransform.HasValue)
+			{
+				Span<Vector3> q = stackalloc Vector3[4];
+				ScreenCorners(wr, q);
+				wsr.DrawSprite(sprite, Palette, q[0], q[1], q[2], q[3], t, a);
+			}
+			else wsr.DrawSprite(sprite, Palette, ScreenPosition(wr), scale, t, a, rotation.RendererRadians());
+		}
+
+		public void RenderDebugGeometry(WorldRenderer wr)
+		{
+			if (ScreenTransform.HasValue)
+			{
+				var q = new Vector3[4];
+				ScreenCorners(wr, q);
+				for (var i = 0; i < q.Length; i++) q[i] = wr.Viewport.WorldToViewPx(q[i]).ToVector3();
+				Game.Renderer.RgbaColorRenderer.DrawPolygon(q, 1, Color.Red);
+				return;
+			}
+			var pos = ScreenPosition(wr) + sprite.Offset;
+			var tl = wr.Viewport.WorldToViewPx(pos).ToVector3();
+			var br = wr.Viewport.WorldToViewPx(pos + sprite.Size).ToVector3();
+			if (rotation == WAngle.Zero)
+				Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.Red);
+			else
+				Game.Renderer.RgbaColorRenderer.DrawPolygon(Util.RotateQuad(tl, br - tl, rotation.RendererRadians()), 1, Color.Red);
+		}
+
+		public Rectangle ScreenBounds(WorldRenderer wr)
+		{
+			if (ScreenTransform.HasValue)
+			{
+				Span<Vector3> q = stackalloc Vector3[4];
+				ScreenCorners(wr, q);
+				var min = q[0]; var max = q[0];
+				for (var i = 1; i < q.Length; i++) { min = Vector3.Min(min, q[i]); max = Vector3.Max(max, q[i]); }
+				return Rectangle.FromLTRB((int)MathF.Floor(min.X), (int)MathF.Floor(min.Y), (int)MathF.Ceiling(max.X), (int)MathF.Ceiling(max.Y));
+			}
+			var screenOffset = ScreenPosition(wr) + sprite.Offset;
+			return Util.BoundingRectangle(screenOffset, sprite.Size, rotation.RendererRadians());
+		}
+	}
+}

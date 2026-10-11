@@ -1,0 +1,36 @@
+World:
+	MedievalSunlight:
+
+^MDOBJECT:
+	MedievalCastShadow:
+
+^MDWORKER:
+	MedievalCastShadow:
+
+^MDANIMAL:
+	MedievalCastShadow:
+
+md.shrub:
+	MedievalCastShadow:
+
+# Ground artwork is composited before cast shadows. Foliage, snow, smoke and
+# seasonal tinting finish first; only the final visible silhouette casts a shadow.
+md.stonepath:
+	MedievalCastShadow:
+		GroundOnly: True
+
+md.plaza:
+	MedievalCastShadow:
+		GroundOnly: True
+
+md.plazalarge:
+	MedievalCastShadow:
+		GroundOnly: True
+
+md.gildedplaza:
+	MedievalCastShadow:
+		GroundOnly: True
+
+md.gildedplazalarge:
+	MedievalCastShadow:
+		GroundOnly: True

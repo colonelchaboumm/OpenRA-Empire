@@ -1,0 +1,68 @@
+World:
+	MedievalWildHerds:
+
+Player:
+	MedievalAnimalOrders:
+
+md.breeder:
+	MedievalHerding:
+		BusyCondition:
+
+md.shepherd:
+	MedievalHerding:
+		BusyCondition:
+
+^MDFIGHTER:
+	MedievalHerding:
+	AutoTarget:
+		RequiresCondition: !sleeping && !herding
+	AttackFrontal:
+		RequiresCondition: !sleeping && !herding
+
+md.commander:
+	AutoTarget:
+		RequiresCondition: !sleeping && !commander-working && !herding
+	AttackFrontal:
+		RequiresCondition: !sleeping && !commander-working && !herding
+
+^MDANIMAL:
+	BodyOrientation:
+		QuantizedFacings: 8
+	Selectable:
+		Bounds: 1100, 850, 0, -220
+		Priority: 15
+	SelectionDecorations:
+	Tooltip:
+		Name: medieval-cow
+	Health:
+		HP: 3500
+	Armor:
+		Type: None
+	Targetable:
+		TargetTypes: GroundActor, Infantry
+	HitShape:
+		Type: Circle
+			Radius: 230
+	MedievalAnimalMobile:
+		Locomotor: foot
+		Speed: 58
+		AlwaysTurnInPlace: True
+		Voice:
+	MedievalAnimal:
+	AppearsOnRadar:
+	HiddenUnderFog:
+		Type: CenterPosition
+	MapEditorData:
+		Categories: Medieval
+
+md.cow:
+	Inherits: ^MDANIMAL
+
+md.sheep:
+	Inherits: ^MDANIMAL
+	Tooltip:
+		Name: medieval-sheep
+	MedievalAnimal:
+		Image: md.livestock-sheep
+	Health:
+		HP: 2200

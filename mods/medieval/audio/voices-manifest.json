@@ -1,0 +1,88 @@
+{
+  "assets": {
+    "combat-cry-1": {
+      "text": "En avant !",
+      "source": "Windows local speech synthesis",
+      "voice": "Microsoft Paul",
+      "seconds": 0.484,
+      "peak": 0.72,
+      "rms": 0.1306
+    },
+    "combat-cry-2": {
+      "text": "Pour le royaume !",
+      "source": "Windows local speech synthesis",
+      "voice": "Microsoft Paul",
+      "seconds": 0.713,
+      "peak": 0.72,
+      "rms": 0.1376
+    },
+    "combat-cry-3": {
+      "text": "À l'attaque !",
+      "source": "Windows local speech synthesis",
+      "voice": "Microsoft Paul",
+      "seconds": 0.602,
+      "peak": 0.72,
+      "rms": 0.1154
+    },
+    "rally-1": {
+      "text": "Tenez bon, soldats !",
+      "source": "Windows local speech synthesis",
+      "voice": "Microsoft Paul",
+      "seconds": 1.087,
+      "peak": 0.72,
+      "rms": 0.1454
+    },
+    "rally-2": {
+      "text": "Ralliez-vous à la bannière !",
+      "source": "Windows local speech synthesis",
+      "voice": "Microsoft Paul",
+      "seconds": 1.24,
+      "peak": 0.72,
+      "rms": 0.137
+    },
+    "rally-3": {
+      "text": "Courage ! Gardez vos rangs !",
+      "source": "Windows local speech synthesis",
+      "voice": "Microsoft Paul",
+      "seconds": 1.791,
+      "peak": 0.72,
+      "rms": 0.0882
+    },
+    "patrol-1": {
+      "text": "Tout est calme. Continuons la ronde.",
+      "source": "Windows local speech synthesis",
+      "voice": "Microsoft Paul",
+      "seconds": 3.145,
+      "peak": 0.6,
+      "rms": 0.0752
+    },
+    "patrol-2": {
+      "text": "Ouvrez l'œil, camarades.",
+      "source": "Windows local speech synthesis",
+      "voice": "Microsoft Paul",
+      "seconds": 1.64,
+      "peak": 0.6,
+      "rms": 0.0973
+    },
+    "patrol-3": {
+      "text": "La garde veille.",
+      "source": "Windows local speech synthesis",
+      "voice": "Microsoft Paul",
+      "seconds": 1.031,
+      "peak": 0.6,
+      "rms": 0.0833
+    },
+    "patrol-4": {
+      "text": "Rien à signaler de ce côté.",
+      "source": "Windows local speech synthesis",
+      "voice": "Microsoft Paul",
+      "seconds": 1.811,
+      "peak": 0.6,
+      "rms": 0.1166
+    }
+  },
+  "source": "French synthetic voices; voice_audio.ps1 + voice_audio.py",
+  "sampleRate": 22050,
+  "channels": 1,
+  "bits": 16
+}

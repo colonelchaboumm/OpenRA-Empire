@@ -1,0 +1,18 @@
+World:
+	MedievalCombatValidation:
+	MedievalWildHerds:
+		SpawnAnimals: False
+	MedievalDayNight:
+		DayTicks: 30000
+		NightTicks: 3000
+	MedievalWeather:
+		FirstRainTicks: 30000
+
+^MDWORKER:
+	MedievalCombatProbe:
+	MedievalNeedsFood:
+		MealInterval: 30000
+		StarvationDelay: 60000
+
+^MDOBJECT:
+	MedievalCombatProbe:

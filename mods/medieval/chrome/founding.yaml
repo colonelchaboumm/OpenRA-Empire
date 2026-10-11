@@ -1,0 +1,38 @@
+Container@PLAYER_WIDGETS:
+	Children:
+		Background@MD_FOUNDING_PANEL:
+			X: 12
+			Y: 154
+			Width: 470
+			Height: 210
+			Background: md-panel
+			Children:
+				Label@MD_FOUNDING_TITLE:
+					X: 10
+					Y: 6
+					Width: 450
+					Height: 20
+					Font: TinyBold
+				Button@MD_FOUNDING_DEPLOY:
+					X: 10
+					Y: 34
+					Width: 450
+					Height: 28
+					Font: Bold
+					Background: md-button
+				Label@MD_FOUNDING_STATUS:
+					X: 10
+					Y: 74
+					Width: 450
+					Height: 45
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_FOUNDING_HINT:
+					X: 10
+					Y: 127
+					Width: 450
+					Height: 78
+					Font: Tiny
+					WordWrap: True
+					VAlign: Top

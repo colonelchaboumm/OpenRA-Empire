@@ -1,0 +1,56 @@
+Container@INGAME_MENU:
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Logic: IngameMenuLogic, MedievalPauseOverviewLogic
+		Buttons: RESUME, LOAD_GAME, SAVE_GAME, SETTINGS, SURRENDER, RESTART, BACK_TO_EDITOR, ABORT_MISSION, SAVE_MAP, PLAY_MAP, EXIT_EDITOR
+		ButtonStride: 0, 40
+	Children:
+		Background@MENU_BUTTONS:
+			X: 26
+			Y: (WINDOW_HEIGHT - HEIGHT) / 2
+			Width: 260
+			Height: 120
+			Children:
+				Label@LABEL_TITLE:
+					X: (PARENT_WIDTH - WIDTH) / 2
+					Y: 20
+					Width: 260
+					Height: 30
+					Text: md-menu-pause
+					Align: Center
+					Font: Bold
+				Button@BUTTON_TEMPLATE:
+					X: (PARENT_WIDTH - WIDTH) / 2
+					Y: 60
+					Width: 228
+					Height: 30
+					Font: Bold
+		Background@MD_PAUSE_OVERVIEW:
+			X: WINDOW_WIDTH - 620
+			Y: (WINDOW_HEIGHT - HEIGHT) / 2
+			Width: 580
+			Height: 420
+			Children:
+				Label@MD_PAUSE_HEADING:
+					X: 26
+					Y: 20
+					Width: 528
+					Height: 32
+					Font: BigBold
+					Text: md-pause-domain
+					TextColor: DAC08A
+				Label@MD_PAUSE_REGION:
+					X: 26
+					Y: 65
+					Width: 528
+					Height: 30
+					Font: Bold
+					WordWrap: True
+				Label@MD_PAUSE_STATUS:
+					X: 26
+					Y: 125
+					Width: 528
+					Height: 255
+					Font: Regular
+					WordWrap: True
+					VAlign: Top

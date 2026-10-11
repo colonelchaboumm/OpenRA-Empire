@@ -1,0 +1,483 @@
+md.builder:
+	water-empty-stand:
+		Filename: fire-preview|art/water-builder.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Filename: fire-preview|art/water-builder.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Filename: fire-preview|art/water-builder.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Filename: fire-preview|art/water-builder.png
+		Offset: 0, -12
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Filename: fire-preview|art/water-builder.png
+		Offset: 0, -12
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Filename: fire-preview|art/water-builder.png
+		Offset: 0, -12
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.hauler:
+	water-empty-stand:
+		Filename: fire-preview|art/water-hauler.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Filename: fire-preview|art/water-hauler.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Filename: fire-preview|art/water-hauler.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Filename: fire-preview|art/water-hauler.png
+		Offset: 0, -12
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Filename: fire-preview|art/water-hauler.png
+		Offset: 0, -12
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Filename: fire-preview|art/water-hauler.png
+		Offset: 0, -12
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.lumberjack:
+	water-empty-stand:
+		Filename: fire-preview|art/water-lumberjack.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Filename: fire-preview|art/water-lumberjack.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Filename: fire-preview|art/water-lumberjack.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Filename: fire-preview|art/water-lumberjack.png
+		Offset: 0, -12
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Filename: fire-preview|art/water-lumberjack.png
+		Offset: 0, -12
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Filename: fire-preview|art/water-lumberjack.png
+		Offset: 0, -12
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.stonecutter:
+	water-empty-stand:
+		Filename: fire-preview|art/water-stonecutter.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Filename: fire-preview|art/water-stonecutter.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Filename: fire-preview|art/water-stonecutter.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Filename: fire-preview|art/water-stonecutter.png
+		Offset: 0, -12
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Filename: fire-preview|art/water-stonecutter.png
+		Offset: 0, -12
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Filename: fire-preview|art/water-stonecutter.png
+		Offset: 0, -12
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.farmer:
+	water-empty-stand:
+		Filename: fire-preview|art/water-farmer.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Filename: fire-preview|art/water-farmer.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Filename: fire-preview|art/water-farmer.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Filename: fire-preview|art/water-farmer.png
+		Offset: 0, -12
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Filename: fire-preview|art/water-farmer.png
+		Offset: 0, -12
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Filename: fire-preview|art/water-farmer.png
+		Offset: 0, -12
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.breeder:
+	water-empty-stand:
+		Filename: fire-preview|art/water-breeder.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Filename: fire-preview|art/water-breeder.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Filename: fire-preview|art/water-breeder.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Filename: fire-preview|art/water-breeder.png
+		Offset: 0, -12
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Filename: fire-preview|art/water-breeder.png
+		Offset: 0, -12
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Filename: fire-preview|art/water-breeder.png
+		Offset: 0, -12
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.blacksmith:
+	water-empty-stand:
+		Filename: fire-preview|art/water-blacksmith.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Filename: fire-preview|art/water-blacksmith.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Filename: fire-preview|art/water-blacksmith.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Filename: fire-preview|art/water-blacksmith.png
+		Offset: 0, -12
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Filename: fire-preview|art/water-blacksmith.png
+		Offset: 0, -12
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Filename: fire-preview|art/water-blacksmith.png
+		Offset: 0, -12
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.recruiter:
+	water-empty-stand:
+		Filename: fire-preview|art/water-recruiter.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Filename: fire-preview|art/water-recruiter.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Filename: fire-preview|art/water-recruiter.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Filename: fire-preview|art/water-recruiter.png
+		Offset: 0, -12
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Filename: fire-preview|art/water-recruiter.png
+		Offset: 0, -12
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Filename: fire-preview|art/water-recruiter.png
+		Offset: 0, -12
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.shepherd:
+	water-empty-stand:
+		Filename: fire-preview|art/water-shepherd.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Filename: fire-preview|art/water-shepherd.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Filename: fire-preview|art/water-shepherd.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Filename: fire-preview|art/water-shepherd.png
+		Offset: 0, -12
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Filename: fire-preview|art/water-shepherd.png
+		Offset: 0, -12
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Filename: fire-preview|art/water-shepherd.png
+		Offset: 0, -12
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.weaver:
+	water-empty-stand:
+		Filename: fire-preview|art/water-weaver.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Filename: fire-preview|art/water-weaver.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Filename: fire-preview|art/water-weaver.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Filename: fire-preview|art/water-weaver.png
+		Offset: 0, -12
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Filename: fire-preview|art/water-weaver.png
+		Offset: 0, -12
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Filename: fire-preview|art/water-weaver.png
+		Offset: 0, -12
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120
+
+md.militia:
+	water-empty-stand:
+		Filename: fire-preview|art/water-militia.png
+		Offset: 0, -12
+		Start: 0
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-empty-run:
+		Filename: fire-preview|art/water-militia.png
+		Offset: 0, -12
+		Start: 64
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-stand:
+		Filename: fire-preview|art/water-militia.png
+		Offset: 0, -12
+		Start: 128
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-run:
+		Filename: fire-preview|art/water-militia.png
+		Offset: 0, -12
+		Start: 192
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-fill:
+		Filename: fire-preview|art/water-militia.png
+		Offset: 0, -12
+		Start: 256
+		Length: 8
+		Facings: 8
+		Tick: 120
+	water-pour:
+		Filename: fire-preview|art/water-militia.png
+		Offset: 0, -12
+		Start: 320
+		Length: 8
+		Facings: 8
+		Tick: 120

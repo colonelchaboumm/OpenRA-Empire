@@ -1,0 +1,28 @@
+{
+  "source": "Original procedural synthesis; church_gold_animation.py",
+  "sampleRate": 22050,
+  "channels": 1,
+  "bits": 16,
+  "assets": {
+    "church-bell-1": {
+      "seconds": 5.8,
+      "peak": 0.73,
+      "rms": 0.0823
+    },
+    "gold-sort-1": {
+      "seconds": 1.15,
+      "peak": 0.52,
+      "rms": 0.0858
+    },
+    "church-bell-2": {
+      "seconds": 5.8,
+      "peak": 0.73,
+      "rms": 0.083
+    },
+    "gold-sort-2": {
+      "seconds": 1.15,
+      "peak": 0.52,
+      "rms": 0.0759
+    }
+  }
+}

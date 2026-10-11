@@ -1,0 +1,11 @@
+World:
+	MedievalLodgeLightsValidation:
+	MedievalDayNight:
+		DayTicks: 1000
+		NightTicks: 800
+	MedievalWeather:
+		FirstRainTicks: 30000
+	MedievalSeasons:
+		SeasonTicks: 3000
+	MedievalWildHerds:
+		SpawnAnimals: False

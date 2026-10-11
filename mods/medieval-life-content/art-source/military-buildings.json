@@ -1,0 +1,15 @@
+{
+  "tool": "Built-in image_gen",
+  "reference": "buildings-isometric.png",
+  "outputs": [
+    {
+      "file": "forge-isometric.png",
+      "prompt": "Use case: stylized-concept. Production sprite for a medieval isometric RTS in the classic Red Alert spirit, matching the attached village architecture style reference only. Exactly ONE building fully visible and centered with padding, genuine alpha transparent background. Orthographic 2:1 dimetric view with parallel ground edges sloping 1 vertical to 2 horizontal, top-left illumination. Warm painted pre-rendered game aesthetic, readable at 140 pixels wide, natural oak beams, rough stone, muted blue details, restrained crisp detail. No text, logos, watermark, large terrain base, surrounding buildings, or people. A working medieval blacksmith forge, low 3-by-2-cell footprint, half-timber workshop under weathered terracotta tiles, thick short stone chimney rising from the left rear roof, open front smithing bay with glowing brick furnace, large dark anvil on a stump near the front edge, bellows, hammer rack, compact bundles of wood and stone. No smoke baked in. Keep silhouette squat and rustic."
+    },
+    {
+      "file": "barracks-isometric.png",
+      "prompt": "Use case: stylized-concept. Production sprite for a medieval isometric RTS in the classic Red Alert spirit, matching the attached village architecture style reference only. Exactly ONE building fully visible and centered with padding, genuine alpha transparent background. Orthographic 2:1 dimetric view with parallel ground edges sloping 1 vertical to 2 horizontal, top-left illumination. Warm painted pre-rendered game aesthetic, readable at 140 pixels wide, natural oak beams, rough stone, muted blue details, restrained crisp detail. No text, logos, watermark, large terrain base, surrounding buildings, or people. A medieval wooden-and-stone barracks on a compact square 3-by-3-cell footprint. Main stout half-timber military hall with blue-grey slate pitched roof, broad open central doorway, small plain blue military banners, a sword-and-shield emblem with no writing above door, and a compact open training yard with a wooden practice dummy and bow target on the visible front side. Low perimeter timber rails with wide open access. Taller than the forge but not a tower."
+    }
+  ],
+  "packing": "Proportional crop/resize preserving alpha, tools/military_art.py"
+}

@@ -1,0 +1,13 @@
+World:
+	MedievalTowerGarrisonValidation:
+
+md.towertarget:
+	Inherits: md.militia
+	RenderSprites:
+		Image: md.militia
+	Health:
+		HP: 100000
+	-MedievalNeedsFood:
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire

@@ -1,0 +1,20 @@
+World:
+	MedievalMessengerValidation:
+
+md.messengerattacker:
+	Inherits: md.swordsman
+	RenderSprites:
+		Image: md.swordsman
+	-MedievalNeedsFood:
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
+
+md.messengerinterceptor:
+	Inherits: md.elitearcher
+	RenderSprites:
+		Image: md.elitearcher
+	-MedievalNeedsFood:
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire

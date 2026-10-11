@@ -1,0 +1,22 @@
+name: Empire updater checks
+on:
+  push:
+    paths:
+      - 'distribution/**'
+      - '.github/workflows/empire-checks.yml'
+  pull_request:
+    paths:
+      - 'distribution/**'
+permissions:
+  contents: read
+jobs:
+  updater:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test updates, interruption, rollback and archive validation
+        shell: powershell
+        run: ./distribution/tests/Test-Updater.ps1
+      - name: Compile Windows bootstrap
+        shell: powershell
+        run: ./distribution/Build.Bootstrap.ps1 -Output "$env:RUNNER_TEMP/Empire.exe"

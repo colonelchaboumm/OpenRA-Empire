@@ -1,0 +1,141 @@
+World:
+	MedievalDayNight:
+
+^MDWORKER:
+	MedievalRest:
+	Targetable:
+		RequiresCondition: !sleeping
+
+^MDFIGHTER:
+	AutoTarget:
+		RequiresCondition: !sleeping
+	AttackFrontal:
+		RequiresCondition: !sleeping
+
+md.house:
+	MedievalShelter:
+		Beds: 8
+
+md.warehouse:
+	MedievalShelter:
+		Beds: 12
+	MedievalCampStore:
+		Public: True
+
+md.foundingmarket:
+	MedievalShelter:
+		Beds: 3
+
+md.market:
+	MedievalCampStore:
+		Public: True
+
+md.marketstall:
+	MedievalCampStore:
+		Public: True
+		Capacity: 40, 4, 0, 0
+
+md.supplycart:
+	MedievalCampStore:
+		Capacity: 0, 4, 0, 0
+	MedievalCampCart:
+
+md.tradecart:
+	-MedievalCampCart:
+	-MedievalCampStore:
+
+md.drummer:
+	MedievalTorch:
+
+md.standardbearer:
+	MedievalTorch:
+
+md.sheepfold:
+	Inherits: ^MDBUILDING
+	MedievalBuildingAnimation:
+		Motion: Sheep
+		FrameTicks: 4
+	Tooltip:
+		Name: medieval-sheepfold
+	Building:
+		Dimensions: 3,2
+		Footprint: xxx xxx
+	MedievalBuilding:
+		Cost: 70, 0, 0, 15
+	MedievalCampStore:
+		Capacity: 80, 0, 0, 0
+
+md.sheeppasture:
+	Inherits: md.pasture
+	Tooltip:
+		Name: medieval-sheeppasture
+	MedievalBuilding:
+		ExpansionOf: md.sheepfold
+	MedievalSource:
+		Resource: Wood
+		Amount: 8
+		GrowthTicks: 1000
+	MedievalAgriculturalArea:
+		Profession: shepherd
+		Farm: md.sheepfold
+
+md.shepherd:
+	Inherits: ^MDWORKER
+	Tooltip:
+		Name: medieval-shepherd
+	MedievalWorker:
+		Profession: shepherd
+		Resource: Wood
+
+md.weaver:
+	Inherits: ^MDWORKER
+	Tooltip:
+		Name: medieval-weaver
+	MedievalWorker:
+		Profession: weaver
+
+md.tentweaver:
+	Inherits: ^MDBUILDING
+	MedievalBuildingAnimation:
+		Motion: Loom
+		FrameTicks: 3
+	Tooltip:
+		Name: medieval-tentweaver
+	Building:
+		Dimensions: 3,2
+		Footprint: xxx xxx
+	MedievalBuilding:
+		Cost: 80, 0, 0, 20
+	MedievalTentWorkshop:
+	MedievalCampStore:
+		Capacity: 8, 1, 0, 0
+
+md.militarytent:
+	Inherits: ^MDBUILDING
+	RenderSprites:
+		-Palette:
+		PlayerPalette: md-livery
+	Tooltip:
+		Name: medieval-militarytent
+	Building:
+		Dimensions: 2,2
+		Footprint: xx xx
+	Health:
+		HP: 12000
+	MedievalBuilding:
+		Cost: 0, 0, 0, 0
+	MedievalShelter:
+		Beds: 6
+		Military: True
+	MedievalPackTent:
+
+md.torch:
+	Inherits: ^MDDECORATION
+	Tooltip:
+		Name: medieval-torch
+	Building:
+		Footprint: x
+	MedievalBuilding:
+		Cost: 5, 0, 0, 1
+		Work: 8
+	MedievalTorch:

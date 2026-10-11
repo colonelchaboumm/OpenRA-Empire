@@ -1,0 +1,1 @@
+medieval-standardbearer = Porte-drapeau

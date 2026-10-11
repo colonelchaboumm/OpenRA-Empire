@@ -1,0 +1,47 @@
+World:
+	MedievalFireResponse:
+
+md.well:
+	MedievalWell:
+
+md.builder:
+	MedievalFirefighter:
+
+md.hauler:
+	MedievalFirefighter:
+
+md.lumberjack:
+	MedievalFirefighter:
+
+md.stonecutter:
+	MedievalFirefighter:
+
+md.farmer:
+	MedievalFirefighter:
+
+md.breeder:
+	MedievalFirefighter:
+
+md.blacksmith:
+	MedievalFirefighter:
+
+md.recruiter:
+	MedievalFirefighter:
+
+md.shepherd:
+	MedievalFirefighter:
+
+md.weaver:
+	MedievalFirefighter:
+
+md.militia:
+	MedievalFirefighter:
+		BusyCondition: firefighting
+	AutoTarget:
+		RequiresCondition: !sleeping && !herding && !firefighting
+	AttackFrontal:
+		RequiresCondition: !sleeping && !herding && !firefighting
+
+md.saboteur:
+	MedievalTorch:
+		ScalePercent: 35

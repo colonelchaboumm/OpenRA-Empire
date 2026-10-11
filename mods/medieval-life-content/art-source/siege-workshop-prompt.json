@@ -1,0 +1,9 @@
+{
+  "asset": "siege-workshop.png",
+  "date": "2026-10-09",
+  "mode": "Built-in image_gen.imagegen",
+  "transparent_background": true,
+  "source_output": "C:/Users/valen/.codex/generated_images/01a114d1-ec6d-75a1-8506-e817242f29ec/exec-9d102785-e260-4c5e-a114-64a519c15a5d.png",
+  "prompt": "Use case: stylized-concept. Asset type: transparent isometric building sprite for a medieval real time strategy game in the classic Command & Conquer Red Alert / Stronghold painted pre-rendered visual tradition. Create ONE medieval siege workshop building, isolated with real transparent background. Orthographic 2:1 dimetric perspective, camera sees front and right side, ground axes slopes exactly 1:2, no perspective convergence. Rectangular footprint about 4 by 3 game tiles. Low broad timber-framed workshop with dark blue-grey shingle roof covering the back half, open work bays facing front, visible heavy oak beams, a small wooden gantry hoist, neatly stacked cut timbers and a few stone ammunition balls in the front yard. Warm oak, weathered cream plaster, rugged stone foundations, subtle blue player-color banners. Compact readable silhouette, physically plausible scale, detailed hand-painted game asset, restrained dark outlines, light from upper left. No people, no finished siege machines, no modern machinery, no text, no lettering, no UI, no labels, no base tile, no environment. Entire building and yard fully visible with generous transparent margin, no cropped parts. Transparent PNG.",
+  "integration": "tools/siege_art.py crops and resamples the source preserving its alpha, then tools/generate-content.py packs the idle and construction frames into art/siegeworkshop.png. All engine sprites and their eight-direction animations are editable code-native artwork in tools/siege_art.py, using the existing citizen poses from tools/animation_art.py. No image API is needed to rebuild the mod."
+}

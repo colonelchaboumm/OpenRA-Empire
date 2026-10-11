@@ -1,0 +1,25 @@
+World:
+	MedievalHerdValidation:
+	MedievalWildHerds:
+		SpawnAnimals: False
+	MedievalDayNight:
+		DayTicks: 12000
+		NightTicks: 3000
+	MedievalWeather:
+		FirstRainTicks: 20000
+
+md.pasture:
+	MedievalLivestock:
+		BirthTicks: 250
+
+md.sheeppasture:
+	MedievalLivestock:
+		BirthTicks: 250
+
+md.cow:
+	MedievalAnimal:
+		MaturityTicks: 150
+
+md.sheep:
+	MedievalAnimal:
+		MaturityTicks: 150

@@ -1,0 +1,8 @@
+{
+  "tool": "image_gen.imagegen",
+  "prompt": "Create one isolated medieval village well game sprite on transparent background. Reference image is ONLY a style reference; do not reproduce the atlas. One single small circular grey stone well, dark water opening, two timber uprights, wooden winding spindle and hanging rope bucket, small dark blue slate pitched roof. Match the reference's richly hand-painted late-1990s isometric RTS art: warm wood, textured masonry, crisp readable silhouette, light from upper left, orthographic 2:1 isometric ground axes. Full object fits comfortably, no cropping. No people, text, labels, panels, broad ground slab, grass patch or background. Compact one-tile footprint, square ground perspective, thin contact shadow, transparent outside the object.",
+  "reference": "buildings-isometric.png",
+  "output": "well-isometric.png",
+  "transparent_background": true,
+  "date": "2026-10-08"
+}

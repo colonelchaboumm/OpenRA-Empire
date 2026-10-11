@@ -1,0 +1,515 @@
+^BaseWorld:
+	MusicPlaylist:
+		StartingMusic:
+		VictoryMusic:
+		DefeatMusic:
+
+World:
+	MedievalAudio:
+	MedievalTrails:
+	MedievalAmbience:
+	-CrateSpawner:
+	-SpawnStartingUnits:
+	-StartingUnits@mcvonly:
+	-StartingUnits@lightallies:
+	-StartingUnits@lightsoviet:
+	-StartingUnits@heavyallies:
+	-StartingUnits@heavysoviet:
+
+Player:
+	MedievalLocalities:
+	MedievalSettlement:
+	MedievalFoodEconomy:
+	-ConquestVictoryConditions:
+	PlayerResources:
+		DefaultCash: 0
+
+^MDOBJECT:
+	MedievalActorAudio:
+	BodyOrientation:
+		QuantizedFacings: 1
+	RenderSprites:
+		Palette: player
+	IsometricSelectable:
+		Height: 52
+	IsometricSelectionDecorations:
+	Tooltip:
+		Name: medieval-house
+	Health:
+		HP: 50000
+	Armor:
+		Type: Wood
+	Targetable:
+		TargetTypes: GroundActor, Structure
+	HitShape:
+		Type: Circle
+			Radius: 768
+	Building:
+		Dimensions: 2,2
+		Footprint: xx xx
+		TerrainTypes: Clear, Road, Rough
+		RequiresBaseProvider: False
+	AppearsOnRadar:
+	RevealsShroud:
+		Range: 5c0
+		Type: CenterPosition
+	MedievalStockDisplay:
+	MapEditorData:
+		Categories: Medieval
+
+^MDBUILDING:
+	Inherits: ^MDOBJECT
+	MedievalBuilding:
+	WithSpriteBody:
+		RequiresCondition: built
+	WithSpriteBody@SITE:
+		Name: site
+		Sequence: construction
+		RequiresCondition: !built
+
+md.house:
+	Inherits: ^MDBUILDING
+	MedievalChimney:
+	Tooltip:
+		Name: medieval-house
+	MedievalBuilding:
+		Cost: 60, 0, 0, 20
+		Population: 8
+
+md.warehouse:
+	Inherits: ^MDBUILDING
+	MedievalStockyard:
+	MedievalStockDisplay:
+		LabelHeight: 86
+	ProvidesRadar:
+		RequiresCondition: built
+	Building:
+		Dimensions: 3,3
+		Footprint: xxx xxx xxx
+	Tooltip:
+		Name: medieval-warehouse
+	MedievalBuilding:
+		Cost: 100, 0, 0, 40
+		Population: 12
+	MedievalStockpile:
+		Warehouse: True
+		Capacity: 400, 250, 200, 300
+	MedievalConstructionSupply:
+		Radius: 20c0
+
+md.sawmill:
+	Inherits: ^MDBUILDING
+	MedievalBuildingAnimation:
+		Motion: Saw
+		FrameTicks: 3
+	Building:
+		Dimensions: 3,2
+		Footprint: xxx xxx
+	Tooltip:
+		Name: medieval-sawmill
+	MedievalBuilding:
+		Cost: 50, 0, 0, 10
+	MedievalStockpile:
+		Capacity: 100, 0, 0, 0
+		Profession: lumberjack
+
+md.market:
+	Inherits: ^MDBUILDING
+	MedievalLocality:
+	MedievalBuildingAnimation:
+		Motion: Vendor
+		FrameTicks: 6
+	MedievalStockDisplay:
+		LabelHeight: 110
+	Building:
+		Dimensions: 3,2
+		Footprint: xxx xxx
+	Tooltip:
+		Name: medieval-market
+	MedievalBuilding:
+		Cost: 80, 0, 0, 30
+	MedievalStockpile:
+		Capacity: 120, 200, 120, 120
+	MedievalFoodProvider:
+		Radius: 16c0
+	MedievalMarket:
+	MedievalTradeMarket:
+	MedievalConstructionSupply:
+		Radius: 16c0
+
+md.marketstall:
+	Inherits: ^MDBUILDING
+	MedievalLocality:
+		LabelHeight: 124
+	Building:
+		Dimensions: 2,1
+		Footprint: xx
+	Tooltip:
+		Name: medieval-marketstall
+	IsometricSelectable:
+		Height: 36
+	MedievalBuilding:
+		Cost: 25, 0, 0, 5
+		Work: 24
+	MedievalStockpile:
+		Capacity: 60, 80, 0, 60
+	MedievalStockDisplay:
+		LabelHeight: 68
+	MedievalFoodProvider:
+		Radius: 6c0
+	MedievalConstructionSupply:
+		Radius: 6c0
+	MedievalMarketStall:
+	MedievalStockyard:
+		MinimumSize: 2
+	MedievalBuildingAnimation:
+		Motion: Vendor
+		FrameTicks: 6
+
+md.quarry:
+	Inherits: md.sawmill
+	MedievalBuildingAnimation:
+		Motion: Crane
+		FrameTicks: 8
+	MedievalStockDisplay:
+		LabelHeight: 108
+	Tooltip:
+		Name: medieval-quarry
+	MedievalBuilding:
+		Cost: 50, 0, 0, 10
+	MedievalStockpile:
+		Capacity: 0, 0, 0, 100
+		Profession: stonecutter
+
+md.farm:
+	Inherits: ^MDBUILDING
+	MedievalWindmill:
+	MedievalStockDisplay:
+		LabelHeight: 122
+	Building:
+		Dimensions: 3,3
+		Footprint: xxx xxx xxx
+	Tooltip:
+		Name: medieval-farm
+	MedievalBuilding:
+		Cost: 60, 0, 0, 20
+	MedievalStockpile:
+		Capacity: 0, 100, 0, 0
+		Profession: farmer
+
+md.ranch:
+	Inherits: md.farm
+	-MedievalWindmill:
+	MedievalStockDisplay:
+		LabelHeight: 96
+	Tooltip:
+		Name: medieval-ranch
+	MedievalStockpile:
+		Capacity: 0, 0, 100, 0
+		Profession: breeder
+
+md.field:
+	Inherits: ^MDBUILDING
+	IsometricSelectable:
+		Height: 0
+		DecorationHeight: 8
+	Building:
+		Footprint: == ==
+	Tooltip:
+		Name: medieval-field
+	MedievalBuilding:
+		Cost: 15, 0, 0, 0
+		Work: 12
+		ExpansionOf: md.farm
+	MedievalSource:
+		Resource: Food
+		Amount: 40
+		Renewable: True
+		GrowthTicks: 900
+	MedievalAgriculturalArea:
+		Profession: farmer
+		Farm: md.farm
+		CellsPerWorker: 4
+
+md.pasture:
+	Inherits: md.field
+	Building:
+		Footprint: xx x=
+	Tooltip:
+		Name: medieval-pasture
+	MedievalBuilding:
+		Cost: 25, 0, 0, 5
+		ExpansionOf: md.ranch
+	MedievalSource:
+		Resource: Meat
+		Amount: 30
+		GrowthTicks: 1400
+	MedievalAgriculturalArea:
+		Profession: breeder
+		Farm: md.ranch
+		CellsPerWorker: 8
+		CellsPerCow: 4
+
+md.tree:
+	Inherits: ^MDOBJECT
+	MedievalWindVegetation:
+		EmissionHeight: 66
+	-IsometricSelectable:
+	-IsometricSelectionDecorations:
+	SelectionDecorations:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	Selectable:
+		Bounds: 2200, 6000, 0, -2700
+	Tooltip:
+		Name: medieval-tree
+	-RevealsShroud:
+	WithSpriteBody:
+	MedievalSource:
+		Resource: Wood
+		Amount: 200
+		Natural: Tree
+		Renewable: False
+		RemnantActor: md.stump
+
+md.pine:
+	Inherits: md.tree
+
+md.birch:
+	Inherits: md.tree
+
+md.shrub:
+	RenderSprites:
+	WithSpriteBody:
+	MedievalWindVegetation:
+		Amplitude: 1.6
+		HideUnderBuildings: True
+	BodyOrientation:
+		QuantizedFacings: 1
+	Immobile:
+		OccupiesSpace: False
+	MapEditorData:
+		Categories: Medieval
+
+md.grasses:
+	Inherits: md.shrub
+	MedievalWindVegetation:
+		Amplitude: 2.8
+		Particles: Seed
+		EmissionHeight: 15
+
+md.flowers:
+	Inherits: md.shrub
+	MedievalWindVegetation:
+		Amplitude: 2.2
+		Particles: Petal
+		EmissionHeight: 10
+
+md.stone:
+	Inherits: md.tree
+	-MedievalWindVegetation:
+	Selectable:
+		Bounds: 1536, 1536
+	Tooltip:
+		Name: medieval-stone
+	MedievalSource:
+		Resource: Stone
+		Amount: 350
+		Natural: Stone
+		RemnantActor: md.rubble
+
+md.stump:
+	Inherits: md.shrub
+	MedievalWindVegetation:
+		Amplitude: 0
+		EmitParticles: False
+
+md.rubble:
+	Inherits: md.stump
+
+md.salvage:
+	Inherits: ^MDOBJECT
+	Building:
+		Dimensions: 1,1
+		Footprint: =
+	IsometricSelectable:
+		Height: 16
+	Tooltip:
+		Name: medieval-salvage
+	WithSpriteBody:
+	MedievalStockpile:
+		Capacity: 1000, 1000, 1000, 1000
+
+^MDWORKER:
+	MedievalActorAudio:
+	BodyOrientation:
+	QuantizeFacingsFromSequence:
+		Sequence: stand
+	RenderSprites:
+		Palette: player
+	WithMedievalInfantryBody:
+	Selectable:
+		Bounds: 768, 1024, 0, -256
+	SelectionDecorations:
+	DrawLineToTarget:
+	Tooltip:
+		Name: medieval-builder
+	Health:
+		HP: 5000
+	Armor:
+		Type: None
+	Targetable:
+		TargetTypes: GroundActor, Infantry
+	HitShape:
+		Type: Circle
+			Radius: 128
+	Mobile:
+		Locomotor: foot
+		Speed: 64
+		AlwaysTurnInPlace: True
+		Voice:
+	RevealsShroud:
+		Range: 4c0
+	AppearsOnRadar:
+	MedievalWorker:
+	MedievalRecruitable:
+		Food: 10
+		Meat: 0
+	MedievalNeedsFood:
+		MealInterval: 750
+		StarvationDelay: 3000
+		DamageInterval: 125
+		StarvationDamagePercent: 5
+		HungrySpeedPercent: 75
+		HungryFirepowerPercent: 75
+		HungryWorkPercent: 50
+	MedievalStockDisplay:
+	MapEditorData:
+		Categories: Medieval
+
+md.builder:
+	Inherits: ^MDWORKER
+	Tooltip:
+		Name: medieval-builder
+	MedievalWorker:
+		Profession: builder
+
+md.hauler:
+	Inherits: ^MDWORKER
+	Tooltip:
+		Name: medieval-hauler
+	MedievalWorker:
+		Profession: hauler
+		Capacity: 20
+
+md.lumberjack:
+	Inherits: ^MDWORKER
+	Tooltip:
+		Name: medieval-lumberjack
+	MedievalWorker:
+		Profession: lumberjack
+		Resource: Wood
+
+md.stonecutter:
+	Inherits: ^MDWORKER
+	Tooltip:
+		Name: medieval-stonecutter
+	MedievalWorker:
+		Profession: stonecutter
+		Resource: Stone
+
+md.farmer:
+	Inherits: ^MDWORKER
+	Tooltip:
+		Name: medieval-farmer
+	MedievalWorker:
+		Profession: farmer
+		Resource: Food
+
+md.breeder:
+	Inherits: ^MDWORKER
+	Tooltip:
+		Name: medieval-breeder
+	MedievalWorker:
+		Profession: breeder
+		Resource: Meat
+
+^MDFIGHTER:
+	Inherits: ^MDWORKER
+	-MedievalWorker:
+	WithMedievalInfantryBody:
+		DefaultAttackSequence: attack
+	MedievalRecruitable:
+		Food: 20
+		Meat: 0
+	Health:
+		HP: 8000
+	Armament:
+		Weapon: MedievalClub
+	AttackFrontal:
+		Voice:
+	AttackMove:
+		Voice:
+	AutoTarget:
+		InitialStance: Defend
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: GroundActor
+
+md.militia:
+	Inherits: ^MDFIGHTER
+	Tooltip:
+		Name: medieval-militia
+
+md.manatarms:
+	Inherits: ^MDFIGHTER
+	Tooltip:
+		Name: medieval-manatarms
+	MedievalRecruitable:
+		Food: 30
+		Meat: 10
+	Health:
+		HP: 14000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 56
+	Armament:
+		Weapon: MedievalSword
+
+md.supplycart:
+	Inherits: ^MDWORKER
+	-MedievalWorker:
+	Tooltip:
+		Name: medieval-supplycart
+	Selectable:
+		Bounds: 1536, 1536, 0, -256
+	Mobile:
+		Speed: 48
+	Health:
+		HP: 7000
+	MedievalRecruitable:
+		Food: 20
+		Meat: 0
+	MedievalStockpile:
+		Capacity: 60, 60, 0, 60
+	MedievalFoodProvider:
+		Radius: 4c0
+	MedievalSupplyCart:
+	MedievalConstructionConvoy:
+	MedievalConstructionSupply:
+		Radius: 8c0
+
+md.tradecart:
+	Inherits: md.supplycart
+	-MedievalSupplyCart:
+	-MedievalConstructionConvoy:
+	-MedievalConstructionSupply:
+	-MedievalFoodProvider:
+	RenderSprites:
+		Image: md.supplycart
+	Tooltip:
+		Name: medieval-tradecart
+	MedievalStockpile:
+		Capacity: 60, 60, 60, 60
+	MedievalTradeCart:

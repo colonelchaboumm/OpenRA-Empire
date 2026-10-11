@@ -1,0 +1,11 @@
+World:
+	MedievalAuditValidation:
+	MedievalWildHerds:
+		SpawnAnimals: False
+	MedievalDayNight:
+		DayTicks: 30000
+
+^MDWORKER:
+	MedievalNeedsFood:
+		MealInterval: 30000
+		StarvationDelay: 60000

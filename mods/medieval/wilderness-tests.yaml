@@ -1,0 +1,6 @@
+World:
+	MedievalWildernessValidation:
+	MedievalWeather:
+		FirstRainTicks: 180
+		RainTicks: 480
+		DryTicks: 400

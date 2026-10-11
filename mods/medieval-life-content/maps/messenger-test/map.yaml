@@ -1,0 +1,44 @@
+MapFormat: 12
+RequiresMod: medieval
+Title: Validation des messagers
+Author: Projet medieval
+Tileset: TEMPERAT
+MapSize: 64,128
+Bounds: 2,2,60,124
+Visibility: MissionSelector
+Categories: Conquest
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Village:
+		Name: Village
+		Playable: True
+		AllowBots: False
+		Required: True
+		LockFaction: True
+		Faction: england
+		Color: 6C91B3
+	PlayerReference@Rival:
+		Name: Rival
+		Faction: england
+		Enemies: Village
+	PlayerReference@Third:
+		Name: Third
+		Faction: england
+		Enemies: Village
+Actors:
+	Spawn: mpspawn
+		Owner: Neutral
+		Location: 61,-3
+Rules:
+	Player:
+		Shroud:
+			FogCheckboxEnabled: False
+			ExploredMapCheckboxEnabled: True
