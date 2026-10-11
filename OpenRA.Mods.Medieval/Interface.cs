@@ -295,7 +295,7 @@ namespace OpenRA.Mods.Medieval
 					return $"Pavillon : {a.Trait<MedievalShelter>().Occupants(a)}/6 places | Cercle de repos : 6 cases | "
 						+ (a.Trait<MedievalCampArea>().RestEnabled ? "Repos ordonne" : "Attend le commandant") + " | Menu Campements & repos";
 				if (a.TraitOrDefault<MedievalTentWorkshop>() is MedievalTentWorkshop tents)
-					return $"Tisseur : 2 laine par tissu, 8 laine + 4 bois par tente | {tents.ProductName} {tents.Progress}/{tents.WorkRequired} | Cibles : {tents.Target} tentes, {tents.ClothTarget} tissu | Campements & repos";
+					return $"Tisseur : 2 laine par tissu, 4 tissus + 4 bois par tente | {tents.ProductName} {tents.Progress}/{tents.WorkRequired} | Cibles : {tents.Target} tentes, {tents.ClothTarget} tissu | Campements & repos";
 				if (a.Info.Name == "md.sheepfold") return $"Bergerie : {a.Trait<MedievalCampStore>().Stock.Amount(0)}/80 laine | Tracez un enclos et recrutez des eleveurs de moutons.";
 				if (a.TraitOrDefault<MedievalMarketStall>() is MedievalMarketStall stall) return stall.Description(a);
 				if (a.TraitOrDefault<MedievalMilitaryWorkshop>() is MedievalMilitaryWorkshop workshop)

@@ -82,7 +82,9 @@ namespace OpenRA.Mods.Medieval
 		[VerifySync] public int Target = 4;
 		[VerifySync] public int ClothTarget = 12;
 		[VerifySync] public int Product = MedievalCampStore.Cloth;
-		public int WoolRequired => Product == MedievalCampStore.Cloth ? 2 : 8;
+		public const int TentCloth = 4;
+		public int WoolRequired => Product == MedievalCampStore.Cloth ? 2 : 0;
+		public int ClothRequired => Product == MedievalCampStore.Cloth ? 0 : TentCloth;
 		public int WoodRequired => Product == MedievalCampStore.Cloth ? 0 : 4;
 		public int WorkRequired => Product == MedievalCampStore.Cloth ? 12 : info.WorkSteps;
 		public string ProductName => Product == MedievalCampStore.Cloth ? "tissu" : "pavillon";
@@ -97,14 +99,26 @@ namespace OpenRA.Mods.Medieval
 		bool Needed(Actor self, int product) => MedievalCampStore.Amount(self.Owner, product)
 			+ self.World.ActorsHavingTrait<MedievalWorker>().Where(a => a.Owner == self.Owner && MedievalStockpile.Active(a))
 				.Sum(a => a.Trait<MedievalWorker>() is { CampCargo: true } worker && worker.Resource == product ? worker.Cargo : 0) < (product == MedievalCampStore.Cloth ? ClothTarget : Target);
-		public bool Needed(Actor self) => Needed(self, Product);
+		public bool Needed(Actor self) => Needed(self, Product) || Product == MedievalCampStore.Cloth && Needed(self, 1)
+			&& self.Trait<MedievalCampStore>().Stock.Available(MedievalCampStore.Cloth)
+				+ self.Trait<MedievalCampStore>().Stock.Incoming(MedievalCampStore.Cloth) < TentCloth;
+		// Keep the next tent's fabric in the workshop. Both the artisan and haulers
+		// use the unreserved surplus so concurrent trips cannot export its inputs.
+		public int Exportable(Actor self, int product) => Math.Max(0, self.Trait<MedievalCampStore>().Stock.Available(product)
+			- (product == MedievalCampStore.Cloth && Needed(self, 1) ? TentCloth : 0));
 		public void Plan(Actor self)
 		{
-			if (Needed(self)) return;
-			var next = Product == 1 ? MedievalCampStore.Cloth : 1;
-			if (Needed(self, next)) { Product = next; Progress = 0; }
+			var stock = self.Trait<MedievalCampStore>().Stock;
+			var assemble = Needed(self, 1) && (stock.Available(MedievalCampStore.Cloth) >= TentCloth
+				|| stock.Incoming(MedievalCampStore.Cloth) > 0
+				|| MedievalCampStore.Stores(self.Owner).Any(a => a.Trait<MedievalCampStore>().Stock.Available(MedievalCampStore.Cloth) > 0));
+			// Finish a piece already being woven before switching to supplied fabric.
+			if (Product == MedievalCampStore.Cloth && Progress > 0 && Needed(self)) return;
+			var next = assemble ? 1 : MedievalCampStore.Cloth;
+			if (Product != next) { Product = next; Progress = 0; }
 		}
-		public bool Ready(Actor self) => Inputs.Available(0) >= WoodRequired && self.Trait<MedievalCampStore>().Stock.Available(0) >= WoolRequired;
+		public bool Ready(Actor self) => Inputs.Available(0) >= WoodRequired && self.Trait<MedievalCampStore>().Stock.Available(0) >= WoolRequired
+			&& self.Trait<MedievalCampStore>().Stock.Available(MedievalCampStore.Cloth) >= ClothRequired;
 		// Presentation follows the assigned citizen's real work, including stops and sleep.
 		public bool Working(Actor self) => MedievalStockpile.Active(artisan) && artisan.Owner == self.Owner && artisan.IsIdle
 			&& artisan.TraitOrDefault<MedievalRest>()?.Resting != true
@@ -115,8 +129,8 @@ namespace OpenRA.Mods.Medieval
 			var stock = self.Trait<MedievalCampStore>().Stock;
 			if (!Ready(self) || !Needed(self) || stock.Free(Product) == 0) return false;
 			if (++Progress < WorkRequired) return true;
-			Inputs.Take(0, WoodRequired); stock.Take(0, WoolRequired); stock.Add(Product, 1); Progress = 0;
-			// Alternate completed orders so the new textile demand cannot starve tents.
+			Inputs.Take(0, WoodRequired); stock.Take(0, WoolRequired); stock.Take(MedievalCampStore.Cloth, ClothRequired);
+			stock.Add(Product, 1); Progress = 0;
 			Product = Product == 1 ? MedievalCampStore.Cloth : 1;
 			return false;
 		}
@@ -149,9 +163,13 @@ namespace OpenRA.Mods.Medieval
 			var workshop = home.Trait<MedievalTentWorkshop>(); var goods = home.Trait<MedievalCampStore>().Stock;
 			foreach (var depot in MedievalCampStore.Stores(self.Owner).OrderBy(a => (a.CenterPosition - home.CenterPosition).HorizontalLengthSquared).ThenBy(a => a.ActorID))
 				foreach (var product in new[] { MedievalCampStore.Cloth, 1 })
-					if (ReserveTrip(home, goods, depot, depot.Trait<MedievalCampStore>().Stock, product, Info.Capacity, camp: true)) return;
+					if (ReserveTrip(home, goods, depot, depot.Trait<MedievalCampStore>().Stock, product, Math.Min(Info.Capacity, workshop.Exportable(home, product)), camp: true)) return;
 			workshop.Plan(home);
 			if (!workshop.Needed(home)) { Status = "Stocks cibles de tissu et de tentes atteints"; return; }
+			var clothNeeded = workshop.ClothRequired - goods.Available(MedievalCampStore.Cloth) - goods.Incoming(MedievalCampStore.Cloth);
+			if (clothNeeded > 0)
+				foreach (var depot in Nearby(self, _ => true, MedievalCampStore.Stores(self.Owner)))
+					if (ReserveTrip(depot, depot.Trait<MedievalCampStore>().Stock, home, goods, MedievalCampStore.Cloth, Math.Min(Info.Capacity, clothNeeded), camp: true)) return;
 			var woolNeeded = workshop.WoolRequired - goods.Amount(0) - goods.Incoming(0);
 			if (woolNeeded > 0)
 				foreach (var depot in Nearby(self, a => a.Owner == self.Owner && MedievalStockpile.Active(a) && a != home,
@@ -161,7 +179,10 @@ namespace OpenRA.Mods.Medieval
 			if (woodNeeded > 0)
 				foreach (var depot in MedievalConstructionSupply.Sources(self.Owner, home.CenterPosition))
 					if (ReserveTrip(depot, depot.Trait<MedievalStockpile>().Stock, home, workshop.Inputs, 0, woodNeeded)) return;
-			if (!workshop.Ready(home)) { Status = $"{workshop.ProductName} : attend {workshop.WoolRequired} laine et {workshop.WoodRequired} bois"; return; }
+			if (!workshop.Ready(home))
+			{
+				Status = workshop.Product == MedievalCampStore.Cloth ? "Tissu : attend 2 laine" : "Pavillon : attend 4 tissus et 4 bois"; return;
+			}
 			destination = home; phase = 7; Status = "Tisse : " + workshop.ProductName;
 		}
 		bool FindCampHaulingJob(Actor self)
@@ -176,7 +197,8 @@ namespace OpenRA.Mods.Medieval
 						for (var r = 0; r < MedievalCampStore.GoodsCount; r++)
 							if ((r != 0 || source.TraitOrDefault<MedievalTentWorkshop>() == null)
 								&& (r != MedievalCampStore.Cloth || source.TraitOrDefault<MedievalMilitaryWorkshop>() == null)
-							&& ReserveTrip(source, source.Trait<MedievalCampStore>().Stock, depot, depot.Trait<MedievalCampStore>().Stock, r, Math.Min(Info.Capacity, r == 1 ? 1 : 10), camp: true)) return true;
+							&& ReserveTrip(source, source.Trait<MedievalCampStore>().Stock, depot, depot.Trait<MedievalCampStore>().Stock, r,
+								Math.Min(Info.Capacity, source.TraitOrDefault<MedievalTentWorkshop>()?.Exportable(source, r) ?? (r == 1 ? 1 : 10)), camp: true)) return true;
 			return false;
 		}
 	}

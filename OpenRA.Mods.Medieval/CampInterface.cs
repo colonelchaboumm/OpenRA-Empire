@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Medieval
 			widget.Get<LabelWidget>("MD_CAMP_TITLE").GetText = () => "PAVILLONS MILITAIRES ET REPOS";
 			widget.Get<LabelWidget>("MD_CAMP_HINT").GetText = () => "Jour : 8 min / nuit : 2 min. Chaque saison dure 30 min.\nLes pavillons protègent les soldats de la pluie, de la neige et du froid.";
 			widget.Get<LabelWidget>("MD_CAMP_STOCK").GetText = () => $"Laine : {MedievalCampStore.Amount(p, 0)} | Tentes : {MedievalCampStore.Amount(p, 1)} | Tissu : {MedievalCampStore.Amount(p, 2)}";
-			widget.Get<LabelWidget>("MD_CAMP_RECIPE").GetText = () => "2 laine = 1 tissu. Drapeau / porte-drapeau : 2 tissus.\n1 pavillon = 8 laine + 4 bois. Abrite 6 soldats.";
+			widget.Get<LabelWidget>("MD_CAMP_RECIPE").GetText = () => "2 laine = 1 tissu. Drapeau / porte-drapeau : 2 tissus.\n1 pavillon = 4 tissus + 4 bois. Abrite 6 soldats.";
 			widget.Get<LabelWidget>("MD_CAMP_TARGET").GetText = () => Selected<MedievalTentWorkshop>() is Actor a
 				? $"Cible : {a.Trait<MedievalTentWorkshop>().Target} tentes | {a.Trait<MedievalTentWorkshop>().ProductName} {a.Trait<MedievalTentWorkshop>().Progress}/{a.Trait<MedievalTentWorkshop>().WorkRequired}"
 				: "Selectionnez le tisseur pour regler le stock cible (0 a 20).";

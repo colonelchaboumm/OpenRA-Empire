@@ -1,12 +1,13 @@
 World:
 	MedievalCampingValidation:
 	MedievalDayNight:
-		DayTicks: 4200
+		DayTicks: 6200
 		NightTicks: 700
 	MedievalWeather:
-		FirstRainTicks: 800
-		RainTicks: 4600
-		DryTicks: 400
+		# Complete textile production before exercising rain and night-time rest.
+		FirstRainTicks: 6000
+		RainTicks: 400
+		DryTicks: 30000
 
 md.campguard:
 	Inherits: md.militia

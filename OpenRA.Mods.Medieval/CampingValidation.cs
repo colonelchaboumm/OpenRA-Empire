@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Medieval
 	{
 		WorldRenderer renderer;
 		string output;
-		int tick, maxFatigue, restBefore, tentsBeforePack, tentsMade;
+		int tick, maxFatigue, restBefore, tentsBeforePack, tentsMade, maxCloth;
 		Actor market, depot, weaver, sheep, fold, shepherd, cart, house, soldier, tent, artisan, carrier, commander;
 		readonly HashSet<int> sheepFrames = [], loomFrames = [];
 		int stoppedArtisanAt;
@@ -86,9 +86,10 @@ namespace OpenRA.Mods.Medieval
 				tentCarried |= worker.CampCargo && worker.Resource == 1 && worker.Cargo > 0;
 			}
 			maxFatigue = Math.Max(maxFatigue, soldier.Trait<MedievalRest>().Fatigue);
+			maxCloth = Math.Max(maxCloth, MedievalCampStore.Amount(w.LocalPlayer, MedievalCampStore.Cloth));
 			rain |= w.WorldActor.Trait<MedievalWeather>().RainPermille > 500;
 			slept |= shepherd.Trait<MedievalRest>().Sleeping;
-			resumed |= slept && tick > 4950 && !shepherd.Trait<MedievalRest>().Resting && shepherd.Trait<MedievalWorker>().Automatic;
+			resumed |= slept && tick > 6950 && !shepherd.Trait<MedievalRest>().Resting && shepherd.Trait<MedievalWorker>().Automatic;
 			if (tick == 20) { Select(w, cart); Button(w, "OPEN"); Button(w, "LOAD"); }
 			if (tick == 30) Game.Renderer.SaveScreenshot(Path.Combine(output, "menu.png"));
 			if (tick == 40) { Check(cart.Trait<MedievalCampCart>().LoadTents, "Cart tent loading toggle did not reach simulation."); Button(w, "CLOSE"); }
@@ -109,29 +110,33 @@ namespace OpenRA.Mods.Medieval
 				});
 			}
 			if (tick == 700) w.IssueOrder(new Order("Move", soldier, Target.FromCell(w, Cell(32, 29)), false));
-			if (tick == 3600 && cart.Trait<MedievalCampStore>().Stock.Available(1) > 0)
+			if (tick == 5600 && cart.Trait<MedievalCampStore>().Stock.Available(1) > 0)
 			{
 				tentsMade = MedievalCampStore.Amount(w.LocalPlayer, 1);
+				Check(maxCloth == 4 && MedievalCampStore.Amount(w.LocalPlayer, MedievalCampStore.Cloth) == 0,
+					"A tent must first weave and then consume four cloth even with a zero cloth target.");
 				Check(depot.Trait<MedievalStockpile>().Stock.Amount(0) + weaver.Trait<MedievalTentWorkshop>().Inputs.Amount(0) == 96, "One tent must consume exactly four wood.");
 				w.IssueOrder(new Order("MedievalCommanderDeploy", commander, Target.FromCell(w, Cell(32, 31)), false));
 			}
-			if (tick == 3800)
+			if (tick == 5800)
 			{
 				tent = w.ActorsHavingTrait<MedievalPackTent>().FirstOrDefault(); deployed = tent != null;
 				Check(deployed, "The sheep-to-cart production chain must yield a deployable tent before night.");
 				if (tent != null) { Check(cart.Trait<MedievalCampStore>().Stock.Amount(1) == 0, "Deployment must consume the carried tent."); Order(weaver, "MedievalTentTarget"); }
 			}
-			if (tick == 3850) w.IssueOrder(new Order("Move", commander, Target.FromCell(w, Cell(26, 25)), false));
-			if (tick == 4150) w.AddFrameEndTask(_ =>
+			if (tick == 5850) w.IssueOrder(new Order("Move", commander, Target.FromCell(w, Cell(26, 25)), false));
+			if (tick == 6150) w.AddFrameEndTask(_ =>
 			{
 				carrier = Spawn(w, "builder", 27, 25);
 				carrier.Trait<MedievalWorker>().Automatic = false; carrier.Trait<MedievalWorker>().Cargo = 7;
 				for (var i = 0; i < 5; i++) Spawn(w, "campguard", 34 + i % 3, 28 + i / 3);
 			});
-			if (tick == 4170) Order(commander, "MedievalCommanderRest");
-			if (tick == 4250) restBefore = soldier.Trait<MedievalRest>().Fatigue;
-			if (tick > 4300 && soldier.Trait<MedievalRest>().Sleeping && soldier.Trait<MedievalRest>().Fatigue < restBefore) rested = true;
-			if (tick == 4620)
+			if (tick == 6170)
+			{
+				restBefore = soldier.Trait<MedievalRest>().Fatigue; Order(commander, "MedievalCommanderRest");
+			}
+			if (tick > 6170 && soldier.Trait<MedievalRest>().Sleeping && soldier.Trait<MedievalRest>().Fatigue < restBefore) rested = true;
+			if (tick == 6620)
 			{
 				File.WriteAllText(Path.Combine(output, "night-state.json"), JsonSerializer.Serialize(new { phase = w.WorldActor.Trait<MedievalDayNight>().Phase,
 					actors = w.ActorsHavingTrait<MedievalRest>().Select(a => new { type = a.Info.Name, location = a.Location.ToString(), rest = a.Trait<MedievalRest>().Description,
@@ -145,34 +150,34 @@ namespace OpenRA.Mods.Medieval
 				Check(carrier.Trait<MedievalRest>().Sleeping && carrier.Trait<MedievalWorker>().Cargo == 7, "A sleeping worker must retain his physical cargo.");
 				if (tent != null) Check(tent.Trait<MedievalShelter>().Occupants(tent) == 6, "An overcrowded camp must reserve exactly six beds.");
 			}
-			if (tick == 4650 && tent != null)
+			if (tick == 6650 && tent != null)
 			{
 				w.IssueOrder(new Order("Move", soldier, Target.FromCell(w, Cell(36, 30)), false));
 				w.IssueOrder(new Order("Move", cart, Target.FromCell(w, Cell(31, 31)), false));
 			}
-			if (tick == 4700) Check(!soldier.Trait<MedievalRest>().Sleeping, "A movement order must wake a sleeping soldier at night.");
-			if (tick == 4740) w.AddFrameEndTask(_ => house.Dispose());
-			if (tick == 4750) Check(carrier.Trait<MedievalRest>().Shelter != house, "A destroyed home must release its sleeping inhabitants.");
-			if (tick == 4800 && tent != null)
+			if (tick == 6700) Check(!soldier.Trait<MedievalRest>().Sleeping, "A movement order must wake a sleeping soldier at night.");
+			if (tick == 6740) w.AddFrameEndTask(_ => house.Dispose());
+			if (tick == 6750) Check(carrier.Trait<MedievalRest>().Shelter != house, "A destroyed home must release its sleeping inhabitants.");
+			if (tick == 6800 && tent != null)
 			{
 				Check(tent.Trait<MedievalShelter>().Occupants(tent) > 0, "The packing scenario must exercise an occupied tent.");
 				tentsBeforePack = MedievalCampStore.Amount(w.LocalPlayer, 1); Order(tent, "MedievalPackTent");
 			}
-			if (tick == 4850 && tent != null)
+			if (tick == 6850 && tent != null)
 			{
 				packed = !tent.IsInWorld; Check(packed, "An adjacent cart must pack a tent after evacuating it.");
 				Check(MedievalCampStore.Amount(w.LocalPlayer, 1) == tentsBeforePack + 1, "Packing must return exactly one tent.");
 			}
-			if (tick == 4950) Order(carrier, "MedievalWork");
-			if (tick == 5450) Check(carrier.Trait<MedievalWorker>().Cargo == 0, "A worker must deliver his retained cargo after waking.");
-			if (tick is 180 or 3900 or 4520 or 5070) { Select(w, tick == 4520 ? house : weaver); Game.Renderer.SaveScreenshot(Path.Combine(output, $"view-{tick}.png")); }
-			if (tick < 5500) return;
+			if (tick == 6950) Order(carrier, "MedievalWork");
+			if (tick == 7450) Check(carrier.Trait<MedievalWorker>().Cargo == 0, "A worker must deliver his retained cargo after waking.");
+			if (tick is 180 or 5900 or 6520 or 7070) { Select(w, tick == 6520 ? house : weaver); Game.Renderer.SaveScreenshot(Path.Combine(output, $"view-{tick}.png")); }
+			if (tick < 7500) return;
 			Check(sheepFrames.Count == 32 && loomFrames.Count == 32, "Both new buildings must play all 32 articulated poses in the engine.");
 			Check(loomStopped && animationsPaused && flock.Operating, "Workshop stop, pause and morning animation restart must all succeed.");
 			Check(woolCarried && tentCarried, "Wool and tents must travel on real carriers."); Check(slept && resumed, "Citizens must resume work after dawn.");
 			Check(rain && maxFatigue > 0 && rested, "Rain and marching must cause fatigue, and tent rest must recover it.");
 			File.WriteAllText(Path.Combine(output, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, errors, tick, woolCarried, tentCarried, slept, resumed, rested, deployed, packed, rain, maxFatigue, tentsMade,
-				cartTents = cart.Trait<MedievalCampStore>().Stock.Amount(1), woolRemaining = sheep.Trait<MedievalSource>().Remaining,
+				cartTents = cart.Trait<MedievalCampStore>().Stock.Amount(1), maxCloth, woolRemaining = sheep.Trait<MedievalSource>().Remaining,
 				sheepFrames = sheepFrames.Count, loomFrames = loomFrames.Count, loomStopped, animationsPaused,
 				artisan = artisan.Trait<MedievalWorker>().Description, shepherd = shepherd.Trait<MedievalWorker>().Description }, new JsonSerializerOptions { WriteIndented = true }));
 			Console.WriteLine("MEDIEVAL CAMPING: " + (errors.Count == 0 ? "PASS" : string.Join("; ", errors))); done = true; Game.RunAfterDelay(1000, Game.Exit);

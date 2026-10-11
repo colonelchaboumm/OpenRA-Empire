@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Medieval
 				new("md.barracks", "Caserne", "Recrute les soldats, musiciens, porte-drapeaux et messagers."),
 				new("md.forge", "Forgeron", "Fabrique arcs, epees et armures. Jusqu'a 3 forgerons et cibles de stock reglables."),
 				new("md.siegeworkshop", "Atelier siege", "Fabrique les beliers et les trebuchets, servis par les soldats."),
-				new("md.tentweaver", "Tisseur", "2 laine = 1 tissu pour les drapeaux. 8 laine + 4 bois = 1 pavillon pour 6 soldats.\nRecrutez un tisseur dans Citoyens. Stocks cibles dans Campements & repos."),
+				new("md.tentweaver", "Tisseur", "2 laine = 1 tissu. 4 tissus + 4 bois = 1 pavillon pour 6 soldats.\nRecrutez un tisseur dans Citoyens. Stocks cibles dans Campements & repos."),
 				new("md.palisade", "Palissade", "Deux clics pour tracer une ligne de palissades."),
 				new("md.woodgate", "Porte en bois", "Grande porte a ouverture laterale. Tourner change son orientation."),
 				new("md.woodtower", "Tour en bois", "Defense automatique et 2 places pour vos archers.\nArchers selectionnes : clic droit sur la tour.\nGarnison : portee +50%, vision 12 cases.")]),
