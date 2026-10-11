@@ -27,7 +27,7 @@ WORK = ROOT / ".distribution"
 MODS = ("common", "common-content", "ra", "ra-content", "medieval")
 SKIP_DIRS = {"bin", "obj", "__pycache__", ".git", ".vs", "TestResults"}
 ROOT_FILES = {
-    "AUTHORS", "COPYING", "Directory.Build.props", "OpenRA.slnx", "VERSION",
+    "AGENTS.md", "AUTHORS", "COPYING", "Directory.Build.props", "OpenRA.slnx", "VERSION",
     "global mix database.dat", ".editorconfig", ".gitattributes", "INSTALL.md",
     "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "Makefile", "make.cmd", "make.ps1",
     "configure-system-libraries.sh", "fetch-geoip.sh", "utility.cmd", "utility.sh",

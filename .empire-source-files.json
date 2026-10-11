@@ -3,6 +3,7 @@
   ".gitattributes",
   ".github/workflows/empire-checks.yml",
   ".gitignore",
+  "AGENTS.md",
   "AUTHORS",
   "build-medieval.ps1",
   "CODE_OF_CONDUCT.md",

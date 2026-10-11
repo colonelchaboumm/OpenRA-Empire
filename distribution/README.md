@@ -10,6 +10,15 @@ clone de publication (`.distribution/repository`). La copie de developpement
 d'origine n'est ni deplacee ni transformee en depot Git. Une Release brouillon est
 completee avant de devenir publique. Le compte du joueur n'intervient jamais.
 
+## Publication a la fin des modifications accompagnees
+
+La consigne du proprietaire est enregistree dans `AGENTS.md` a la racine : apres
+chaque modification du jeu terminee et validee avec l'assistant, celui-ci lance
+la publication et communique le lien de la nouvelle version. Cela ne necessite
+pas de cliquer manuellement sur le script. Les simples questions et changements
+de documentation ne declenchent pas une nouvelle version du jeu. Aucune
+surveillance periodique des fichiers n'est configuree.
+
 ## Mise a jour
 
 Le manifeste public `empire-manifest.json` contient les empreintes SHA-256 et
