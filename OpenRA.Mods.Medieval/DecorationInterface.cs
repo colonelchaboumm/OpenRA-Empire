@@ -28,7 +28,8 @@ namespace OpenRA.Mods.Medieval
 			var missing = MedievalDecorations.Missing(world, world.LocalPlayer, plan);
 			var costs = missing.Select(p => world.Map.Rules.Actors[p.Type].TraitInfo<MedievalBuildingInfo>().Cost).ToArray();
 			var gold = costs.Sum(c => c.ElementAtOrDefault(4));
-			return $"{missing.Length} case(s) : {costs.Sum(c => c[0])} bois, {costs.Sum(c => c[3])} pierre" + (gold > 0 ? $", {gold} or. " : ". ")
+			var cloth = missing.Sum(p => world.Map.Rules.Actors[p.Type].TraitInfo<MedievalBuildingInfo>().Cloth);
+			return $"{missing.Length} case(s) : {costs.Sum(c => c[0])} bois, {costs.Sum(c => c[3])} pierre" + (gold > 0 ? $", {gold} or" : "") + (cloth > 0 ? $", {cloth} tissu" : "") + ". "
 				+ (MedievalDecorations.Linear(Kind) ? start == null ? "Cliquez le debut puis la fin. " : "Cliquez la fin du trace. " : "Cliquez pour placer. ") + "Clic droit : terminer.";
 		}
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -100,7 +101,7 @@ namespace OpenRA.Mods.Medieval
 				var button = widget.Get<ButtonWidget>("MD_DECOR_" + i);
 				button.GetText = () => "";
 				widget.Get<LabelWidget>($"MD_DECOR_{i}_NAME").GetText = () => name;
-				widget.Get<LabelWidget>($"MD_DECOR_{i}_COST").GetText = () => $"{cost[0]} bois / {cost[3]} pierre";
+				widget.Get<LabelWidget>($"MD_DECOR_{i}_COST").GetText = () => $"{cost[0]} bois / {cost[3]} pierre" + (world.Map.Rules.Actors[type].TraitInfo<MedievalBuildingInfo>().Cloth > 0 ? " / 2 tissu" : "");
 				button.GetTooltipText = () => name;
 				button.GetTooltipDesc = () => type == "md.well" ? "Eau pour les secours incendie, jour et nuit. Placez un puits a moins de 16 cases des batiments."
 					: type == "md.gardenfence" ? "Deux clics pour une ligne, orientee selon le trace.\nBloque le passage : laissez des ouvertures pour les portillons."

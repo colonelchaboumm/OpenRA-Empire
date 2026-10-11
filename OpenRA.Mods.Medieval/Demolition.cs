@@ -14,7 +14,7 @@ namespace OpenRA.Mods.Medieval
 	}
 	public sealed class MedievalDemolitionOrders : IResolveOrder, ISync
 	{
-		readonly int[] remainder = new int[Inventory.ResourceCount];
+		readonly int[] remainder = new int[StorageGoods.Count];
 		[VerifySync] public int RemainderHash => remainder.Aggregate(17, (h, n) => unchecked(h * 31 + n));
 		// Carry fractions between jobs: five 3-stone paving tiles recover exactly
 		// three stones, rather than rounding every tiny tile to zero or up to one.
@@ -91,12 +91,13 @@ namespace OpenRA.Mods.Medieval
 					amounts[r] += self.TraitOrDefault<MedievalSiegeWorkshop>()?.Inputs.Amount(r) ?? 0;
 					amounts[r] += self.TraitOrDefault<MedievalTentWorkshop>()?.Inputs.Amount(r) ?? 0;
 				}
+				amounts[10] += building.Complete ? recovery.Recover(10, building.Info.Cloth) : building.CampMaterials.Amount(MedievalCampStore.Cloth);
 				if (amounts.Any(n => n > 0))
 				{
 					var pile = w.CreateActor("md.salvage", [new OwnerInit(owner), new LocationInit(self.Location)]);
 					foreach (var first in new[] { 0, 5, 8 })
 					{
-						var count = first == 0 ? 5 : first == 5 ? 3 : 2; var contents = new int[Inventory.ResourceCount];
+						var count = first == 0 ? 5 : first == 5 ? 3 : MedievalCampStore.GoodsCount; var contents = new int[Inventory.ResourceCount];
 						Array.Copy(amounts, first, contents, 0, count); var inventory = StorageGoods.Stock(pile, first);
 						inventory.SetCapacity(contents);
 						for (var r = 0; r < count; r++) inventory.Add(r, contents[r]);

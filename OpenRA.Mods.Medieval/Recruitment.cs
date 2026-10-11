@@ -48,6 +48,7 @@ namespace OpenRA.Mods.Medieval
 		public readonly int Food = 10;
 		public readonly int Meat = 0;
 		public readonly bool Elite = false;
+		public readonly int Cloth = 0;
 		public RecruitmentCost Cost => new(Food, Meat, Elite);
 		public override object Create(ActorInitializer init) => new MedievalRecruitable();
 	}

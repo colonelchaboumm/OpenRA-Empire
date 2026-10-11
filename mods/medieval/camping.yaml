@@ -33,7 +33,7 @@ md.market:
 md.marketstall:
 	MedievalCampStore:
 		Public: True
-		Capacity: 40, 4, 0, 0
+		Capacity: 40, 4, 24, 0
 
 md.supplycart:
 	MedievalCampStore:
@@ -108,7 +108,11 @@ md.tentweaver:
 		Cost: 80, 0, 0, 20
 	MedievalTentWorkshop:
 	MedievalCampStore:
-		Capacity: 8, 1, 0, 0
+		Capacity: 8, 1, 4, 0
+
+md.barracks:
+	MedievalCampStore:
+		Capacity: 0, 0, 2, 0
 
 md.militarytent:
 	Inherits: ^MDBUILDING

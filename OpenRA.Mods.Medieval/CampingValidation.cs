@@ -49,6 +49,7 @@ namespace OpenRA.Mods.Medieval
 			// Pens now start empty: this production scenario needs an actual adult flock.
 			for (var n = 0; n < 2; n++) Check(sheep.Trait<MedievalLivestock>().Enter(Spawn(w, "sheep", 34 + n, 36)), "Fixture sheep must enter the wool-producing pen.");
 			weaver = Spawn(w, "tentweaver", 28, 28); weaver.Trait<MedievalTentWorkshop>().Target = 1;
+			weaver.Trait<MedievalTentWorkshop>().ClothTarget = 0;
 			shepherd = Spawn(w, "shepherd", 31, 35); artisan = Spawn(w, "weaver", 27, 29);
 			Spawn(w, "hauler", 26, 33); Spawn(w, "hauler", 26, 34);
 			cart = Spawn(w, "supplycart", 30, 33);
@@ -87,7 +88,7 @@ namespace OpenRA.Mods.Medieval
 			maxFatigue = Math.Max(maxFatigue, soldier.Trait<MedievalRest>().Fatigue);
 			rain |= w.WorldActor.Trait<MedievalWeather>().RainPermille > 500;
 			slept |= shepherd.Trait<MedievalRest>().Sleeping;
-			resumed |= slept && tick > 3550 && !shepherd.Trait<MedievalRest>().Resting && shepherd.Trait<MedievalWorker>().Automatic;
+			resumed |= slept && tick > 4950 && !shepherd.Trait<MedievalRest>().Resting && shepherd.Trait<MedievalWorker>().Automatic;
 			if (tick == 20) { Select(w, cart); Button(w, "OPEN"); Button(w, "LOAD"); }
 			if (tick == 30) Game.Renderer.SaveScreenshot(Path.Combine(output, "menu.png"));
 			if (tick == 40) { Check(cart.Trait<MedievalCampCart>().LoadTents, "Cart tent loading toggle did not reach simulation."); Button(w, "CLOSE"); }
@@ -108,29 +109,29 @@ namespace OpenRA.Mods.Medieval
 				});
 			}
 			if (tick == 700) w.IssueOrder(new Order("Move", soldier, Target.FromCell(w, Cell(32, 29)), false));
-			if (tick == 2200 && cart.Trait<MedievalCampStore>().Stock.Available(1) > 0)
+			if (tick == 3600 && cart.Trait<MedievalCampStore>().Stock.Available(1) > 0)
 			{
 				tentsMade = MedievalCampStore.Amount(w.LocalPlayer, 1);
 				Check(depot.Trait<MedievalStockpile>().Stock.Amount(0) + weaver.Trait<MedievalTentWorkshop>().Inputs.Amount(0) == 96, "One tent must consume exactly four wood.");
 				w.IssueOrder(new Order("MedievalCommanderDeploy", commander, Target.FromCell(w, Cell(32, 31)), false));
 			}
-			if (tick == 2400)
+			if (tick == 3800)
 			{
 				tent = w.ActorsHavingTrait<MedievalPackTent>().FirstOrDefault(); deployed = tent != null;
 				Check(deployed, "The sheep-to-cart production chain must yield a deployable tent before night.");
 				if (tent != null) { Check(cart.Trait<MedievalCampStore>().Stock.Amount(1) == 0, "Deployment must consume the carried tent."); Order(weaver, "MedievalTentTarget"); }
 			}
-			if (tick == 2450) w.IssueOrder(new Order("Move", commander, Target.FromCell(w, Cell(26, 25)), false));
-			if (tick == 2750) w.AddFrameEndTask(_ =>
+			if (tick == 3850) w.IssueOrder(new Order("Move", commander, Target.FromCell(w, Cell(26, 25)), false));
+			if (tick == 4150) w.AddFrameEndTask(_ =>
 			{
 				carrier = Spawn(w, "builder", 27, 25);
 				carrier.Trait<MedievalWorker>().Automatic = false; carrier.Trait<MedievalWorker>().Cargo = 7;
 				for (var i = 0; i < 5; i++) Spawn(w, "campguard", 34 + i % 3, 28 + i / 3);
 			});
-			if (tick == 2770) Order(commander, "MedievalCommanderRest");
-			if (tick == 2850) restBefore = soldier.Trait<MedievalRest>().Fatigue;
-			if (tick > 2900 && soldier.Trait<MedievalRest>().Sleeping && soldier.Trait<MedievalRest>().Fatigue < restBefore) rested = true;
-			if (tick == 3220)
+			if (tick == 4170) Order(commander, "MedievalCommanderRest");
+			if (tick == 4250) restBefore = soldier.Trait<MedievalRest>().Fatigue;
+			if (tick > 4300 && soldier.Trait<MedievalRest>().Sleeping && soldier.Trait<MedievalRest>().Fatigue < restBefore) rested = true;
+			if (tick == 4620)
 			{
 				File.WriteAllText(Path.Combine(output, "night-state.json"), JsonSerializer.Serialize(new { phase = w.WorldActor.Trait<MedievalDayNight>().Phase,
 					actors = w.ActorsHavingTrait<MedievalRest>().Select(a => new { type = a.Info.Name, location = a.Location.ToString(), rest = a.Trait<MedievalRest>().Description,
@@ -144,28 +145,28 @@ namespace OpenRA.Mods.Medieval
 				Check(carrier.Trait<MedievalRest>().Sleeping && carrier.Trait<MedievalWorker>().Cargo == 7, "A sleeping worker must retain his physical cargo.");
 				if (tent != null) Check(tent.Trait<MedievalShelter>().Occupants(tent) == 6, "An overcrowded camp must reserve exactly six beds.");
 			}
-			if (tick == 3250 && tent != null)
+			if (tick == 4650 && tent != null)
 			{
 				w.IssueOrder(new Order("Move", soldier, Target.FromCell(w, Cell(36, 30)), false));
 				w.IssueOrder(new Order("Move", cart, Target.FromCell(w, Cell(31, 31)), false));
 			}
-			if (tick == 3300) Check(!soldier.Trait<MedievalRest>().Sleeping, "A movement order must wake a sleeping soldier at night.");
-			if (tick == 3340) w.AddFrameEndTask(_ => house.Dispose());
-			if (tick == 3350) Check(carrier.Trait<MedievalRest>().Shelter != house, "A destroyed home must release its sleeping inhabitants.");
-			if (tick == 3400 && tent != null)
+			if (tick == 4700) Check(!soldier.Trait<MedievalRest>().Sleeping, "A movement order must wake a sleeping soldier at night.");
+			if (tick == 4740) w.AddFrameEndTask(_ => house.Dispose());
+			if (tick == 4750) Check(carrier.Trait<MedievalRest>().Shelter != house, "A destroyed home must release its sleeping inhabitants.");
+			if (tick == 4800 && tent != null)
 			{
 				Check(tent.Trait<MedievalShelter>().Occupants(tent) > 0, "The packing scenario must exercise an occupied tent.");
 				tentsBeforePack = MedievalCampStore.Amount(w.LocalPlayer, 1); Order(tent, "MedievalPackTent");
 			}
-			if (tick == 3450 && tent != null)
+			if (tick == 4850 && tent != null)
 			{
 				packed = !tent.IsInWorld; Check(packed, "An adjacent cart must pack a tent after evacuating it.");
 				Check(MedievalCampStore.Amount(w.LocalPlayer, 1) == tentsBeforePack + 1, "Packing must return exactly one tent.");
 			}
-			if (tick == 3550) Order(carrier, "MedievalWork");
-			if (tick == 4050) Check(carrier.Trait<MedievalWorker>().Cargo == 0, "A worker must deliver his retained cargo after waking.");
-			if (tick is 180 or 2500 or 3120 or 3670) { Select(w, tick == 3120 ? house : weaver); Game.Renderer.SaveScreenshot(Path.Combine(output, $"view-{tick}.png")); }
-			if (tick < 4100) return;
+			if (tick == 4950) Order(carrier, "MedievalWork");
+			if (tick == 5450) Check(carrier.Trait<MedievalWorker>().Cargo == 0, "A worker must deliver his retained cargo after waking.");
+			if (tick is 180 or 3900 or 4520 or 5070) { Select(w, tick == 4520 ? house : weaver); Game.Renderer.SaveScreenshot(Path.Combine(output, $"view-{tick}.png")); }
+			if (tick < 5500) return;
 			Check(sheepFrames.Count == 32 && loomFrames.Count == 32, "Both new buildings must play all 32 articulated poses in the engine.");
 			Check(loomStopped && animationsPaused && flock.Operating, "Workshop stop, pause and morning animation restart must all succeed.");
 			Check(woolCarried && tentCarried, "Wool and tents must travel on real carriers."); Check(slept && resumed, "Citizens must resume work after dawn.");

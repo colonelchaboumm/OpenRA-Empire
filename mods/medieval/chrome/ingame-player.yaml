@@ -3904,7 +3904,7 @@ Container@PLAYER_WIDGETS:
 			X: 440
 			Y: 132
 			Width: 560
-			Height: 382
+			Height: 422
 			Background: md-panel
 			Children:
 				Label@MD_CAMP_TITLE:
@@ -3959,35 +3959,35 @@ Container@PLAYER_WIDGETS:
 					Background: md-button
 				Button@MD_CAMP_LOAD:
 					X: 14
-					Y: 198
+					Y: 238
 					Width: 258
 					Height: 30
 					Font: TinyBold
 					Background: md-button
 				Button@MD_CAMP_DEPLOY:
 					X: 282
-					Y: 198
+					Y: 238
 					Width: 258
 					Height: 30
 					Font: TinyBold
 					Background: md-button
 				Button@MD_CAMP_PACK:
 					X: 14
-					Y: 234
+					Y: 274
 					Width: 258
 					Height: 30
 					Font: TinyBold
 					Background: md-button
 				Button@MD_CAMP_REST:
 					X: 282
-					Y: 234
+					Y: 274
 					Width: 258
 					Height: 30
 					Font: TinyBold
 					Background: md-button
 				Label@MD_CAMP_STATUS:
 					X: 14
-					Y: 282
+					Y: 322
 					Width: 530
 					Height: 48
 					Font: TinyBold
@@ -3995,9 +3995,29 @@ Container@PLAYER_WIDGETS:
 					VAlign: Top
 				Button@MD_CAMP_CLOSE:
 					X: 360
-					Y: 340
+					Y: 380
 					Width: 180
 					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Label@MD_CAMP_CLOTH_TARGET:
+					X: 14
+					Y: 194
+					Width: 430
+					Height: 30
+					Font: TinyBold
+				Button@MD_CAMP_CLOTH_LESS:
+					X: 458
+					Y: 194
+					Width: 36
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+				Button@MD_CAMP_CLOTH_MORE:
+					X: 503
+					Y: 194
+					Width: 36
+					Height: 26
 					Font: TinyBold
 					Background: md-button
 		Background@MD_COMMAND_PANEL:

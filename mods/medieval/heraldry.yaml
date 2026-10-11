@@ -22,6 +22,8 @@ md.marketstall:
 		PlayerPalette: md-market-livery
 
 md.banner:
+	MedievalBuilding:
+		Cloth: 2
 	RenderSprites:
 		Image: md.heraldic-banner-0
 		-Palette:
@@ -61,6 +63,7 @@ md.standardbearer:
 		Bounds: 1024, 1900, 0, -650
 	MedievalRecruitable:
 		Food: 25
+		Cloth: 2
 	Health:
 		HP: 7000
 	MedievalNeedsFood:

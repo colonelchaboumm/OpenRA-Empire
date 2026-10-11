@@ -71,7 +71,9 @@ namespace OpenRA.Mods.Medieval
 		{
 			foreach (var a in w.Actors.Where(a => a.TraitOrDefault<MedievalBuilding>() != null || a.TraitOrDefault<MedievalSource>() != null || a.TraitOrDefault<Mobile>() != null).ToArray()) a.Dispose();
 			Actor Spawn(string name, int x, int y) => w.CreateActor("md." + name, [new OwnerInit(w.LocalPlayer), new LocationInit(Cell(x, y))]);
-			var depot = Spawn("warehouse", 22, 27).Trait<MedievalStockpile>().Stock;
+			var warehouse = Spawn("warehouse", 22, 27);
+			warehouse.Trait<MedievalCampStore>().Stock.Add(MedievalCampStore.Cloth, 20);
+			var depot = warehouse.Trait<MedievalStockpile>().Stock;
 			depot.Add(0, 400); depot.Add(3, 300);
 			Spawn("market", 22, 33).Trait<MedievalStockpile>().Stock.Add(1, 200);
 			Spawn("house", 30, 25); Spawn("house", 34, 25);
@@ -87,7 +89,7 @@ namespace OpenRA.Mods.Medieval
 					for (var r = 0; r < 4; r++) totals[r] += stock.Stock.Amount(r);
 				if (a.TraitOrDefault<MedievalBuilding>() is MedievalBuilding b)
 					for (var r = 0; r < 4; r++) totals[r] += b.Materials.Amount(r);
-				if (a.TraitOrDefault<MedievalWorker>() is MedievalWorker worker && worker.Cargo > 0) totals[worker.Resource] += worker.Cargo;
+				if (a.TraitOrDefault<MedievalWorker>() is MedievalWorker worker && worker.Cargo > 0 && !worker.CampCargo && !worker.EquipmentCargo) totals[worker.Resource] += worker.Cargo;
 			}
 			Check(totals[0] == 400 && totals[3] == 297, "Only the three stones incorporated in demolished paving are lost; unused deliveries and reservations are conserved.");
 			Check(carried && cancellation, "Must observe real hauling and cancel a reserved construction.");

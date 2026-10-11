@@ -5,17 +5,17 @@ using System.Linq;
 namespace OpenRA.Mods.Medieval
 {
 	public enum StorageKind { Mixed, Wood, Grain, Meat, Stone, Gold, Equipment, Camp }
-	// Commodity indices: five materials, three equipment types, wool and tents.
+	// Commodity indices: five materials, three equipment types, wool, tents and cloth.
 	public static class StorageGoods
 	{
-		public const int Count = 10;
-		public static readonly string[] KindNames = ["Reserve mixte", "Bois", "Cereales", "Viande", "Pierre", "Or", "Armes et armures", "Laine et tentes"];
-		public static readonly string[] Names = ["Bois", "Cereales", "Viande", "Pierre", "Or", "Arcs", "Epees", "Armures", "Laine", "Tentes"];
-		public static int Limit(int good) => good < 5 ? 100 : good == 8 ? 40 : good == 9 ? 8 : 16;
-		public static bool Flammable(int good) => good is 0 or 1 or 2 or 5 or 8 or 9;
+		public const int Count = 11;
+		public static readonly string[] KindNames = ["Reserve mixte", "Bois", "Cereales", "Viande", "Pierre", "Or", "Armes et armures", "Laine, tentes, tissu"];
+		public static readonly string[] Names = ["Bois", "Cereales", "Viande", "Pierre", "Or", "Arcs", "Epees", "Armures", "Laine", "Tentes", "Tissu"];
+		public static int Limit(int good) => good < 5 ? 100 : good is 8 or 10 ? 40 : good == 9 ? 8 : 16;
+		public static bool Flammable(int good) => good is 0 or 1 or 2 or 5 or 8 or 9 or 10;
 		public static int[] Types(StorageKind kind) => kind switch
 		{
-			StorageKind.Mixed => [1, 0, 3, 2], StorageKind.Equipment => [5, 6, 7], StorageKind.Camp => [8, 9],
+			StorageKind.Mixed => [1, 0, 3, 2], StorageKind.Equipment => [5, 6, 7], StorageKind.Camp => [8, 9, 10],
 			_ => [(int)kind - 1]
 		};
 		public static Inventory Stock(Actor self, int good) => good < 5 ? self.TraitOrDefault<MedievalStockpile>()?.Stock

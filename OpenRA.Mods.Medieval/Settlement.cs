@@ -125,6 +125,9 @@ namespace OpenRA.Mods.Medieval
 					if (!a.IsInWorld || a.IsDead || a.WillDispose || a.Owner != self.Owner || b.Complete) return;
 					var salvage = w.CreateActor("md.salvage", [new OwnerInit(self.Owner), new LocationInit(a.Location)]);
 					for (var r = 0; r < Inventory.ResourceCount; r++) salvage.Trait<MedievalStockpile>().Stock.Add(r, b.Materials.Amount(r));
+					var cloth = b.CampMaterials.Amount(MedievalCampStore.Cloth);
+					salvage.Trait<MedievalCampStore>().Stock.SetCapacity([0, 0, cloth, 0, 0]);
+					salvage.Trait<MedievalCampStore>().Stock.Add(MedievalCampStore.Cloth, cloth);
 					a.Dispose();
 					Message = "Chantier annule : les materiaux restent recuperables sur place.";
 				});

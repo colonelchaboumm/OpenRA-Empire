@@ -173,6 +173,9 @@ namespace OpenRA.Mods.Medieval
 					var building = site.Trait<MedievalBuilding>();
 					if (building.Demolishing) continue;
 					if (building.Supplied) { destination = site; phase = 4; Status = "Construit"; return; }
+					if (building.Info.Cloth > 0)
+						foreach (var depot in MedievalConstructionSupply.Sources(self.Owner, site.CenterPosition).Where(a => a.TraitOrDefault<MedievalCampStore>() != null))
+							if (ReserveTrip(depot, depot.Trait<MedievalCampStore>().Stock, site, building.CampMaterials, MedievalCampStore.Cloth, Info.Capacity, camp: true)) return;
 					for (var r = 0; r < Inventory.ResourceCount; r++)
 						foreach (var depot in MedievalConstructionSupply.Sources(self.Owner, site.CenterPosition))
 							if (ReserveTrip(depot, depot.Trait<MedievalStockpile>().Stock, site, building.Materials, r, Info.Capacity)) return;

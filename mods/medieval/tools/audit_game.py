@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / 'analysis/medieval/audit'
 # name, map, report folder. All manifests inherit today's normal gameplay rules.
 CASES = [
+    ('textile', 'village', 'textile/native'),
     ('fire-support', 'messenger-test', 'fire-support/native'),
     ('shadows', 'messenger-test', 'shadows/native'),
     ('shadows-large', 'terres-sans-fin', 'shadows/large'),

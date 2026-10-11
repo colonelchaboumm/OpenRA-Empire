@@ -46,12 +46,14 @@ namespace OpenRA.Mods.Medieval
 			{
 				var generator = (OrderGenerator)w.OrderGenerator;
 				var orders = generator.Order(w, cell, int2.Zero, new MouseInput(MouseInputEvent.Down, generator.ActionButton, int2.Zero, int2.Zero, Modifiers.None, 1)).ToArray();
+				orders = orders.Concat(generator.Order(w, cell, int2.Zero, new MouseInput(MouseInputEvent.Up, generator.ActionButton, int2.Zero, int2.Zero, Modifiers.None, 1))).ToArray();
 				Check(orders.Length == 1, "Building button must place a military construction."); foreach (var o in orders) w.IssueOrder(o);
 			});
 		}
 		Actor Spawn(World w, string type, int x, int y) => w.CreateActor("md." + type, [new OwnerInit(w.LocalPlayer), new LocationInit(Cell(x, y))]);
 		void Setup(World w)
 		{
+			w.LocalPlayer.Shroud.Disabled = true;
 			foreach (var a in w.Actors.Where(a => a.TraitOrDefault<MedievalBuilding>() != null || a.TraitOrDefault<MedievalSource>() != null || a.TraitOrDefault<Mobile>() != null).ToArray()) a.Dispose();
 			depot = Spawn(w, "warehouse", 28, 34);
 			var stock = depot.Trait<MedievalStockpile>().Stock;
@@ -216,9 +218,13 @@ namespace OpenRA.Mods.Medieval
 			if (tick % 1000 == 0)
 				File.WriteAllText(Path.Combine(output, "progress.json"), JsonSerializer.Serialize(new { tick, stage, soldierIndex, errors,
 					workshops = MedievalEquipment.Workshops(w.LocalPlayer).Select(a => new { a.Info.Name, a.Trait<MedievalMilitaryWorkshop>().Status, a.Trait<MedievalMilitaryWorkshop>().Product, a.Trait<MedievalMilitaryWorkshop>().Recruit,
-						worker = a.Trait<MedievalMilitaryWorkshop>().Staff(a)?.Trait<MedievalWorker>().Description, inputs = Enumerable.Range(0, 4).Select(a.Trait<MedievalMilitaryWorkshop>().Inputs.Amount).ToArray() }).ToArray()
+						worker = a.Trait<MedievalMilitaryWorkshop>().Staff(a)?.Trait<MedievalWorker>().Description,
+						position = a.Trait<MedievalMilitaryWorkshop>().Staff(a)?.Location.ToString(),
+						rest = a.Trait<MedievalMilitaryWorkshop>().Staff(a)?.TraitOrDefault<MedievalRest>()?.Description,
+						idle = a.Trait<MedievalMilitaryWorkshop>().Staff(a)?.IsIdle,
+						inputs = Enumerable.Range(0, 4).Select(a.Trait<MedievalMilitaryWorkshop>().Inputs.Amount).ToArray() }).ToArray()
 				}, new JsonSerializerOptions { WriteIndented = true }));
-			if (stage == 9 && tick >= waitUntil || tick == 20000) Finish(w);
+			if (stage == 9 && tick >= waitUntil || tick == 30000) Finish(w);
 		}
 	}
 }

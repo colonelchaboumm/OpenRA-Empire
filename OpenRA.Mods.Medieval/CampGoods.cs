@@ -13,13 +13,15 @@ namespace OpenRA.Mods.Medieval
 	public class MedievalCampStoreInfo : TraitInfo
 	{
 		public readonly bool Public = false;
-		public readonly int[] Capacity = [100, 12, 0, 0];
+		public readonly int[] Capacity = [100, 12, 60, 0];
 		public override object Create(ActorInitializer init) => new MedievalCampStore(this);
 	}
 	public sealed class MedievalCampStore : ISync, IRenderAnnotations, IRender
 	{
-		public static readonly string[] Names = ["Laine", "Tentes"];
-		public static readonly string[] Sequences = ["wool", "tent"];
+		public const int Cloth = 2;
+		public const int GoodsCount = 3;
+		public static readonly string[] Names = ["Laine", "Tentes", "Tissu"];
+		public static readonly string[] Sequences = ["wool", "tent", "cloth"];
 		public readonly MedievalCampStoreInfo Info;
 		public readonly Inventory Stock;
 		[VerifySync] public int StockHash => Stock.Hash;
@@ -36,7 +38,7 @@ namespace OpenRA.Mods.Medieval
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
 			if (!MedievalStockpile.Active(self) || self.World.FogObscures(self)) yield break;
-			for (var r = 0; r < 2; r++)
+			for (var r = 0; r < GoodsCount; r++)
 			{
 				var sprite = self.World.Map.Sequences.GetSequence("md.campgoods", Sequences[r]).GetSprite(0);
 				var position = self.CenterPosition + StockOffset(self, r);
@@ -47,7 +49,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
 		{
-			for (var r = 0; r < 2; r++)
+			for (var r = 0; r < GoodsCount; r++)
 			{
 				var point = wr.ScreenPxPosition(self.CenterPosition + StockOffset(self, r));
 				yield return new Rectangle(point.X - 35, point.Y - 60, 90, 90);
@@ -58,7 +60,7 @@ namespace OpenRA.Mods.Medieval
 			if (!MedievalStockpile.Active(self) || self.World.FogObscures(self) || !self.World.Selection.Contains(self)) yield break;
 			if (self.TraitOrDefault<MedievalCommander>() != null && Stock.Amount(1) == 0) yield break;
 			var yard = self.TraitOrDefault<MedievalStockyard>();
-			var goods = Enumerable.Range(0, 2).Where(r => yard?.HasArea != true || MedievalStockyard.IndoorAmount(self, r + 8) > 0).ToArray();
+			var goods = Enumerable.Range(0, GoodsCount).Where(r => Stock.Capacity(r) > 0 && (yard?.HasArea != true || MedievalStockyard.IndoorAmount(self, r + 8) > 0)).ToArray();
 			if (goods.Length == 0) yield break;
 			yield return new StockBadgeRenderable(self.World, self.CenterPosition, new int2(0, -154), goods,
 				goods.Select(r => MedievalStockyard.IndoorAmount(self, r + 8)).ToArray(),
@@ -78,6 +80,12 @@ namespace OpenRA.Mods.Medieval
 		[VerifySync] public int InputHash => Inputs.Hash;
 		[VerifySync] public int Progress;
 		[VerifySync] public int Target = 4;
+		[VerifySync] public int ClothTarget = 12;
+		[VerifySync] public int Product = MedievalCampStore.Cloth;
+		public int WoolRequired => Product == MedievalCampStore.Cloth ? 2 : 8;
+		public int WoodRequired => Product == MedievalCampStore.Cloth ? 0 : 4;
+		public int WorkRequired => Product == MedievalCampStore.Cloth ? 12 : info.WorkSteps;
+		public string ProductName => Product == MedievalCampStore.Cloth ? "tissu" : "pavillon";
 		Actor artisan;
 		[VerifySync] public int ArtisanId => (int)(artisan?.ActorID ?? 0);
 		public MedievalTentWorkshop(MedievalTentWorkshopInfo info) { this.info = info; }
@@ -86,25 +94,36 @@ namespace OpenRA.Mods.Medieval
 			if (artisan != null && MedievalStockpile.Active(artisan) && artisan.Owner == self.Owner && artisan != worker) return false;
 			artisan = worker; return true;
 		}
-		public bool Needed(Actor self) => MedievalCampStore.Amount(self.Owner, 1)
+		bool Needed(Actor self, int product) => MedievalCampStore.Amount(self.Owner, product)
 			+ self.World.ActorsHavingTrait<MedievalWorker>().Where(a => a.Owner == self.Owner && MedievalStockpile.Active(a))
-				.Sum(a => a.Trait<MedievalWorker>() is { CampCargo: true, Resource: 1 } worker ? worker.Cargo : 0) < Target;
-		public bool Ready(Actor self) => Inputs.Available(0) >= 4 && self.Trait<MedievalCampStore>().Stock.Available(0) >= 8;
+				.Sum(a => a.Trait<MedievalWorker>() is { CampCargo: true } worker && worker.Resource == product ? worker.Cargo : 0) < (product == MedievalCampStore.Cloth ? ClothTarget : Target);
+		public bool Needed(Actor self) => Needed(self, Product);
+		public void Plan(Actor self)
+		{
+			if (Needed(self)) return;
+			var next = Product == 1 ? MedievalCampStore.Cloth : 1;
+			if (Needed(self, next)) { Product = next; Progress = 0; }
+		}
+		public bool Ready(Actor self) => Inputs.Available(0) >= WoodRequired && self.Trait<MedievalCampStore>().Stock.Available(0) >= WoolRequired;
 		// Presentation follows the assigned citizen's real work, including stops and sleep.
 		public bool Working(Actor self) => MedievalStockpile.Active(artisan) && artisan.Owner == self.Owner && artisan.IsIdle
 			&& artisan.TraitOrDefault<MedievalRest>()?.Resting != true
 			&& artisan.Trait<MedievalWorker>() is { Automatic: true, IsWorking: true } worker && worker.WorkTarget == self
-			&& Ready(self) && self.Trait<MedievalCampStore>().Stock.Free(1) > 0 && Needed(self);
+			&& Ready(self) && self.Trait<MedievalCampStore>().Stock.Free(Product) > 0 && Needed(self);
 		public bool Work(Actor self)
 		{
 			var stock = self.Trait<MedievalCampStore>().Stock;
-			if (!Ready(self) || !Needed(self) || stock.Free(1) == 0) return false;
-			if (++Progress < info.WorkSteps) return true;
-			Inputs.Take(0, 4); stock.Take(0, 8); stock.Add(1, 1); Progress = 0; return false;
+			if (!Ready(self) || !Needed(self) || stock.Free(Product) == 0) return false;
+			if (++Progress < WorkRequired) return true;
+			Inputs.Take(0, WoodRequired); stock.Take(0, WoolRequired); stock.Add(Product, 1); Progress = 0;
+			// Alternate completed orders so the new textile demand cannot starve tents.
+			Product = Product == 1 ? MedievalCampStore.Cloth : 1;
+			return false;
 		}
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "MedievalTentTarget") Target = Math.Clamp((int)order.ExtraData, 0, 20);
+			if (order.OrderString == "MedievalClothTarget") ClothTarget = Math.Clamp((int)order.ExtraData, 0, 60);
 		}
 	}
 	public partial class MedievalWorker
@@ -129,19 +148,21 @@ namespace OpenRA.Mods.Medieval
 			if (home == null) { Status = "Aucun atelier de tissage disponible"; return; }
 			var workshop = home.Trait<MedievalTentWorkshop>(); var goods = home.Trait<MedievalCampStore>().Stock;
 			foreach (var depot in MedievalCampStore.Stores(self.Owner).OrderBy(a => (a.CenterPosition - home.CenterPosition).HorizontalLengthSquared).ThenBy(a => a.ActorID))
-				if (ReserveTrip(home, goods, depot, depot.Trait<MedievalCampStore>().Stock, 1, 1, camp: true)) return;
-			if (!workshop.Needed(home)) { Status = "Stock cible de tentes atteint"; return; }
-			var woolNeeded = 8 - goods.Amount(0) - goods.Incoming(0);
+				foreach (var product in new[] { MedievalCampStore.Cloth, 1 })
+					if (ReserveTrip(home, goods, depot, depot.Trait<MedievalCampStore>().Stock, product, Info.Capacity, camp: true)) return;
+			workshop.Plan(home);
+			if (!workshop.Needed(home)) { Status = "Stocks cibles de tissu et de tentes atteints"; return; }
+			var woolNeeded = workshop.WoolRequired - goods.Amount(0) - goods.Incoming(0);
 			if (woolNeeded > 0)
 				foreach (var depot in Nearby(self, a => a.Owner == self.Owner && MedievalStockpile.Active(a) && a != home,
 					self.World.ActorsHavingTrait<MedievalCampStore>()))
 					if (ReserveTrip(depot, depot.Trait<MedievalCampStore>().Stock, home, goods, 0, Math.Min(Info.Capacity, woolNeeded), camp: true)) return;
-			var woodNeeded = 4 - workshop.Inputs.Amount(0) - workshop.Inputs.Incoming(0);
+			var woodNeeded = workshop.WoodRequired - workshop.Inputs.Amount(0) - workshop.Inputs.Incoming(0);
 			if (woodNeeded > 0)
 				foreach (var depot in MedievalConstructionSupply.Sources(self.Owner, home.CenterPosition))
 					if (ReserveTrip(depot, depot.Trait<MedievalStockpile>().Stock, home, workshop.Inputs, 0, woodNeeded)) return;
-			if (!workshop.Ready(home)) { Status = "Tente : attend 8 laine et 4 bois"; return; }
-			destination = home; phase = 7; Status = "Tisse une tente militaire";
+			if (!workshop.Ready(home)) { Status = $"{workshop.ProductName} : attend {workshop.WoolRequired} laine et {workshop.WoodRequired} bois"; return; }
+			destination = home; phase = 7; Status = "Tisse : " + workshop.ProductName;
 		}
 		bool FindCampHaulingJob(Actor self)
 		{
@@ -152,8 +173,9 @@ namespace OpenRA.Mods.Medieval
 			foreach (var source in Nearby(self, a => a.Owner == self.Owner && MedievalStockpile.Active(a) && !a.Trait<MedievalCampStore>().Info.Public
 				&& a.TraitOrDefault<MedievalSupplyCart>() == null && a.TraitOrDefault<MedievalCommander>() == null, self.World.ActorsHavingTrait<MedievalCampStore>()))
 				foreach (var depot in MedievalCampStore.Stores(self.Owner).Where(a => MedievalLogistics.Local(source, a, 16)))
-					for (var r = 0; r < 2; r++)
-						if ((r == 1 || source.TraitOrDefault<MedievalTentWorkshop>() == null)
+						for (var r = 0; r < MedievalCampStore.GoodsCount; r++)
+							if ((r != 0 || source.TraitOrDefault<MedievalTentWorkshop>() == null)
+								&& (r != MedievalCampStore.Cloth || source.TraitOrDefault<MedievalMilitaryWorkshop>() == null)
 							&& ReserveTrip(source, source.Trait<MedievalCampStore>().Stock, depot, depot.Trait<MedievalCampStore>().Stock, r, Math.Min(Info.Capacity, r == 1 ? 1 : 10), camp: true)) return true;
 			return false;
 		}

@@ -1,0 +1,6 @@
+World:
+	MedievalTextileValidation:
+	MedievalDayNight:
+		DayTicks: 30000
+	MedievalWeather:
+		FirstRainTicks: 30000

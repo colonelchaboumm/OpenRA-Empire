@@ -1,11 +1,11 @@
 World:
 	MedievalCampingValidation:
 	MedievalDayNight:
-		DayTicks: 2800
+		DayTicks: 4200
 		NightTicks: 700
 	MedievalWeather:
 		FirstRainTicks: 800
-		RainTicks: 3200
+		RainTicks: 4600
 		DryTicks: 400
 
 md.campguard:

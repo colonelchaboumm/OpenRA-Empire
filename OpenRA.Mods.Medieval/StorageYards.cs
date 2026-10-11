@@ -45,13 +45,13 @@ namespace OpenRA.Mods.Medieval
 		}
 		bool Fits(Actor self, IEnumerable<StorageZone> proposed)
 		{
-			foreach (var (first, count) in new[] { (0, 5), (5, 3), (8, 2) })
+			foreach (var (first, count) in new[] { (0, 5), (5, 3), (8, MedievalCampStore.GoodsCount) })
 				if (StorageGoods.Stock(self, first) is { } stock && !stock.CanSetCapacity(Capacities(self, proposed, first, count))) return false;
 			return true;
 		}
 		void RefreshCapacity(Actor self)
 		{
-			foreach (var (first, count) in new[] { (0, 5), (5, 3), (8, 2) })
+			foreach (var (first, count) in new[] { (0, 5), (5, 3), (8, MedievalCampStore.GoodsCount) })
 				StorageGoods.Stock(self, first)?.SetCapacity(Capacities(self, zones, first, count));
 			self.World.ScreenMap.AddOrUpdate(self);
 		}

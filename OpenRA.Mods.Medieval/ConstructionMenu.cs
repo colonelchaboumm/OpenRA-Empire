@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Medieval
 				new("md.barracks", "Caserne", "Recrute les soldats, musiciens, porte-drapeaux et messagers."),
 				new("md.forge", "Forgeron", "Fabrique arcs, epees et armures. Jusqu'a 3 forgerons et cibles de stock reglables."),
 				new("md.siegeworkshop", "Atelier siege", "Fabrique les beliers et les trebuchets, servis par les soldats."),
-				new("md.tentweaver", "Tisseur tentes", "Transforme 8 laine et 4 bois en un pavillon pour 6 soldats.\nRecrutez un tisseur dans Citoyens. Stock cible dans Campements & repos."),
+				new("md.tentweaver", "Tisseur", "2 laine = 1 tissu pour les drapeaux. 8 laine + 4 bois = 1 pavillon pour 6 soldats.\nRecrutez un tisseur dans Citoyens. Stocks cibles dans Campements & repos."),
 				new("md.palisade", "Palissade", "Deux clics pour tracer une ligne de palissades."),
 				new("md.woodgate", "Porte en bois", "Grande porte a ouverture laterale. Tourner change son orientation."),
 				new("md.woodtower", "Tour en bois", "Defense automatique et 2 places pour vos archers.\nArchers selectionnes : clic droit sur la tour.\nGarnison : portee +50%, vision 12 cases.")]),
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Medieval
 				new("md.gardenfence", "Cloture", "Tracez une cloture de jardin. Prevoyez des ouvertures."),
 				new("md.gardengate", "Portillon", "Passage dans une cloture. Tourner change son orientation."),
 				new("md.flowerbed", "Fleurs", "Parterre de fleurs pour embellir le village."),
-				new("md.banner", "Drapeau", "Embleme et couleur du pays, choisis depuis le marche."),
+				new("md.banner", "Drapeau", "Necessite 2 tissus livres par un batisseur. Moutons > laine > tisseur > tissu.\nEmbleme et couleur du pays, choisis depuis le marche."),
 				new("md.stonepath", "Chemin pierre", "Deux clics pour tracer un chemin pave."),
 				new("md.torch", "Torche", "Eclaire les alentours pendant la nuit."),
 				new("md.plaza", "Placette", "Petite place pavee de 2 x 2 cases. Traversable et raccordee aux chemins."),
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Medieval
 				new("md.farmer", "Fermier", "Cultive et recolte les cereales dans les parcelles."),
 				new("md.breeder", "Eleveur bovin", "Capture et transfere les bovins un par un ; livre la viande du surplus."),
 				new("md.shepherd", "Berger", "Capture et transfere les moutons un par un ; tond et livre la laine."),
-				new("md.weaver", "Tisseur", "Fabrique les pavillons dans le tisseur de tentes militaires."),
+				new("md.weaver", "Tisseur", "Transforme la laine des moutons en tissu et en pavillons militaires dans l'atelier de tissage."),
 				new("md.hunter", "Chasseur", "Chasse le gibier près d'une cabane puis y rapporte la nourriture. Le gibier est limité et la chasse ralentit en hiver."),
 				new("md.goldminer", "Mineur d'or", "Extrait l'or avec sa pioche, puis le rapporte a la mine d'or.")]),
 			new("Defense", "Feux : vision et vigilance des milices.\nFortifications : controle des acces.", [
@@ -110,8 +110,8 @@ namespace OpenRA.Mods.Medieval
 			}
 			widget.Get<LabelWidget>("MD_MENU_PAGE").GetText = () => Categories[category].Items.Length > 8 ? $"{page + 1}/{(Categories[category].Items.Length + 7) / 8}" : "";
 			widget.Get<LabelWidget>("MD_MENU_STOCK").GetText = () => category == 3
-				? $"Arcs {MedievalEquipment.Amount(p, 0)} | Epees {MedievalEquipment.Amount(p, 1)} | Armures {MedievalEquipment.Amount(p, 2)}\nLaine {MedievalCampStore.Amount(p, 0)} | Pavillons {MedievalCampStore.Amount(p, 1)}"
-				: category == 5 && settlement.Recruiting ? "Recrutement en cours..." : "B bois / P pierre / O or / N nourriture";
+				? $"Arcs {MedievalEquipment.Amount(p, 0)} | Epees {MedievalEquipment.Amount(p, 1)} | Armures {MedievalEquipment.Amount(p, 2)}\nLaine {MedievalCampStore.Amount(p, 0)} | Pavillons {MedievalCampStore.Amount(p, 1)} | Tissu {MedievalCampStore.Amount(p, 2)}"
+				: category == 5 && settlement.Recruiting ? "Recrutement en cours..." : "B bois / P pierre / O or / N nourriture / T tissu";
 			for (var i = 0; i < 8; i++)
 			{
 				var index = i;
@@ -164,8 +164,9 @@ namespace OpenRA.Mods.Medieval
 			remove.OnClick = () => { if (!remove.IsDisabled()) world.OrderGenerator = new MedievalDemolitionOrderGenerator(world, worldRenderer); };
 			string CostText(string type)
 			{
-				var cost = world.Map.Rules.Actors[type].TraitInfo<MedievalBuildingInfo>().Cost;
-				return cost.Length > 4 && cost[4] > 0 ? $"{cost[0]}B{cost[3]}P{cost[4]}O" : $"{cost[0]}B {cost[3]}P";
+				var building = world.Map.Rules.Actors[type].TraitInfo<MedievalBuildingInfo>();
+				var cost = building.Cost;
+				return (cost.Length > 4 && cost[4] > 0 ? $"{cost[0]}B{cost[3]}P{cost[4]}O" : $"{cost[0]}B {cost[3]}P") + (building.Cloth > 0 ? $" {building.Cloth}T" : "");
 			}
 		}
 	}

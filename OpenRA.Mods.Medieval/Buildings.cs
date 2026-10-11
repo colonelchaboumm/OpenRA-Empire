@@ -40,6 +40,7 @@ namespace OpenRA.Mods.Medieval
 	{
 		[GrantedConditionReference] public readonly string CompletedCondition = "built";
 		public readonly int[] Cost = [40, 0, 0, 10];
+		public readonly int Cloth = 0;
 		public readonly int Work = 40;
 		public readonly int Population = 0;
 		public readonly string ExpansionOf = "";
@@ -49,21 +50,25 @@ namespace OpenRA.Mods.Medieval
 	{
 		public readonly MedievalBuildingInfo Info;
 		public readonly Inventory Materials;
+		public readonly Inventory CampMaterials;
 		[VerifySync] public bool Complete;
 		[VerifySync] public bool Demolishing;
 		[VerifySync] public int Progress;
 		[VerifySync] public int MaterialsHash => Materials.Hash;
+		[VerifySync] public int CampMaterialsHash => CampMaterials.Hash;
 		public MedievalBuilding(ActorInitializer init, MedievalBuildingInfo info)
 		{
 			Info = info;
 			Materials = new Inventory(info.Cost);
+			CampMaterials = new Inventory([0, 0, info.Cloth, 0]);
 			Complete = !init.Contains<MedievalConstructionInit>(info);
 		}
 		void INotifyCreated.Created(Actor self)
 		{
 			if (Complete) self.GrantCondition(Info.CompletedCondition);
 		}
-		public bool Supplied => Enumerable.Range(0, Inventory.ResourceCount).All(r => Materials.Amount(r) == Materials.Capacity(r));
+		public bool Supplied => Enumerable.Range(0, Inventory.ResourceCount).All(r => Materials.Amount(r) == Materials.Capacity(r))
+			&& CampMaterials.Amount(MedievalCampStore.Cloth) == Info.Cloth;
 		public void Work(Actor self)
 		{
 			if (Complete || Demolishing || !Supplied) return;
@@ -280,7 +285,8 @@ namespace OpenRA.Mods.Medieval
 			if (building != null && !building.Complete)
 				text = building.Supplied ? $"Construction {building.Progress}/{building.Info.Work}"
 					: string.Join(" ", Enumerable.Range(0, Inventory.ResourceCount).Where(r => building.Materials.Capacity(r) > 0)
-						.Select(r => $"{Labels[r]} {building.Materials.Amount(r)}/{building.Materials.Capacity(r)}"));
+						.Select(r => $"{Labels[r]} {building.Materials.Amount(r)}/{building.Materials.Capacity(r)}"))
+						+ (building.Info.Cloth > 0 ? $" Tissu {building.CampMaterials.Amount(MedievalCampStore.Cloth)}/{building.Info.Cloth}" : "");
 			else if (stock != null)
 			{
 				var hasYard = self.TraitOrDefault<MedievalStockyard>()?.HasArea == true;

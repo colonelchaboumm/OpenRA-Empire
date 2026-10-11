@@ -40,15 +40,23 @@ namespace OpenRA.Mods.Medieval
 			widget.Get("MD_CAMP_PANEL").IsVisible = () => open;
 			widget.Get<LabelWidget>("MD_CAMP_TITLE").GetText = () => "PAVILLONS MILITAIRES ET REPOS";
 			widget.Get<LabelWidget>("MD_CAMP_HINT").GetText = () => "Jour : 8 min / nuit : 2 min. Chaque saison dure 30 min.\nLes pavillons protègent les soldats de la pluie, de la neige et du froid.";
-			widget.Get<LabelWidget>("MD_CAMP_STOCK").GetText = () => $"Laine stockee : {MedievalCampStore.Amount(p, 0)} | Tentes stockees : {MedievalCampStore.Amount(p, 1)}";
-			widget.Get<LabelWidget>("MD_CAMP_RECIPE").GetText = () => "1 pavillon = 8 laine + 4 bois. Abrite 6 soldats.\nBergerie : Nourriture. Tisseur de tentes : Militaire.";
+			widget.Get<LabelWidget>("MD_CAMP_STOCK").GetText = () => $"Laine : {MedievalCampStore.Amount(p, 0)} | Tentes : {MedievalCampStore.Amount(p, 1)} | Tissu : {MedievalCampStore.Amount(p, 2)}";
+			widget.Get<LabelWidget>("MD_CAMP_RECIPE").GetText = () => "2 laine = 1 tissu. Drapeau / porte-drapeau : 2 tissus.\n1 pavillon = 8 laine + 4 bois. Abrite 6 soldats.";
 			widget.Get<LabelWidget>("MD_CAMP_TARGET").GetText = () => Selected<MedievalTentWorkshop>() is Actor a
-				? $"Tisseur selectionne : cible {a.Trait<MedievalTentWorkshop>().Target} tentes | travail {a.Trait<MedievalTentWorkshop>().Progress}/40"
+				? $"Cible : {a.Trait<MedievalTentWorkshop>().Target} tentes | {a.Trait<MedievalTentWorkshop>().ProductName} {a.Trait<MedievalTentWorkshop>().Progress}/{a.Trait<MedievalTentWorkshop>().WorkRequired}"
 				: "Selectionnez le tisseur pour regler le stock cible (0 a 20).";
 			foreach (var delta in new[] { -1, 1 }) Button(delta < 0 ? "LESS" : "MORE", () => delta < 0 ? "-" : "+", () =>
 			{
 				if (Selected<MedievalTentWorkshop>() is Actor a) world.IssueOrder(new Order("MedievalTentTarget", a, false)
 				{ ExtraData = (uint)Math.Clamp(a.Trait<MedievalTentWorkshop>().Target + delta, 0, 20) });
+			}, () => Selected<MedievalTentWorkshop>() == null);
+			widget.Get<LabelWidget>("MD_CAMP_CLOTH_TARGET").GetText = () => Selected<MedievalTentWorkshop>() is Actor a
+				? $"Stock cible : {a.Trait<MedievalTentWorkshop>().ClothTarget} tissus (renouvele apres utilisation)"
+				: "Selectionnez le tisseur pour regler le tissu (0 a 60).";
+			foreach (var delta in new[] { -1, 1 }) Button(delta < 0 ? "CLOTH_LESS" : "CLOTH_MORE", () => delta < 0 ? "-" : "+", () =>
+			{
+				if (Selected<MedievalTentWorkshop>() is Actor a) world.IssueOrder(new Order("MedievalClothTarget", a, false)
+				{ ExtraData = (uint)Math.Clamp(a.Trait<MedievalTentWorkshop>().ClothTarget + delta, 0, 60) });
 			}, () => Selected<MedievalTentWorkshop>() == null);
 			Button("LOAD", () => (Selected<MedievalCampCart>()?.Trait<MedievalCampCart>().LoadTents == true ? "[X] " : "[ ] ") + "Charger des tentes", () =>
 			{

@@ -44,6 +44,8 @@ md.campgoods:
 	Defaults:
 		Filename: medieval|art/campgoods.png
 	wool:
+	cloth:
+		Filename: medieval|art/cloth-icon.png
 	tent:
 		Start: 1
 

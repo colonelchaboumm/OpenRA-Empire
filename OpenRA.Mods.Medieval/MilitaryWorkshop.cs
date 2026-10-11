@@ -70,8 +70,11 @@ namespace OpenRA.Mods.Medieval
 		{
 			if ((Info.Forge ? Product : Recruit) < 0) return false;
 			if (!Enumerable.Range(0, 4).All(r => Inputs.Amount(r) >= Required(self)[r])) return false;
-			return Info.Forge || Enumerable.Range(0, 3).All(r => self.Trait<MedievalEquipmentStore>().Stock.Amount(r) >= MedievalEquipment.Kits[Recruit][r]);
+			return Info.Forge || Enumerable.Range(0, 3).All(r => self.Trait<MedievalEquipmentStore>().Stock.Amount(r) >= MedievalEquipment.Kits[Recruit][r])
+				&& (self.TraitOrDefault<MedievalCampStore>()?.Stock.Available(MedievalCampStore.Cloth) ?? 0) >= RequiredCloth(self);
 		}
+		public int RequiredCloth(Actor self) => Info.Forge || Recruit < 0 ? 0
+			: self.World.Map.Rules.Actors[MedievalEquipment.BarracksRecruits[Recruit]].TraitInfo<MedievalRecruitableInfo>().Cloth;
 		public string MissingSupplies(Actor self)
 		{
 			var required = Required(self);
@@ -80,6 +83,8 @@ namespace OpenRA.Mods.Medieval
 			if (!Info.Forge && Recruit >= 0)
 				missing = missing.Concat(Enumerable.Range(0, 3).Where(r => self.Trait<MedievalEquipmentStore>().Stock.Amount(r) < MedievalEquipment.Kits[Recruit][r])
 					.Select(r => $"{MedievalEquipment.Kits[Recruit][r] - self.Trait<MedievalEquipmentStore>().Stock.Amount(r)} {MedievalEquipment.Names[r]}"));
+			var cloth = RequiredCloth(self) - (self.TraitOrDefault<MedievalCampStore>()?.Stock.Available(MedievalCampStore.Cloth) ?? 0);
+			if (cloth > 0) missing = missing.Append($"{cloth} tissu");
 			return "Attend : " + string.Join(" / ", missing);
 		}
 		public void Plan(Actor self)
@@ -124,6 +129,7 @@ namespace OpenRA.Mods.Medieval
 						|| MedievalSettlement.Population(owner) + MedievalSettlement.PendingPopulation(owner) > MedievalSettlement.Housing(owner)) return;
 					for (var r = 0; r < 4; r++) Inputs.Take(r, Required(self)[r]);
 					for (var r = 0; r < 3; r++) self.Trait<MedievalEquipmentStore>().Stock.Take(r, MedievalEquipment.Kits[Recruit][r]);
+					self.TraitOrDefault<MedievalCampStore>()?.Stock.Take(MedievalCampStore.Cloth, RequiredCloth(self));
 					w.CreateActor(MedievalEquipment.BarracksRecruits[Recruit], [new OwnerInit(self.Owner), new LocationInit(cell.Value)]);
 					MedievalAudio.Notify(self, "ready");
 					Recruit = -1; Progress = 0; Status = "Unite formee. Nouvelle commande disponible.";
@@ -202,6 +208,17 @@ namespace OpenRA.Mods.Medieval
 			else
 			{
 				// Return cancelled or surplus kits before requesting another unit's equipment.
+				var cloth = home.Trait<MedievalCampStore>().Stock;
+				var textileStores = MedievalCampStore.Stores(self.Owner).OrderBy(a => (a.CenterPosition - home.CenterPosition).HorizontalLengthSquared).ThenBy(a => a.ActorID).ToArray();
+				var clothNeeded = workshop.RequiredCloth(home);
+				if (cloth.Available(MedievalCampStore.Cloth) > clothNeeded)
+					foreach (var depot in textileStores)
+						if (ReserveTrip(home, cloth, depot, depot.Trait<MedievalCampStore>().Stock, MedievalCampStore.Cloth,
+							cloth.Available(MedievalCampStore.Cloth) - clothNeeded, camp: true)) return;
+				var missingCloth = clothNeeded - cloth.Amount(MedievalCampStore.Cloth) - cloth.Incoming(MedievalCampStore.Cloth);
+				if (missingCloth > 0)
+					foreach (var depot in textileStores)
+						if (ReserveTrip(depot, depot.Trait<MedievalCampStore>().Stock, home, cloth, MedievalCampStore.Cloth, Math.Min(Info.Capacity, missingCloth), camp: true)) return;
 				for (var r = 0; r < 3; r++)
 				{
 					var needed = workshop.Recruit < 0 ? 0 : MedievalEquipment.Kits[workshop.Recruit][r];

@@ -109,6 +109,8 @@ Rules:
 	medieval|seasons.yaml
 	medieval|gold-church.yaml
 	medieval|gilded-decorations.yaml
+	medieval|shadows.yaml
+	medieval|fire-support.yaml
 	medieval|heraldry-tests.yaml
 
 Sequences:
@@ -133,6 +135,7 @@ Sequences:
 	medieval|sequences/construction-menu.yaml
 	medieval|sequences/gold-church.yaml
 	medieval|sequences/gilded-decorations.yaml
+	medieval|sequences/fire-support.yaml
 
 TileSets:
 	ra|tilesets/snow.yaml

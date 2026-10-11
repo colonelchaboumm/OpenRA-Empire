@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Medieval
 			else
 			{
 				LostGoods += SabotageRules.BurnStock(self.TraitOrDefault<MedievalStockpile>()?.Stock);
-				if (self.TraitOrDefault<MedievalCampStore>() is { } camp) LostGoods += camp.Stock.Take(0, 2) + camp.Stock.Take(1, 1);
+				if (self.TraitOrDefault<MedievalCampStore>() is { } camp) LostGoods += camp.Stock.Take(0, 2) + camp.Stock.Take(1, 1) + camp.Stock.Take(MedievalCampStore.Cloth, 2);
 				// Stone, steel weapons and armor do not burn. Bows do.
 				if (self.TraitOrDefault<MedievalEquipmentStore>() is { } equipment) LostGoods += equipment.Stock.Take(0, 1);
 			}

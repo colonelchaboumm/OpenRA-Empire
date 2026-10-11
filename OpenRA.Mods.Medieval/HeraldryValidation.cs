@@ -59,6 +59,7 @@ namespace OpenRA.Mods.Medieval
 			foe = w.Players.Single(p => p.InternalName == "Creeps");
 			w.LocalPlayer.EnemyPlayersMask = foe.PlayerMask; foe.EnemyPlayersMask = w.LocalPlayer.PlayerMask;
 			market = Spawn(w, "market", w.LocalPlayer, 22, 28); market.Trait<MedievalStockpile>().Stock.Add(1, 200);
+			market.Trait<MedievalCampStore>().Stock.Add(MedievalCampStore.Cloth, 2);
 			stall = Spawn(w, "marketstall", w.LocalPlayer, 25, 36);
 			enemyMarket = Spawn(w, "market", foe, 37, 32); enemyMarket.Trait<MedievalStockpile>().Stock.Add(1, 200);
 			Spawn(w, "warehouse", w.LocalPlayer, 22, 33).Trait<MedievalStockpile>().Stock.Add(1, 200);

@@ -79,9 +79,9 @@ namespace OpenRA.Mods.Medieval
 			messenger.IsDisabled = () => world.Paused || Selected(false) is not Actor a || !a.Trait<MedievalMilitaryWorkshop>().CanRecruit(a);
 			messenger.OnClick = () => { if (!messenger.IsDisabled() && Selected(false) is Actor a) world.IssueOrder(new Order("MedievalTrainSoldier", a, false) { TargetString = "md.messenger" }); };
 			var standard = widget.Get<ButtonWidget>("MD_BARRACKS_STANDARD");
-			standard.GetText = () => "Porte-drapeau | 25 nourr.";
-			standard.GetTooltipText = () => "Porte-drapeau : 25 nourriture";
-			standard.GetTooltipDesc = () => "Soutien sans attaque. Moral allies +15, rayon 5 cases.\nPlusieurs drapeaux ne se cumulent pas. Avec un tambour : maximum +30.\nFaim : +7 ; famine : aucun bonus. 1 logement et 2 nourriture/min.\nEmbleme et couleur choisis dans votre marche.";
+			standard.GetText = () => "Porte-drapeau | 25 N + 2 tissu";
+			standard.GetTooltipText = () => "Porte-drapeau : 25 nourriture + 2 tissu";
+			standard.GetTooltipDesc = () => "Le recruteur apporte 2 tissus du depot ou du marche. Le tisseur les fabrique avec la laine des moutons.\nSoutien sans attaque. Moral allies +15, rayon 5 cases.\nPlusieurs drapeaux ne se cumulent pas. Avec un tambour : maximum +30.\nFaim : +7 ; famine : aucun bonus. 1 logement et 2 nourriture/min.\nEmbleme et couleur choisis dans votre marche.";
 			standard.IsDisabled = () => world.Paused || Selected(false) is not Actor a || !a.Trait<MedievalMilitaryWorkshop>().CanRecruit(a);
 			standard.OnClick = () => { if (!standard.IsDisabled() && Selected(false) is Actor a) world.IssueOrder(new Order("MedievalTrainSoldier", a, false) { TargetString = "md.standardbearer" }); };
 			var cancel = widget.Get<ButtonWidget>("MD_BARRACKS_CANCEL");
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Medieval
 			cancel.OnClick = () => { if (Selected(false) is Actor a) world.IssueOrder(new Order("MedievalCancelTraining", a, false)); };
 			widget.Get<LabelWidget>("MD_BARRACKS_HINT").GetText = () => "Chaque soldat : 1 logement et 2 nourriture/min.";
 			widget.Get<LabelWidget>("MD_BARRACKS_INPUTS").GetText = () => Selected(false) is Actor a
-				? $"Provisions livrees : {a.Trait<MedievalMilitaryWorkshop>().Inputs.Amount(1)} nourriture / {a.Trait<MedievalMilitaryWorkshop>().Inputs.Amount(2)} viande" : "";
+				? $"Livres : {a.Trait<MedievalMilitaryWorkshop>().Inputs.Amount(1)} nourriture / {a.Trait<MedievalMilitaryWorkshop>().Inputs.Amount(2)} viande / {a.Trait<MedievalCampStore>().Stock.Amount(MedievalCampStore.Cloth)} tissu" : "";
 		}
 	}
 }

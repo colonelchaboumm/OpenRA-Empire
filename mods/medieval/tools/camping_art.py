@@ -115,7 +115,7 @@ def main():
         else:
             d.polygon([(1,13),(7,2),(15,12)],fill='#d6cba3',outline='#655a3e');d.polygon([(4,13),(7,6),(10,13)],fill='#5a5948');d.line((7,2,15,12),fill='#a59370')
         icons.append(im)
-    save('campgoods',icons);seq+=['md.campgoods:','\tDefaults:','\t\tFilename: medieval|art/campgoods.png','\twool:','\ttent:','\t\tStart: 1','']
+    save('campgoods',icons);seq+=['md.campgoods:','\tDefaults:','\t\tFilename: medieval|art/campgoods.png','\twool:','\ttent:','\t\tStart: 1','\tcloth:','\t\tFilename: medieval|art/cloth-icon.png','']
     for name,base in (('shepherd','shepherd'),('weaver','hauler')):
         frames=[unit_frame(base,f,s,m) for m in UNIT_MODES for f in range(8) for s in range(8)]
         save(name,frames);seq += [f'md.{name}:','\tDefaults:',f'\t\tFilename: medieval|art/{name}.png','\t\tOffset: 0, -12']
