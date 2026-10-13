@@ -13,6 +13,8 @@ ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / 'analysis/medieval/audit'
 # name, map, report folder. All manifests inherit today's normal gameplay rules.
 CASES = [
+    ('selection', 'village', 'selection/native'),
+    ('selection-small', 'village', 'selection/small'),
     ('tent-textile', 'village', 'tent-textile/native'),
     ('textile', 'village', 'textile/native'),
     ('fire-support', 'messenger-test', 'fire-support/native'),
@@ -82,7 +84,7 @@ def run(case, binary, timeout, support_root=None):
     target = OUT / name
     target.mkdir(parents=True, exist_ok=True)
     normal = (ROOT/'mods/medieval/mod.yaml').read_text(encoding='utf-8')
-    source = 'large-maps' if name.startswith('large-') else 'audit-save' if name == 'save' else name
+    source = 'large-maps' if name.startswith('large-') else 'audit-save' if name == 'save' else 'selection' if name == 'selection-small' else name
     previous = (ROOT/f'mods/medieval-{source}/mod.yaml').read_text(encoding='utf-8')
     common = {s.strip() for s in rules(normal)}
     extra = [s.strip() for s in rules(previous) if s.strip() not in common]
@@ -116,6 +118,8 @@ def run(case, binary, timeout, support_root=None):
             'Graphics.VSync=False', 'Sound.Mute=True', 'Debug.SyncCheckUnsyncedCode=True']
     if profile:
         args.append('Engine.SupportDir='+str(profile))
+    if name == 'selection-small':
+        args[args.index('Graphics.WindowedSize=1280,800')] = 'Graphics.WindowedSize=1024,768'
     print('START '+name, flush=True)
     with (target/'native.log').open('w', encoding='utf-8') as log:
         process = subprocess.Popen(args, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT)

@@ -1,5 +1,5 @@
 Container@PLAYER_WIDGETS:
-	Logic: LoadIngameChatLogic, MedievalEconomyLogic, MedievalMessengerLogic, MedievalLocalityLogic, MedievalSiegeLogic, MedievalHeraldryLogic, MedievalCampLogic, MedievalConstructionMenuLogic, MedievalPatrolLogic, MedievalHerdLogic, MedievalSaboteurLogic, MedievalStartCameraLogic
+	Logic: LoadIngameChatLogic, MedievalEconomyLogic, MedievalMessengerLogic, MedievalLocalityLogic, MedievalSiegeLogic, MedievalHeraldryLogic, MedievalCampLogic, MedievalConstructionMenuLogic, MedievalPatrolLogic, MedievalHerdLogic, MedievalSaboteurLogic, MedievalStartCameraLogic, MedievalSelectionLogic
 	Children:
 		Container@CHAT_ROOT:
 		LogicKeyListener@PLAYER_KEYHANDLER:
@@ -3046,18 +3046,79 @@ Container@PLAYER_WIDGETS:
 			Height: 49
 			Background: md-panel
 			Children:
-				Label@MD_MESSAGE:
+				LabelWithTooltip@MD_MESSAGE:
 					X: 7
 					Y: 3
 					Width: PARENT_WIDTH - 14
 					Height: 20
 					Font: TinyBold
-				Label@MD_SELECTION:
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+				LabelWithTooltip@MD_SELECTION:
 					X: 7
 					Y: 25
 					Width: PARENT_WIDTH - 14
 					Height: 20
 					Font: TinyBold
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+		Background@MD_UNIT_SELECTION:
+			X: 8
+			Y: WINDOW_HEIGHT - 100
+			Width: 416
+			Height: 49
+			Background: md-panel
+			Children:
+				Label@MD_UNIT_TOTAL:
+					X: 7
+					Y: 4
+					Width: 63
+					Height: 41
+					Font: TinyBold
+				Button@MD_UNIT_TEMPLATE:
+					X: 73
+					Y: 4
+					Width: 44
+					Height: 41
+					Background: md-button
+					VisualHeight: 0
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Sprite@ICON:
+							X: 3
+							Y: 1
+							Width: 38
+							Height: 34
+						Label@COUNT:
+							X: 2
+							Y: 25
+							Width: 39
+							Height: 14
+							Font: TinyBold
+							Align: Right
+							Contrast: True
+				Button@MD_UNIT_PREV:
+					X: 352
+					Y: 12
+					Width: 20
+					Height: 25
+					Font: Bold
+					Background: md-button
+				Label@MD_UNIT_PAGE:
+					X: 373
+					Y: 12
+					Width: 20
+					Height: 25
+					Font: Tiny
+					Align: Center
+				Button@MD_UNIT_NEXT:
+					X: 393
+					Y: 12
+					Width: 20
+					Height: 25
+					Font: Bold
+					Background: md-button
 		Button@MD_PLACES_OPEN:
 			X: 440
 			Y: 48

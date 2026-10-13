@@ -26,6 +26,8 @@ Le contenu Red Alert doit être installé dans le répertoire de contenu OpenRA.
 
 ## Jouer
 
+La barre de sélection en bas à gauche affiche une icône et un effectif par type d’unité sélectionné : citoyens, soldats, charrettes et engins de siège. Survoler une icône affiche son nom. Cliquer dessus garde uniquement ce type parmi les unités déjà sélectionnées ; **Maj + clic** le retire du groupe. Les flèches parcourent les pages lorsque la sélection contient beaucoup de types. Le panneau se met à jour pendant la pause et adapte sa largeur à la fenêtre.
+
 ### Saisons et chasse
 
 Les fenêtres des **six styles de maisons** s’éclairent progressivement au crépuscule et s’éteignent à l’aube. Leur lumière chaude suit les fenêtres de chaque façade, avec une légère variation d’intensité. Les chantiers restent éteints ; les lumières respectent le brouillard de guerre. Cet éclairage est visuel et ne consomme aucune ressource.
