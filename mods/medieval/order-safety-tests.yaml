@@ -1,0 +1,6 @@
+World:
+	MedievalOrderSafetyValidation:
+	MedievalWeather:
+		FirstRainTicks: 100000
+	MedievalDayNight:
+		DayTicks: 100000

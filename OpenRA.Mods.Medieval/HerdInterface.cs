@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Medieval
 		protected override void Tick(World w) { if (!Valid(w)) w.CancelInputMode(); }
 		protected override IEnumerable<Order> OrderInner(World w, CPos cell, int2 pixel, MouseInput mi)
 		{
-			if (!Valid(w) || At(w, cell) is not { } pen) yield break;
+			if (w.Paused || !Valid(w) || At(w, cell) is not { } pen) yield break;
 			yield return new Order("MedievalTransferAnimal", w.LocalPlayer.PlayerActor, Target.FromActor(animal), false) { ExtraActors = [pen] };
 			w.CancelInputMode();
 		}

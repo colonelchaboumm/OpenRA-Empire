@@ -62,6 +62,9 @@ namespace OpenRA.Mods.Medieval
 				meatCarried, kitCarried, builtAnimation, reservedCancelled, carriedCancelled, contested,
 				tents = Tents(w).Length, cartTents = cart.Trait<MedievalCampStore>().Stock.Amount(1),
 				commander = commander?.Trait<MedievalCommander>().Status,
+				cartPosition = cart.Location.ToString(), cartIdle = cart.IsIdle,
+				secondCommander = second is { Disposed: false } ? second.Trait<MedievalCommander>().Status : "removed",
+				thirdCommander = third is { Disposed: false } ? third.Trait<MedievalCommander>().Status : "removed",
 				workshop = barracks.Trait<MedievalMilitaryWorkshop>().Status,
 				worker = recruiter.Trait<MedievalWorker>().Description
 			}, new JsonSerializerOptions { WriteIndented = true }));
@@ -126,11 +129,22 @@ namespace OpenRA.Mods.Medieval
 				Order(commander, "Stop"); stage = 7; until = tick + 3;
 				w.AddFrameEndTask(_ => { second = Spawn(w, "commander", 29, 30); third = Spawn(w, "commander", 29, 31); });
 			}
-			if (stage == 7 && tick >= until && third != null && !commander.Trait<MedievalCommander>().Busy)
+			if (stage == 7 && tick >= until && third != null && !commander.Trait<MedievalCommander>().Busy && cart.IsIdle)
 			{
+				// Pickup can nudge the cart. Wait for it to stop and keep the contested
+				// site within its actual deployment range, not a stale boundary position.
+				var firstSite = new AgriculturalZone(Cell(32, 33), new CVec(2, 2));
+				var contestedSite = w.Map.FindTilesInCircle(Cell(37, 33), 2)
+					.Where(c => second.Trait<MedievalCommander>().CanDeploy(second, c) && third.Trait<MedievalCommander>().CanDeploy(third, c)
+						&& !new AgriculturalZone(c, new CVec(2, 2)).Cells().Intersect(firstSite.Cells()).Any())
+					.OrderBy(c => (c - Cell(37, 33)).LengthSquared).ThenBy(c => c.Y).ThenBy(c => c.X).Cast<CPos?>().FirstOrDefault();
+				if (contestedSite == null) { if (tick >= 8500) Finish(w); return; }
 				carriedCancelled = !commander.Trait<MedievalCommander>().Busy && commander.Trait<MedievalCampStore>().Stock.Amount(1) == 1 && stock.Amount(1) == 1;
 				Check(carriedCancelled, "Stop after pickup must keep the actual tent with the commander.");
-				Deploy(commander, 32, 33); Deploy(second, 37, 33); Deploy(third, 37, 33); stage = 8; until = tick + 3;
+				Console.WriteLine($"COMMANDER CONTEST: cart={cart.Location}, site={contestedSite}, both commanders can deploy.");
+				Deploy(commander, 32, 33);
+				foreach (var a in new[] { second, third }) w.IssueOrder(new Order("MedievalCommanderDeploy", a, Target.FromCell(w, contestedSite.Value), false));
+				stage = 8; until = tick + 3;
 			}
 			if (stage == 8 && tick >= until && (second.Trait<MedievalCommander>().Busy || third.Trait<MedievalCommander>().Busy))
 			{

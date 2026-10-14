@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Medieval
 		protected override void Tick(World world) { if (!Valid) world.CancelInputMode(); }
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			if (!CanDeploy(cell)) yield break;
+			if (world.Paused || !CanDeploy(cell)) yield break;
 			yield return new Order("MedievalCommanderDeploy", commander, Target.FromCell(world, cell), false); world.CancelInputMode();
 		}
 		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }

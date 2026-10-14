@@ -213,7 +213,7 @@ namespace OpenRA.Mods.Medieval
 			{ Pause(self, "Liaison interrompue. Cargaison conservee : rapatriez-la."); return; }
 			if (!self.IsIdle) return;
 			var cargo = self.Trait<MedievalStockpile>().Stock;
-			if (cargo.Available(0) + cargo.Available(1) + cargo.Available(2) + cargo.Available(3) > 0 && shipment == null)
+			if (shipment == null && Enumerable.Range(0, Inventory.ResourceCount).Any(r => cargo.Available(r) > 0))
 			{
 				shipment = new TradeShipment(cargo, target.Trait<MedievalStockpile>().Stock);
 				shipment.BookCarriedCargo();

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Medieval
 		protected override void Tick(World w) { if (!Valid(w)) w.CancelInputMode(); }
 		protected override IEnumerable<Order> OrderInner(World w, CPos cell, int2 pixel, MouseInput mi)
 		{
-			if (!Valid(w) || At(w, cell) is not Actor target) yield break;
+			if (w.Paused || !Valid(w) || At(w, cell) is not Actor target) yield break;
 			yield return MedievalMessenger.Command(w.LocalPlayer, messenger, command, body, target); w.CancelInputMode();
 		}
 		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World w) { yield break; }

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Medieval
 		protected override void Tick(World w) { if (!Valid(w)) w.CancelInputMode(); }
 		protected override IEnumerable<Order> OrderInner(World w, CPos cell, int2 pixel, MouseInput mi)
 		{
-			if (At(w, cell) is not { } target) yield break;
+			if (w.Paused || At(w, cell) is not { } target) yield break;
 			yield return new Order(action == 2 ? "MedievalGatherAnimal" : action == 1 ? "MedievalSabotageKill" : "MedievalSabotageFire", saboteur, Target.FromActor(target), false)
 			{ ExtraLocation = cell, ExtraData = action == 0 && MedievalSaboteur.YardAt(target, cell) ? 1u : 0u };
 			w.CancelInputMode();

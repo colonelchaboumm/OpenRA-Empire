@@ -83,6 +83,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
+			if (world.Paused) yield break;
 			if (!first.HasValue) { if (world.Map.Contains(cell) && world.LocalPlayer.Shroud.IsExplored(cell)) first = cell; yield break; }
 			var zone = Zone(cell);
 			if (!zone.ValidSize || !MedievalSettlement.CanPlace(world, world.LocalPlayer, zone.ActorType(kind), zone.Start)) yield break;

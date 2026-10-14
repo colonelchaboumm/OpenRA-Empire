@@ -52,7 +52,7 @@ static class EmpireTests
         return new Asset { url = url, size = new FileInfo(path).Length, sha256 = Updater.Hash(path) };
     }
 
-    static Manifest Fixture(string version, Manifest previous)
+    static Manifest Fixture(string version, Manifest previous, Dictionary<string, string> extra = null)
     {
         var directory = Path.Combine(root, "fixture-" + version);
         Write(Path.Combine(directory, "OpenRA.exe"), "fixture executable");
@@ -60,6 +60,9 @@ static class EmpireTests
         Write(Path.Combine(directory, "updater/Empire.Launcher.exe"), "fixture launcher");
         Write(Path.Combine(directory, "stable.dat"), stable);
         Write(Path.Combine(directory, version == "1.0.0" ? "obsolete.dat" : "new.dat"), version);
+        if (version == "1.0.0") Write(Path.Combine(directory, "legacy/payload.dat"), "old directory");
+        if (extra != null)
+            foreach (var file in extra) Write(Path.Combine(directory, file.Key), file.Value);
         var files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(path => new FileRecord
         {
             path = path.Substring(directory.Length + 1).Replace('\\', '/'), size = new FileInfo(path).Length, sha256 = Updater.Hash(path)
@@ -263,6 +266,9 @@ static class EmpireTests
         bad = Copy(two);
         bad.previous = bad.version;
         Fails(() => Updater.ValidateManifest(bad), "boucle de versions refusee");
+        bad = Copy(two);
+        bad.files.Add(new FileRecord { path = "NEW.DAT/child", size = 0, sha256 = bad.files[0].sha256 });
+        Fails(() => Updater.ValidateManifest(bad), "chemin fichier/dossier contradictoire refuse avant installation");
 
         var evil = Path.Combine(root, "evil.zip");
         using (var zip = ZipFile.Open(evil, ZipArchiveMode.Create))
@@ -280,5 +286,41 @@ static class EmpireTests
         updater = Installation("incomplete");
         Fails(() => updater.Install(bad), "archive incomplete refusee a la verification finale");
         Assert(updater.ReadState().version == "1.0.0", "verification finale avant activation");
+
+        var layout = Fixture("1.0.3", one, new Dictionary<string, string>
+        {
+            { "obsolete.dat/content.dat", "file replaced by directory" },
+            { "legacy", "directory replaced by file" }
+        });
+        updater = Installation("layout-change");
+        requests.Clear();
+        updater.Install(layout);
+        Assert(requests.Contains(layout.delta.url) && !requests.Contains(layout.full.url), "changement de structure installe avec le patch");
+        var layoutDirectory = Path.Combine(updater.Root, "versions/1.0.3");
+        Updater.VerifyInstallation(layoutDirectory, layout);
+        Assert(File.Exists(Path.Combine(layoutDirectory, "obsolete.dat/content.dat")), "un fichier peut devenir un dossier");
+        Assert(File.Exists(Path.Combine(layoutDirectory, "legacy")), "un dossier peut devenir un fichier");
+        Assert(updater.Rollback().version == "1.0.0", "retour arriere apres changement de structure");
+        Updater.VerifyInstallation(Path.Combine(updater.Root, "versions/1.0.0"), one);
+
+        var reversed = Fixture("1.0.4", layout, new Dictionary<string, string>
+        {
+            { "obsolete.dat", "file again" },
+            { "legacy/payload.dat", "directory again" }
+        });
+        updater = Installation("layout-chain");
+        requests.Clear();
+        updater.Install(reversed);
+        Assert(requests.Contains(layout.delta.url) && requests.Contains(reversed.delta.url) && !requests.Contains(reversed.full.url),
+            "versions sautees : deux changements de structure successifs par patches");
+        Updater.VerifyInstallation(Path.Combine(updater.Root, "versions/1.0.4"), reversed);
+        Assert(File.ReadAllText(Path.Combine(updater.Root, "UserData/save.sav")) == "personal save", "changements de structure sans modifier les sauvegardes");
+
+        updater = Installation("layout-interrupted");
+        corrupted = reversed.delta.url;
+        Fails(() => updater.Install(reversed), "second patch corrompu refuse apres le premier changement de structure");
+        corrupted = null;
+        Assert(updater.ReadState().version == "1.0.0", "echec du patch de structure sans changement de version active");
+        Updater.VerifyInstallation(Path.Combine(updater.Root, "versions/1.0.0"), one);
     }
 }

@@ -41,6 +41,7 @@ namespace OpenRA.Mods.Medieval
 			if (order.OrderString == "MedievalStopEscort") { Mission++; Protected = null; self.CancelActivity(); return; }
 			if (order.OrderString != "MedievalEscort" || order.Target.Type != TargetType.Actor || !CanEscort(self, order.Target.Actor)) return;
 			if (self.TraitOrDefault<MedievalRest>() is { } rest && !rest.Wake(self, true, true)) return;
+			self.TraitOrDefault<MedievalFirefighter>()?.Cancel(self, false);
 			self.TraitOrDefault<MedievalPatrol>()?.Stop(self);
 			self.TraitOrDefault<MedievalSiegeCrew>()?.Release(self);
 			self.TraitOrDefault<MedievalHerding>()?.Cancel(self);

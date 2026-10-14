@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Medieval
 		protected override void Tick(World world) { if (!ValidOrigin) world.CancelInputMode(); }
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			if (!ValidOrigin || At(world, cell) is not Actor target) yield break;
+			if (world.Paused || !ValidOrigin || At(world, cell) is not Actor target) yield break;
 			yield return new Order(command, origin, Target.FromActor(target), false);
 			world.CancelInputMode();
 		}

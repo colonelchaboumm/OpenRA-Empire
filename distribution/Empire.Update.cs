@@ -139,6 +139,10 @@ namespace Empire
             }
             foreach (var required in new[] { "OpenRA.exe", "mods/medieval/mod.yaml", "updater/Empire.Launcher.exe" })
                 if (!seen.Contains(required)) throw new InvalidDataException("Fichier indispensable absent : " + required);
+            foreach (var path in seen)
+                for (var slash = path.IndexOf('/'); slash >= 0; slash = path.IndexOf('/', slash + 1))
+                    if (seen.Contains(path.Substring(0, slash)))
+                        throw new InvalidDataException("Un chemin ne peut pas etre un fichier et un dossier : " + path);
             foreach (var asset in new[] { manifest.full, manifest.delta })
             {
                 if (asset == null) continue;
@@ -309,13 +313,21 @@ namespace Empire
                     download(asset.url, archive, asset.size);
                     if (!VerifyFile(archive, asset.size, asset.sha256)) throw new InvalidDataException("Le telechargement est incomplet ou endommage.");
                     progress("Installation de la version " + step.version + "...");
-                    Extract(archive, stage, step);
+                    // Prune only the staged copy before extraction: a removed file may now
+                    // be a directory, and an obsolete directory may become a file.
                     var allowed = new HashSet<string>(step.files.Select(f => f.path), StringComparer.OrdinalIgnoreCase);
                     foreach (var path in Directory.GetFiles(stage, "*", SearchOption.AllDirectories))
                     {
                         var relative = path.Substring(stage.Length + 1).Replace('\\', '/');
                         if (!allowed.Contains(relative)) File.Delete(SafePath(stage, relative));
                     }
+                    foreach (var path in Directory.GetDirectories(stage, "*", SearchOption.AllDirectories).OrderByDescending(p => p.Length))
+                    {
+                        var relative = path.Substring(stage.Length + 1).Replace('\\', '/');
+                        var directory = SafePath(stage, relative);
+                        if (!Directory.EnumerateFileSystemEntries(directory).Any()) Directory.Delete(directory);
+                    }
+                    Extract(archive, stage, step);
                 }
                 progress("Verification finale des fichiers...");
                 VerifyInstallation(stage, latest);
