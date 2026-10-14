@@ -73,25 +73,14 @@ namespace OpenRA.Mods.Medieval
 			if (self.TraitOrDefault<MedievalRest>()?.Resting == true) return;
 			if (engine == null) { ReturnStone(self); return; }
 			if (!SiegeRules.Live(engine, self.Owner)) { Release(self); return; }
-			if (Trebuchet) { TickTrebuchet(self); return; }
-			if (--cadence > 0) return; cadence = 5;
-			if (!self.IsIdle) return;
-			var mobile = self.Trait<Mobile>();
-			var facing = engine.Trait<Mobile>().Facing;
-			var slot = Array.IndexOf(engine.Trait<MedievalSiegeEngine>().Crew.ToArray(), self);
-			// Actual soldiers walk to two positions on each side, instead of clustering under the roof.
-			var offset = new WVec(slot % 2 == 0 ? -1250 : 1250, slot / 2 == 0 ? 650 : -650, 0).Rotate(WRot.FromYaw(facing));
-			var position = engine.CenterPosition + offset;
-			var cell = self.World.Map.CellContaining(position);
-			if (self.World.Map.Contains(cell) && mobile.CanEnterCell(cell, check: BlockedByActor.Immovable)
-				&& (self.World.Map.CenterOfCell(cell) - engine.CenterPosition).HorizontalLengthSquared <= 1700L * 1700)
+			if (Trebuchet && !engine.Trait<MedievalSiegeEngine>().Deployed && loading != null)
+			{ loading.Cancel(); loading = null; handling = 0; self.CancelActivity(); }
+			if (CanPush)
 			{
-				if (self.Location != cell)
-					self.QueueActivity(mobile.MoveTo(cell, 0));
-				else mobile.Facing = facing;
+				if (self.IsIdle) self.QueueActivity(new SiegePush(self, this, engine));
+				return;
 			}
-			else if ((self.CenterPosition - engine.CenterPosition).HorizontalLengthSquared > 1250L * 1250)
-				self.QueueActivity(mobile.MoveWithinRange(Target.FromActor(engine), new WDist(1100)));
+			if (Trebuchet) { TickTrebuchet(self); return; }
 		}
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
@@ -332,7 +321,8 @@ namespace OpenRA.Mods.Medieval
 		int frame;
 		public string Sequence => sequence;
 		public int Frame => frame;
-		public WithMedievalSiegeBody(ActorInitializer init, WithMedievalSiegeBodyInfo info) : base(init, info, () => init.Self.Trait<Mobile>().Facing) { previous = init.Self.CenterPosition; }
+		public WithMedievalSiegeBody(ActorInitializer init, WithMedievalSiegeBodyInfo info) : base(init, info,
+			() => SiegePushMotion.SpriteFacing(init.Self.Info.TraitInfoOrDefault<MedievalSiegeEngineInfo>()?.Cauldron == true, init.Self.Trait<Mobile>().Facing)) { previous = init.Self.CenterPosition; }
 		void ITick.Tick(Actor self)
 		{
 			var travel = (self.CenterPosition - previous).HorizontalLength; previous = self.CenterPosition; gait.Advance(travel);

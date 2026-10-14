@@ -19,7 +19,6 @@ namespace OpenRA.Mods.Medieval
 		public int Cargo => StoneCargo.Amount(3);
 		public bool Working { get; private set; }
 		public bool Handling => handling > 0;
-		public bool Pushing => Assigned && (!Trebuchet || engine.Trait<MedievalSiegeEngine>().Packed);
 		public int RamStroke(Actor self) => Assigned && !Trebuchet && Near(self) && engine.Trait<MedievalSiegeEngine>().AttackTicks > 0
 			? RamMotion.FireTicks - engine.Trait<MedievalSiegeEngine>().AttackTicks : -1;
 		public string Description => !Assigned ? Cargo > 0 ? "Pierre conservee : retour au stockage des que disponible." : "Choisissez un engin a servir."
@@ -28,7 +27,7 @@ namespace OpenRA.Mods.Medieval
 		void CancelLoading()
 		{
 			loading?.Cancel(); loading = null; returning?.Cancel(); returning = null; returnStore = null;
-			handling = moveAttempts = returnAttempts = 0; Working = false;
+			handling = moveAttempts = returnAttempts = 0; Working = Pushing = false;
 		}
 		// Same ground projection as the native art: f = forward, s = sideways, in pixels.
 		public static WPos ModelPoint(Actor engine, int f, int s)
@@ -58,7 +57,6 @@ namespace OpenRA.Mods.Medieval
 		void TickTrebuchet(Actor self)
 		{
 			var siege = engine.Trait<MedievalSiegeEngine>();
-			if (!siege.Deployed && loading != null) { loading.Cancel(); loading = null; handling = 0; self.CancelActivity(); }
 			if (!self.IsIdle) return;
 			if (siege.Deployed && loading == null && siege.Sling.Free(3) >= SiegeRules.StonePerShot)
 				loading = SiegeLoadingTrip.Book(engine.Trait<MedievalStockpile>().Stock, StoneCargo, siege.Sling);

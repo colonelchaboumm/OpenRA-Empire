@@ -134,6 +134,8 @@ namespace OpenRA.Mods.Medieval
 			else if (stage == 2 && tick >= until)
 			{
 				Check(cauldron.Trait<MedievalSiegeEngine>().ReadyCrew == 1 && !cauldron.Trait<MedievalSiegeEngine>().CanMove && cauldron.CenterPosition == start, "One soldier cannot push the cauldron");
+				// Cancel the earlier blocked move before checking arrival at a stationary chassis.
+				w.IssueOrder(new Order("Stop", cauldron, false));
 				cauldron.Trait<MedievalSiegeEngine>().CallCrew(true); Next(3, 250);
 			}
 			else if (stage == 3 && tick >= until)

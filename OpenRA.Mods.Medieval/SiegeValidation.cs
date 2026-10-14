@@ -267,6 +267,9 @@ namespace OpenRA.Mods.Medieval
 			}
 			if (stage == 8 && tick >= until)
 			{
+				// The close pushing posts must be vacated before the supports can appear.
+				// Bound that transition, then inspect the actual assembly phase.
+				if (trebuchet.Trait<MedievalSiegeEngine>().State == 0 && tick - mountStart < 180) return;
 				Check(trebuchet.Trait<MedievalSiegeEngine>().State == 1, "Assembly must take time.");
 				Check(w.Actors.Count(a => a.Info.Name == "md.siegebrace") == 8, "Deployment must occupy a full three by three footprint.");
 				Click(w, trebuchet, "MD_ENGINE_FREE_CREW"); Next(30, 10);
