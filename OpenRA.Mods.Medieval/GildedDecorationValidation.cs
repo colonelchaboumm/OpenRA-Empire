@@ -43,7 +43,8 @@ namespace OpenRA.Mods.Medieval
 		void Click(World w, CPos cell) => Sync.RunUnsynced(w, () =>
 		{
 			var g = (OrderGenerator)w.OrderGenerator;
-			foreach (var order in g.Order(w, cell, int2.Zero, new MouseInput(MouseInputEvent.Down, g.ActionButton, int2.Zero, int2.Zero, Modifiers.None, 1)).ToArray()) w.IssueOrder(order);
+			foreach (var action in new[] { MouseInputEvent.Down, MouseInputEvent.Up })
+				foreach (var order in g.Order(w, cell, int2.Zero, new MouseInput(action, g.ActionButton, int2.Zero, int2.Zero, Modifiers.None, 1)).ToArray()) w.IssueOrder(order);
 		});
 		void Place(World w, int index, int x, int y, int? endX = null, int? endY = null, bool rotate = false)
 		{
@@ -85,7 +86,8 @@ namespace OpenRA.Mods.Medieval
 			var totals = Totals(w);
 			Check(phase == 3, "All decorations must finish and the overlaid lion must be removed before timeout.");
 			Check(goldCarried && shortageChecked, "Builders must physically carry gold, and lack of gold must block completion.");
-			Check(totals[0] == 400 && totals[3] == 300 && totals[4] == 200, "Construction, duplicate traces and removal must conserve wood, stone and gold.");
+			// A finished lion costs 6 wood / 32 stone / 14 gold; dismantling recovers 20%, rounded down.
+			Check(totals[0] == 395 && totals[3] == 274 && totals[4] == 188, "Construction and duplicate traces conserve materials; lion demolition returns exactly 20%.");
 			Check(Decorations(w).Length == 15, "Removing only the lion must preserve all other decorations.");
 			Check(MedievalDecorations.At(w, w.LocalPlayer, Cell(34, 31))?.Info.Name == "md.gildedplaza", "Removing a statue must preserve its golden paving.");
 			Game.Renderer.SaveScreenshot(Path.Combine(output, "salvage.png"));
@@ -117,14 +119,28 @@ namespace OpenRA.Mods.Medieval
 				Check(shortageChecked, "Paving must wait for gold despite delivered stone.");
 				Check(depot.Trait<MedievalStockpile>().Stock.Add(4, 200) == 200, "Gold must enter a real storage inventory.");
 				stocked = true;
-				Place(w, 15, 34, 31);
 				Place(w, 17, 29, 36, 31, 36); Place(w, 17, 33, 36, 36, 36); Place(w, 17, 29, 37, 29, 39);
 				Place(w, 18, 32, 36); Place(w, 18, 29, 40, rotate: true);
 				Check(((MedievalDecorationOrderGenerator)w.OrderGenerator).Kind == "md.gildedgatey", "Rotated iron gates must retain their material and gold cost.");
 				Sync.RunUnsynced(w, w.CancelInputMode);
 			}
 			var decorations = Decorations(w);
-			if (tick > 350 && phase == 0 && decorations.Length == 14 && decorations.All(MedievalStockpile.Active))
+			// Workers delivering to the large square can temporarily occupy this neighbouring footprint.
+			// Retry the real placement order once it is free, as a player must do.
+			if (stocked && phase == 0 && tick % 20 == 0 && !decorations.Any(a => a.Info.Name == "md.gildedplaza"))
+			{
+				if (MedievalSettlement.CanPlace(w, w.LocalPlayer, "md.gildedplaza", Cell(34, 31)))
+				{
+					Place(w, 15, 34, 31);
+					Sync.RunUnsynced(w, w.CancelInputMode);
+				}
+				else if (tick % 1000 == 0)
+					Console.WriteLine("GILDED blocked square: " + string.Join(", ", w.Map.Rules.Actors["md.gildedplaza"].TraitInfo<BuildingInfo>()
+						.Tiles(Cell(34, 31)).SelectMany(c => w.ActorMap.GetActorsAt(c)).Select(a => a.Info.Name)));
+			}
+			if (tick > 350 && phase == 0 && decorations.Length == 14 && decorations.All(MedievalStockpile.Active)
+				&& MedievalSettlement.CanPlace(w, w.LocalPlayer, "md.gildedknight", Cell(31, 31))
+				&& MedievalSettlement.CanPlace(w, w.LocalPlayer, "md.gildedlion", Cell(34, 31)))
 			{
 				Check(decorations.Count(a => a.Info.Name == "md.gildedfencey") == 3, "Vertical iron traces must not turn into wooden fencing.");
 				Place(w, 13, 31, 31); Place(w, 14, 34, 31); phase = 1;
@@ -159,7 +175,7 @@ namespace OpenRA.Mods.Medieval
 				Sync.RunUnsynced(w, w.CancelInputMode);
 				phase = 3; finishAt = tick + 60;
 			}
-			if ((phase == 3 && tick == finishAt) || tick == 10000) Finish(w);
+			if ((phase == 3 && tick >= finishAt && MedievalDecorations.At(w, w.LocalPlayer, Cell(34, 31))?.Info.Name == "md.gildedplaza") || tick == 10000) Finish(w);
 		}
 	}
 }

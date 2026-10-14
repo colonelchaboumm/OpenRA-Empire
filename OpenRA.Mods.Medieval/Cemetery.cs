@@ -92,8 +92,9 @@ namespace OpenRA.Mods.Medieval
 		CPos? first;
 		protected override MouseActionType ActionType => MouseActionType.PlaceBuilding;
 		public MedievalCemeteryOrderGenerator(World world, WorldRenderer renderer, Actor church) : base(world) { this.renderer = renderer; this.church = church; }
+		bool Available => MedievalStockpile.Active(church) && !church.WillDispose && church.Owner == church.World.LocalPlayer;
 		AgriculturalZone Zone(CPos cell) => AgriculturalZone.Between(first ?? cell, first.HasValue ? cell : cell + new CVec(1, 1));
-		string Error(World world, AgriculturalZone zone) => church.Owner != world.LocalPlayer ? "Cette eglise ne vous appartient plus."
+		string Error(World world, AgriculturalZone zone) => !Available ? "Église indisponible."
 			: world.WorldActor.Trait<MedievalCemeteries>().PlacementError(church, zone);
 		public string PreviewText(World world)
 		{
@@ -102,15 +103,19 @@ namespace OpenRA.Mods.Medieval
 		}
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 pixel, MouseInput mi)
 		{
+			if (world.Paused || !Available) yield break;
 			if (!first.HasValue) { if (world.Map.Contains(cell) && church.Owner.Shroud.IsExplored(cell)) first = cell; yield break; }
 			if (Error(world, Zone(cell)) != null) yield break;
 			yield return new Order("MedievalPlaceCemetery", church, Target.FromCell(world, first.Value), false) { ExtraLocation = cell };
 			world.CancelInputMode();
 		}
+		protected override void Tick(World world) { if (!Available) world.CancelInputMode(); }
+		protected override void SelectionChanged(World world, IEnumerable<Actor> selected) { if (!selected.Contains(church)) world.CancelInputMode(); }
 		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
 		protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world)
 		{
+			if (!Available) yield break;
 			var zone = Zone(renderer.Viewport.ViewToWorld(Viewport.LastMousePos));
 			if (zone.Size.X > 32 || zone.Size.Y > 32) yield break;
 			var valid = Error(world, zone) == null;

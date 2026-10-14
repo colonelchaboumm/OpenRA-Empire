@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		void Finish(World w)
 		{
-			Check(stage == 19, "All barter scenarios must complete.");
+			Check(stage == 26, "All barter scenarios must complete.");
 			File.WriteAllText(Path.Combine(output, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, tick, stage, transit, partial,
 				earlyBlocked, thirdBlocked, staleBlocked, insufficientBlocked, refusal, interception, depotChanged, depotLost, completeTrips, errors }, new JsonSerializerOptions { WriteIndented = true }));
 			Console.WriteLine("MEDIEVAL BARTER: " + (errors.Count == 0 ? "PASS" : string.Join("; ", errors)));
@@ -115,6 +115,10 @@ namespace OpenRA.Mods.Medieval
 			else if (stage == 4 && tick >= until)
 			{
 				Check(Ui.Root.Get("MD_BARTER_PANEL").IsVisible(), "Acceptance must open sender's exchange window.");
+				Button(w, "MD_PRIDE_OPEN");
+				Check(Ui.Root.Get("MD_PRIDE_PANEL").IsVisible() && !Ui.Root.Get("MD_BARTER_PANEL").IsVisible(), "Nation report closes the barter window.");
+				Button(w, "MD_BARTER_ALERT");
+				Check(Ui.Root.Get("MD_BARTER_PANEL").IsVisible() && !Ui.Root.Get("MD_PRIDE_PANEL").IsVisible(), "Reopening barter closes the nation report.");
 				Fill(w, Goods(8, 2), Goods(4, 1)); Button(w, "MD_BARTER_PROPOSE"); stage = 5;
 			}
 			else if (stage == 5 && deal.State == BarterState.Offered)
@@ -219,7 +223,25 @@ namespace OpenRA.Mods.Medieval
 				Check(Amounts(backupDepot).SequenceEqual(recoveredToBackup), "Surviving cargo must find another depot belonging to its owner.");
 				Check(NoReservations(firstDepot) && Enumerable.Range(0, StorageGoods.Count).All(g => lostDepotStocks[g].Incoming(StorageGoods.Index(g)) == 0
 					&& lostDepotStocks[g].Reserved(StorageGoods.Index(g)) == 0), "Removed depot must leave no dangling reservations.");
-				stage = 19; Finish(w);
+				stage = 19;
+			}
+			else if (stage == 19 && courier.Trait<MedievalMessenger>().CanCompose(courier, first)) { Invite(w); deal = barter.Deals.Last(); stage = 23; }
+			else if (stage == 23 && courier.Trait<MedievalMessenger>().CanReceive(courier, second))
+			{
+				Command(w, second, "MedievalBarterOpen");
+				Command(w, first, "MedievalBarterPropose", BarterOffer.Encode(Goods(1, 1), Goods(1, 1)));
+				Command(w, second, "MedievalBarterAccept");
+				Check(deal.State == BarterState.Delivering && deal.Legs.All(l => l.Cargo.Travelling == 0), "Last-depot loss happens before carts load.");
+				firstDepot.Dispose(); backupDepot.Dispose(); stage = 24; until = tick + 60;
+			}
+			else if (stage == 24 && tick >= until)
+			{
+				Check(deal.State == BarterState.Interrupted && !deal.Returning, "Empty carts must finish recovery when all their depots have disappeared.");
+				Check(deal.Legs.All(l => !l.Cart.Trait<MedievalBarterCart>().Busy), "Cancelled empty carts must be available again without constructing another depot.");
+				for (var i = 0; i <= barter.Deals.Count && Ui.Root.Get<ButtonWidget>("MD_BARTER_ALERT").IsVisible(); i++)
+				{ Button(w, "MD_BARTER_ALERT"); Button(w, "MD_BARTER_CLOSE"); }
+				Check(!Ui.Root.Get<ButtonWidget>("MD_BARTER_ALERT").IsVisible(), "Acknowledged terminal exchanges must not leave an empty trade alert.");
+				stage = 26; Finish(w);
 			}
 			if (tick > 16000) { errors.Add("Timeout: stage " + stage + ", " + deal?.Status); Finish(w); }
 		}

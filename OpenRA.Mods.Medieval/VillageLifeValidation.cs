@@ -41,7 +41,8 @@ namespace OpenRA.Mods.Medieval
 		void Click(World w, CPos cell) => Sync.RunUnsynced(w, () =>
 		{
 			var g = (OrderGenerator)w.OrderGenerator;
-			foreach (var o in g.Order(w, cell, int2.Zero, new MouseInput(MouseInputEvent.Down, g.ActionButton, int2.Zero, int2.Zero, Modifiers.None, 1)).ToArray()) w.IssueOrder(o);
+			foreach (var action in new[] { MouseInputEvent.Down, MouseInputEvent.Up })
+				foreach (var o in g.Order(w, cell, int2.Zero, new MouseInput(action, g.ActionButton, int2.Zero, int2.Zero, Modifiers.None, 1)).ToArray()) w.IssueOrder(o);
 		});
 		void Setup(World w)
 		{
@@ -131,6 +132,8 @@ namespace OpenRA.Mods.Medieval
 				if (statue?.Info.Name == "md.statuelion") { Button(w, "REMOVE"); Click(w, statue.Location); removeSent = true; }
 			}
 			if (tick < 2400) return;
+			// Demolition now requires a worker to reach and dismantle the statue.
+			if (tick < 6000 && removeSent && MedievalDecorations.At(w, w.LocalPlayer, plaza.Location + new CVec(1, 1)) != plaza) return;
 			Check(worked.Values.All(c => c.Count >= 2) && worked.Values.SelectMany(c => c).Distinct().Count() >= 12 && maximumWorking >= 3, "Farmers must distribute across the crop and work multiple distinct rows.");
 			Check(carried > 0 && farm.Trait<MedievalStockpile>().Stock.Amount(1) >= 0 && w.LocalPlayer.PlayerActor.Trait<MedievalFoodEconomy>().Harvests.Total > 0, "Harvest must still be carried and delivered.");
 			Check(cowFrames.Count > 24 && sheepFrames.Count > 24 && paused, "Cattle and sheep must walk, graze, turn and obey pause.");

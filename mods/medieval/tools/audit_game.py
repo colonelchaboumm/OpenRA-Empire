@@ -13,6 +13,14 @@ ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / 'analysis/medieval/audit'
 # name, map, report folder. All manifests inherit today's normal gameplay rules.
 CASES = [
+    ('hud', 'messenger-test', 'hud/native'),
+    ('hud-small', 'messenger-test', 'hud/small'),
+    ('barter', 'messenger-test', 'barter/native'),
+    ('fleet', 'messenger-test', 'barter/fleet'),
+    ('cemetery', 'messenger-test', 'cemetery'),
+    ('pride', 'messenger-test', 'pride'),
+    ('influence', 'messenger-test', 'influence'),
+    ('battlefield', 'messenger-test', 'battlefield'),
     ('action-particles', 'village', 'action-particles/native'),
     ('selection', 'village', 'selection/native'),
     ('selection-small', 'village', 'selection/small'),
@@ -86,7 +94,10 @@ def run(case, binary, timeout, support_root=None):
     target.mkdir(parents=True, exist_ok=True)
     normal = (ROOT/'mods/medieval/mod.yaml').read_text(encoding='utf-8')
     source = 'large-maps' if name.startswith('large-') else 'audit-save' if name == 'save' else 'selection' if name == 'selection-small' else name
-    previous = (ROOT/f'mods/medieval-{source}/mod.yaml').read_text(encoding='utf-8')
+    direct = 'hud' if name == 'hud-small' else name
+    previous = (normal.replace('\nSequences:\n', f'\tmedieval|{direct}-tests.yaml\n\nSequences:\n', 1)
+                if direct in ('hud', 'barter', 'fleet', 'cemetery', 'pride', 'influence', 'battlefield')
+                else (ROOT/f'mods/medieval-{source}/mod.yaml').read_text(encoding='utf-8'))
     common = {s.strip() for s in rules(normal)}
     extra = [s.strip() for s in rules(previous) if s.strip() not in common]
     assert extra, name
@@ -99,27 +110,33 @@ def run(case, binary, timeout, support_root=None):
     # saturates the voice limit and can suppress perfectly valid ambience cues.
     if name not in ('audio', 'weather-polish'):
         manifest = manifest.replace('\t\t\tTimestep: 40', '\t\t\tTimestep: 4')
-    profile = None
-    if support_root:
-        profile = Path(support_root).resolve()/name
-        profile.mkdir(parents=True, exist_ok=True)
-        user_support = Path(os.environ['APPDATA'])/'OpenRA'
-        shutil.copy2(user_support/'settings.yaml', profile/'settings.yaml')
-        content = Path(os.path.relpath(user_support/'Content/ra/v2', ROOT)).as_posix()
-        manifest = manifest.replace('~^SupportDir|Content/ra/v2/', '~^EngineDir|'+content+'/')
-    mod = 'medieval-audit-' + name
-    package = ROOT/'mods'/mod
+    profile = (Path(support_root).resolve() if support_root else OUT/'profiles')/name
+    profile.mkdir(parents=True, exist_ok=True)
+    (profile/'settings.yaml').write_text('Player:\n\tName: Validation\nSound:\n\tMute: True\n', encoding='utf-8', newline='\n')
+    content = Path(os.path.relpath(Path(os.environ['APPDATA'])/'OpenRA/Content/ra/v2', ROOT)).as_posix()
+    manifest = manifest.replace('~^SupportDir|Content/ra/v2/', '~^EngineDir|'+content+'/')
+    # Generated manifests must never enter the published mods tree.
+    package = target/'mod'
     package.mkdir(exist_ok=True)
+    if name in ('cemetery', 'pride', 'influence', 'battlefield'):
+        test_map = package/'maps'/name
+        shutil.copytree(ROOT/'mods/medieval/maps'/map_id, test_map, dirs_exist_ok=True)
+        map_file = test_map/'map.yaml'
+        map_file.write_text(map_file.read_text(encoding='utf-8').replace('FogCheckboxEnabled: False', 'FogCheckboxEnabled: True')
+                            .replace('ExploredMapCheckboxEnabled: True', 'ExploredMapCheckboxEnabled: False'), encoding='utf-8', newline='\n')
+        map_mount = Path(os.path.relpath(package/'maps', ROOT)).as_posix()
+        manifest = manifest.replace('medieval|maps: System', '^EngineDir|'+map_mount+': System')
+        map_id = name
     (package/'mod.yaml').write_text(manifest, encoding='utf-8', newline='\n')
     report = ROOT/'analysis/medieval'/folder/'result.json'
     started = time.time()
     args = [str(ROOT/'.tools/dotnet/dotnet.exe'), str(ROOT/binary/'OpenRA.dll'), '--',
-            'Engine.EngineDir=..', 'Game.Mod='+mod, 'Launch.Map='+map_id,
+            'Engine.EngineDir='+str(ROOT), 'Game.Mod='+str(package), 'Launch.Map='+map_id,
             'Graphics.Mode=Windowed', 'Graphics.WindowedSize=1280,800', 'Graphics.UIScale=1',
             'Graphics.VSync=False', 'Sound.Mute=True', 'Debug.SyncCheckUnsyncedCode=True']
     if profile:
         args.append('Engine.SupportDir='+str(profile))
-    if name == 'selection-small':
+    if name in ('selection-small', 'hud-small'):
         args[args.index('Graphics.WindowedSize=1280,800')] = 'Graphics.WindowedSize=1024,768'
     print('START '+name, flush=True)
     with (target/'native.log').open('w', encoding='utf-8') as log:
@@ -146,9 +163,12 @@ if __name__ == '__main__':
     parser.add_argument('--jobs', type=int, default=1)
     parser.add_argument('--timeout', type=int, default=300)
     parser.add_argument('--support-root', help='Private Windows test profiles; leaves normal settings and saves untouched')
+    parser.add_argument('--output-root', help='Directory for fresh audit logs and the summary')
     opts = parser.parse_args()
     if opts.jobs < 1 or opts.timeout < 1:
         parser.error('--jobs and --timeout must be positive')
+    if opts.output_root:
+        OUT = Path(opts.output_root).resolve()
     OUT.mkdir(parents=True, exist_ok=True)
     cases = [c for c in CASES if opts.only is None or c[0] in opts.only]
     results = []

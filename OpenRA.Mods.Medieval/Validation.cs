@@ -64,6 +64,7 @@ namespace OpenRA.Mods.Medieval
 		Actor stoppedFarmer;
 		Actor waitingFarmer;
 		MedievalZoneOrderGenerator zonePlacement;
+		bool pastureOrderSent;
 		Actor remoteSite;
 		bool remoteBuilderCarried;
 		int remoteSuppliedAt, remoteStartedAt, remoteCompletedAt, remoteStormTicks;
@@ -148,16 +149,24 @@ namespace OpenRA.Mods.Medieval
 					Viewport.LastMousePos = renderer.Viewport.WorldToViewPx(renderer.ScreenPxPosition(w.Map.CenterOfCell(Cell(43, 38))));
 				}
 			});
-			if (tick == 1820) Sync.RunUnsynced(w, () =>
+			if (tick >= 1820 && tick < 2100 && tick % 20 == 0 && !pastureOrderSent) Sync.RunUnsynced(w, () =>
 			{
-				Game.Renderer.SaveScreenshot(Path.Combine(output, "agriculture-zone-preview.png"));
+				if (tick == 1820) Game.Renderer.SaveScreenshot(Path.Combine(output, "agriculture-zone-preview.png"));
 				if (zonePlacement != null)
-					foreach (var order in ZoneClick(w, zonePlacement, Cell(43, 38))) w.IssueOrder(order);
+				{
+					var orders = ZoneClick(w, zonePlacement, Cell(43, 38)).ToArray();
+					foreach (var order in orders) w.IssueOrder(order);
+					pastureOrderSent = orders.Length == 1;
+					if (!pastureOrderSent && tick == 2080)
+						Console.WriteLine("ENCLOSURE occupants: " + string.Join(", ", new AgriculturalZone(Cell(40, 35), new CVec(4, 4)).Cells()
+							.SelectMany(c => w.ActorMap.GetActorsAt(c)).Select(a => a.Info.Name + "@" + a.Location)));
+				}
 			});
-			if (tick == 1900)
+			if (tick == 2100)
 			{
 				Check(w.Actors.Any(a => a.Owner == w.LocalPlayer && a.Info.Name == "md.field.4x4" && a.Location == Cell(18, 35)), "Reverse-drawn culture must have correct type and top-left corner.");
-				Check(w.Actors.Any(a => a.Owner == w.LocalPlayer && a.Info.Name == "md.pasture.4x4" && a.Location == Cell(40, 35)), "Enclosure rectangle must create a construction site.");
+				Check(w.Actors.Any(a => a.Owner == w.LocalPlayer && a.Info.Name == "md.pasture.4x4" && a.Location == Cell(40, 35)),
+					"Enclosure rectangle must create a construction site. " + zonePlacement?.PreviewText(w));
 				Check(!MedievalSettlement.CanPlace(w, w.LocalPlayer, "md.field.4x4", Cell(18, 35)), "Overlapping farm zones must be refused.");
 				Check(!MedievalSettlement.CanPlace(w, w.LocalPlayer, "md.field.4x4", Cell(3, 55)), "A culture too far from a working farm must be refused.");
 				Check(!MedievalSettlement.CanPlace(w, w.LocalPlayer, "md.field.10x10", Cell(59, 59)), "Out-of-map rectangles must be refused.");
@@ -187,7 +196,7 @@ namespace OpenRA.Mods.Medieval
 			if (tick == 7000)
 			{
 				var field = w.Actors.FirstOrDefault(a => a.Owner == w.LocalPlayer && a.Info.Name == "md.field.4x4");
-				var pasture = w.Actors.FirstOrDefault(a => a.Owner == w.LocalPlayer && a.Info.Name == "md.pasture.4x4");
+				var pasture = w.Actors.FirstOrDefault(a => a.Owner == w.LocalPlayer && a.Info.Name == "md.pasture.4x4" && a.Location == Cell(40, 35));
 				Check(field != null && pasture != null && MedievalStockpile.Active(field) && MedievalStockpile.Active(pasture), "Drawn farm zones must be completed by builders after delivery and work.");
 				if (pasture != null) w.Selection.Combine(w, [pasture], false, true);
 				agricultureChecks.Add("Builders complete both drawn zones with scaled wood/stone costs");

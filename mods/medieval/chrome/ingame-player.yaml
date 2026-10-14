@@ -1,5 +1,5 @@
 Container@PLAYER_WIDGETS:
-	Logic: LoadIngameChatLogic, MedievalEconomyLogic, MedievalMessengerLogic, MedievalLocalityLogic, MedievalSiegeLogic, MedievalHeraldryLogic, MedievalCampLogic, MedievalConstructionMenuLogic, MedievalPatrolLogic, MedievalHerdLogic, MedievalSaboteurLogic, MedievalStartCameraLogic, MedievalSelectionLogic, MedievalBarterLogic
+	Logic: LoadIngameChatLogic, MedievalEconomyLogic, MedievalMessengerLogic, MedievalLocalityLogic, MedievalSiegeLogic, MedievalHeraldryLogic, MedievalCampLogic, MedievalConstructionMenuLogic, MedievalPatrolLogic, MedievalHerdLogic, MedievalSaboteurLogic, MedievalStartCameraLogic, MedievalSelectionLogic, MedievalBarterLogic, MedievalHudLogic
 	Children:
 		Container@CHAT_ROOT:
 		LogicKeyListener@PLAYER_KEYHANDLER:
@@ -661,7 +661,7 @@ Container@PLAYER_WIDGETS:
 			X: WINDOW_WIDTH - 250
 			Y: 274
 			Width: 238
-			Height: 510
+			Height: WINDOW_HEIGHT - 282
 			Background: md-panel
 			Children:
 				Image@MD_RESOURCE_ICON_0:
@@ -1595,6 +1595,75 @@ Container@PLAYER_WIDGETS:
 					Font: TinyBold
 					Background: md-button
 					Text: medieval-cancel
+		Button@MD_STOCKS_TOGGLE:
+			X: 432
+			Y: 81
+			Width: 150
+			Height: 28
+			Font: TinyBold
+			Background: md-button
+			TooltipContainer: TOOLTIP_CONTAINER
+		Background@MD_FOOD_DETAILS:
+			X: 12
+			Y: 108
+			Width: 410
+			Height: 104
+			Background: md-panel
+			Children:
+				Label@MD_FOOD_DETAILS_TITLE:
+					X: 9
+					Y: 4
+					Width: 240
+					Height: 22
+					Font: TinyBold
+				Button@MD_FOOD_CLOSE:
+					X: 311
+					Y: 3
+					Width: 90
+					Height: 24
+					Font: TinyBold
+					Background: md-button
+		Container@MD_CONTEXT_TABS:
+			X: 12
+			Y: 80
+			Width: 410
+			Height: 26
+			Children:
+				Button@MD_CONTEXT_TAB_0:
+					X: 0
+					Width: 110
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_CONTEXT_TAB_1:
+					X: 114
+					Width: 110
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_CONTEXT_TAB_2:
+					X: 228
+					Width: 110
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_CONTEXT_NEXT:
+					X: 342
+					Width: 28
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+				Button@MD_CONTEXT_COLLAPSE:
+					X: 374
+					Width: 36
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
 		Background@MD_FOOD_PANEL:
 			X: 12
 			Y: 12
@@ -1602,6 +1671,13 @@ Container@PLAYER_WIDGETS:
 			Height: 132
 			Background: md-panel
 			Children:
+				Button@MD_FOOD_TOGGLE:
+					X: 9
+					Y: 3
+					Width: 230
+					Height: 22
+					Font: TinyBold
+					Background: md-button
 				Label@MD_FOOD_TITLE:
 					X: 9
 					Y: 5
@@ -1645,6 +1721,25 @@ Container@PLAYER_WIDGETS:
 					Y: 105
 					Width: 394
 					Height: 20
+					Font: TinyBold
+		Background@MD_WORK_PANEL:
+			X: 12
+			Y: 108
+			Width: 410
+			Height: 112
+			Background: md-panel
+			Children:
+				Label@MD_WORK_TITLE:
+					X: 9
+					Y: 4
+					Width: 392
+					Height: 22
+					Font: TinyBold
+				Label@MD_WORK_HINT:
+					X: 9
+					Y: 68
+					Width: 392
+					Height: 36
 					Font: TinyBold
 		Background@MD_CART_PANEL:
 			X: 12
@@ -3050,9 +3145,9 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 		Button@MD_MAIL_ALERT:
-			X: 440
-			Y: 12
-			Width: 360
+			X: 432
+			Y: 114
+			Width: 310
 			Height: 28
 			Font: TinyBold
 			Background: md-button
@@ -3137,9 +3232,9 @@ Container@PLAYER_WIDGETS:
 					Font: Bold
 					Background: md-button
 		Button@MD_PLACES_OPEN:
-			X: 440
-			Y: 48
-			Width: 180
+			X: 432
+			Y: 49
+			Width: 150
 			Height: 28
 			Font: TinyBold
 			Background: md-button
@@ -3691,27 +3786,27 @@ Container@PLAYER_WIDGETS:
 		Background@MD_FOUNDING_PANEL:
 			X: 12
 			Y: 154
-			Width: 470
+			Width: 410
 			Height: 210
 			Background: md-panel
 			Children:
 				Label@MD_FOUNDING_TITLE:
 					X: 10
 					Y: 6
-					Width: 450
+					Width: 390
 					Height: 20
 					Font: TinyBold
 				Button@MD_FOUNDING_DEPLOY:
 					X: 10
 					Y: 34
-					Width: 450
+					Width: 390
 					Height: 28
 					Font: Bold
 					Background: md-button
 				Label@MD_FOUNDING_STATUS:
 					X: 10
 					Y: 74
-					Width: 450
+					Width: 390
 					Height: 45
 					Font: TinyBold
 					WordWrap: True
@@ -3719,15 +3814,15 @@ Container@PLAYER_WIDGETS:
 				Label@MD_FOUNDING_HINT:
 					X: 10
 					Y: 127
-					Width: 450
+					Width: 390
 					Height: 78
 					Font: Tiny
 					WordWrap: True
 					VAlign: Top
 		Button@MD_HERALDRY_OPEN:
-			X: 440
-			Y: 94
-			Width: 280
+			X: 590
+			Y: 81
+			Width: 152
 			Height: 28
 			Font: TinyBold
 			Background: md-button
@@ -3972,9 +4067,9 @@ Container@PLAYER_WIDGETS:
 			Height: 40
 			Font: TinyBold
 		Button@MD_CAMP_OPEN:
-			X: 630
-			Y: 50
-			Width: 240
+			X: 590
+			Y: 49
+			Width: 152
 			Height: 28
 			Font: TinyBold
 			Background: md-button
@@ -4417,9 +4512,9 @@ Container@PLAYER_WIDGETS:
 					WordWrap: True
 					VAlign: Top
 		Label@MD_INFLUENCE_LEGEND:
-			X: 440
-			Y: 80
-			Width: 300
+			X: 432
+			Y: 148
+			Width: 310
 			Height: 14
 			Font: TinyBold
 		Background@MD_PRIDE_PANEL:

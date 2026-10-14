@@ -287,7 +287,7 @@ namespace OpenRA.Mods.Medieval
 					: string.Join(" ", Enumerable.Range(0, Inventory.ResourceCount).Where(r => building.Materials.Capacity(r) > 0)
 						.Select(r => $"{Labels[r]} {building.Materials.Amount(r)}/{building.Materials.Capacity(r)}"))
 						+ (building.Info.Cloth > 0 ? $" Tissu {building.CampMaterials.Amount(MedievalCampStore.Cloth)}/{building.Info.Cloth}" : "");
-			else if (stock != null)
+			else if (stock != null && MedievalHudState.StockVisible(self))
 			{
 				var hasYard = self.TraitOrDefault<MedievalStockyard>()?.HasArea == true;
 				var resources = Enumerable.Range(0, Inventory.ResourceCount).Where(r => stock.Stock.Capacity(r) > 0 && (!hasYard || MedievalStockyard.IndoorAmount(self, r) > 0)).ToArray();
@@ -299,7 +299,7 @@ namespace OpenRA.Mods.Medieval
 			else if (worker != null && (worker.Cargo > 0 || selected))
 			{
 				if (selected) text = worker.Cargo > 0 ? $"{worker.CargoName} {worker.Cargo}" : "";
-				else if (worker.Cargo > 0)
+				else if (worker.Cargo > 0 && MedievalHudState.StockVisible(self))
 				{
 					yield return new StockBadgeRenderable(self.World, self.CenterPosition, labelOffset,
 						[worker.Resource], [worker.Cargo], [worker.Info.Capacity], worker.EquipmentCargo, worker.CampCargo);

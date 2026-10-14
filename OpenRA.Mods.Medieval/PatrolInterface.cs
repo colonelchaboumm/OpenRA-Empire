@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Medieval
 				if (protecting > 0) return $"{protecting} soldat(s) en escorte. Suit et protège la cible.\nUn déplacement, une attaque manuelle ou Arrêter remplace l'escorte.";
 				if (Draft() is { } draft) return $"Trace : {draft.Count}/16 points. " + draft.Message;
 				var units = Militia();
-				if (units.Length == 0) return "Selectionnez des miliciens pour organiser une ronde.";
+				if (units.Length == 0) return "Choisissez une attitude ou une unité à escorter.";
 				var resting = units.Count(a => a.Trait<MedievalRest>().Resting);
 				var status = units.Length == 1 ? units[0].Trait<MedievalPatrol>().Description
 					: $"{units.Count(a => a.Trait<MedievalPatrol>().HasRoute)} parcours memorise(s), {units.Count(a => a.Trait<MedievalPatrol>().Active)} en service";
@@ -95,7 +95,20 @@ namespace OpenRA.Mods.Medieval
 				return status + (resting > 0 ? orderedRest ? $"\n{resting} au repos ; ordre du commandant prioritaire."
 					: $"\n{resting} au repos ; reveil automatique pour la ronde." : "\nUn ordre manuel supprime la ronde.");
 			};
+			// Only militia can patrol. Other soldiers keep their stance and escort actions.
+			foreach (var id in new[] { "HINT", "DRAW", "START", "NIGHT", "STOP" })
+				widget.Get("MD_PATROL_" + id).IsVisible = () => Militia().Length > 0;
+			void Layout()
+			{
+				var patrol = Militia().Length > 0;
+				widget.Get("MD_PATROL_PANEL").Bounds.Height = patrol ? 274 : 160;
+				widget.Get("MD_ESCORT").Bounds.Y = widget.Get("MD_ESCORT_STOP").Bounds.Y = patrol ? 186 : 72;
+				widget.Get("MD_PATROL_STATUS").Bounds.Y = patrol ? 221 : 107;
+			}
+			layout = Layout;
 		}
+		readonly Action layout;
+		public override void Tick() => layout();
 	}
 	public sealed class MedievalPatrolOrderGenerator : OrderGenerator
 	{

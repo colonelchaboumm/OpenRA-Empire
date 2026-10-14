@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Medieval
 				return $"{(clock.Night ? "NUIT" : "JOUR")} {seconds / 60}:{seconds % 60:00} | {sky}"
 					+ (season == null ? "" : $"\n{SeasonClock.Name(season.Season)} · An {season.Year} · {(season.Remaining + 1499) / 1500} min restantes");
 			};
-			Button("OPEN", () => "Campements & repos", () => open = !open);
+			Button("OPEN", () => "Campements", () => open = !open);
 			Button("CLOSE", () => "Fermer", () => open = false);
 			widget.Get("MD_CAMP_PANEL").IsVisible = () => open;
 			widget.Get<LabelWidget>("MD_CAMP_TITLE").GetText = () => "PAVILLONS MILITAIRES ET REPOS";

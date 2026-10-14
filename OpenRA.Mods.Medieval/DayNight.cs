@@ -34,11 +34,13 @@ namespace OpenRA.Mods.Medieval
 	public sealed class MedievalDayNight : ITick, IRenderAboveWorld, ISync
 	{
 		public readonly DayClock Clock;
+		public int ShadingQuads { get; private set; }
 		[VerifySync] public int Phase => Clock.Phase;
 		public MedievalDayNight(MedievalDayNightInfo info) { Clock = new(info.DayTicks, info.NightTicks); }
 		void ITick.Tick(Actor self) { if (self.World.Type == WorldType.Regular) Clock.Advance(); }
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
+			ShadingQuads = 0;
 			var dark = Clock.Darkness;
 			if (dark <= 0 || self.World.Type != WorldType.Regular) return;
 			var cr = Game.Renderer.WorldRgbaColorRenderer;
@@ -73,11 +75,14 @@ namespace OpenRA.Mods.Medieval
 				}
 				return Color.FromArgb((int)(dark * (166 - 148 * strength)), 12, 23, 46);
 			}
-			// A coarse interpolated mesh bounds the cost independently of map dimensions.
-			for (var y = left.Y; y < right.Y; y += 40)
-				for (var x = left.X; x < right.X; x += 40)
+			// Bound the mesh in screen space. A fixed world-pixel step becomes
+			// tens of thousands of quads when viewing an entire continent at night.
+			var step = Math.Max(40, Math.Max((right.X - left.X + 63) / 64, (right.Y - left.Y + 47) / 48));
+			for (var y = left.Y; y < right.Y; y += step)
+				for (var x = left.X; x < right.X; x += step)
 				{
-					var x2 = Math.Min(x + 40, right.X); var y2 = Math.Min(y + 40, right.Y);
+					ShadingQuads++;
+					var x2 = Math.Min(x + step, right.X); var y2 = Math.Min(y + step, right.Y);
 					cr.FillRect(new Vector3(x, y, 0), new Vector3(x2, y, 0), new Vector3(x2, y2, 0), new Vector3(x, y2, 0),
 						Shade(x, y), Shade(x2, y), Shade(x2, y2), Shade(x, y2));
 				}

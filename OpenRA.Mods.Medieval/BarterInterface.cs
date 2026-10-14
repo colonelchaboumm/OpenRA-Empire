@@ -11,9 +11,10 @@ namespace OpenRA.Mods.Medieval
 	{
 		readonly World world;
 		readonly MedievalBarter barter;
-		readonly Widget panel;
+		readonly Widget panel, root;
 		readonly TextFieldWidget[] give = new TextFieldWidget[StorageGoods.Count], receive = new TextFieldWidget[StorageGoods.Count];
 		readonly System.Collections.Generic.Dictionary<uint, uint> seen = [];
+		readonly System.Collections.Generic.HashSet<uint> dismissed = [];
 		BarterDeal current;
 		uint shownRevision;
 		bool opened;
@@ -34,6 +35,9 @@ namespace OpenRA.Mods.Medieval
 			&& a.SequenceEqual(current.Goods[current.Side(Local)]) && b.SequenceEqual(current.Goods[1 - current.Side(Local)]);
 		void Show(BarterDeal deal)
 		{
+			foreach (var prefix in new[] { "MD_FOOD", "MD_PRIDE", "MD_PLACES", "MD_CAMP", "MD_HERALDRY", "MD_DECOR", "MD_FORT" })
+				if (root.Get(prefix == "MD_FOOD" ? "MD_FOOD_DETAILS" : prefix + "_PANEL").IsVisible())
+					root.Get<ButtonWidget>(prefix + "_CLOSE").OnClick();
 			current = deal; shownRevision = deal.Revision; opened = true;
 			var side = deal.Side(Local);
 			for (var g = 0; g < StorageGoods.Count; g++)
@@ -60,7 +64,7 @@ namespace OpenRA.Mods.Medieval
 		[ObjectCreator.UseCtor]
 		public MedievalBarterLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
-			this.world = world; barter = world.WorldActor.Trait<MedievalBarter>(); panel = widget.Get("MD_BARTER_PANEL");
+			this.world = world; root = widget; barter = world.WorldActor.Trait<MedievalBarter>(); panel = widget.Get("MD_BARTER_PANEL");
 			panel.IsVisible = () => Local != null && opened && current != null;
 			var template = panel.Get("MD_BARTER_ROW"); panel.RemoveChild(template);
 			for (var row = 0; row < Rows.Length; row++)
@@ -88,10 +92,10 @@ namespace OpenRA.Mods.Medieval
 			invite.GetTooltipText = () => "Ouvrir un commerce avec un autre joueur";
 			invite.GetTooltipDesc = () => "Depuis votre caserne, envoyez le messager à une caserne visible.\nChaque joueur doit posséder un dépôt terminé.\nLe destinataire accepte l'invitation avant de négocier les quantités.";
 			BarterDeal[] Visible() => Local == null ? [] : barter.Deals.Where(d => barter.Visible(d, Local)).OrderByDescending(d => d.Id).ToArray();
-			var alert = widget.Get<ButtonWidget>("MD_BARTER_ALERT"); alert.IsVisible = () => Visible().Length > 0;
+			var alert = widget.Get<ButtonWidget>("MD_BARTER_ALERT"); alert.IsVisible = () => Visible().Any(d => d.Active || !dismissed.Contains(d.Id));
 			alert.GetText = () => Visible().Any(d => d.State == BarterState.Invited && d.Second == Local) ? "Invitation commerciale reçue : voir"
-				: "Marchandage : " + Visible().Count(d => d.Active) + " échange(s) en cours";
-			alert.OnClick = () => { var d = Visible().FirstOrDefault(d => d.Active) ?? Visible().FirstOrDefault(); if (d != null) Show(d); };
+				: Visible().Any(d => d.Active) ? "Marchandage : " + Visible().Count(d => d.Active) + " échange(s) en cours" : "Marchandage terminé : voir le bilan";
+			alert.OnClick = () => { var d = Visible().FirstOrDefault(d => d.Active || !dismissed.Contains(d.Id)); if (d != null) Show(d); };
 			panel.Get<LabelWidget>("MD_BARTER_TITLE").GetText = () => current == null ? "" : "MARCHANDAGE AVEC " + current.Player(1 - current.Side(Local)).ResolvedPlayerName;
 			panel.Get<LabelWidget>("MD_BARTER_STATUS").GetText = () => current?.Status ?? "";
 			panel.Get<LabelWidget>("MD_BARTER_GOOD_HEADER").GetText = () => "Marchandise";
@@ -138,7 +142,7 @@ namespace OpenRA.Mods.Medieval
 			refuse.IsDisabled = () => world.Paused || current?.Negotiable != true;
 			refuse.OnClick = () => { if (!refuse.IsDisabled()) Send("MedievalBarterRefuse"); };
 			var close = panel.Get<ButtonWidget>("MD_BARTER_CLOSE"); close.GetText = () => "Fermer";
-			close.OnClick = () => { foreach (var f in give.Concat(receive)) f.YieldKeyboardFocus(); opened = false; };
+			close.OnClick = () => { foreach (var f in give.Concat(receive)) f.YieldKeyboardFocus(); if (opened && current is { Active: false }) dismissed.Add(current.Id); opened = false; };
 			var next = panel.Get<ButtonWidget>("MD_BARTER_NEXT"); next.GetText = () => "Autre échange ›";
 			next.IsDisabled = () => Visible().Length < 2;
 			next.OnClick = () => { var all = Visible(); if (all.Length > 0) Show(all[(Array.IndexOf(all, current) + 1) % all.Length]); };

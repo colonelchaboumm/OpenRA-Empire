@@ -274,9 +274,12 @@ namespace OpenRA.Mods.Medieval
 			var stocks = MedievalBarter.Stocks(Cart);
 			if (Travel == BarterTravel.Recovering)
 			{
+				var empty = Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Amount(Cart, g) == 0);
 				var next = MedievalBarter.Depots(Cart.Owner).OrderBy(a => (a.CenterPosition - Cart.CenterPosition).HorizontalLengthSquared).ThenBy(a => a.ActorID)
-					.FirstOrDefault(a => Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Amount(Cart, g) == 0)
+					.FirstOrDefault(a => empty
 						|| Enumerable.Range(0, StorageGoods.Count).Any(g => StorageGoods.Amount(Cart, g) > 0 && (StorageGoods.Stock(a, g)?.Free(StorageGoods.Index(g)) ?? 0) > 0));
+				// No cargo needs shelter: loss of the final depot must not reserve an empty cart forever.
+				if (next == null && empty) { Finish(w); return; }
 				if (next != recoveryDepot) { recoveryDepot = next; attempts = 0; }
 				if (next == null || !MedievalLogistics.Approach(Cart, next, ref attempts)) return;
 				for (var g = 0; g < StorageGoods.Count; g++)

@@ -63,6 +63,8 @@ namespace OpenRA.Mods.Medieval
 			Sync.RunUnsynced(w, () =>
 			{
 				var sun = w.WorldActor.Trait<MedievalSunlight>();
+				var day = w.WorldActor.Trait<MedievalDayNight>();
+				if (day.ShadingQuads > 64 * 48) errors.Add("Night lighting exceeds its bounded viewport mesh.");
 				var actors = w.ScreenMap.RenderableActorsInBox(renderer.Viewport.TopLeft, renderer.Viewport.BottomRight).ToArray();
 				var counts = new Dictionary<string, int>(); var casts = 0; var ground = 0;
 				foreach (var a in actors)
@@ -80,7 +82,7 @@ namespace OpenRA.Mods.Medieval
 				if (casts < (info.Large ? 80 : 20)) errors.Add("Too few visible shadows in " + name + ": " + casts);
 				if (!info.Large && ground < 3) errors.Add("Agricultural ground layers missing");
 				samples.Add(new { name, actors = actors.Length, casts, ground, counts, opacity = sun.Shadow.Opacity, length = sun.Shadow.Length,
-					direction = new[] { sun.Shadow.Direction.X, sun.Shadow.Direction.Y }, zoom = renderer.Viewport.Zoom,
+					direction = new[] { sun.Shadow.Direction.X, sun.Shadow.Direction.Y }, zoom = renderer.Viewport.Zoom, shadingQuads = day.ShadingQuads,
 					renderWorldMs = PerfHistory.Items["render_world"].Average(25), rain = w.WorldActor.Trait<MedievalWeather>().RainPermille });
 				Game.Renderer.SaveScreenshot(Path.Combine(output, name + ".png"));
 			});

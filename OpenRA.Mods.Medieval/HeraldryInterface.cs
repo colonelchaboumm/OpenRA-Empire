@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Medieval
 			renderer.AddPalette("md-heraldry-preview", new ImmutablePalette(Enumerable.Repeat(0u, Palette.Size)));
 			MedievalHeraldryPalettes.Shift(renderer, "md-heraldry-preview", MedievalHeraldry.For(world.LocalPlayer).Color);
 			var toggle = widget.Get<ButtonWidget>("MD_HERALDRY_OPEN");
-			toggle.GetText = () => "Pays, embleme & couleur";
+			toggle.GetText = () => "Identité du pays";
 			toggle.IsVisible = () => Selected() != null;
 			toggle.OnClick = () =>
 			{

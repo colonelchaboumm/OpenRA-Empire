@@ -97,13 +97,20 @@ namespace OpenRA.Mods.Medieval
 			Check(crossed.Count >= 2, "Traffic must use at least two different gate lanes.");
 			Check(gateOpenedAt > 0 && gateReclosed, "Gate must open for the soldier then close again.");
 			Check(gateFrames.Count == 9, "All gate animation poses must play.");
-			Check(depot.Trait<MedievalStockpile>().Stock.Amount(0) == 70 && depot.Trait<MedievalStockpile>().Stock.Amount(3) == 100,
+			// Builders may return spare materials to the supply cart rather than the original depot.
+			var inventories = w.ActorsHavingTrait<MedievalStockpile>().Where(a => a.Owner == w.LocalPlayer && MedievalStockpile.Active(a))
+				.Select(a => new { actor = a.Info.Name, wood = a.Trait<MedievalStockpile>().Stock.Amount(0), stone = a.Trait<MedievalStockpile>().Stock.Amount(3) }).ToArray();
+			var carriers = w.ActorsWithTrait<MedievalWorker>().Where(p => p.Actor.Owner == w.LocalPlayer && MedievalStockpile.Active(p.Actor)
+				&& !p.Trait.CampCargo && !p.Trait.EquipmentCargo).Select(p => p.Trait).ToArray();
+			var looseWood = inventories.Sum(s => s.wood) + carriers.Where(c => c.Resource == 0).Sum(c => c.Cargo);
+			var looseStone = inventories.Sum(s => s.stone) + carriers.Where(c => c.Resource == 3).Sum(c => c.Cargo);
+			Check(looseWood == 70 && looseStone == 100 && Fortifications(w).Sum(a => a.Trait<MedievalBuilding>().Materials.Amount(0)) == 330,
 				"25 palisades + one wide gate + one tower must consume exactly 330 wood and no stone.");
 			if (!screenshot) Game.Renderer.SaveScreenshot(Path.Combine(output, "fortifications.png"));
 			File.WriteAllText(Path.Combine(output, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, tick, errors, completedAt,
 				carried, prematureShot, enemyWasHit, enemyDead = enemy.IsDead, gateOpenedAt, gateReclosed, gateFrames = gateFrames.Count,
 				gateWidth = gateActor.Trait<Building>().Info.Dimensions.X, crossedLanes = crossed.Count,
-				wood = depot.Trait<MedievalStockpile>().Stock.Amount(0), fortifications = Fortifications(w).Length,
+				wood = depot.Trait<MedievalStockpile>().Stock.Amount(0), looseWood, looseStone, inventories, fortifications = Fortifications(w).Length,
 				unfinished = Fortifications(w).Where(a => !MedievalStockpile.Active(a)).Select(a => new { a.Info.Name, location = a.Location.ToString() }).ToArray()
 			}, new JsonSerializerOptions { WriteIndented = true }));
 			Console.WriteLine("MEDIEVAL FORTIFICATIONS: " + (errors.Count == 0 ? "PASS" : string.Join("; ", errors)));

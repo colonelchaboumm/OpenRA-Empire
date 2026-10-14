@@ -76,8 +76,11 @@ namespace OpenRA.Mods.Medieval
 				Check(house.Trait<MedievalChimney>().Smoke.Puffs.Count > 0, "A completed house must emit smoke.");
 				Check(house.Trait<MedievalChimney>().Smoke.Puffs[0].Age != secondHouse.Trait<MedievalChimney>().Smoke.Puffs[0].Age, "House smoke must not be synchronized.");
 				w.SetPauseState(true);
-				Game.RunAfterDelay(120, () =>
+				void InspectPause(int attempts)
 				{
+					if (!w.Paused && attempts < 50) { Game.RunAfterDelay(50, () => InspectPause(attempts + 1)); return; }
+					Check(w.Paused, "Pause order must be applied before inspecting animations.");
+					if (!w.Paused) { w.SetPauseState(false); return; }
 					var age = house.Trait<MedievalChimney>().Smoke.Puffs[0].Age;
 					var frame = market.Trait<MedievalBuildingAnimation>().Frame;
 					Game.RunAfterDelay(120, () =>
@@ -86,7 +89,8 @@ namespace OpenRA.Mods.Medieval
 						Check(pausePassed, "Smoke and vendor must stop during a paused game.");
 						w.SetPauseState(false);
 					});
-				});
+				}
+				Game.RunAfterDelay(50, () => InspectPause(0));
 			}
 			var subjects = new[] { sawmill, quarry, market, house };
 			if (tick >= 400 && tick < 1200)

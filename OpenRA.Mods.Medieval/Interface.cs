@@ -125,9 +125,9 @@ namespace OpenRA.Mods.Medieval
 			var status = widget.Get<LabelWidget>("MD_FOOD_STATUS");
 			status.GetText = () => MedievalFoodEconomy.Starving(p) > 0 ? $"FAMINE : {MedievalFoodEconomy.Starving(p)} en danger de mort !"
 				: MedievalFoodEconomy.Hungry(p) > 0 ? $"FAIM : {MedievalFoodEconomy.Hungry(p)} habitants affaiblis. Ravitaillez !"
-				: MedievalFoodEconomy.Covered(p) < MedievalSettlement.Population(p) ? "Unites hors zone ou ravitaillement vide : rapprochez-les."
+				: MedievalFoodEconomy.Covered(p) < MedievalSettlement.Population(p) ? $"Ravitaillement : {MedievalFoodEconomy.Covered(p)}/{MedievalSettlement.Population(p)} couverts. Rapprochez les réserves."
 				: MedievalFoodEconomy.ReadyFood(p) < MedievalFoodEconomy.Demand(p) ? "Reserves de ravitaillement faibles : approvisionnez."
-				: "Unites couvertes par des points de ravitaillement approvisionnes.";
+				: $"Ravitaillement assuré : {MedievalFoodEconomy.ReadyFood(p)} repas prêts.";
 			status.GetColor = () => MedievalFoodEconomy.Starving(p) > 0 ? Color.OrangeRed
 				: MedievalFoodEconomy.Covered(p) < MedievalSettlement.Population(p) || MedievalFoodEconomy.ReadyFood(p) < MedievalFoodEconomy.Demand(p) ? Color.Orange : Color.White;
 			widget.Get<LabelWidget>("MD_FOOD_DEATHS").GetText = () => $"Deces par famine : {food.StarvationDeaths} | Recruter augmente les besoins.";

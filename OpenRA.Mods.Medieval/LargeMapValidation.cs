@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Medieval
 				Check(!pair.Trait.Info.Renewable, "Natural resources must remain finite.");
 				Check(w.Map.GetTerrainInfo(pair.Actor.Location).Type != "Water", "A natural deposit is underwater.");
 				if (pair.Trait.Info.Resource == Material.Wood) initialWood += pair.Trait.Remaining;
-				else initialStone += pair.Trait.Remaining;
+				else if (pair.Trait.Info.Resource == Material.Stone) initialStone += pair.Trait.Remaining;
 			}
 			Check(initialWood == geography.RootElement.GetProperty("finiteWood").GetInt64(), "Generated and loaded wood stocks disagree.");
 			Check(initialStone == geography.RootElement.GetProperty("finiteStone").GetInt64(), "Generated and loaded stone stocks disagree.");
@@ -115,7 +115,9 @@ namespace OpenRA.Mods.Medieval
 			Check(waterCells == 100, "Water blocking samples were not checked.");
 			Check(crossings.All(c => c.TouchedDeck && c.Arrived), "A unit or cart failed to physically traverse a bridge.");
 			var currentWood = w.ActorsWithTrait<MedievalSource>().Where(p => p.Trait.Info.Natural == NaturalResourceKind.Tree).Sum(p => (long)p.Trait.Remaining);
-			var currentStone = w.ActorsWithTrait<MedievalSource>().Where(p => p.Trait.Info.Natural == NaturalResourceKind.Stone).Sum(p => (long)p.Trait.Remaining);
+			// Gold deposits use the same rocky appearance; they are not stone production.
+			var currentStone = w.ActorsWithTrait<MedievalSource>().Where(p => p.Trait.Info.Natural == NaturalResourceKind.Stone
+				&& p.Trait.Info.Resource == Material.Stone).Sum(p => (long)p.Trait.Remaining);
 			if (harvestingFixture) Check(currentWood < initialWood && currentStone < initialStone, "Village workers must still harvest wood and stone on a large map.");
 			else Check(w.Actors.Any(a => a.Owner == w.LocalPlayer && a.Info.Name == "md.foundingmarket")
 				&& w.ActorsWithTrait<MedievalWorker>().Count(p => p.Actor.Owner == w.LocalPlayer) == 3, "The founding caravan must deploy on the immense map.");

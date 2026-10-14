@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (!MedievalStockpile.Active(self)) yield break;
+			if (!MedievalStockpile.Active(self) || MedievalInfluence.StrategicView(wr) || !MedievalHudState.StockVisible(self)) yield break;
 			foreach (var zone in zones)
 			{
 				foreach (var good in StorageGoods.Types(zone.Kind))
@@ -227,6 +227,6 @@ namespace OpenRA.Mods.Medieval
 			if (area.Size.X > 32 || area.Size.Y > 32) yield break; var valid = Valid(area);
 			foreach (var cell in area.Cells()) if (world.Map.Contains(cell)) foreach (var r in MedievalPlaceOrderGenerator.CellOutline(world, cell, valid ? Color.LimeGreen : Color.Red)) yield return r;
 		}
-		protected override string GetCursor(World world, CPos cell, int2 pixel, MouseInput mi) => Valid(Area(cell)) ? "ability" : "move-blocked";
+		protected override string GetCursor(World world, CPos cell, int2 pixel, MouseInput mi) => OwnsWarehouse && Valid(Area(cell)) ? "ability" : "move-blocked";
 	}
 }
