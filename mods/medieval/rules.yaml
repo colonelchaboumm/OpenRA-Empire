@@ -15,6 +15,7 @@ World:
 	MedievalAudio:
 	MedievalTrails:
 	MedievalAmbience:
+	MedievalActionParticles:
 	-CrateSpawner:
 	-SpawnStartingUnits:
 	-StartingUnits@mcvonly:

@@ -1,0 +1,17 @@
+World:
+	MedievalActionParticlesValidation:
+	MedievalDayNight:
+		DayTicks: 30000
+	MedievalSeasons:
+		SeasonTicks: 400
+	MedievalWeather:
+		FirstRainTicks: 500
+		RainTicks: 1100
+		DryTicks: 30000
+	MedievalHuntingGrounds:
+		MaximumAnimals: 0
+
+^MDWORKER:
+	MedievalNeedsFood:
+		MealInterval: 30000
+		StarvationDelay: 60000
