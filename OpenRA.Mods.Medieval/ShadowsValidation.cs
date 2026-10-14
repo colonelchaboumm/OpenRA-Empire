@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Medieval
 		WorldRenderer renderer;
 		string output;
 		int tick;
-		bool done;
+		bool done, pauseChecked;
 		Actor walker, tree, stone, sleeper;
 		WPos initialWalker;
 		static CPos Cell(int x, int y) => new(x + 32, y - 32);
@@ -83,7 +83,9 @@ namespace OpenRA.Mods.Medieval
 				if (!info.Large && ground < 3) errors.Add("Agricultural ground layers missing");
 				samples.Add(new { name, actors = actors.Length, casts, ground, counts, opacity = sun.Shadow.Opacity, length = sun.Shadow.Length,
 					direction = new[] { sun.Shadow.Direction.X, sun.Shadow.Direction.Y }, zoom = renderer.Viewport.Zoom, shadingQuads = day.ShadingQuads,
+					warmth = day.Lighting.Warmth, darkness = day.Lighting.Darkness, softness = sun.Shadow.Softness,
 					renderWorldMs = PerfHistory.Items["render_world"].Average(25), rain = w.WorldActor.Trait<MedievalWeather>().RainPermille });
+				if (name is "lever-soleil" or "coucher-soleil" && day.Lighting.Warmth < .15f) errors.Add("Golden-hour lighting missing: " + name);
 				Game.Renderer.SaveScreenshot(Path.Combine(output, name + ".png"));
 			});
 		}
@@ -123,16 +125,48 @@ namespace OpenRA.Mods.Medieval
 				tree.Trait<MedievalSource>().Harvest(200); stone.Trait<MedievalSource>().Harvest(300);
 			}
 			if (tick == 320 && !info.Large) Inspect(w, "abattage-pierre");
-			if (tick == 340 && !info.Large) SetTime(w, 6000, VillageSeason.Spring);
-			if (tick == 570 && !info.Large)
+			if (!info.Large)
+			{
+				if (tick == 340) SetTime(w, 14750, VillageSeason.Spring);
+				if (tick == 360) Inspect(w, "aube");
+				if (tick == 380) SetTime(w, 350, VillageSeason.Spring);
+				if (tick == 400) Inspect(w, "lever-soleil");
+				if (tick == 420) SetTime(w, 1000, VillageSeason.Spring);
+				if (tick == 440) Inspect(w, "matin-dore");
+				if (tick == 460) SetTime(w, 10900, VillageSeason.Spring);
+				if (tick == 480) Inspect(w, "coucher-soleil");
+				if (tick == 500) SetTime(w, 11450, VillageSeason.Spring);
+				if (tick == 520) Inspect(w, "crepuscule");
+				if (tick == 540) SetTime(w, 12300, VillageSeason.Spring);
+				if (tick == 560) Inspect(w, "heure-bleue");
+				if (tick == 580) SetTime(w, 6000, VillageSeason.Spring);
+				if (tick == 620)
+				{
+					w.SetPauseState(true);
+					Game.RunAfterDelay(120, () =>
+					{
+						var phase = w.WorldActor.Trait<MedievalDayNight>().Phase;
+						var light = w.WorldActor.Trait<MedievalSunlight>().Shadow;
+						var veil = w.WorldActor.Trait<MedievalDayNight>().Lighting;
+						Game.RunAfterDelay(150, () =>
+						{
+							pauseChecked = w.Paused && phase == w.WorldActor.Trait<MedievalDayNight>().Phase
+								&& light == w.WorldActor.Trait<MedievalSunlight>().Shadow && veil == w.WorldActor.Trait<MedievalDayNight>().Lighting;
+							w.SetPauseState(false);
+						});
+					});
+				}
+			}
+			if (tick == 1090 && !info.Large)
 			{
 				Inspect(w, "pluie-midi");
 				var weather = w.WorldActor.Trait<MedievalWeather>();
 				Sync.RunUnsynced(w, () => { if (weather.RainPermille < 900 || w.WorldActor.Trait<MedievalSunlight>().Shadow.Opacity > .10f) errors.Add("Rain does not attenuate shadows"); });
 			}
-			if (tick < (info.Large ? 370 : 610)) return;
+			if (tick < (info.Large ? 370 : 1130)) return;
 			if (!info.Large && walker.CenterPosition == initialWalker) errors.Add("Moving silhouette not exercised");
-			File.WriteAllText(Path.Combine(output, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, errors, tick, samples }, new JsonSerializerOptions { WriteIndented = true }));
+			if (!info.Large && !pauseChecked) errors.Add("Pause must freeze both sunlight and shadows.");
+			File.WriteAllText(Path.Combine(output, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, errors, tick, pauseChecked, samples }, new JsonSerializerOptions { WriteIndented = true }));
 			Console.WriteLine("MEDIEVAL SHADOWS: " + (errors.Count == 0 ? "PASS" : string.Join("; ", errors)));
 			done = true; Game.RunAfterDelay(700, Game.Exit);
 		}

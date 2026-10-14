@@ -35,16 +35,28 @@ namespace OpenRA.Mods.Medieval
 	{
 		public readonly DayClock Clock;
 		public int ShadingQuads { get; private set; }
+		public SolarLighting Lighting { get; private set; }
 		[VerifySync] public int Phase => Clock.Phase;
 		public MedievalDayNight(MedievalDayNightInfo info) { Clock = new(info.DayTicks, info.NightTicks); }
 		void ITick.Tick(Actor self) { if (self.World.Type == WorldType.Regular) Clock.Advance(); }
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
 			ShadingQuads = 0;
-			var dark = Clock.Darkness;
-			if (dark <= 0 || self.World.Type != WorldType.Regular) return;
+			if (self.World.Type != WorldType.Regular) return;
+			Lighting = SolarLighting.At(Clock, self.World.WorldActor.TraitOrDefault<MedievalSeasons>()?.Clock,
+				self.World.WorldActor.TraitOrDefault<MedievalWeather>()?.RainPermille ?? 0);
+			var dark = Lighting.Darkness;
+			if (dark <= 0 && Lighting.Warmth <= 0) return;
 			var cr = Game.Renderer.WorldRgbaColorRenderer;
 			var left = wr.Viewport.TopLeft; var right = wr.Viewport.BottomRight;
+			// Daylight is uniform in world space, so panning never moves the sun glow.
+			// This pass precedes shroud rendering and never tints the interface.
+			if (dark <= 0)
+			{
+				ShadingQuads = 1;
+				cr.FillRect(new Vector3(left.X, left.Y, 0), new Vector3(right.X, right.Y, 0), Lighting.Shade(0));
+				return;
+			}
 			// Only visible torches participate; neither illumination nor camera changes reveal shroud.
 			var lights = self.World.ActorsHavingTrait<MedievalTorch>().Where(MedievalTorch.Lit)
 				.Select(a => (Actor: a, Point: wr.ScreenPxPosition(a.CenterPosition), Scale: Math.Clamp(a.Trait<MedievalTorch>().Info.ScalePercent, 20, 100) / 100f))
@@ -73,7 +85,7 @@ namespace OpenRA.Mods.Medieval
 					var dx = (x - home.Point.X) / 50f; var dy = (y - home.Point.Y) / home.Height;
 					strength = Math.Max(strength, .9f * home.Strength * Math.Clamp(1 - dx * dx - dy * dy, 0, 1));
 				}
-				return Color.FromArgb((int)(dark * (166 - 148 * strength)), 12, 23, 46);
+				return Lighting.Shade(strength);
 			}
 			// Bound the mesh in screen space. A fixed world-pixel step becomes
 			// tens of thousands of quads when viewing an entire continent at night.

@@ -10,10 +10,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Medieval
 {
 	// Presentation only: use the synchronized clocks, never advance them or consume RNG.
-	public readonly record struct SolarShadow(Vector2 Direction, float Length, float Opacity, Vector3 Color)
+	public readonly record struct SolarShadow(Vector2 Direction, float Length, float Opacity, Vector3 Color, float Softness = 0)
 	{
 		public const int MaximumReach = 180;
-		static float Smooth(float x) { x = Math.Clamp(x, 0, 1); return x * x * (3 - 2 * x); }
 		public static SolarShadow At(DayClock day, SeasonClock season, int rain)
 		{
 			var clouds = 1 - .82f * Math.Clamp(rain / 1000f, 0, 1);
@@ -22,7 +21,7 @@ namespace OpenRA.Mods.Medieval
 				var phase = (day.Phase - day.DayTicks) / (float)day.NightTicks;
 				var moon = MathF.Sin(MathF.PI * phase);
 				return new(Vector2.Normalize(new Vector2(.45f - phase * .9f, .65f)), .65f,
-					.065f * moon * moon * clouds, new Vector3(.10f, .15f, .23f));
+					.065f * moon * moon * clouds, new Vector3(.10f, .15f, .23f), 1.2f);
 			}
 
 			var t = day.Phase / (float)day.DayTicks;
@@ -30,10 +29,13 @@ namespace OpenRA.Mods.Medieval
 				- .10f * (season?.Weight(VillageSeason.Autumn) ?? 0) - .30f * (season?.Weight(VillageSeason.Winter) ?? 0);
 			var arc = MathF.Sin(MathF.PI * t);
 			var direction = Vector2.Normalize(new Vector2(.95f * MathF.Cos(MathF.PI * t), .46f + arc * .20f));
-			var length = Math.Clamp(1.1f / (.28f + height * arc) - .30f, .45f, 2.4f);
-			var fade = Smooth(t / .065f) * Smooth((1 - t) / .065f);
-			var color = Vector3.Lerp(new Vector3(.07f, .10f, .13f), new Vector3(.13f, .21f, .30f), (season?.Snow ?? 0) / 1000f);
-			return new(direction, length, .32f * fade * clouds, color);
+			var length = Math.Clamp(1.1f / (.28f + height * arc) - .30f, .45f, 3.1f);
+			var fade = SolarLighting.Smooth(t / .065f) * SolarLighting.Smooth((1 - t) / .065f);
+			var highSun = SolarLighting.Smooth(arc / .65f);
+			var color = Vector3.Lerp(new Vector3(.10f, .13f, .21f), new Vector3(.07f, .10f, .13f), highSun);
+			color = Vector3.Lerp(color, new Vector3(.13f, .21f, .30f), (season?.Snow ?? 0) / 1000f);
+			return new(direction, length, .32f * (.58f + .42f * highSun) * fade * clouds * (1 - SolarLighting.Smooth(day.Darkness)), color,
+				.55f + 1.35f * (1 - highSun) + .65f * (1 - clouds));
 		}
 
 		public Matrix4x4 Projection(float height)
@@ -49,10 +51,54 @@ namespace OpenRA.Mods.Medieval
 		{
 			var anchor = wr.ScreenPxPosition(sprite.Pos);
 			var bounds = sprite.ScreenBounds(wr);
-			var projection = Projection(Math.Max(Math.Abs(bounds.Top - anchor.Y), Math.Abs(bounds.Bottom - anchor.Y)));
+			var height = Math.Max(1, Math.Max(Math.Abs(bounds.Top - anchor.Y), Math.Abs(bounds.Bottom - anchor.Y)));
+			var projection = Projection(height);
 			var silhouette = sprite.WithScreenTransform((sprite.ScreenTransform ?? Matrix4x4.Identity) * projection)
 				.WithTint(Color, TintModifiers.ReplaceColor | TintModifiers.IgnoreWorldTint).WithAlpha(sprite.Alpha * Opacity);
+			if (Softness > 0 && wr.Viewport.Zoom >= .75f)
+				return new MedievalGroundLayer(new SoftSolarShadow(sprite, this, height), 2);
 			return new MedievalGroundLayer(silhouette.AsDecoration(), 2);
+		}
+	}
+
+	// Three bounded penumbra samples, only at close zoom. The roots stay pinned;
+	// the softness grows towards the tip. Distant views keep a single silhouette.
+	sealed class SoftSolarShadow : IRenderable, IFinalizedRenderable
+	{
+		readonly SpriteRenderable sprite;
+		readonly SolarShadow light;
+		readonly float height;
+		readonly IFinalizedRenderable[] samples;
+		public WPos Pos => sprite.Pos;
+		public int ZOffset => 0;
+		public bool IsDecoration => true;
+		public SoftSolarShadow(SpriteRenderable sprite, SolarShadow light, float height)
+		{
+			this.sprite = sprite; this.light = light; this.height = height;
+			samples = new IFinalizedRenderable[3];
+			for (var i = 0; i < samples.Length; i++)
+			{
+				var projection = light.Projection(height);
+				var spread = (i - 1) * light.Softness / height;
+				projection.M21 += spread * light.Direction.Y;
+				projection.M22 -= spread * light.Direction.X * .55f;
+				// Composite to the requested opacity instead of darkening three times.
+				var alpha = 1 - MathF.Pow(1 - Math.Clamp(sprite.Alpha * light.Opacity, 0, 1), i == 1 ? .5f : .25f);
+				samples[i] = (IFinalizedRenderable)sprite.WithScreenTransform((sprite.ScreenTransform ?? Matrix4x4.Identity) * projection)
+					.WithTint(light.Color, TintModifiers.ReplaceColor | TintModifiers.IgnoreWorldTint).WithAlpha(alpha);
+			}
+		}
+		public IRenderable WithZOffset(int z) => this;
+		public IRenderable OffsetBy(in WVec offset) => new SoftSolarShadow((SpriteRenderable)sprite.OffsetBy(offset), light, height);
+		public IRenderable AsDecoration() => this;
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) => this;
+		public void Render(WorldRenderer wr) { foreach (var sample in samples) sample.Render(wr); }
+		public void RenderDebugGeometry(WorldRenderer wr) { }
+		public Rectangle ScreenBounds(WorldRenderer wr)
+		{
+			var a = samples[0].ScreenBounds(wr); var b = samples[1].ScreenBounds(wr); var c = samples[2].ScreenBounds(wr);
+			return Rectangle.FromLTRB(Math.Min(a.Left, Math.Min(b.Left, c.Left)), Math.Min(a.Top, Math.Min(b.Top, c.Top)),
+				Math.Max(a.Right, Math.Max(b.Right, c.Right)), Math.Max(a.Bottom, Math.Max(b.Bottom, c.Bottom)));
 		}
 	}
 
@@ -139,7 +185,7 @@ namespace OpenRA.Mods.Medieval
 		{
 			// Spatial culling includes cast shadows from actors just outside the view.
 			// Fixed bounds avoid rebuilding the screen index every time the sun moves.
-			var margin = info.GroundOnly ? 0 : SolarShadow.MaximumReach;
+			var margin = info.GroundOnly ? 0 : SolarShadow.MaximumReach + 3;
 			foreach (var b in bounds) yield return Rectangle.FromLTRB(b.Left - margin, b.Top - margin, b.Right + margin, b.Bottom + margin);
 		}
 	}
