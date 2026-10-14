@@ -58,6 +58,32 @@ namespace OpenRA.Test
 			Assert.That(day.Phase, Is.EqualTo(11000));
 		}
 		[Test]
+		public void SnowyGoldenHoursAreRoseWhileNoonAndNightRemainUnchanged()
+		{
+			var season = new SeasonClock(45000);
+			while (season.Season != VillageSeason.Winter || season.Snow < 1000) season.Advance();
+			foreach (var phase in new[] { 500, 11000 })
+			{
+				var day = Day(phase);
+				var rose = SolarLighting.At(day, season, 0); var gold = SolarLighting.At(day, null, 0);
+				Assert.That(rose.Shade(0).B, Is.GreaterThan(rose.Shade(0).G));
+				Assert.That(gold.Shade(0).B, Is.LessThan(gold.Shade(0).G));
+				Assert.That(rose.Warmth, Is.EqualTo(gold.Warmth), "Snow changes the hue, not the exposure.");
+			}
+			Assert.That(SolarLighting.At(Day(6000), season, 0).Shade(0).A, Is.Zero);
+			Assert.That(SolarLighting.At(Day(13500), season, 0).Shade(0), Is.EqualTo(SolarLighting.At(Day(13500), null, 0).Shade(0)));
+			// Cross the winter/spring boundary and the full thaw without a colour jump.
+			while (season.Remaining > 1) season.Advance();
+			var dawn = Day(500); var previous = SolarLighting.At(dawn, season, 0);
+			for (var i = 0; i < 800; i++)
+			{
+				season.Advance(); var next = SolarLighting.At(dawn, season, 0);
+				Assert.That(Vector3.Distance(next.WarmColor, previous.WarmColor), Is.LessThan(.005f));
+				previous = next;
+			}
+			Assert.That(previous.WarmColor, Is.EqualTo(SolarLighting.At(dawn, null, 0).WarmColor));
+		}
+		[Test]
 		public void LowSunHasLongerSofterShadowsWithLessContrast()
 		{
 			var low = SolarShadow.At(Day(900), null, 0); var noon = SolarShadow.At(Day(6000), null, 0);

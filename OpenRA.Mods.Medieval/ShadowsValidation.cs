@@ -84,8 +84,12 @@ namespace OpenRA.Mods.Medieval
 				samples.Add(new { name, actors = actors.Length, casts, ground, counts, opacity = sun.Shadow.Opacity, length = sun.Shadow.Length,
 					direction = new[] { sun.Shadow.Direction.X, sun.Shadow.Direction.Y }, zoom = renderer.Viewport.Zoom, shadingQuads = day.ShadingQuads,
 					warmth = day.Lighting.Warmth, darkness = day.Lighting.Darkness, softness = sun.Shadow.Softness,
+					lightColor = new[] { day.Lighting.WarmColor.X, day.Lighting.WarmColor.Y, day.Lighting.WarmColor.Z },
 					renderWorldMs = PerfHistory.Items["render_world"].Average(25), rain = w.WorldActor.Trait<MedievalWeather>().RainPermille });
 				if (name is "lever-soleil" or "coucher-soleil" && day.Lighting.Warmth < .15f) errors.Add("Golden-hour lighting missing: " + name);
+				if (name is "hiver-lever-rose" or "hiver-coucher-rose"
+					&& (day.Lighting.Warmth < .15f || day.Lighting.WarmColor.Z <= day.Lighting.WarmColor.Y
+						|| w.WorldActor.Trait<MedievalSeasons>().Clock.Snow < 950)) errors.Add("Snowy pink sunlight missing: " + name);
 				Game.Renderer.SaveScreenshot(Path.Combine(output, name + ".png"));
 			});
 		}
@@ -140,6 +144,11 @@ namespace OpenRA.Mods.Medieval
 				if (tick == 540) SetTime(w, 12300, VillageSeason.Spring);
 				if (tick == 560) Inspect(w, "heure-bleue");
 				if (tick == 580) SetTime(w, 6000, VillageSeason.Spring);
+				if (tick == 660) SetTime(w, 350, VillageSeason.Winter);
+				if (tick == 690) Inspect(w, "hiver-lever-rose");
+				if (tick == 710) SetTime(w, 10900, VillageSeason.Winter);
+				if (tick == 740) Inspect(w, "hiver-coucher-rose");
+				if (tick == 760) SetTime(w, 6000, VillageSeason.Spring);
 				if (tick == 620)
 				{
 					w.SetPauseState(true);

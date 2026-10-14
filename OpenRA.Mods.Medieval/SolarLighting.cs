@@ -21,6 +21,11 @@ namespace OpenRA.Mods.Medieval
 			var warmth = (.23f * morning + .32f * evening) * (1 - dark) * clear;
 			var color = Vector3.Lerp(new Vector3(1, .69f, .34f), new Vector3(1, .43f, .23f), evening);
 			color = Vector3.Lerp(color, new Vector3(1, .76f, .56f), .22f * (season?.Weight(VillageSeason.Winter) ?? 0));
+			// Snow catches a soft rose light at sunrise and sunset. Blend with its
+			// actual coverage so snowfall and the spring thaw never change colour abruptly.
+			var snow = Smooth((season?.Snow ?? 0) / 1000f);
+			var rose = Vector3.Lerp(new Vector3(1, .66f, .78f), new Vector3(1, .56f, .74f), evening);
+			color = Vector3.Lerp(color, rose, snow);
 			return new(dark, warmth, color);
 		}
 		public Color Shade(float localLight)
