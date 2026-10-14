@@ -146,30 +146,4 @@ namespace OpenRA.Mods.Medieval
 				}
 		}
 	}
-	sealed class GravestoneRenderable(WPos position, int seed) : IRenderable, IFinalizedRenderable
-	{
-		public WPos Pos => position;
-		public int ZOffset => 0;
-		public bool IsDecoration => true;
-		public IRenderable WithZOffset(int z) => this;
-		public IRenderable OffsetBy(in WVec offset) => new GravestoneRenderable(position + offset, seed);
-		public IRenderable AsDecoration() => this;
-		public IFinalizedRenderable PrepareRender(WorldRenderer wr) => this;
-		public void RenderDebugGeometry(WorldRenderer wr) { }
-		public Rectangle ScreenBounds(WorldRenderer wr) { var p = wr.ScreenPxPosition(Pos); return new Rectangle(p.X - 18, p.Y - 26, 36, 40); }
-		public void Render(WorldRenderer wr)
-		{
-			var cr = Game.Renderer.WorldRgbaColorRenderer; var p = wr.Screen3DPxPosition(Pos);
-			Vector3 V(float x, float y) => p + new Vector3(x, y, 0);
-			cr.FillRect(V(-10, 1), V(1, -4), V(12, 2), V(1, 8), Color.FromArgb(130, 58, 46, 29));
-			cr.FillRect(V(-8, 1), V(1, -3), V(10, 2), V(1, 6), Color.FromArgb(230, 102, 82, 52));
-			cr.FillRect(V(-5, -4), V(5, -1), V(12, 2), V(2, 0), Color.FromArgb(70, 20, 22, 18));
-			var height = 11 + seed % 3;
-			cr.FillRect(V(-6, -height), V(1, -height - 2), V(1, -2), V(-6, -4), Color.FromArgb(255, 175, 172, 152));
-			cr.FillRect(V(1, -height - 2), V(4, -height), V(4, -4), V(1, -2), Color.FromArgb(255, 98, 102, 93));
-			cr.DrawLine(V(-6, -height), V(1, -height - 2), 1, Color.FromArgb(240, 224, 217, 192));
-			cr.DrawLine(V(-3, -height + 3), V(-3, -5), 1, Color.FromArgb(220, 89, 91, 80));
-			cr.DrawLine(V(-5, -height + 5), V(-1, -height + 4), 1, Color.FromArgb(220, 89, 91, 80));
-		}
-	}
 }

@@ -5992,6 +5992,7 @@
   "OpenRA.Mods.Medieval/GildedDecorationValidation.cs",
   "OpenRA.Mods.Medieval/Gold.cs",
   "OpenRA.Mods.Medieval/GoldChurchValidation.cs",
+  "OpenRA.Mods.Medieval/Gravestones.cs",
   "OpenRA.Mods.Medieval/Heraldry.cs",
   "OpenRA.Mods.Medieval/HeraldryInterface.cs",
   "OpenRA.Mods.Medieval/HeraldryValidation.cs",
