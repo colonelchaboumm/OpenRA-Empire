@@ -55,6 +55,7 @@ namespace OpenRA.Mods.Medieval
 		public string Sequence => DefaultAnimation.CurrentSequence.Name;
 		public int Frame => DefaultAnimation.CurrentFrame;
 		public string ImageName => DefaultAnimation.Name;
+		internal OpenRA.Graphics.Animation DeathAnimation => DefaultAnimation;
 		public WithMedievalInfantryBody(ActorInitializer init, WithMedievalInfantryBodyInfo info) : base(init, info)
 		{
 			previous = init.Self.CenterPosition;

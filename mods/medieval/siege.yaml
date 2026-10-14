@@ -36,6 +36,7 @@ md.siegeworkshop:
 
 ^MDSIEGE:
 	Inherits: ^MDWORKER
+	-MedievalDeathVisuals:
 	-MedievalWorker:
 	-WithMedievalInfantryBody:
 	WithMedievalSiegeBody:

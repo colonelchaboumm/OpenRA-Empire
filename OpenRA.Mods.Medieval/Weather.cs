@@ -11,9 +11,10 @@ namespace OpenRA.Mods.Medieval
 	public sealed class RainDrop
 	{
 		public Vector2 Ground;
-		public float Height, Speed, Size, Phase, Depth;
+		public float Height, Speed, Size, Phase, Depth, Drift;
 		public int Splash, Age;
 		public bool Snow;
+		public float Rotation => Phase + Age * (.015f + Depth * .035f);
 		public float Opacity => Math.Clamp(Age / 12f, 0, 1) * (Splash == 0 ? 1 : Math.Clamp(1 - Splash / (Snow ? 24f : 8f), 0, 1));
 	}
 	public sealed class VillageWeather
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Medieval
 				else { target = 0; untilChange = Math.Max(1, (int)(dryTicks * Range(.8f, 1.25f))); }
 			}
 			Intensity += Math.Clamp(target - Intensity, -.005f, .005f);
-			if (synchronizedIntensity.HasValue) Intensity = synchronizedIntensity.Value;
+			if (synchronizedIntensity.HasValue) Intensity = Math.Clamp(synchronizedIntensity.Value, 0, 1);
 			for (var i = drops.Count - 1; i >= 0; i--)
 			{
 				var drop = drops[i];
@@ -51,17 +52,30 @@ namespace OpenRA.Mods.Medieval
 				{ drops.RemoveAt(i); continue; }
 				if (drop.Height > 0)
 				{
-					drop.Height -= drop.Speed * (drop.Snow ? .045f + drop.Depth * .075f : 1);
-					var flutter = drop.Snow ? MathF.Sin(drop.Age * (.035f + drop.Depth * .02f) + drop.Phase) * .55f : 0;
-					drop.Ground += new Vector2(wind.X * (drop.Snow ? .6f + drop.Depth : 1.8f) + flutter, wind.Y * .6f);
+					drop.Height -= drop.Speed * (drop.Snow ? .035f + drop.Depth * .075f : 1);
+					if (drop.Snow)
+					{
+						// Two slow eddies, with inertia: flakes drift and tumble instead of
+						// moving as identical straight rain streaks. Depth never changes.
+						var flutter = MathF.Sin(drop.Age * .035f + drop.Phase) * .65f
+							+ MathF.Sin(drop.Age * .012f + drop.Phase * 2) * .35f;
+						var gust = wind.X * (.4f + drop.Depth * .9f) + flutter * (.25f + drop.Depth);
+						drop.Drift += (gust - drop.Drift) * .045f;
+						drop.Ground += new Vector2(drop.Drift, wind.Y * (.2f + drop.Depth * .35f));
+					}
+					else drop.Ground += new Vector2(wind.X * 1.8f, wind.Y * .6f);
 					if (drop.Height <= 0) { drop.Height = 0; drop.Splash = 1; Splashes++; }
 				}
 				else if (++drop.Splash > (drop.Snow ? 24 : 7)) drops.RemoveAt(i);
 			}
 			var desired = (int)(Math.Min(MaxDrops, (long)view.Width * view.Height / 1900) * Intensity);
 			for (var i = 0; i < 22 && drops.Count < desired; i++)
-				drops.Add(new RainDrop { Ground = new Vector2(Range(view.Left, view.Right), Range(view.Top, view.Bottom + 180)),
-					Height = Range(80, 240), Speed = Range(11, 19), Snow = snow, Size = Range(.65f, 1.9f), Depth = Range(.25f, 1), Phase = Range(0, MathF.Tau) });
+			{
+				var depth = Range(.15f, 1);
+				drops.Add(new RainDrop { Ground = new Vector2(Range(view.Left - 30, view.Right + 30), Range(view.Top, view.Bottom + 180)),
+					Height = Range(10, 240), Speed = Range(11, 19), Snow = snow, Size = snow ? .45f + depth * depth * 2.2f : Range(.65f, 1.9f),
+					Depth = depth, Phase = Range(0, MathF.Tau), Drift = wind.X * (.4f + depth * .9f) });
+			}
 		}
 	}
 	[TraitLocation(SystemActors.World)]
@@ -132,7 +146,8 @@ namespace OpenRA.Mods.Medieval
 			if (world.Type != WorldType.Regular || Scene.Intensity <= 0 && Scene.Drops.Count == 0) return;
 			var cr = Game.Renderer.WorldRgbaColorRenderer;
 			var left = wr.Viewport.TopLeft; var right = wr.Viewport.BottomRight;
-			cr.FillRect(new Vector3(left.X, left.Y, 0), new Vector3(right.X, right.Y, 0), Color.FromArgb((int)((Storm.Active ? 48 : 30) * Scene.Intensity), 24, 38, 49));
+			cr.FillRect(new Vector3(left.X, left.Y, 0), new Vector3(right.X, right.Y, 0),
+				Snowing ? Color.FromArgb((int)(12 * Scene.Intensity), 172, 195, 211) : Color.FromArgb((int)((Storm.Active ? 48 : 30) * Scene.Intensity), 24, 38, 49));
 			var wind = world.WorldActor.TraitOrDefault<MedievalAmbience>()?.Scene.Wind ?? Vector2.Zero;
 			foreach (var drop in Scene.Drops)
 			{
@@ -148,8 +163,13 @@ namespace OpenRA.Mods.Medieval
 					var size = new Vector3(drop.Size, drop.Size * (drop.Splash > 0 ? .4f : .65f + .15f * MathF.Sin(drop.Age * .13f + drop.Phase)), 0);
 					cr.FillEllipse(at - size * 1.8f, at + size * 1.8f, Color.FromArgb(alpha / 5, 219, 234, 247));
 					cr.FillEllipse(at - size, at + size, Color.FromArgb(Math.Min(245, (int)(alpha * 1.4f)), 242, 248, 253));
-					if (drop.Size > 1.5f && drop.Splash == 0)
-						cr.DrawLine(at - Vector3.UnitY * drop.Size, at + Vector3.UnitY * drop.Size, .7f, Color.FromArgb(alpha, 249, 251, 254));
+					if (drop.Size > 1.6f && drop.Splash == 0 && wr.Viewport.Zoom >= .75f)
+						for (var arm = 0; arm < 3; arm++)
+						{
+							var angle = drop.Rotation + arm * MathF.PI / 3;
+							var tip = new Vector3(MathF.Cos(angle), MathF.Sin(angle) * .75f, 0) * drop.Size * 1.4f;
+							cr.DrawLine(at - tip, at + tip, .65f, Color.FromArgb(alpha, 249, 251, 254));
+						}
 					continue;
 				}
 				if (drop.Height > 0)

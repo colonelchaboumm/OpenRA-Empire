@@ -12,6 +12,9 @@ EditorWorld:
 	-ClearMapGenerator@clear:
 
 World:
+	-ShroudRenderer:
+	MedievalFog:
+	MedievalBattlefield:
 	MedievalAudio:
 	MedievalTrails:
 	MedievalAmbience:
@@ -68,6 +71,9 @@ Player:
 
 ^MDBUILDING:
 	Inherits: ^MDOBJECT
+	FrozenUnderFog:
+	MedievalDeathVisuals:
+		Building: True
 	MedievalBuilding:
 	MedievalDemolition:
 	MedievalArchitecture:
@@ -361,6 +367,8 @@ md.salvage:
 		Capacity: 1000, 1000, 1000, 1000, 1000
 
 ^MDWORKER:
+	HiddenUnderFog:
+	MedievalDeathVisuals:
 	MedievalActorAudio:
 	BodyOrientation:
 	QuantizeFacingsFromSequence:
@@ -498,6 +506,7 @@ md.manatarms:
 
 md.supplycart:
 	Inherits: ^MDWORKER
+	-MedievalDeathVisuals:
 	-MedievalWorker:
 	Tooltip:
 		Name: medieval-supplycart

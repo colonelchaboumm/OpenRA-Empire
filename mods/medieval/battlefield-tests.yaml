@@ -1,0 +1,15 @@
+World:
+	MedievalBattlefieldValidation:
+	MedievalWeather:
+		FirstRainTicks: 1
+		RainTicks: 100000
+		MinimumRainPermille: 850
+	MedievalSeasons:
+		SeasonTicks: 100000
+	MedievalDayNight:
+		DayTicks: 100000
+
+^MDWORKER:
+	MedievalNeedsFood:
+		MealInterval: 100000
+		StarvationDelay: 200000

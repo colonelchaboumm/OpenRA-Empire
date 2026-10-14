@@ -16,18 +16,19 @@ namespace OpenRA.Mods.Medieval
 		public readonly bool Masonry;
 		public readonly int EmissionHeight;
 		public readonly bool Ram;
-		public int Duration => Ram ? 70 : Lifetime;
+		public readonly bool Collapse;
+		public int Duration => Collapse ? 180 : Ram ? 70 : Lifetime;
 		internal readonly ImpactMote[] Motes;
-		public SiegeImpactEffect(WPos position, int seed, bool masonry = false, int emissionHeight = 0, bool ram = false, float direction = 0)
+		public SiegeImpactEffect(WPos position, int seed, bool masonry = false, int emissionHeight = 0, bool ram = false, float direction = 0, bool collapse = false)
 		{
-			Position = position; Masonry = masonry; EmissionHeight = emissionHeight; Ram = ram;
+			Position = position; Masonry = masonry; EmissionHeight = emissionHeight; Ram = ram; Collapse = collapse;
 			var random = new Random(seed);
-			Motes = new ImpactMote[ram ? 35 : masonry ? 22 : 62];
+			Motes = new ImpactMote[collapse ? 78 : ram ? 35 : masonry ? 22 : 62];
 			for (var i = 0; i < Motes.Length; i++)
 			{
 				var angle = ram ? direction + (float)(random.NextDouble() - .5) * 2.8f : (float)(random.NextDouble() * Math.PI * 2);
 				Motes[i] = new ImpactMote(angle, ram ? 10 + random.Next(36) : 22 + random.Next(70), ram ? 6 + random.Next(18) : (masonry ? 18 : 28) + random.Next(50),
-					ram ? 2 + random.Next(6) : 4 + random.Next(13), random.Next(ram ? 4 : 8), i < (ram ? 14 : masonry ? 13 : 23), random.Next(3));
+					ram ? 2 + random.Next(6) : 4 + random.Next(13), random.Next(collapse ? 24 : ram ? 4 : 8), i < (collapse ? 38 : ram ? 14 : masonry ? 13 : 23), random.Next(3));
 			}
 		}
 		public void Tick(World world) { if (++Age >= Duration) world.AddFrameEndTask(w => w.Remove(this)); }
