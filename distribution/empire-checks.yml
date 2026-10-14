@@ -1,12 +1,14 @@
 name: Empire updater checks
 on:
   push:
-    paths:
-      - 'distribution/**'
-      - '.github/workflows/empire-checks.yml'
+    branches: [main]
   pull_request:
-    paths:
-      - 'distribution/**'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Commit ou tag de la version a verifier'
+        required: false
+        type: string
 permissions:
   contents: read
 jobs:
@@ -14,6 +16,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
       - name: Test updates, interruption, rollback and archive validation
         shell: powershell
         run: ./distribution/tests/Test-Updater.ps1
