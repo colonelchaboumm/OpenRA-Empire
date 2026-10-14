@@ -4150,9 +4150,9 @@ Container@PLAYER_WIDGETS:
 					VAlign: Top
 		Background@MD_PATROL_PANEL:
 			X: 12
-			Y: 398
+			Y: 382
 			Width: 410
-			Height: 240
+			Height: 274
 			Background: md-panel
 			Children:
 				Label@MD_PATROL_TITLE:
@@ -4228,12 +4228,28 @@ Container@PLAYER_WIDGETS:
 					Background: md-button
 				Label@MD_PATROL_STATUS:
 					X: 9
-					Y: 187
+					Y: 221
 					Width: 392
 					Height: 44
 					Font: TinyBold
 					WordWrap: True
 					VAlign: Top
+				Button@MD_ESCORT:
+					X: 9
+					Y: 186
+					Width: 244
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+				Button@MD_ESCORT_STOP:
+					X: 257
+					Y: 186
+					Width: 144
+					Height: 28
+					Font: TinyBold
+					Background: md-button
 		Background@MD_HERD_PANEL:
 			X: 12
 			Y: 155
@@ -4516,7 +4532,7 @@ Container@PLAYER_WIDGETS:
 			X: (WINDOW_WIDTH - WIDTH) / 2
 			Y: (WINDOW_HEIGHT - HEIGHT) / 2
 			Width: 720
-			Height: 570
+			Height: 610
 			Background: md-panel
 			Children:
 				Label@MD_BARTER_TITLE:
@@ -4555,31 +4571,31 @@ Container@PLAYER_WIDGETS:
 					Font: TinyBold
 				Label@MD_BARTER_GOOD_HEADER:
 					X: 16
-					Y: 136
+					Y: 176
 					Width: 240
 					Height: 20
 					Font: TinyBold
 				Label@MD_BARTER_STOCK_HEADER:
 					X: 276
-					Y: 136
+					Y: 176
 					Width: 115
 					Height: 20
 					Font: TinyBold
 				Label@MD_BARTER_GIVE_HEADER:
 					X: 416
-					Y: 136
+					Y: 176
 					Width: 120
 					Height: 20
 					Font: TinyBold
 				Label@MD_BARTER_RECEIVE_HEADER:
 					X: 566
-					Y: 136
+					Y: 176
 					Width: 120
 					Height: 20
 					Font: TinyBold
 				Container@MD_BARTER_ROW:
 					X: 16
-					Y: 164
+					Y: 204
 					Width: 688
 					Height: 24
 					Children:
@@ -4604,7 +4620,7 @@ Container@PLAYER_WIDGETS:
 							Font: TinyBold
 				Label@MD_BARTER_HINT:
 					X: 16
-					Y: 454
+					Y: 494
 					Width: 688
 					Height: 40
 					Font: Tiny
@@ -4612,29 +4628,68 @@ Container@PLAYER_WIDGETS:
 					VAlign: Top
 				Button@MD_BARTER_PROPOSE:
 					X: 16
-					Y: 500
+					Y: 540
 					Width: 230
 					Height: 28
 					Font: TinyBold
 					Background: md-button
 				Button@MD_BARTER_ACCEPT:
 					X: 254
-					Y: 500
+					Y: 540
 					Width: 230
 					Height: 28
 					Font: TinyBold
 					Background: md-button
 				Button@MD_BARTER_REFUSE:
 					X: 492
-					Y: 500
+					Y: 540
 					Width: 212
 					Height: 28
 					Font: TinyBold
 					Background: md-button
 				Button@MD_BARTER_NEXT:
 					X: 492
-					Y: 536
+					Y: 576
 					Width: 212
 					Height: 24
 					Font: TinyBold
 					Background: md-button
+				Label@MD_BARTER_CARTS:
+					X: 16
+					Y: 134
+					Width: 252
+					Height: 24
+					Font: TinyBold
+				Label@MD_BARTER_OTHER_CARTS:
+					X: 450
+					Y: 134
+					Width: 254
+					Height: 24
+					Font: TinyBold
+				Button@MD_BARTER_CARTS_MINUS:
+					X: 276
+					Y: 132
+					Width: 32
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+				Button@MD_BARTER_CARTS_PLUS:
+					X: 312
+					Y: 132
+					Width: 32
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+				Button@MD_BARTER_CARTS_ALL:
+					X: 348
+					Y: 132
+					Width: 84
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP

@@ -160,9 +160,20 @@ namespace OpenRA.Mods.Medieval
 		public bool ValidRoute(Actor self) => MedievalLogistics.Market(first, self.Owner) && MedievalLogistics.Market(second, self.Owner)
 			&& first.Trait<MedievalTradeMarket>().Partner == second && second.Trait<MedievalTradeMarket>().Partner == first;
 		public bool Serves(Actor market) => market == first || market == second;
+		public bool CanLend => shipment == null && !recovering;
+		public bool Lend(Actor self)
+		{
+			var resume = Active; Pause(self, "Charrette réservée pour un marchandage."); return resume;
+		}
+		public void ReturnFromLoan(Actor self, bool resume)
+		{
+			Active = resume && ValidRoute(self); recovering = false; cadence = attempts = 0;
+			target = first; Status = Active ? "Reprend sa route commerciale." : "Livraison terminée. Charrette disponible.";
+		}
 		public string RouteName(Actor self) => ValidRoute(self) ? MedievalLogistics.Name(first) + " <-> " + MedievalLogistics.Name(second) : "Route interrompue ou non affectee.";
 		public void Assign(Actor self, Actor origin)
 		{
+			if (self.TraitOrDefault<MedievalBarterCart>()?.Busy == true) return;
 			if (!MedievalLogistics.Market(origin, self.Owner) || !origin.Trait<MedievalTradeMarket>().Linked(origin)) return;
 			Pause(self, "");
 			first = origin; second = origin.Trait<MedievalTradeMarket>().Partner;
@@ -178,6 +189,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
+			if (self.TraitOrDefault<MedievalBarterCart>()?.Busy == true) return;
 			if (order.OrderString == "MedievalAssignTrader" && order.Target.Type == TargetType.Actor) Assign(self, order.Target.Actor);
 			else if (order.OrderString is "Move" or "Stop" or "MedievalPauseTrade") Pause(self, "Route en pause. Cargaison conservee.", order.OrderString == "MedievalPauseTrade");
 			else if (order.OrderString == "MedievalResumeTrade" && ValidRoute(self))
@@ -195,7 +207,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		void ITick.Tick(Actor self)
 		{
-			if (!Active || --cadence > 0) return;
+			if (self.TraitOrDefault<MedievalBarterCart>()?.Busy == true || !Active || --cadence > 0) return;
 			cadence = 25;
 			if (!MedievalLogistics.Market(target, self.Owner) || !recovering && !ValidRoute(self))
 			{ Pause(self, "Liaison interrompue. Cargaison conservee : rapatriez-la."); return; }

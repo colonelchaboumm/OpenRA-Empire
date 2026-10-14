@@ -24,6 +24,15 @@ namespace OpenRA.Mods.Medieval
 			widget.Get("MD_PATROL_PANEL").IsVisible = () => player != null && Fighters().Length > 0
 				&& !(world.Selection.Actors.Count() == 1 && world.Selection.Actors.First().TraitOrDefault<MedievalSaboteur>() != null);
 			widget.Get<LabelWidget>("MD_PATROL_TITLE").GetText = () => $"TROUPES - {Fighters().Length} UNITE(S)";
+			Actor[] Escorts() => Fighters().Where(a => a.TraitOrDefault<MedievalEscort>() != null).ToArray();
+			var escort = widget.Get<ButtonWidget>("MD_ESCORT"); escort.GetText = () => "Escorter : choisir une unité";
+			escort.IsDisabled = () => world.Paused || Escorts().Length == 0;
+			escort.OnClick = () => { if (!escort.IsDisabled()) world.OrderGenerator = new MedievalEscortOrderGenerator(world, worldRenderer, Escorts()); };
+			escort.GetTooltipText = () => "Suivre et protéger une unité";
+			escort.GetTooltipDesc = () => "Désignez une charrette, un messager ou une autre unité de votre pays ou alliée.\nLes soldats suivent, combattent selon leur attitude puis rejoignent l'escorte.\nUn ordre manuel remplace l'escorte. Clic droit : annuler le choix.";
+			var endEscort = widget.Get<ButtonWidget>("MD_ESCORT_STOP"); endEscort.GetText = () => "Arrêter l'escorte";
+			endEscort.IsDisabled = () => world.Paused || !Escorts().Any(a => a.Trait<MedievalEscort>().Protected != null);
+			endEscort.OnClick = () => { if (!endEscort.IsDisabled()) foreach (var a in Escorts().Where(a => a.Trait<MedievalEscort>().Protected != null)) world.IssueOrder(new Order("MedievalStopEscort", a, false)); };
 			var names = new[] { "Offensive", "Defensive", "Neutre" };
 			var stances = new[] { UnitStance.AttackAnything, UnitStance.Defend, UnitStance.HoldFire };
 			var tips = new[] { "Engage les ennemis visibles et les poursuit.", "Combat a portee, sans poursuivre l'ennemi.", "Aucune attaque automatique, meme en cas d'agression.\nLes ordres d'attaque manuels restent possibles." };
@@ -73,6 +82,9 @@ namespace OpenRA.Mods.Medieval
 			widget.Get<LabelWidget>("MD_PATROL_HINT").GetText = () => "Tracez 2 a 16 points, puis Enregistrer ronde.\nNuit auto : depart au crepuscule, pause a l'aube.";
 			widget.Get<LabelWidget>("MD_PATROL_STATUS").GetText = () =>
 			{
+				if (world.OrderGenerator is MedievalEscortOrderGenerator) return "Cliquez sur l'unité à protéger. Clic droit pour annuler.";
+				var protecting = Escorts().Count(a => a.Trait<MedievalEscort>().Protected != null);
+				if (protecting > 0) return $"{protecting} soldat(s) en escorte. Suit et protège la cible.\nUn déplacement, une attaque manuelle ou Arrêter remplace l'escorte.";
 				if (Draft() is { } draft) return $"Trace : {draft.Count}/16 points. " + draft.Message;
 				var units = Militia();
 				if (units.Length == 0) return "Selectionnez des miliciens pour organiser une ronde.";

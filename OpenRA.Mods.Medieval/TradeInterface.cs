@@ -47,8 +47,8 @@ namespace OpenRA.Mods.Medieval
 			var create = widget.Get<ButtonWidget>("MD_TRADE_CREATE");
 			create.GetText = () => Market()?.Trait<MedievalMarket>().Recruiting == true ? "Preparation..." : "Charrette marchande 20N";
 			create.IsDisabled = () => world.Paused || Market() is not Actor market || !market.Trait<MedievalMarket>().CanRecruit(market, true);
-			create.GetTooltipText = () => "Recruter une charrette pour cette route";
-			create.GetTooltipDesc = () => "20 nourriture et une place d'habitation.\n60 unites de chacune des cinq ressources, or compris.\nCharge, voyage et decharge automatiquement.\nLe conducteur doit manger dans les zones de ravitaillement.";
+			create.GetTooltipText = () => "Recruter une charrette commerciale";
+			create.GetTooltipDesc = () => "20 nourriture et une place d'habitation.\nUtilisable pour une route ou le marchandage entre nations.\nTroc : 60 objets par voyage, toutes marchandises confondues.\nLe conducteur doit manger dans les zones de ravitaillement.";
 			create.OnClick = () => { if (Market() is Actor market) world.IssueOrder(new Order("MedievalCreateTrader", market, false)); };
 			var peer = widget.Get<ButtonWidget>("MD_TRADE_OTHER");
 			peer.GetText = () => "Voir l'autre marche";
@@ -68,21 +68,22 @@ namespace OpenRA.Mods.Medieval
 			widget.Get<LabelWidget>("MD_TRADER_TITLE").GetText = () => "CHARRETTE MARCHANDE";
 			var assign = widget.Get<ButtonWidget>("MD_TRADER_ASSIGN");
 			assign.GetText = () => "Choisir une route";
-			assign.IsDisabled = () => world.Paused || Cart() == null;
+			assign.IsDisabled = () => world.Paused || Cart() == null || Cart().Trait<MedievalBarterCart>().Busy;
 			assign.OnClick = () => Target(Cart(), "MedievalAssignTrader");
 			var pause = widget.Get<ButtonWidget>("MD_TRADER_PAUSE");
 			pause.GetText = () => Cart()?.Trait<MedievalTradeCart>().Active == true ? "Mettre en pause" : "Reprendre la route";
-			pause.IsDisabled = () => world.Paused || Cart() is not Actor cart || !cart.Trait<MedievalTradeCart>().Active && !cart.Trait<MedievalTradeCart>().ValidRoute(cart);
+			pause.IsDisabled = () => world.Paused || Cart() is not Actor cart || cart.Trait<MedievalBarterCart>().Busy || !cart.Trait<MedievalTradeCart>().Active && !cart.Trait<MedievalTradeCart>().ValidRoute(cart);
 			pause.OnClick = () => { if (Cart() is Actor cart) world.IssueOrder(new Order(cart.Trait<MedievalTradeCart>().Active ? "MedievalPauseTrade" : "MedievalResumeTrade", cart, false)); };
 			var recover = widget.Get<ButtonWidget>("MD_TRADER_RECOVER");
 			recover.GetText = () => "Rapatrier la cargaison";
-			recover.IsDisabled = () => world.Paused || Cart() == null || !MedievalMarket.Markets(owner).Any();
+			recover.IsDisabled = () => world.Paused || Cart() == null || Cart().Trait<MedievalBarterCart>().Busy || !MedievalMarket.Markets(owner).Any();
 			recover.GetTooltipText = () => "Decharger au marche le plus proche";
 			recover.GetTooltipDesc = () => "La charrette se deplace jusqu'au marche puis y depose sa charge.\nElle attend si le marche est plein et reste sur place une fois vide.";
 			recover.OnClick = () => { if (Cart() is Actor cart) world.IssueOrder(new Order("MedievalRecoverTrade", cart, false)); };
 			widget.Get<LabelWidget>("MD_TRADER_STOCK").GetText = () => Cart() is Actor cart ? string.Join(" | ", new[] { 1, 0, 3, 2, 4 }.Select(r =>
 				$"{(r == 1 ? "Nourr." : MedievalStockDisplay.Labels[r])} {cart.Trait<MedievalStockpile>().Stock.Amount(r)}")) : "";
-			widget.Get<LabelWidget>("MD_TRADER_STATUS").GetText = () => Cart()?.Trait<MedievalTradeCart>().Status ?? "";
+			widget.Get<LabelWidget>("MD_TRADER_STATUS").GetText = () => Cart() is { } cart ? cart.Trait<MedievalBarterCart>().Busy
+				? cart.Trait<MedievalBarterCart>().Status : cart.Trait<MedievalTradeCart>().Status : "";
 			widget.Get<LabelWidget>("MD_TRADER_ROUTE").GetText = () => Cart() is Actor cart ? cart.Trait<MedievalTradeCart>().RouteName(cart) : "";
 
 			var convoy = widget.Get<ButtonWidget>("MD_CONVOY_ASSIGN");

@@ -67,14 +67,13 @@ namespace OpenRA.Mods.Medieval
 		public static IEnumerable<Actor> Markets(Player p) => p.World.ActorsHavingTrait<MedievalMarket>().Where(a => a.Owner == p && MedievalStockpile.Active(a)
 			&& a.TraitOrDefault<MedievalMarket>() != null).OrderBy(a => a.ActorID);
 		public bool CanRecruit(Actor self, bool trader = false) => MedievalStockpile.Active(self) && !Recruiting
-			&& (!trader || self.Trait<MedievalTradeMarket>().Linked(self))
 			&& MedievalSettlement.Population(self.Owner) + MedievalSettlement.PendingPopulation(self.Owner) < MedievalSettlement.Housing(self.Owner)
 			&& MedievalSettlement.Cost(self.Owner, trader ? "md.tradecart" : "md.supplycart").CanPay(MedievalSettlement.RecruitmentStores(self.Owner).Select(a => a.Trait<MedievalStockpile>().Stock));
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString != "MedievalCreateCart" && order.OrderString != "MedievalCreateTrader") return;
 			var trader = order.OrderString == "MedievalCreateTrader";
-			if (!CanRecruit(self, trader)) { Status = "Marche termine, nourriture, logement et liaison commerciale si marchand requis."; return; }
+			if (!CanRecruit(self, trader)) { Status = "Marché terminé, nourriture et logement requis."; return; }
 			if (!MedievalSettlement.Cost(self.Owner, trader ? "md.tradecart" : "md.supplycart").TryPay(MedievalSettlement.RecruitmentStores(self.Owner).Select(a => a.Trait<MedievalStockpile>().Stock))) return;
 			recruitingTrader = trader;
 			Recruiting = true; training = info.CartTrainingTicks; Status = "Preparation d'une charrette et de son porteur.";
@@ -96,7 +95,7 @@ namespace OpenRA.Mods.Medieval
 				var cart = w.CreateActor(recruitingTrader ? "md.tradecart" : "md.supplycart", [new OwnerInit(owner), new LocationInit(cell.Value)]);
 				if (recruitingTrader) cart.Trait<MedievalTradeCart>().Assign(cart, self);
 				Recruiting = false;
-				Status = recruitingTrader ? "Charrette marchande creee et affectee a cette route." : "Charrette creee : chargez-la ou affectez-la a un chantier.";
+				Status = recruitingTrader ? cart.Trait<MedievalTradeCart>().Active ? "Charrette marchande créée et affectée à cette route." : "Charrette marchande disponible pour un échange ou une route." : "Charrette creee : chargez-la ou affectez-la a un chantier.";
 			});
 		}
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { Recruiting = false; }

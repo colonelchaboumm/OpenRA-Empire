@@ -8,6 +8,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[3]
 CASES = {
+    'fleet': ('fleet-tests.yaml', 'messenger-test', 'barter/fleet'),
     'barter': ('barter-tests.yaml', 'messenger-test', 'barter/native'),
     'messenger': ('messenger-tests.yaml', 'messenger-test', 'messenger-preview'),
 }

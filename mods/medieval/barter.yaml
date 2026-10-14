@@ -4,6 +4,16 @@ World:
 Player:
 	MedievalBarterOrders:
 
+md.tradecart:
+	MedievalBarterCart:
+	MedievalEquipmentStore:
+		Capacity: 60, 60, 60, 0
+	MedievalCampStore:
+		Capacity: 60, 60, 60, 0
+
+^MDFIGHTER:
+	MedievalEscort:
+
 # Temporary carriers are dispatched by an agreed contract and leave after returning.
 md.bartercart:
 	Inherits: md.tradecart

@@ -80,6 +80,8 @@ namespace OpenRA.Mods.Medieval
 		public void PauseForStorm() { Release(); Status = "Court se mettre à l’abri de l’orage"; }
 		bool ReserveTrip(Actor from, Inventory fromStock, Actor to, Inventory toStock, int resource, int max, bool equipment = false, bool camp = false)
 		{
+			// Trade fleets keep their cargo exclusive during delivery and recovery.
+			if (from.TraitOrDefault<MedievalBarterCart>()?.Busy == true || to.TraitOrDefault<MedievalBarterCart>()?.Busy == true) return false;
 			var amount = Math.Min(max, Math.Min(fromStock.Available(resource), toStock.Free(resource)));
 			if (amount <= 0) return false;
 			if (!fromStock.ReserveOut(resource, amount)) return false;

@@ -79,6 +79,8 @@ namespace OpenRA.Mods.Medieval
 			firstDepot = Spawn(w, "warehouse", first, 19, 20); secondDepot = Spawn(w, "warehouse", second, 43, 20);
 			home = Spawn(w, "barracks", first, 22, 29); target = Spawn(w, "barracks", second, 43, 29);
 			courier = Spawn(w, "messenger", first, 23, 32);
+			Spawn(w, "tradecart", first, 18, 24); Spawn(w, "tradecart", first, 17, 24);
+			Spawn(w, "tradecart", second, 42, 24);
 			foreach (var a in new[] { firstDepot, secondDepot })
 				for (var g = 0; g < StorageGoods.Count; g++) StorageGoods.Stock(a, g).Add(StorageGoods.Index(g), g == 9 ? 4 : 30);
 			beforeA = Amounts(firstDepot); beforeB = Amounts(secondDepot); stage = 1; until = tick + 20;

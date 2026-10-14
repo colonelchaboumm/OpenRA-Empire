@@ -5,7 +5,7 @@ World:
 	MedievalWeather:
 		FirstRainTicks: 100000
 
-md.messenger:
+^MDWORKER:
 	MedievalNeedsFood:
 		MealInterval: 100000
 		StarvationDelay: 200000

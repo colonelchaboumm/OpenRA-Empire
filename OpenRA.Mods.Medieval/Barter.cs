@@ -16,6 +16,7 @@ namespace OpenRA.Mods.Medieval
 		public readonly Actor[] Depots = new Actor[2];
 		public readonly int[][] Goods = [new int[StorageGoods.Count], new int[StorageGoods.Count]];
 		public readonly BarterLeg[] Legs = new BarterLeg[2];
+		public readonly int[] CartCounts = [1, 1];
 		public BarterState State;
 		public int ChangedAt;
 		public string Status = "Le messager porte votre invitation.";
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Medieval
 				var values = new[] { (int)Id, (int)Revision, (int)MailRevision, (int)Messenger.ActorID, (int)First.PlayerActor.ActorID,
 					(int)Second.PlayerActor.ActorID, (int)(Proposer?.PlayerActor.ActorID ?? 0), (int)State, ChangedAt };
 				return values.Concat(Depots.Select(a => (int)(a?.ActorID ?? 0))).Concat(Goods.SelectMany(g => g))
-					.Concat(Legs.Select(l => l?.Hash ?? 0)).Aggregate(17, (h, n) => unchecked(h * 31 + n));
+					.Concat(CartCounts).Concat(Legs.Select(l => l?.Hash ?? 0)).Aggregate(17, (h, n) => unchecked(h * 31 + n));
 			}
 		}
 	}
@@ -42,6 +43,12 @@ namespace OpenRA.Mods.Medieval
 	}
 	public sealed class MedievalBarter : ITick, ISync
 	{
+		public const int MaximumCarts = 100;
+		public static IEnumerable<Actor> AvailableCarts(Player p) => p == null ? [] : p.World.ActorsHavingTrait<MedievalTradeCart>()
+			.Where(a => MedievalStockpile.Active(a) && !a.WillDispose && a.Owner == p && a.TraitOrDefault<MedievalBarterCart>() is { Busy: false }
+				&& a.Trait<MedievalTradeCart>().CanLend && a.TraitOrDefault<MedievalRest>()?.Resting != true
+				&& Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Stock(a, g) is { } s && s.Amount(StorageGoods.Index(g)) == 0
+					&& s.Incoming(StorageGoods.Index(g)) == 0 && s.Reserved(StorageGoods.Index(g)) == 0)).OrderBy(a => a.ActorID);
 		readonly List<BarterDeal> deals = [];
 		uint nextId = 1;
 		[VerifySync] public int NextIdHash => unchecked((int)nextId);
@@ -123,6 +130,12 @@ namespace OpenRA.Mods.Medieval
 				deal.Depots[deal.Side(p)] = order.ExtraActors[0]; deal.Proposer = null; deal.State = BarterState.Negotiating;
 				deal.Status = "Dépôt modifié. Une nouvelle proposition est nécessaire."; Changed(deal, w);
 			}
+			else if (order.OrderString == "MedievalBarterCarts" && int.TryParse(fields[1], NumberStyles.None, CultureInfo.InvariantCulture, out var count)
+				&& count is >= 1 and <= MaximumCarts)
+			{
+				deal.CartCounts[deal.Side(p)] = count; deal.Proposer = null; deal.State = BarterState.Negotiating;
+				deal.Status = "Nombre de charrettes modifié. Confirmez les conditions avec une nouvelle proposition."; Changed(deal, w);
+			}
 			else if (order.OrderString == "MedievalBarterPropose" && BarterOffer.TryParse(fields[1], out var give, out var receive))
 			{
 				deal.Goods[deal.Side(p)] = give; deal.Goods[1 - deal.Side(p)] = receive;
@@ -132,11 +145,15 @@ namespace OpenRA.Mods.Medieval
 			{
 				if (!Depot(deal.Depots[0], deal.First) || !Depot(deal.Depots[1], deal.Second))
 				{ deal.Status = "Un dépôt n'est plus disponible. Choisissez un dépôt terminé."; return; }
+				var carts = Enumerable.Range(0, 2).Select(i => AvailableCarts(deal.Player(i))
+					.OrderBy(a => (a.CenterPosition - deal.Depots[i].CenterPosition).HorizontalLengthSquared).ThenBy(a => a.ActorID).Take(deal.CartCounts[i]).ToArray()).ToArray();
+				if (Enumerable.Range(0, 2).Any(i => carts[i].Length < deal.CartCounts[i]))
+				{ deal.Status = "Pas assez de charrettes commerciales libres. Attendez leur retour, videz-les ou réduisez l'allocation."; return; }
 				var first = new BarterCargo(Stocks(deal.Depots[0]), Stocks(deal.Depots[1]), deal.Goods[0]);
 				var second = new BarterCargo(Stocks(deal.Depots[1]), Stocks(deal.Depots[0]), deal.Goods[1]);
 				if (!BarterCargo.ReserveExchange(first, second))
 				{ deal.Status = "Accord impossible : stocks disponibles ou place à l'arrivée insuffisants. Modifiez l'offre ou libérez les dépôts."; return; }
-				deal.Legs[0] = new BarterLeg(deal, 0, first); deal.Legs[1] = new BarterLeg(deal, 1, second);
+				deal.Legs[0] = new BarterLeg(deal, 0, first, carts[0]); deal.Legs[1] = new BarterLeg(deal, 1, second, carts[1]);
 				deal.State = BarterState.Delivering; deal.Status = "Accord conclu. Les deux convois préparent leurs chargements."; Changed(deal, w); ReturnMessenger(deal);
 			}
 		}
@@ -153,7 +170,7 @@ namespace OpenRA.Mods.Medieval
 						d.Status = "Le messager est arrivé. Le destinataire peut accepter ou refuser le marchandage.";
 				}
 				if (d.State == BarterState.Delivering && d.Legs.Any(l => !Depot(l.Source, l.Owner) || !Depot(l.Destination, d.Player(1 - l.Side))
-					|| !l.Done && l.Cart != null && (!MedievalStockpile.Active(l.Cart) || l.Cart.Owner != l.Owner)))
+					|| l.Journeys.Any(j => !j.Done && (!MedievalStockpile.Active(j.Cart) || j.Cart.Owner != l.Owner))))
 					Abort(d, "Livraison interrompue : dépôt ou charrette perdu.");
 				foreach (var leg in d.Legs) leg?.Tick(w);
 				if (d.State == BarterState.Delivering)
@@ -187,22 +204,50 @@ namespace OpenRA.Mods.Medieval
 	public enum BarterTravel { Loading, Outbound, Returning, Recovering, Done }
 	public sealed class BarterLeg
 	{
-		readonly BarterDeal deal;
 		public readonly int Side;
 		public readonly Player Owner;
 		public readonly Actor Source, Destination;
 		public readonly BarterCargo Cargo;
-		public Actor Cart { get; private set; }
+		public readonly BarterJourney[] Journeys;
+		public Actor Cart => Journeys[0].Cart;
+		public BarterTravel Travel => Journeys[0].Travel;
+		public bool Done => Journeys.All(j => j.Done);
+		public string Status => $"{Journeys.Count(j => !j.Done)}/{Journeys.Length} charrette(s) en mission, {Journeys.Count(j => j.Travel == BarterTravel.Outbound)} en livraison";
+		public int Hash => Journeys.Select(j => j.Hash).Aggregate(Cargo.Hash, (h, n) => unchecked(h * 31 + n));
+		public BarterLeg(BarterDeal deal, int side, BarterCargo cargo, Actor[] carts)
+		{
+			Side = side; Owner = deal.Player(side); Source = deal.Depots[side]; Destination = deal.Depots[1 - side]; Cargo = cargo;
+			Journeys = carts.Select(a => new BarterJourney(deal, this, a)).ToArray();
+		}
+		public void Cancel() { Cargo.Cancel(); foreach (var j in Journeys.Where(j => !j.Done)) j.Cancel(); }
+		public void Tick(World w) { foreach (var j in Journeys) j.Tick(w); }
+	}
+	public sealed class BarterJourney
+	{
+		readonly BarterDeal deal;
+		public readonly BarterLeg Leg;
+		public readonly Actor Cart;
+		readonly bool resumeRoute;
+		public BarterCargo Cargo => Leg.Cargo;
+		public Actor Source => Leg.Source;
+		public Actor Destination => Leg.Destination;
+		public Player Owner => Leg.Owner;
 		Actor recoveryDepot;
 		int attempts;
+		public int Loads { get; private set; }
 		public BarterTravel Travel { get; private set; }
 		public bool Done => Travel == BarterTravel.Done;
-		public BarterLeg(BarterDeal deal, int side, BarterCargo cargo)
-		{ this.deal = deal; Side = side; Owner = deal.Player(side); Source = deal.Depots[side]; Destination = deal.Depots[1 - side]; Cargo = cargo; }
-		public int Hash => unchecked((((Cargo.Hash * 31 + (int)Travel) * 31 + (int)(Cart?.ActorID ?? 0)) * 31 + attempts) * 31 + (int)(recoveryDepot?.ActorID ?? 0));
+		public BarterJourney(BarterDeal deal, BarterLeg leg, Actor cart)
+		{
+			this.deal = deal; Leg = leg; Cart = cart;
+			resumeRoute = cart.Trait<MedievalTradeCart>().Lend(cart);
+			cart.Trait<MedievalBarterCart>().Journey = this;
+		}
+		public int Hash => unchecked((((((int)Travel * 31 + (int)Cart.ActorID) * 31 + attempts) * 31 + (int)(recoveryDepot?.ActorID ?? 0)) * 2 + (resumeRoute ? 1 : 0)) * 31 + Loads);
+		public void Abort() => Cart.World.WorldActor.Trait<MedievalBarter>().Abort(deal, "Mission interrompue par un nouvel ordre à une charrette.");
 		public string Status => Travel switch
 		{
-			BarterTravel.Loading => Cart == null ? "Attend une sortie libre au dépôt" : "Chargement au dépôt d'origine", BarterTravel.Outbound => "Livraison chez le partenaire",
+			BarterTravel.Loading => "Rejoint le dépôt pour charger", BarterTravel.Outbound => "Livraison chez le partenaire",
 			BarterTravel.Returning => Cargo.Waiting > 0 ? "Retour pour le prochain chargement" : "Retour au dépôt d'origine",
 			BarterTravel.Recovering => "Échange interrompu : rapatriement de la cargaison", _ => "Trajet terminé"
 		};
@@ -213,25 +258,16 @@ namespace OpenRA.Mods.Medieval
 		}
 		void Finish(World w)
 		{
-			Travel = BarterTravel.Done; var a = Cart;
-			if (MedievalStockpile.Active(a)) w.AddFrameEndTask(_ => a.Dispose());
+			Travel = BarterTravel.Done;
+			if (MedievalStockpile.Active(Cart))
+			{
+				Cart.Trait<MedievalBarterCart>().Journey = null;
+				Cart.Trait<MedievalTradeCart>().ReturnFromLoan(Cart, resumeRoute && Cart.Owner == Owner);
+			}
 		}
 		public void Tick(World w)
 		{
 			if (Done) return;
-			if (Cart == null)
-			{
-				if (Travel == BarterTravel.Recovering) { Travel = BarterTravel.Done; return; }
-				var cell = MedievalAccess.Perimeter(Source).Where(c => w.Map.Contains(c) && !w.ActorMap.GetActorsAt(c).Any()
-					&& new[] { "Clear", "Road", "Rough" }.Contains(w.Map.GetTerrainInfo(c).Type)).OrderBy(c => c.Y).ThenBy(c => c.X).Select(c => (CPos?)c).FirstOrDefault();
-				if (cell == null) return;
-				w.AddFrameEndTask(_ =>
-				{
-					if (Cart != null || deal.State != BarterState.Delivering || !MedievalBarter.Depot(Source, Owner) || w.ActorMap.GetActorsAt(cell.Value).Any()) return;
-					Cart = w.CreateActor("md.bartercart", [new OwnerInit(Owner), new LocationInit(cell.Value)]);
-					Cart.Trait<MedievalBarterCart>().Leg = this;
-				}); return;
-			}
 			if (!MedievalStockpile.Active(Cart)) { Travel = BarterTravel.Done; return; }
 			if (deal.State == BarterState.Completed && Travel != BarterTravel.Recovering && (!MedievalBarter.Depot(Source, Cart.Owner) || Cart.Owner != Owner)) Cancel();
 			if (!Cart.IsIdle) return;
@@ -257,19 +293,24 @@ namespace OpenRA.Mods.Medieval
 			if (Travel == BarterTravel.Outbound)
 			{
 				Cargo.Unload(stocks);
-				if (Cargo.Travelling == 0) { Travel = BarterTravel.Returning; attempts = 0; }
+				if (Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Amount(Cart, g) == 0)) { Travel = BarterTravel.Returning; attempts = 0; }
 			}
-			else if (Cargo.Complete) Finish(w);
-			else if (Cargo.Load(stocks) > 0) { Travel = BarterTravel.Outbound; attempts = 0; }
+			else if (Cargo.Waiting == 0) Finish(w);
+			else if (Cargo.Load(stocks) > 0) { Loads++; Travel = BarterTravel.Outbound; attempts = 0; }
 		}
 	}
 	public class MedievalBarterCartInfo : TraitInfo
 	{
 		public override object Create(ActorInitializer init) => new MedievalBarterCart();
 	}
-	public sealed class MedievalBarterCart
+	public sealed class MedievalBarterCart : IResolveOrder
 	{
-		public BarterLeg Leg;
-		public string Status => Leg?.Status ?? "Charrette de livraison";
+		public BarterJourney Journey;
+		public bool Busy => Journey != null && !Journey.Done;
+		public string Status => Journey?.Status ?? "Disponible pour le marchandage si vide";
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
+		{
+			if (Busy && order.OrderString is "Stop" or "Move" or "MedievalAssignTrader" or "MedievalResumeTrade" or "MedievalPauseTrade" or "MedievalRecoverTrade") Journey.Abort();
+		}
 	}
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -29,6 +30,7 @@ namespace OpenRA.Mods.Medieval
 	{
 		readonly Inventory[] sources, destinations;
 		readonly int[] waiting, travelling, delivered = new int[StorageGoods.Count];
+		readonly Dictionary<Inventory, (Inventory[] Stocks, int[] Quantities)> loads = [];
 		bool reserved;
 		public int Waiting => waiting.Sum();
 		public int Travelling => travelling.Sum();
@@ -62,26 +64,31 @@ namespace OpenRA.Mods.Medieval
 		}
 		public int Load(Inventory[] cart, int capacity = 60)
 		{
-			if (!reserved || Travelling > 0) return 0;
+			if (!reserved || loads.ContainsKey(cart[0])) return 0;
+			var shipment = new int[StorageGoods.Count];
 			var loaded = 0;
 			for (var g = 0; g < waiting.Length && loaded < capacity; g++)
 			{
 				var r = StorageGoods.Index(g); var n = Math.Min(waiting[g], Math.Min(capacity - loaded, cart[g]?.Free(r) ?? 0));
 				if (n <= 0) continue;
-				sources[g].Load(r, n); cart[g].Add(r, n); waiting[g] -= n; travelling[g] += n; loaded += n;
+				sources[g].Load(r, n); cart[g].Add(r, n); cart[g].ReserveOut(r, n);
+				waiting[g] -= n; travelling[g] += n; shipment[g] = n; loaded += n;
 			}
+			if (loaded > 0) loads.Add(cart[0], (cart, shipment));
 			return loaded;
 		}
 		public int Unload(Inventory[] cart)
 		{
-			if (!reserved) return 0;
+			if (!reserved || !loads.TryGetValue(cart[0], out var load)) return 0;
+			var shipment = load.Quantities;
 			var total = 0;
 			for (var g = 0; g < travelling.Length; g++)
 			{
-				if (travelling[g] == 0) continue;
-				var r = StorageGoods.Index(g); var n = cart[g].Take(r, travelling[g]);
-				destinations[g].Unload(r, n); travelling[g] -= n; delivered[g] += n; total += n;
+				if (shipment[g] == 0) continue;
+				var r = StorageGoods.Index(g); var n = shipment[g]; cart[g].Load(r, n);
+				destinations[g].Unload(r, n); shipment[g] -= n; travelling[g] -= n; delivered[g] += n; total += n;
 			}
+			if (shipment.All(n => n == 0)) loads.Remove(cart[0]);
 			return total;
 		}
 		public void Cancel()
@@ -94,8 +101,11 @@ namespace OpenRA.Mods.Medieval
 				if (waiting[g] + travelling[g] > 0) destinations[g].ReleaseIn(r, waiting[g] + travelling[g]);
 				waiting[g] = travelling[g] = 0;
 			}
-			reserved = false;
+			foreach (var load in loads.Values)
+				for (var g = 0; g < StorageGoods.Count; g++)
+					if (load.Quantities[g] > 0) load.Stocks[g].ReleaseOut(StorageGoods.Index(g), load.Quantities[g]);
+			loads.Clear(); reserved = false;
 		}
-		public int Hash => waiting.Concat(travelling).Concat(delivered).Aggregate(reserved ? 1 : 0, (h, n) => unchecked(h * 31 + n));
+		public int Hash => waiting.Concat(travelling).Concat(delivered).Concat(loads.Values.SelectMany(a => a.Quantities)).Aggregate(reserved ? 1 : 0, (h, n) => unchecked(h * 31 + n));
 	}
 }

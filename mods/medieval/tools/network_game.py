@@ -40,7 +40,7 @@ def run(map_id, timeout=300, deep_sync=False, source_binary='bin-medieval', outp
     storm = '\t\tStormRefuge: True\n\tMedievalWeather:\n\t\tFirstRainTicks: 2000\n\t\tRainTicks: 1600\n\t\tMinimumRainPermille: 850\n' if storm_refuge else ''
     scenario = ('World:\n\tBarterNetworkAudit:\n\tMedievalDayNight:\n\t\tDayTicks: 100000\n'
                 '\tMedievalWeather:\n\t\tFirstRainTicks: 100000\n'
-                'md.messenger:\n\tMedievalNeedsFood:\n\t\tMealInterval: 100000\n\t\tStarvationDelay: 200000\n') if barter else (
+                '^MDWORKER:\n\tMedievalNeedsFood:\n\t\tMealInterval: 100000\n\t\tStarvationDelay: 200000\n') if barter else (
                     'World:\n\tNetworkAudit:\n'+storm+seasons+'md.militia:\n\tMedievalCombatProbe:\n')
     (mod/'rules.yaml').write_text(scenario, encoding='utf-8', newline='\n')
     path = ROOT/'mods/medieval/maps'/map_id

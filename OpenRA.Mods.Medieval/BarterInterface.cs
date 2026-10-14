@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Medieval
 				? Local == current.Second ? "Votre partenaire propose de négocier. Ouvrez le marchandage ou refusez." : "Le destinataire doit recevoir le messager et accepter l'invitation."
 				: current?.State is BarterState.Delivering or BarterState.Completed or BarterState.Interrupted
 				? string.Join(" | ", current.Legs.Select((l, i) => $"{(i == current.Side(Local) ? "Envoyé" : "Reçu")} : {l?.Cargo.Delivered ?? 0}/{current.Goods[i].Sum()}"))
-				: "Une contre-offre remplace la précédente. Les deux stocks sont réservés à l'accord ; livraison par charrettes de 60 objets.";
+				: "Charrettes commerciales vides : 60 objets par voyage, retour après livraison.\nChoisissez leur nombre avant les quantités. Sans charrette libre, recrutez-en au marché.";
 			var depotButton = panel.Get<ButtonWidget>("MD_BARTER_DEPOT");
 			depotButton.GetText = () => current == null ? "" : "Mon " + MedievalBarter.DepotName(current.Depots[current.Side(Local)]) + "  ›";
 			depotButton.IsDisabled = () => world.Paused || !Editing || MedievalBarter.Depots(Local).Count() < 2;
@@ -112,6 +112,20 @@ namespace OpenRA.Mods.Medieval
 				Send("MedievalBarterDepot", depot: depots[(Array.IndexOf(depots, current.Depots[current.Side(Local)]) + 1) % depots.Length]);
 			};
 			panel.Get<LabelWidget>("MD_BARTER_OTHER_DEPOT").GetText = () => current == null ? "" : "Partenaire : " + MedievalBarter.DepotName(current.Depots[1 - current.Side(Local)]);
+			int Available() => MedievalBarter.AvailableCarts(Local).Count();
+			int Count() => current?.CartCounts[current.Side(Local)] ?? 1;
+			panel.Get<LabelWidget>("MD_BARTER_CARTS").GetText = () => $"Mes charrettes : {Count()} / {Available()} libres";
+			panel.Get<LabelWidget>("MD_BARTER_OTHER_CARTS").GetText = () => current == null ? "" : $"Partenaire : {current.CartCounts[1 - current.Side(Local)]} charrette(s)";
+			foreach (var (id, delta) in new[] { ("MINUS", -1), ("PLUS", 1), ("ALL", 0) })
+			{
+				var button = panel.Get<ButtonWidget>("MD_BARTER_CARTS_" + id);
+				button.GetText = () => delta < 0 ? "−" : delta > 0 ? "+" : "Toutes";
+				button.IsDisabled = () => world.Paused || !Editing || (delta < 0 ? Count() <= 1 : Available() == 0
+					|| (delta == 0 ? Count() == Math.Min(Available(), MedievalBarter.MaximumCarts) : Count() >= Math.Min(Available(), MedievalBarter.MaximumCarts)));
+				button.OnClick = () => { if (!button.IsDisabled()) Send("MedievalBarterCarts", (delta == 0 ? Math.Min(Available(), MedievalBarter.MaximumCarts) : Count() + delta).ToString(CultureInfo.InvariantCulture)); };
+				button.GetTooltipText = () => "Allouer vos charrettes commerciales";
+				button.GetTooltipDesc = () => "Charrettes existantes et vides, non réservées à un autre échange.\n60 objets par charrette et par voyage. Les routes reprennent au retour.";
+			}
 			var propose = panel.Get<ButtonWidget>("MD_BARTER_PROPOSE"); propose.GetText = () => current?.State == BarterState.Offered ? "Proposer une contre-offre" : "Proposer cet échange";
 			propose.IsDisabled = () => world.Paused || !Editing || !Draft(out _, out _);
 			propose.OnClick = () => { if (!propose.IsDisabled() && Draft(out var a, out var b)) Send("MedievalBarterPropose", BarterOffer.Encode(a, b)); };
