@@ -95,6 +95,7 @@ namespace OpenRA.Mods.Medieval
 				.FirstOrDefault();
 			if (chosen == null) return false;
 			Shelter = chosen; if (chosen.Info.Name == "md.house") home = chosen;
+			self.TraitOrDefault<MedievalUndertaker>()?.Cancel(self, false);
 			self.CancelActivity(); self.TraitOrDefault<MedievalWorker>()?.PauseForSleep(); return true;
 		}
 		bool SeekStormHome(Actor self, MedievalWeather weather)
@@ -111,6 +112,7 @@ namespace OpenRA.Mods.Medieval
 					animal.Trait<MedievalAnimal>().Request(animal, pen, self.Owner);
 			}
 			Shelter = home = chosen; StormSheltering = true; stormFailedMoves = 0;
+			self.TraitOrDefault<MedievalUndertaker>()?.Cancel(self, false);
 			self.CancelActivity(); self.TraitOrDefault<MedievalWorker>()?.PauseForStorm(); return true;
 		}
 		public bool CampRest(Actor self)
@@ -137,7 +139,7 @@ namespace OpenRA.Mods.Medieval
 			var soldier = self.TraitOrDefault<MedievalMorale>() != null;
 			var worker = self.TraitOrDefault<MedievalWorker>();
 			var weather = self.World.WorldActor.TraitOrDefault<MedievalWeather>();
-			var civilian = worker != null || self.TraitOrDefault<MedievalPriest>() != null;
+			var civilian = worker != null || self.TraitOrDefault<MedievalPriest>() != null || self.TraitOrDefault<MedievalUndertaker>() != null;
 			var storm = civilian && !soldier && weather?.Storm.ShelterTicks > 0 && self.World.WorldTick >= stormManualUntil;
 			if (storm && !stormHeard) { retry = (int)(self.ActorID % 13); stormHeard = true; }
 			else if (!storm) stormHeard = false;

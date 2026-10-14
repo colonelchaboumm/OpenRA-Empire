@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Medieval
 			var settlement = p.PlayerActor.Trait<MedievalSettlement>();
 			var food = p.PlayerActor.Trait<MedievalFoodEconomy>();
 			MedievalCaravanInterface.Bind(widget, world);
-			MedievalChurch.Bind(widget, world);
+			MedievalChurch.Bind(widget, world, worldRenderer);
 			foreach (var id in new[] { "SIDEBAR_PRODUCTION", "SIDEBAR_MONEYBIN", "SUPPORT_POWERS", "SELL_BUTTON", "POWER_BUTTON", "REPAIR_BUTTON" })
 			{
 				var old = widget.GetOrNull(id);
@@ -241,6 +241,7 @@ namespace OpenRA.Mods.Medieval
 				: world.OrderGenerator is MedievalPlaceOrderGenerator placement && placement.HousePreviewText(world) is string housePreview ? housePreview
 				: world.OrderGenerator is MedievalPlaceOrderGenerator marketPlacement && marketPlacement.LocalityPreviewText(world) is string localityPreview ? localityPreview
 				: world.OrderGenerator is MedievalZoneOrderGenerator zone ? zone.PreviewText(world)
+				: world.OrderGenerator is MedievalCemeteryOrderGenerator cemetery ? cemetery.PreviewText(world)
 				: world.OrderGenerator is MedievalStockyardOrderGenerator yard ? yard.PreviewText()
 				: world.OrderGenerator is MedievalLogisticsTargetGenerator logistics ? logistics.PreviewText : settlement.Message;
 			Actor Stall() => world.Selection.Actors.Where(a => a.IsInWorld && !a.IsDead).FirstOrDefault(a => a.Owner == p && a.TraitOrDefault<MedievalMarketStall>() != null);
@@ -266,6 +267,7 @@ namespace OpenRA.Mods.Medieval
 				if (a.TraitOrDefault<MedievalFoundingCaravan>() is MedievalFoundingCaravan caravan) return caravan.Status;
 				if (a.TraitOrDefault<MedievalChurch>() is MedievalChurch church && MedievalStockpile.Active(a)) return church.Status(a) + " | Recrutez un pretre puis envoyez les blesses par clic droit.";
 				if (a.TraitOrDefault<MedievalPatient>()?.Church != null) return "Rejoint l'eglise / attend les soins | " + a.Trait<MedievalNeedsFood>().Description;
+				if (a.TraitOrDefault<MedievalUndertaker>() is { } undertaker) return "Croque-mort : " + undertaker.Description(a) + " | " + a.Trait<MedievalNeedsFood>().Description;
 				if (a.TraitOrDefault<MedievalPriest>() != null) return "Pretre : +10 moral a 5 cases | Soigne a son eglise | " + a.Trait<MedievalNeedsFood>().Description;
 				if (a.TraitOrDefault<MedievalFirefighter>() is { Busy: true } firefighter) return firefighter.Description + " | " + a.Trait<MedievalNeedsFood>().Description;
 				if (a.TraitOrDefault<MedievalBurnable>() is { Burning: true } burning) return $"Incendie : {(burning.Remaining + 24) / 25}s | Seaux verses : {burning.WaterBuckets} | Pertes : {burning.LostGoods} ressources. Les secours utilisent les puits proches.";

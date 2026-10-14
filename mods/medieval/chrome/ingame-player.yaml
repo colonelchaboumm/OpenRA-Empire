@@ -4325,7 +4325,7 @@ Container@PLAYER_WIDGETS:
 			X: 12
 			Y: 154
 			Width: 410
-			Height: 218
+			Height: 362
 			Background: md-panel
 			Children:
 				Label@MD_CHURCH_TITLE:
@@ -4355,3 +4355,31 @@ Container@PLAYER_WIDGETS:
 					Height: 28
 					Font: TinyBold
 					Background: md-button
+				Button@MD_CHURCH_UNDERTAKER:
+					X: 9
+					Y: 216
+					Width: 392
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Button@MD_CHURCH_CEMETERY:
+					X: 9
+					Y: 252
+					Width: 392
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Label@MD_CHURCH_BURIALS:
+					X: 9
+					Y: 288
+					Width: 392
+					Height: 22
+					Font: TinyBold
+				Label@MD_CHURCH_CEMETERY_HINT:
+					X: 9
+					Y: 314
+					Width: 392
+					Height: 42
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top

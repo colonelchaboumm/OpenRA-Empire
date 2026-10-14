@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Medieval
 			if (!self.IsInWorld || self.IsDead || self.WillDispose) return false;
 			var actor = self.World.Map.Rules.Actors[Info.Market]; var building = actor.TraitInfo<BuildingInfo>();
 			var cells = building.Tiles(Foundation(self)).ToArray();
-			return cells.All(c => self.World.Map.Contains(c) && self.Owner.Shroud.IsExplored(c) && !MedievalStockyard.Covers(self.World, c))
+			return cells.All(c => self.World.Map.Contains(c) && self.Owner.Shroud.IsExplored(c) && !MedievalStockyard.Covers(self.World, c) && !MedievalCemeteries.Covers(self.World, c))
 				&& self.World.CanPlaceBuilding(Foundation(self), actor, building, self)
 				&& !cells.SelectMany(self.World.ActorMap.GetActorsAt).Any(a => a != self && a.Info.HasTraitInfo<BuildingInfo>())
 				&& CrewCells(self).Take(Info.Crew.Length).Count() == Info.Crew.Length;

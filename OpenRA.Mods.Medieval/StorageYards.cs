@@ -71,6 +71,7 @@ namespace OpenRA.Mods.Medieval
 			var cells = area.Cells().ToHashSet();
 			if (cells.Any(c => !self.World.Map.Contains(c) || !self.Owner.Shroud.IsExplored(c))) return "L'aire doit rester sur le terrain explore.";
 			if (cells.Any(c => self.World.Map.GetTerrainInfo(c).Type is not ("Clear" or "Road" or "Rough"))) return "Terrain incompatible avec le stockage.";
+			if (cells.Any(c => MedievalCemeteries.Covers(self.World, c))) return "Un cimetiere occupe cet emplacement.";
 			if (self.World.Actors.Any(a => a.IsInWorld && !a.IsDead && a.Info.TraitInfoOrDefault<BuildingInfo>() is BuildingInfo building && building.Tiles(a.Location).Any(cells.Contains)))
 				return "L'aire recouvre un batiment, une culture ou une ressource.";
 			if (zones.Any(z => z.Id != replaceId && z.Area.Cells().Any(cells.Contains)) || cells.Any(c => Covers(self.World, c, self))) return "Une autre reserve occupe cet emplacement.";

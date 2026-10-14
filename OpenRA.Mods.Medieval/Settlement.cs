@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Medieval
 					|| world.ActorMap.GetActorsAt(cell).Any(a => a != paving)) return false;
 			}
 			else if (!world.CanPlaceBuilding(cell, actor, bi, null)) return false;
-			if (cells.Any(c => MedievalStockyard.Covers(world, c))) return false;
+			if (cells.Any(c => MedievalStockyard.Covers(world, c) || MedievalCemeteries.Covers(world, c))) return false;
 			if (world.Actors.Any(a => a.IsInWorld && !a.IsDead && a.Info.HasTraitInfo<BuildingInfo>()
 				&& (area != null || decoration || a.TraitOrDefault<MedievalDecoration>() != null || a.TraitOrDefault<MedievalFortification>() != null || a.TraitOrDefault<MedievalAgriculturalArea>() != null)
 				&& !(onPaving && a.Owner == player && MedievalStockpile.Active(a) && a.TraitOrDefault<MedievalDecoration>()?.Info.Ground == true)

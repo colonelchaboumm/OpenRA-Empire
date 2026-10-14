@@ -44,6 +44,8 @@ namespace OpenRA.Mods.Medieval
 		public int Age, Seed;
 		public CVec Size;
 		public bool Building;
+		// Gameplay identity and reservations are independent of the captured sprite.
+		public uint ClaimedBy, Carrier;
 		public bool Settled => Age >= (Building ? BattlefieldMotion.CollapseTicks : BattlefieldMotion.FallTicks);
 	}
 
@@ -55,15 +57,26 @@ namespace OpenRA.Mods.Medieval
 	// Kills are replayed when a saved game is loaded. Keeping these lightweight
 	// records in the world recreates the same remains, without dead actors, AI,
 	// collision, food consumption or references to disposed units.
-	public sealed class MedievalBattlefield : ITick, IRender
+	public sealed class MedievalBattlefield : ITick, IRender, ISync
 	{
 		public const int MaximumRemains = 4096;
 		readonly List<BattlefieldRemains> remains = [];
 		public IReadOnlyList<BattlefieldRemains> Remains => remains;
 		public int VisibleRemains { get; private set; }
+		[VerifySync] public int RemainsHash
+		{
+			get { unchecked { return remains.Aggregate(17, (h, r) => ((((((h * 31 + r.Seed) * 31 + r.Position.X) * 31 + r.Position.Y)
+				* 31 + r.Position.Z) * 31 + r.Age) * 31 + (int)r.ClaimedBy) * 31 + (int)r.Carrier); } }
+		}
+		public bool Remove(BattlefieldRemains item) => remains.Remove(item);
 		public void Add(BattlefieldRemains item)
 		{
-			if (remains.Count >= MaximumRemains) remains.RemoveAt(0);
+			// Never evict a body that is being collected or carried.
+			if (remains.Count >= MaximumRemains)
+			{
+				var oldest = remains.FindIndex(r => r.ClaimedBy == 0);
+				if (oldest >= 0) remains.RemoveAt(oldest);
+			}
 			remains.Add(item);
 		}
 		void ITick.Tick(Actor self)
@@ -76,6 +89,7 @@ namespace OpenRA.Mods.Medieval
 			VisibleRemains = 0;
 			foreach (var item in remains)
 			{
+				if (item.Carrier != 0 || item.Sprite == null) continue;
 				var at = wr.ScreenPxPosition(item.Position);
 				if (at.X + 220 < wr.Viewport.TopLeft.X || at.X - 220 > wr.Viewport.BottomRight.X
 					|| at.Y + 100 < wr.Viewport.TopLeft.Y || at.Y - 240 > wr.Viewport.BottomRight.Y || !Visible(self.World, item.Position)) continue;
@@ -119,17 +133,16 @@ namespace OpenRA.Mods.Medieval
 			var animation = info.Building
 				? self.TraitsImplementing<WithSpriteBody>().FirstOrDefault(b => !b.IsTraitDisabled)?.DefaultAnimation
 				: self.TraitOrDefault<WithMedievalInfantryBody>()?.DeathAnimation;
-			if (animation?.CurrentSequence == null) return;
 			var render = self.Info.TraitInfo<RenderSpritesInfo>();
 			var record = new BattlefieldRemains
 			{
-				Position = self.CenterPosition, Sprite = animation.Image, Scale = animation.CurrentSequence.Scale,
+				Position = self.CenterPosition, Sprite = animation?.CurrentSequence != null ? animation.Image : null, Scale = animation?.CurrentSequence?.Scale ?? 1,
 				Palette = render.Palette ?? render.PlayerPalette + self.Owner.InternalName,
 				Building = info.Building, Seed = (int)self.ActorID,
 				Size = self.Info.TraitInfoOrDefault<BuildingInfo>()?.Dimensions ?? new CVec(1, 1),
 				Projection = info.Building && self.TraitOrDefault<MedievalBuilding>()?.Complete == true ? MedievalArchitecture.For(self).Matrix : Matrix4x4.Identity
 			};
-			if (info.Building)
+			if (info.Building && record.Sprite != null)
 			{
 				var sprite = record.Sprite; record.Strips = new Sprite[3];
 				for (var i = 0; i < 3; i++)

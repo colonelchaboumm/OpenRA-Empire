@@ -237,6 +237,7 @@ namespace OpenRA.Mods.Medieval
 		public readonly MedievalWindVegetationInfo Info;
 		public MedievalWindVegetation(MedievalWindVegetationInfo info) { Info = info; }
 		public bool Hidden(Actor self) => Info.HideUnderBuildings && (MedievalStockyard.Covers(self.World, self.Location)
+			|| MedievalCemeteries.Covers(self.World, self.Location)
 			|| self.World.WorldActor.TraitOrDefault<MedievalTrails>()?.ProtectsCell(self.Location) == true
 			|| self.World.ActorMap.GetActorsAt(self.Location).Any(a => a != self && a.TraitOrDefault<Building>() != null));
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> renderables)

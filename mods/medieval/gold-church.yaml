@@ -1,5 +1,6 @@
 World:
 	MedievalGoldDeposits:
+	MedievalCemeteries:
 
 md.warehouse:
 	MedievalStockpile:
@@ -86,6 +87,17 @@ md.church:
 	MedievalChurchAnimation:
 	MedievalStockDisplay:
 		LabelHeight: 180
+
+md.undertaker:
+	Inherits: ^MDWORKER
+	-MedievalWorker:
+	Tooltip:
+		Name: medieval-undertaker
+	RenderSprites:
+		Image: md.farmer
+	MedievalRecruitable:
+		Food: 30
+	MedievalUndertaker:
 
 md.priest:
 	Inherits: ^MDWORKER

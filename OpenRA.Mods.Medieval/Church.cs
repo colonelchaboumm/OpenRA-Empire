@@ -14,6 +14,7 @@ namespace OpenRA.Mods.Medieval
 	public class MedievalChurchInfo : TraitInfo, Requires<MedievalBuildingInfo>
 	{
 		public readonly int MaxPriests = 3;
+		public readonly int MaxUndertakers = 3;
 		public readonly int TrainingTicks = 150;
 		public override object Create(ActorInitializer init) => new MedievalChurch(this);
 	}
@@ -21,20 +22,30 @@ namespace OpenRA.Mods.Medieval
 	{
 		public readonly MedievalChurchInfo Info;
 		[VerifySync] public int Training { get; private set; }
+		[VerifySync] public bool TrainingUndertaker { get; private set; }
 		public bool Recruiting => Training > 0;
 		public MedievalChurch(MedievalChurchInfo info) { Info = info; }
 		public static IEnumerable<Actor> Churches(Player p) => p.World.ActorsHavingTrait<MedievalChurch>().Where(a => a.Owner == p && MedievalStockpile.Active(a));
 		public IEnumerable<Actor> Priests(Actor self) => self.World.ActorsHavingTrait<MedievalPriest>().Where(a => a.Owner == self.Owner && MedievalStockpile.Active(a) && a.Trait<MedievalPriest>().Church == self);
+		public IEnumerable<Actor> Undertakers(Actor self) => self.World.ActorsHavingTrait<MedievalUndertaker>().Where(a => a.Owner == self.Owner && MedievalStockpile.Active(a) && a.Trait<MedievalUndertaker>().Church == self);
 		public IEnumerable<Actor> OnDutyPriests(Actor self) => Priests(self).Where(a => a.Trait<MedievalPriest>().Available(a) && MedievalConstructionSupply.Within(a.CenterPosition, self.CenterPosition, new WDist(4096)));
 		public int OnDuty(Actor self) => OnDutyPriests(self).Count();
-		public bool CanRecruit(Actor self) => MedievalStockpile.Active(self) && !Recruiting && Priests(self).Count() < Info.MaxPriests
+		public bool CanRecruit(Actor self, bool undertaker = false) => MedievalStockpile.Active(self) && !Recruiting
+			&& (undertaker ? Undertakers(self).Count() < Info.MaxUndertakers : Priests(self).Count() < Info.MaxPriests)
 			&& MedievalSettlement.Population(self.Owner) + MedievalSettlement.PendingPopulation(self.Owner) < MedievalSettlement.Housing(self.Owner)
-			&& MedievalSettlement.Cost(self.Owner, "md.priest").CanPay(MedievalSettlement.RecruitmentStores(self.Owner).Select(a => a.Trait<MedievalStockpile>().Stock));
+			&& MedievalSettlement.Cost(self.Owner, undertaker ? "md.undertaker" : "md.priest").CanPay(MedievalSettlement.RecruitmentStores(self.Owner).Select(a => a.Trait<MedievalStockpile>().Stock));
 		public string Status(Actor self) => $"Pretres : {Priests(self).Count()}/{Info.MaxPriests} | Sur place : {OnDuty(self)} | Blesses : {self.World.ActorsHavingTrait<MedievalPatient>().Count(a => !a.IsDead && a.Trait<MedievalPatient>().Church == self)}";
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "MedievalRecruitPriest" || !CanRecruit(self)) return;
-			if (MedievalSettlement.Cost(self.Owner, "md.priest").TryPay(MedievalSettlement.RecruitmentStores(self.Owner).Select(a => a.Trait<MedievalStockpile>().Stock))) Training = Info.TrainingTicks;
+			if (order.OrderString == "MedievalPlaceCemetery" && order.Target.Type == TargetType.Terrain)
+			{
+				self.World.WorldActor.Trait<MedievalCemeteries>().Place(self, AgriculturalZone.Between(self.World.Map.CellContaining(order.Target.CenterPosition), order.ExtraLocation)); return;
+			}
+			if (order.OrderString is not ("MedievalRecruitPriest" or "MedievalRecruitUndertaker")) return;
+			var undertaker = order.OrderString == "MedievalRecruitUndertaker";
+			if (!CanRecruit(self, undertaker)) return;
+			if (MedievalSettlement.Cost(self.Owner, undertaker ? "md.undertaker" : "md.priest").TryPay(MedievalSettlement.RecruitmentStores(self.Owner).Select(a => a.Trait<MedievalStockpile>().Stock)))
+			{ TrainingUndertaker = undertaker; Training = Info.TrainingTicks; }
 		}
 		void ITick.Tick(Actor self)
 		{
@@ -49,23 +60,40 @@ namespace OpenRA.Mods.Medieval
 			{
 				if (!Recruiting || !MedievalStockpile.Active(self) || self.WillDispose || self.Owner != owner || w.ActorMap.GetActorsAt(cell.Value).Any()
 					|| MedievalSettlement.Population(owner) + MedievalSettlement.PendingPopulation(owner) > MedievalSettlement.Housing(owner)) return;
-				var priest = w.CreateActor("md.priest", [new OwnerInit(owner), new LocationInit(cell.Value)]);
-				priest.Trait<MedievalPriest>().Assign(priest, self); Training = 0;
+				var person = w.CreateActor(TrainingUndertaker ? "md.undertaker" : "md.priest", [new OwnerInit(owner), new LocationInit(cell.Value)]);
+				if (TrainingUndertaker) person.Trait<MedievalUndertaker>().Assign(person, self);
+				else person.Trait<MedievalPriest>().Assign(person, self);
+				Training = 0; TrainingUndertaker = false;
 				self.TraitOrDefault<MedievalChurchAnimation>()?.Bell.Ring(2);
 			});
 		}
-		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { Training = 0; }
-		public static void Bind(Widget widget, World world)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { Training = 0; TrainingUndertaker = false; }
+		public static void Bind(Widget widget, World world, WorldRenderer renderer)
 		{
 			Actor Selected() => world.Selection.Actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && MedievalStockpile.Active(a) && a.TraitOrDefault<MedievalChurch>() != null);
 			widget.Get("MD_CHURCH_PANEL").IsVisible = () => Selected() != null;
-			widget.Get<LabelWidget>("MD_CHURCH_TITLE").GetText = () => "EGLISE - SOINS ET MORAL";
+			widget.Get<LabelWidget>("MD_CHURCH_TITLE").GetText = () => "EGLISE - SOINS ET CIMETIERES";
 			widget.Get<LabelWidget>("MD_CHURCH_STATUS").GetText = () => Selected() is Actor a ? a.Trait<MedievalChurch>().Status(a) : "";
 			widget.Get<LabelWidget>("MD_CHURCH_HINT").GetText = () => "Blesses selectionnes : clic droit sur l'eglise.\nUn pretre sur place soigne 3 personnes a la fois.\nSoins : 5% de sante par seconde, sans depasser 100%.\nPretre proche : +10 moral dans un rayon de 5 cases.\nLes pretres ont besoin de nourriture et de logement.";
 			var recruit = widget.Get<ButtonWidget>("MD_CHURCH_RECRUIT");
 			recruit.GetText = () => Selected()?.Trait<MedievalChurch>().Recruiting == true ? "Recrutement en cours..." : "Recruter un pretre | 30 nourriture";
 			recruit.IsDisabled = () => world.Paused || Selected() is not Actor a || !a.Trait<MedievalChurch>().CanRecruit(a);
 			recruit.OnClick = () => { if (Selected() is Actor a) world.IssueOrder(new Order("MedievalRecruitPriest", a, false)); };
+			var undertaker = widget.Get<ButtonWidget>("MD_CHURCH_UNDERTAKER");
+			undertaker.GetText = () => Selected()?.Trait<MedievalChurch>().Recruiting == true ? "Recrutement en cours..." : "Recruter un croque-mort | 30 nourriture";
+			undertaker.IsDisabled = () => world.Paused || Selected() is not Actor a || !a.Trait<MedievalChurch>().CanRecruit(a, true);
+			undertaker.OnClick = () => { if (Selected() is Actor a) world.IssueOrder(new Order("MedievalRecruitUndertaker", a, false)); };
+			var zone = widget.Get<ButtonWidget>("MD_CHURCH_CEMETERY");
+			zone.GetText = () => "Zoner un cimetiere | gratuit";
+			zone.IsDisabled = () => world.Paused || Selected() == null;
+			zone.OnClick = () => { if (Selected() is Actor a) world.OrderGenerator = new MedievalCemeteryOrderGenerator(world, renderer, a); };
+			widget.Get<LabelWidget>("MD_CHURCH_BURIALS").GetText = () =>
+			{
+				if (Selected() is not Actor a) return "";
+				var plots = world.WorldActor.Trait<MedievalCemeteries>().Plots.Where(p => p.Owner == a.Owner).ToArray();
+				return $"Croque-morts : {a.Trait<MedievalChurch>().Undertakers(a).Count()}/{a.Trait<MedievalChurch>().Info.MaxUndertakers} | Tombes : {plots.Count(p => p.Buried)}/{plots.Length}";
+			};
+			widget.Get<LabelWidget>("MD_CHURCH_CEMETERY_HINT").GetText = () => "Deux coins, de 2 a 10 cases par cote. Une stele par corps.\nRamassage automatique des corps visibles, un par un.";
 		}
 	}
 	public class MedievalPriestInfo : TraitInfo

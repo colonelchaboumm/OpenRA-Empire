@@ -77,7 +77,8 @@ namespace OpenRA.Mods.Medieval
 			var herding = self.TraitOrDefault<MedievalHerding>();
 			var saboteur = self.TraitOrDefault<MedievalSaboteur>();
 			var firefighter = self.TraitOrDefault<MedievalFirefighter>();
-			var carrying = worker?.Cargo > 0 || crew?.Cargo > 0 || commander != null && self.Trait<MedievalCampStore>().Stock.Amount(1) > 0;
+			var undertaker = self.TraitOrDefault<MedievalUndertaker>();
+			var carrying = undertaker?.Carrying == true || worker?.Cargo > 0 || crew?.Cargo > 0 || commander != null && self.Trait<MedievalCampStore>().Stock.Amount(1) > 0;
 			var drumming = self.TraitOrDefault<MedievalDrummer>()?.Playing(self) == true;
 			var pushing = crew?.Pushing == true;
 			var ramStroke = crew?.RamStroke(self) ?? -1;
@@ -86,6 +87,7 @@ namespace OpenRA.Mods.Medieval
 				: crew?.Working == true ? "push"
 				: drumming ? "work"
 				: commander?.Building == true ? "work"
+				: undertaker?.Working == true ? "work"
 				: self.TraitOrDefault<MedievalHerding>()?.Working == true ? "work"
 				: worker?.IsWorking == true ? worker.IsHarvesting ? "harvest" : "work"
 				: worker?.HandlingTicks > 0 ? "load" : carrying ? "carry-stand" : "stand";

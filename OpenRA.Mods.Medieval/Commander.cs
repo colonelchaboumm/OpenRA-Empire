@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Medieval
 		{
 			var actor = world.Map.Rules.Actors["md.militarytent"]; var bi = actor.TraitInfo<BuildingInfo>();
 			var cells = bi.Tiles(cell).ToHashSet();
-			return cells.All(c => world.Map.Contains(c) && owner.Shroud.IsExplored(c) && !MedievalStockyard.Covers(world, c))
+			return cells.All(c => world.Map.Contains(c) && owner.Shroud.IsExplored(c) && !MedievalStockyard.Covers(world, c) && !MedievalCemeteries.Covers(world, c))
 				&& world.CanPlaceBuilding(cell, actor, bi, null)
 				&& !world.ActorsHavingTrait<Building>().Any(a => a.IsInWorld && !a.IsDead && a.Info.TraitInfo<BuildingInfo>().Tiles(a.Location).Any(cells.Contains));
 		}

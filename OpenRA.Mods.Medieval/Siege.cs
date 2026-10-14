@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Medieval
 		public bool ClearSite() => SiegeRules.Braces(self.Location).All(c => self.World.Map.Contains(c)
 			&& new[] { "Clear", "Road", "Rough" }.Contains(self.World.Map.GetTerrainInfo(c).Type)
 			&& !self.World.ActorMap.GetActorsAt(c).Any(a => a != self && a.IsInWorld && !a.IsDead && !(a.Owner == self.Owner && a.TraitOrDefault<MedievalSiegeCrew>()?.Serves(self) == true))
-			&& !MedievalStockyard.Covers(self.World, c));
+			&& !MedievalStockyard.Covers(self.World, c) && !MedievalCemeteries.Covers(self.World, c));
 		bool SiteVacant() => ClearSite() && SiegeRules.Braces(self.Location).All(c => !self.World.ActorMap.GetActorsAt(c).Any(a => a != self && a.IsInWorld && !a.IsDead));
 		void Fixed(bool value)
 		{
