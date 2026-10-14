@@ -141,27 +141,30 @@ namespace OpenRA.Mods.Medieval
 		public readonly int HungrySpeedPercent = 75;
 		public readonly int HungryFirepowerPercent = 75;
 		public readonly int HungryWorkPercent = 50;
-		public override object Create(ActorInitializer init) => new MedievalNeedsFood(this);
+		public override object Create(ActorInitializer init) => new MedievalNeedsFood(this, init.Self);
 	}
 	public class MedievalNeedsFood : ISync, ISpeedModifier, IFirepowerModifier
 	{
 		public readonly MedievalNeedsFoodInfo Info;
 		public readonly FoodNeed Need;
+		readonly Actor actor;
 		[VerifySync] public int HungerClock => unchecked((Need.TicksSinceMeal * 31 + Need.TicksWithoutSupply) * 2 + (Need.InSupply ? 1 : 0));
-		public int WorkPercent => Need.Hungry ? Info.HungryWorkPercent : 100;
-		public MedievalNeedsFood(MedievalNeedsFoodInfo info)
+		public int BaseWorkPercent => Need.Hungry ? Info.HungryWorkPercent : 100;
+		public int WorkPercent => (BaseWorkPercent * (actor?.TraitOrDefault<MedievalInfluenceMood>()?.WorkPercent ?? 100) + 99) / 100;
+		public MedievalNeedsFood(MedievalNeedsFoodInfo info, Actor self = null)
 		{
 			if (info.StarvationDamagePercent <= 0 || info.StarvationDamagePercent > 100
 				|| info.HungryWorkPercent <= 0 || info.HungryWorkPercent > 100
 				|| info.HungrySpeedPercent <= 0 || info.HungrySpeedPercent > 100
 				|| info.HungryFirepowerPercent <= 0 || info.HungryFirepowerPercent > 100)
 				throw new ArgumentException("Food penalties must be percentages between 1 and 100.");
-			Info = info;
+			Info = info; actor = self;
 			Need = new FoodNeed(info.MealInterval, info.StarvationDelay, info.DamageInterval);
 		}
 		int ISpeedModifier.GetSpeedModifier() => Need.Hungry ? Info.HungrySpeedPercent : 100;
 		int IFirepowerModifier.GetFirepowerModifier() => Need.Hungry ? Info.HungryFirepowerPercent : 100;
-		public string Description => Need.Starving ? "Famine : pertes de sante, ravitaillement urgent !"
+		public string Description => FoodDescription + (actor?.TraitOrDefault<MedievalInfluenceMood>() is { Civilian: true, Penalty: > 0 } mood ? " | " + mood.Description : "");
+		string FoodDescription => Need.Starving ? "Famine : pertes de sante, ravitaillement urgent !"
 			: Need.Hungry ? $"Faim : activite reduite, famine dans {(Need.StarvationDelay - Need.TicksWithoutSupply + 24) / 25}s"
 			: Need.InSupply ? $"Ravitaille : prochain repas dans {Math.Max(0, (Need.MealInterval - Need.TicksSinceMeal + 24) / 25)}s"
 			: $"Hors ravitaillement : faim dans {Math.Max(0, (Need.MealInterval - Need.TicksWithoutSupply + 24) / 25)}s";

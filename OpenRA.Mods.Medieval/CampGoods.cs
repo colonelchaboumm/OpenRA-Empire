@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (!MedievalStockpile.Active(self) || self.World.FogObscures(self) || !self.World.Selection.Contains(self)) yield break;
+			if (MedievalInfluence.StrategicView(wr) || !MedievalStockpile.Active(self) || self.World.FogObscures(self) || !self.World.Selection.Contains(self)) yield break;
 			if (self.TraitOrDefault<MedievalCommander>() != null && Stock.Amount(1) == 0) yield break;
 			var yard = self.TraitOrDefault<MedievalStockyard>();
 			var goods = Enumerable.Range(0, GoodsCount).Where(r => Stock.Capacity(r) > 0 && (yard?.HasArea != true || MedievalStockyard.IndoorAmount(self, r + 8) > 0)).ToArray();

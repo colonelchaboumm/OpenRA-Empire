@@ -1,3 +1,4 @@
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -6,19 +7,23 @@ namespace OpenRA.Mods.Medieval
 {
 	public static class MedievalNationalPrideInterface
 	{
-		public static void Bind(Widget widget, World world)
+		public static void Bind(Widget widget, World world, WorldRenderer renderer)
 		{
 			var pride = MedievalNationalPride.For(world.LocalPlayer);
 			var button = widget.Get<ButtonWidget>("MD_PRIDE_OPEN");
 			var panel = widget.Get("MD_PRIDE_PANEL");
 			var open = false;
+			var influence = world.WorldActor.TraitOrDefault<MedievalInfluence>();
+			var legend = widget.Get<LabelWidget>("MD_INFLUENCE_LEGEND");
+			legend.IsVisible = () => pride != null && influence?.Visible(renderer) == true;
+			legend.GetText = () => "INFLUENCE - Frontieres des nations";
 			button.IsVisible = () => pride != null;
 			panel.IsVisible = () => open && pride != null;
 			if (pride == null) return;
 			var state = pride.State;
 			button.GetText = () => $"Fierte : {state.Value}/100";
 			button.GetTooltipText = () => "Fierte nationale";
-			button.GetTooltipDesc = () => "Or, nourriture, armee, absence de famine et respect des morts.\nCliquez pour consulter les causes et l'effet sur le moral.";
+			button.GetTooltipDesc = () => "Or, nourriture, armee, absence de famine et respect des morts.\nCliquez pour consulter les causes et l'effet sur le moral.\nDezoomez au maximum pour voir les frontieres d'influence.";
 			button.IsHighlighted = () => open;
 			button.OnClick = () => open = !open;
 			var close = widget.Get<ButtonWidget>("MD_PRIDE_CLOSE");
@@ -34,6 +39,8 @@ namespace OpenRA.Mods.Medieval
 			widget.Get<LabelWidget>("MD_PRIDE_WELFARE").GetText = () => $"Bien-etre : {state.WelfarePoints:+0;-0;0} (maximum +20)\n{pride.Facts.Hungry} affames, dont {pride.Facts.Starving} en famine.";
 			widget.Get<LabelWidget>("MD_PRIDE_BURIALS").GetText = () => $"Respect des morts : +{state.BurialPoints}/10\n{state.Burials} enterres, {state.Unburied} sans sepulture dans votre nation.";
 			widget.Get<LabelWidget>("MD_PRIDE_EFFECT").GetText = () => $"Effet sur le moral de vos soldats : {state.MoraleBonus:+0;-0;0}\nSocle +20. Evolution progressive, bonus limite a +/-10.";
+			widget.Get<LabelWidget>("MD_PRIDE_INFLUENCE").GetText = () => influence == null ? ""
+				: $"Influence : {influence.Radius(world.LocalPlayer) / 1024f:0.0} cases, objectif {influence.TargetRadius(world.LocalPlayer) / 1024f:0.0}\nSante : {influence.Health(world.LocalPlayer)}%. Frontieres au dezoom maximal.";
 			widget.Get<LabelWidget>("MD_PRIDE_HINT").GetText = () => state.FamineMemory > 0
 				? $"Deces par famine recent : cible limitee a 50 pendant encore {state.FamineMemory} s."
 				: pride.Facts.Starving > 0 ? "Famine en cours : la cible ne peut pas depasser 60. Ravitaillez vos habitants."

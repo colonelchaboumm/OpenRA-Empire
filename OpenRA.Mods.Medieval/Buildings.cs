@@ -259,7 +259,7 @@ namespace OpenRA.Mods.Medieval
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr) { yield break; }
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (self.World.FogObscures(self) || self.TraitOrDefault<MedievalRest>()?.Sleeping == true) yield break;
+			if (MedievalInfluence.StrategicView(wr) || self.World.FogObscures(self) || self.TraitOrDefault<MedievalRest>()?.Sleeping == true) yield break;
 			var stock = self.TraitOrDefault<MedievalStockpile>();
 			var building = self.TraitOrDefault<MedievalBuilding>();
 			var worker = self.TraitOrDefault<MedievalWorker>();

@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Medieval
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { Id = 0; }
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (Id == 0 || self.Owner != self.World.LocalPlayer || !MedievalStockpile.Active(self) || self.World.FogObscures(self)) yield break;
+			if (MedievalInfluence.StrategicView(wr) || Id == 0 || self.Owner != self.World.LocalPlayer || !MedievalStockpile.Active(self) || self.World.FogObscures(self)) yield break;
 			var registry = MedievalLocalities.For(self.Owner);
 			if (registry.Anchor(self.Owner, Id) == self)
 				yield return new LocalityLabelRenderable(self.CenterPosition, info.LabelHeight, registry.Kind(self.Owner, Id) + " : " + registry.Name(Id));

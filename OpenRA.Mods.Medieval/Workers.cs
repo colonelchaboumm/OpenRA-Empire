@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Medieval
 		[VerifySync] int phase;
 		[VerifySync] int countdown;
 		[VerifySync] int cadence;
+		[VerifySync] int influenceWorkRemainder;
 		[VerifySync] int promised;
 		[VerifySync] int failedMoves;
 		[VerifySync] bool foodInNetwork;
@@ -362,10 +363,12 @@ namespace OpenRA.Mods.Medieval
 			if (self.TraitOrDefault<MedievalRest>()?.Resting == true) return;
 			if (!HandlingStock && HandlingTicks > 0) HandlingTicks--;
 			if (--cadence > 0 && !HandlingStock) return;
-			var workPercent = self.TraitOrDefault<MedievalNeedsFood>()?.WorkPercent ?? 100;
+			var workPercent = self.TraitOrDefault<MedievalNeedsFood>()?.BaseWorkPercent ?? 100;
 			if (phase == 3 && self.World.WorldActor.TraitOrDefault<MedievalSeasons>() is { } seasons)
 				workPercent = Math.Max(5, workPercent * SeasonClock.Work(seasons.Clock.Season, Info.Profession) / 100);
-			cadence = (800 + workPercent - 1) / workPercent;
+			var influenceWork = self.TraitOrDefault<MedievalInfluenceMood>()?.WorkPercent ?? 100;
+			cadence = InfluenceWork.Delay((800 + workPercent - 1) / workPercent, influenceWork, ref influenceWorkRemainder);
+			workPercent = (workPercent * influenceWork + 99) / 100;
 			if (WorkArea != null && !CanAssignArea(self, WorkArea)) WorkArea = null;
 			if (!Automatic) return;
 			if ((source != null && !ValidSource(self, source)) || (destination != null && !Valid(self, destination)))

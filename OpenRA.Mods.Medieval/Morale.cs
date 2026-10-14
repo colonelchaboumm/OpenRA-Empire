@@ -51,9 +51,11 @@ namespace OpenRA.Mods.Medieval
 		[VerifySync] public int MusicBonus { get; private set; }
 		[VerifySync] public int PriestBonus { get; private set; }
 		[VerifySync] public int NationalBonus { get; private set; }
+		[VerifySync] public int InfluencePenalty { get; private set; }
 		[VerifySync] int clock;
 		public string Description => $"Moral {Value}/100 | Degats {State.Firepower}%"
 			+ (NationalBonus != 0 ? $" | Nation {NationalBonus:+0;-0}" : "")
+			+ (InfluencePenalty > 0 ? $" | Influence adverse -{InfluencePenalty}" : "")
 			+ (PriestBonus > 0 ? $" | Pretre +{PriestBonus}" : "")
 			+ (MusicBonus > 0 ? $" | Tambour +{MusicBonus}" : "") + (StandardBonus > 0 ? $" | Drapeau +{StandardBonus}" : "")
 			+ (MusicBonus + StandardBonus > 30 ? " | Soutien plafonne +30" : "") + (Intimidation > 0 ? $" | Ennemi -{Intimidation}" : "");
@@ -73,7 +75,8 @@ namespace OpenRA.Mods.Medieval
 			Encouragement = Math.Min(40, MoraleState.Support(MusicBonus, StandardBonus) + PriestBonus); Intimidation = music.Intimidation;
 			var need = self.TraitOrDefault<MedievalNeedsFood>()?.Need;
 			NationalBonus = MedievalNationalPride.For(self.Owner)?.State.MoraleBonus ?? 0;
-			State.Advance(need?.Hungry == true, need?.Starving == true, Encouragement, Intimidation, NationalBonus);
+			InfluencePenalty = self.TraitOrDefault<MedievalInfluenceMood>()?.Penalty ?? 0;
+			State.Advance(need?.Hungry == true, need?.Starving == true, Encouragement, Intimidation + InfluencePenalty, NationalBonus);
 		}
 		int IFirepowerModifier.GetFirepowerModifier() => State.Firepower;
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)

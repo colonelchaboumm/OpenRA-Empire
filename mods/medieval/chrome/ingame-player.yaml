@@ -4391,6 +4391,12 @@ Container@PLAYER_WIDGETS:
 					Font: TinyBold
 					WordWrap: True
 					VAlign: Top
+		Label@MD_INFLUENCE_LEGEND:
+			X: 440
+			Y: 80
+			Width: 300
+			Height: 14
+			Font: TinyBold
 		Background@MD_PRIDE_PANEL:
 			X: 12
 			Y: 154
@@ -4464,10 +4470,18 @@ Container@PLAYER_WIDGETS:
 					VAlign: Top
 				Label@MD_PRIDE_HINT:
 					X: 12
-					Y: 361
+					Y: 398
 					Width: 386
-					Height: 64
+					Height: 36
 					Font: Tiny
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PRIDE_INFLUENCE:
+					X: 12
+					Y: 352
+					Width: 386
+					Height: 42
+					Font: TinyBold
 					WordWrap: True
 					VAlign: Top
 				ProgressBar@MD_PRIDE_BAR:

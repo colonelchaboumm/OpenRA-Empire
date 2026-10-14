@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Medieval
 		public MedievalEconomyLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
 			var p = world.LocalPlayer;
-			MedievalNationalPrideInterface.Bind(widget, world);
+			MedievalNationalPrideInterface.Bind(widget, world, worldRenderer);
 			if (p == null) return;
 			var settlement = p.PlayerActor.Trait<MedievalSettlement>();
 			var food = p.PlayerActor.Trait<MedievalFoodEconomy>();
