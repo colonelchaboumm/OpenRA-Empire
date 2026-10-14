@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Medieval
 		public int Age, Seed;
 		public CVec Size;
 		public bool Building;
+		public Player Owner;
 		// Gameplay identity and reservations are independent of the captured sprite.
 		public uint ClaimedBy, Carrier;
 		public bool Settled => Age >= (Building ? BattlefieldMotion.CollapseTicks : BattlefieldMotion.FallTicks);
@@ -66,11 +67,18 @@ namespace OpenRA.Mods.Medieval
 		[VerifySync] public int RemainsHash
 		{
 			get { unchecked { return remains.Aggregate(17, (h, r) => ((((((h * 31 + r.Seed) * 31 + r.Position.X) * 31 + r.Position.Y)
-				* 31 + r.Position.Z) * 31 + r.Age) * 31 + (int)r.ClaimedBy) * 31 + (int)r.Carrier); } }
+				* 31 + r.Position.Z) * 31 + r.Age) * 31 + (int)r.ClaimedBy) * 31 + (int)r.Carrier + (int)(r.Owner?.PlayerActor.ActorID ?? 0)); } }
 		}
 		public bool Remove(BattlefieldRemains item) => remains.Remove(item);
+		public bool Bury(BattlefieldRemains item)
+		{
+			if (item.Building || !remains.Remove(item)) return false;
+			MedievalNationalPride.For(item.Owner)?.State.RecordBurial();
+			return true;
+		}
 		public void Add(BattlefieldRemains item)
 		{
+			if (!item.Building) MedievalNationalPride.For(item.Owner)?.State.RecordDeath();
 			// Never evict a body that is being collected or carried.
 			if (remains.Count >= MaximumRemains)
 			{
@@ -138,7 +146,7 @@ namespace OpenRA.Mods.Medieval
 			{
 				Position = self.CenterPosition, Sprite = animation?.CurrentSequence != null ? animation.Image : null, Scale = animation?.CurrentSequence?.Scale ?? 1,
 				Palette = render.Palette ?? render.PlayerPalette + self.Owner.InternalName,
-				Building = info.Building, Seed = (int)self.ActorID,
+				Building = info.Building, Seed = (int)self.ActorID, Owner = self.Owner,
 				Size = self.Info.TraitInfoOrDefault<BuildingInfo>()?.Dimensions ?? new CVec(1, 1),
 				Projection = info.Building && self.TraitOrDefault<MedievalBuilding>()?.Complete == true ? MedievalArchitecture.For(self).Matrix : Matrix4x4.Identity
 			};

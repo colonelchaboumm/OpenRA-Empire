@@ -18,9 +18,9 @@ namespace OpenRA.Mods.Medieval
 		public static int Standards(IEnumerable<(PlayerRelationship Relation, bool Hungry, bool Starving)> sources) => sources
 			.Where(s => s.Relation == PlayerRelationship.Ally && !s.Starving).Select(s => s.Hungry ? 7 : 15).DefaultIfEmpty().Max();
 		public static int Support(int music, int standard) => Math.Min(30, music + standard);
-		public void Advance(bool hungry, bool starving, int encouragement, int intimidation)
+		public void Advance(bool hungry, bool starving, int encouragement, int intimidation, int nationalPride = 0)
 		{
-			Target = Math.Clamp(Normal - (starving ? 50 : hungry ? 30 : 0) + encouragement - intimidation, 0, 100);
+			Target = Math.Clamp(Normal - (starving ? 50 : hungry ? 30 : 0) + encouragement - intimidation + nationalPride, 0, 100);
 			Value += Math.Clamp(Target - Value, -2, 1);
 		}
 		// The strongest friendly and hostile rhythm apply once each, irrespective of drummer count.
@@ -50,8 +50,10 @@ namespace OpenRA.Mods.Medieval
 		[VerifySync] public int StandardBonus { get; private set; }
 		[VerifySync] public int MusicBonus { get; private set; }
 		[VerifySync] public int PriestBonus { get; private set; }
+		[VerifySync] public int NationalBonus { get; private set; }
 		[VerifySync] int clock;
 		public string Description => $"Moral {Value}/100 | Degats {State.Firepower}%"
+			+ (NationalBonus != 0 ? $" | Nation {NationalBonus:+0;-0}" : "")
 			+ (PriestBonus > 0 ? $" | Pretre +{PriestBonus}" : "")
 			+ (MusicBonus > 0 ? $" | Tambour +{MusicBonus}" : "") + (StandardBonus > 0 ? $" | Drapeau +{StandardBonus}" : "")
 			+ (MusicBonus + StandardBonus > 30 ? " | Soutien plafonne +30" : "") + (Intimidation > 0 ? $" | Ennemi -{Intimidation}" : "");
@@ -70,7 +72,8 @@ namespace OpenRA.Mods.Medieval
 				.Select(a => a.Trait<MedievalPriest>().Bonus(a, self.CenterPosition)).DefaultIfEmpty(0).Max();
 			Encouragement = Math.Min(40, MoraleState.Support(MusicBonus, StandardBonus) + PriestBonus); Intimidation = music.Intimidation;
 			var need = self.TraitOrDefault<MedievalNeedsFood>()?.Need;
-			State.Advance(need?.Hungry == true, need?.Starving == true, Encouragement, Intimidation);
+			NationalBonus = MedievalNationalPride.For(self.Owner)?.State.MoraleBonus ?? 0;
+			State.Advance(need?.Hungry == true, need?.Starving == true, Encouragement, Intimidation, NationalBonus);
 		}
 		int IFirepowerModifier.GetFirepowerModifier() => State.Firepower;
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)

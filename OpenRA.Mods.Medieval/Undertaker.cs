@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Medieval
 			if (!Carrying) { Carrying = true; Body.Carrier = self.ActorID; return; }
 			if (Plot.Bury(self.ActorID, Body.Seed))
 			{
-				self.World.WorldActor.Trait<MedievalBattlefield>().Remove(Body); Burials++;
+				self.World.WorldActor.Trait<MedievalBattlefield>().Bury(Body); Burials++;
 				Body = null; Plot = null; Carrying = false;
 			}
 		}

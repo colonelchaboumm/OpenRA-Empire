@@ -95,6 +95,7 @@ namespace OpenRA.Mods.Medieval
 		public MedievalEconomyLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
 			var p = world.LocalPlayer;
+			MedievalNationalPrideInterface.Bind(widget, world);
 			if (p == null) return;
 			var settlement = p.PlayerActor.Trait<MedievalSettlement>();
 			var food = p.PlayerActor.Trait<MedievalFoodEconomy>();
@@ -112,7 +113,7 @@ namespace OpenRA.Mods.Medieval
 					$"{(resource == 1 ? "Nourr." : MedievalStockDisplay.Labels[resource])} : {MedievalSettlement.Available(p, resource)}";
 			}
 			widget.Get<LabelWidget>("MD_POP").GetText = () => $"Habitants : {MedievalSettlement.Population(p)}/{MedievalSettlement.Housing(p)}";
-			widget.Get<LabelWidget>("MD_FOOD_TITLE").GetText = () => "RAVITAILLEMENT - NOURRITURE";
+			widget.Get<LabelWidget>("MD_FOOD_TITLE").GetText = () => "RAVITAILLEMENT";
 			widget.Get<LabelWidget>("MD_FOOD_FLOW").GetText = () => $"Recoltes : {food.Harvests.PerMinute:0.#}/min | Livre : {food.Deliveries.PerMinute:0.#}/min";
 			var balance = widget.Get<LabelWidget>("MD_FOOD_BALANCE");
 			balance.GetText = () => $"Besoins : {MedievalFoodEconomy.Demand(p):0.#}/min | Solde : {food.Deliveries.PerMinute - MedievalFoodEconomy.Demand(p):+0.#;-0.#;0}/min";

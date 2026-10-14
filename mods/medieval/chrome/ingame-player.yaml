@@ -1605,9 +1605,17 @@ Container@PLAYER_WIDGETS:
 				Label@MD_FOOD_TITLE:
 					X: 9
 					Y: 5
-					Width: 394
+					Width: 236
 					Height: 20
 					Font: TinyBold
+				Button@MD_PRIDE_OPEN:
+					X: 249
+					Y: 3
+					Width: 152
+					Height: 22
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
 				Label@MD_FOOD_FLOW:
 					X: 9
 					Y: 25
@@ -4383,3 +4391,94 @@ Container@PLAYER_WIDGETS:
 					Font: TinyBold
 					WordWrap: True
 					VAlign: Top
+		Background@MD_PRIDE_PANEL:
+			X: 12
+			Y: 154
+			Width: 410
+			Height: 482
+			Background: md-panel
+			Children:
+				Label@MD_PRIDE_TITLE:
+					X: 12
+					Y: 8
+					Width: 386
+					Height: 22
+					Font: Bold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PRIDE_SCORE:
+					X: 12
+					Y: 35
+					Width: 386
+					Height: 22
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PRIDE_GOLD:
+					X: 12
+					Y: 80
+					Width: 386
+					Height: 40
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PRIDE_FOOD:
+					X: 12
+					Y: 124
+					Width: 386
+					Height: 40
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PRIDE_ARMY:
+					X: 12
+					Y: 168
+					Width: 386
+					Height: 40
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PRIDE_WELFARE:
+					X: 12
+					Y: 212
+					Width: 386
+					Height: 40
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PRIDE_BURIALS:
+					X: 12
+					Y: 256
+					Width: 386
+					Height: 40
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PRIDE_EFFECT:
+					X: 12
+					Y: 308
+					Width: 386
+					Height: 42
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Label@MD_PRIDE_HINT:
+					X: 12
+					Y: 361
+					Width: 386
+					Height: 64
+					Font: Tiny
+					WordWrap: True
+					VAlign: Top
+				ProgressBar@MD_PRIDE_BAR:
+					X: 12
+					Y: 60
+					Width: 386
+					Height: 12
+				Button@MD_PRIDE_CLOSE:
+					X: 12
+					Y: 440
+					Width: 386
+					Height: 28
+					Font: TinyBold
+					Background: md-button

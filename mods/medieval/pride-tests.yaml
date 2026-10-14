@@ -1,0 +1,21 @@
+World:
+	MedievalNationalPrideValidation:
+	MedievalWeather:
+		FirstRainTicks: 100000
+	MedievalSeasons:
+		SeasonTicks: 100000
+	MedievalDayNight:
+		DayTicks: 100000
+
+^MDWORKER:
+	MedievalNeedsFood:
+		MealInterval: 250
+		StarvationDelay: 750
+		DamageInterval: 50
+
+# Changing owner reapplies the initial stance. Keep both nations peaceful
+# throughout the ownership check so it does not turn into a combat scenario.
+^MDFIGHTER:
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire

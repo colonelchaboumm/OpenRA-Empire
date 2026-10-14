@@ -68,13 +68,14 @@ namespace OpenRA.Mods.Medieval
 			church = Spawn(w, "church", 28, 27); depot = Spawn(w, "warehouse", 23, 30);
 			depot.Trait<MedievalStockpile>().Stock.Add(1, 200);
 			for (var x = 0; x < 4; x++) Spawn(w, "house", 22 + x * 3, 23);
-			for (var i = 0; i < 6; i++) victims.Add(Spawn(w, i % 2 == 0 ? "farmer" : "militia", 34 + i, 36));
+			for (var i = 0; i < 6; i++) victims.Add(Spawn(w, i % 2 == 0 ? "farmer" : "militia", 34 + i, 36, i == 0));
 			hidden = Spawn(w, "farmer", 8, 8, true);
 		}
 		static string Snapshot(World w) => JsonSerializer.Serialize(new
 		{
 			cemetery = w.WorldActor.Trait<MedievalCemeteries>().PlotsHash,
 			bodies = w.WorldActor.Trait<MedievalBattlefield>().RemainsHash,
+			pride = w.Players.Select(p => new { p.InternalName, hash = MedievalNationalPride.For(p)?.StateHash }),
 			workers = w.ActorsWithTrait<MedievalUndertaker>().Select(p => new { p.Actor.ActorID, p.Trait.BodyId, p.Trait.Burials, p.Trait.Carrying, p.Trait.Progress, cell = p.Actor.Location.ToString() })
 		});
 		void ITick.Tick(Actor self)
@@ -176,6 +177,10 @@ namespace OpenRA.Mods.Medieval
 			Check(cemetery.Plots.Where(p => p.Buried).Select(p => p.BodyId).Distinct().Count() == 10, "No corpse can be buried twice.");
 			Check(scene.Remains.Count(r => !r.Building) == 1 && scene.Remains.Single(r => !r.Building).Seed == (int)blocked.ActorID, "An inaccessible body stays on the ground without preventing other jobs.");
 			Check(cemetery.Plots.All(p => p.ReservedBy == 0), "Finished and cancelled jobs release every reservation.");
+			var pride = MedievalNationalPride.For(w.LocalPlayer).State;
+			var rivalPride = MedievalNationalPride.For(w.Players.First(p => p.InternalName == "Rival")).State;
+			Check(pride.Burials == 9 && pride.Unburied == 1, "Own burial accounting excludes foreign bodies and buildings.");
+			Check(rivalPride.Burials == 1 && rivalPride.Unburied == 2, "A foreign undertaker restores respect to the deceased's original nation only.");
 			if (!restoring)
 			{
 				Check(saved && saveAt > 3000, "Save the actual game while carrying a body.");

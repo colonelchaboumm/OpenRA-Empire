@@ -1,6 +1,11 @@
 World:
 	MedievalMoraleValidation:
 
+# Isolate the existing food/music damage calibration. Nation effects are
+# exercised with real economies, burials and ownership in pride-tests.yaml.
+Player:
+	-MedievalNationalPride:
+
 md.moraletroop:
 	Inherits: md.militia
 	RenderSprites:

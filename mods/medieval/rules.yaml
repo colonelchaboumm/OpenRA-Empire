@@ -32,6 +32,7 @@ Player:
 	MedievalSettlement:
 	MedievalDemolitionOrders:
 	MedievalFoodEconomy:
+	MedievalNationalPride:
 	-ConquestVictoryConditions:
 	PlayerResources:
 		DefaultCash: 0
