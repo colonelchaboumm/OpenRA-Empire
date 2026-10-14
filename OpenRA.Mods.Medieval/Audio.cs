@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Medieval
 			if (distance > 0 && distance < 1024)
 			{
 				travel += distance;
-				var wheeled = siege != null || self.Info.Name is "md.supplycart" or "md.tradecart" or "md.stonecart" or "md.caravan";
+				var wheeled = siege != null || self.Info.Name is "md.supplycart" or "md.tradecart" or "md.bartercart" or "md.stonecart" or "md.caravan";
 				if (travel >= (wheeled ? 900 : 480))
 				{
 					travel %= wheeled ? 900 : 480;

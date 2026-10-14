@@ -281,6 +281,9 @@ namespace OpenRA.Mods.Medieval
 					return selectedCart.LoadingDescription + " | " + a.Trait<MedievalNeedsFood>().Description;
 				if (a.TraitOrDefault<MedievalTradeCart>() is MedievalTradeCart trader)
 					return trader.Status + " | " + a.Trait<MedievalNeedsFood>().Description;
+				if (a.TraitOrDefault<MedievalBarterCart>() is { } barterCart)
+					return barterCart.Status + " | " + string.Join(", ", Enumerable.Range(0, StorageGoods.Count).Where(g => StorageGoods.Amount(a, g) > 0)
+						.Select(g => $"{StorageGoods.Names[g]} {StorageGoods.Amount(a, g)}"));
 				if (a.TraitOrDefault<MedievalAgriculturalArea>() is MedievalAgriculturalArea area)
 				{
 					var crop = a.Trait<MedievalSource>();

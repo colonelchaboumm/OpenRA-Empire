@@ -111,6 +111,7 @@ Rules:
 	medieval|gilded-decorations.yaml
 	medieval|shadows.yaml
 	medieval|fire-support.yaml
+	medieval|barter.yaml
 
 Sequences:
 	ra|sequences/ships.yaml

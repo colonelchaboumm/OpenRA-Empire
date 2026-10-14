@@ -37,20 +37,22 @@ namespace OpenRA.Mods.Medieval
 	{
 		readonly Actor messenger;
 		readonly string body;
+		readonly string command;
 		readonly uint revision;
 		readonly WorldRenderer renderer;
 		protected override MouseActionType ActionType => MouseActionType.PlaceBuilding;
-		public MedievalMessengerTargetGenerator(World w, WorldRenderer wr, Actor messenger, string body) : base(w)
-		{ renderer = wr; this.messenger = messenger; this.body = body; revision = messenger.Trait<MedievalMessenger>().Revision; }
+		public MedievalMessengerTargetGenerator(World w, WorldRenderer wr, Actor messenger, string body, string command = "MedievalSendLetter") : base(w)
+		{ renderer = wr; this.messenger = messenger; this.body = body; this.command = command; revision = messenger.Trait<MedievalMessenger>().Revision; }
 		bool Valid(World w) => messenger.IsInWorld && !messenger.IsDead && messenger.Trait<MedievalMessenger>().Revision == revision
 			&& messenger.Trait<MedievalMessenger>().CanCompose(messenger, w.LocalPlayer);
-		Actor At(World w, CPos cell) => w.ActorMap.GetActorsAt(cell).FirstOrDefault(a => messenger.Trait<MedievalMessenger>().CanTarget(messenger, w.LocalPlayer, a));
+		Actor At(World w, CPos cell) => w.ActorMap.GetActorsAt(cell).FirstOrDefault(a => messenger.Trait<MedievalMessenger>().CanTarget(messenger, w.LocalPlayer, a)
+			&& (command != "MedievalInviteBarter" || MedievalBarter.Depots(a.Owner).Any()));
 		public string PreviewText => "Cliquez une caserne visible d'un autre joueur. Clic droit : annuler.";
 		protected override void Tick(World w) { if (!Valid(w)) w.CancelInputMode(); }
 		protected override IEnumerable<Order> OrderInner(World w, CPos cell, int2 pixel, MouseInput mi)
 		{
 			if (!Valid(w) || At(w, cell) is not Actor target) yield break;
-			yield return MedievalMessenger.Command(w.LocalPlayer, messenger, "MedievalSendLetter", body, target); w.CancelInputMode();
+			yield return MedievalMessenger.Command(w.LocalPlayer, messenger, command, body, target); w.CancelInputMode();
 		}
 		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World w) { yield break; }
 		protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World w) { yield break; }

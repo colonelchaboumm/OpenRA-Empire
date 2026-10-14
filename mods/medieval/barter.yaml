@@ -1,0 +1,25 @@
+World:
+	MedievalBarter:
+
+Player:
+	MedievalBarterOrders:
+
+# Temporary carriers are dispatched by an agreed contract and leave after returning.
+md.bartercart:
+	Inherits: md.tradecart
+	-MedievalTradeCart:
+	-MedievalRecruitable:
+	-MedievalNeedsFood:
+	-MedievalRest:
+	-MedievalInfluenceMood:
+	Targetable:
+		-RequiresCondition:
+	Tooltip:
+		Name: medieval-bartercart
+	MedievalStockpile:
+		Capacity: 60, 60, 60, 60, 60
+	MedievalEquipmentStore:
+		Capacity: 60, 60, 60, 0
+	MedievalCampStore:
+		Capacity: 60, 60, 60, 0
+	MedievalBarterCart:

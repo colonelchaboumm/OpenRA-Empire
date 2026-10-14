@@ -1,0 +1,11 @@
+World:
+	MedievalBarterValidation:
+	MedievalDayNight:
+		DayTicks: 100000
+	MedievalWeather:
+		FirstRainTicks: 100000
+
+md.messenger:
+	MedievalNeedsFood:
+		MealInterval: 100000
+		StarvationDelay: 200000

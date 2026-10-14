@@ -1,5 +1,5 @@
 Container@PLAYER_WIDGETS:
-	Logic: LoadIngameChatLogic, MedievalEconomyLogic, MedievalMessengerLogic, MedievalLocalityLogic, MedievalSiegeLogic, MedievalHeraldryLogic, MedievalCampLogic, MedievalConstructionMenuLogic, MedievalPatrolLogic, MedievalHerdLogic, MedievalSaboteurLogic, MedievalStartCameraLogic, MedievalSelectionLogic
+	Logic: LoadIngameChatLogic, MedievalEconomyLogic, MedievalMessengerLogic, MedievalLocalityLogic, MedievalSiegeLogic, MedievalHeraldryLogic, MedievalCampLogic, MedievalConstructionMenuLogic, MedievalPatrolLogic, MedievalHerdLogic, MedievalSaboteurLogic, MedievalStartCameraLogic, MedievalSelectionLogic, MedievalBarterLogic
 	Children:
 		Container@CHAT_ROOT:
 		LogicKeyListener@PLAYER_KEYHANDLER:
@@ -2933,7 +2933,7 @@ Container@PLAYER_WIDGETS:
 			X: 12
 			Y: 154
 			Width: 410
-			Height: 452
+			Height: 486
 			Background: md-panel
 			Children:
 				Label@MD_MAIL_TITLE:
@@ -3034,12 +3034,21 @@ Container@PLAYER_WIDGETS:
 					Background: md-button
 				Label@MD_MAIL_HINT:
 					X: 9
-					Y: 404
+					Y: 438
 					Width: 392
 					Height: 40
 					Font: TinyBold
 					WordWrap: True
 					VAlign: Top
+				Button@MD_MAIL_BARTER:
+					X: 9
+					Y: 404
+					Width: 392
+					Height: 26
+					Font: TinyBold
+					Background: md-button
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 		Button@MD_MAIL_ALERT:
 			X: 440
 			Y: 12
@@ -4494,5 +4503,138 @@ Container@PLAYER_WIDGETS:
 					Y: 440
 					Width: 386
 					Height: 28
+					Font: TinyBold
+					Background: md-button
+		Button@MD_BARTER_ALERT:
+			X: WINDOW_WIDTH - 584
+			Y: WINDOW_HEIGHT - 136
+			Width: 310
+			Height: 28
+			Font: TinyBold
+			Background: md-button
+		Background@MD_BARTER_PANEL:
+			X: (WINDOW_WIDTH - WIDTH) / 2
+			Y: (WINDOW_HEIGHT - HEIGHT) / 2
+			Width: 720
+			Height: 570
+			Background: md-panel
+			Children:
+				Label@MD_BARTER_TITLE:
+					X: 16
+					Y: 12
+					Width: 580
+					Height: 24
+					Font: Bold
+				Button@MD_BARTER_CLOSE:
+					X: 614
+					Y: 10
+					Width: 90
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Label@MD_BARTER_STATUS:
+					X: 16
+					Y: 44
+					Width: 688
+					Height: 48
+					Font: TinyBold
+					WordWrap: True
+					VAlign: Top
+				Button@MD_BARTER_DEPOT:
+					X: 16
+					Y: 96
+					Width: 330
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Label@MD_BARTER_OTHER_DEPOT:
+					X: 362
+					Y: 96
+					Width: 342
+					Height: 28
+					Font: TinyBold
+				Label@MD_BARTER_GOOD_HEADER:
+					X: 16
+					Y: 136
+					Width: 240
+					Height: 20
+					Font: TinyBold
+				Label@MD_BARTER_STOCK_HEADER:
+					X: 276
+					Y: 136
+					Width: 115
+					Height: 20
+					Font: TinyBold
+				Label@MD_BARTER_GIVE_HEADER:
+					X: 416
+					Y: 136
+					Width: 120
+					Height: 20
+					Font: TinyBold
+				Label@MD_BARTER_RECEIVE_HEADER:
+					X: 566
+					Y: 136
+					Width: 120
+					Height: 20
+					Font: TinyBold
+				Container@MD_BARTER_ROW:
+					X: 16
+					Y: 164
+					Width: 688
+					Height: 24
+					Children:
+						Label@GOOD:
+							Width: 250
+							Height: 24
+							Font: TinyBold
+						Label@AVAILABLE:
+							X: 260
+							Width: 115
+							Height: 24
+							Font: TinyBold
+						TextField@GIVE:
+							X: 400
+							Width: 120
+							Height: 24
+							Font: TinyBold
+						TextField@RECEIVE:
+							X: 550
+							Width: 120
+							Height: 24
+							Font: TinyBold
+				Label@MD_BARTER_HINT:
+					X: 16
+					Y: 454
+					Width: 688
+					Height: 40
+					Font: Tiny
+					WordWrap: True
+					VAlign: Top
+				Button@MD_BARTER_PROPOSE:
+					X: 16
+					Y: 500
+					Width: 230
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Button@MD_BARTER_ACCEPT:
+					X: 254
+					Y: 500
+					Width: 230
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Button@MD_BARTER_REFUSE:
+					X: 492
+					Y: 500
+					Width: 212
+					Height: 28
+					Font: TinyBold
+					Background: md-button
+				Button@MD_BARTER_NEXT:
+					X: 492
+					Y: 536
+					Width: 212
+					Height: 24
 					Font: TinyBold
 					Background: md-button

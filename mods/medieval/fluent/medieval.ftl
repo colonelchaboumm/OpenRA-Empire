@@ -24,6 +24,7 @@ medieval-market = Marché
 medieval-marketstall = Étal de marché
 medieval-supplycart = Charrette de transport
 medieval-tradecart = Charrette marchande
+medieval-bartercart = Charrette de troc
 medieval-well = Puits
 medieval-gardenfence = Clôture de jardin
 medieval-gardenfencey = Clôture de jardin

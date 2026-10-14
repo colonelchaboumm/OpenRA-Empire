@@ -17,7 +17,7 @@ import time
 ROOT = Path(__file__).resolve().parents[3]
 
 
-def run(map_id, timeout=300, deep_sync=False, source_binary='bin-medieval', output_root='analysis/medieval/network-maps', season_ticks=None, storm_refuge=False):
+def run(map_id, timeout=300, deep_sync=False, source_binary='bin-medieval', output_root='analysis/medieval/network-maps', season_ticks=None, storm_refuge=False, barter=False):
     output = ROOT/output_root/map_id
     output.mkdir(parents=True, exist_ok=True)
     binary = ROOT/'bin-medieval-network-test'
@@ -38,7 +38,11 @@ def run(map_id, timeout=300, deep_sync=False, source_binary='bin-medieval', outp
     (mod/'mod.yaml').write_text(manifest, encoding='utf-8', newline='\n')
     seasons = '' if season_ticks is None else f'\tMedievalSeasons:\n\t\tSeasonTicks: {season_ticks}\n'
     storm = '\t\tStormRefuge: True\n\tMedievalWeather:\n\t\tFirstRainTicks: 2000\n\t\tRainTicks: 1600\n\t\tMinimumRainPermille: 850\n' if storm_refuge else ''
-    (mod/'rules.yaml').write_text('World:\n\tNetworkAudit:\n'+storm+seasons+'md.militia:\n\tMedievalCombatProbe:\n', encoding='utf-8', newline='\n')
+    scenario = ('World:\n\tBarterNetworkAudit:\n\tMedievalDayNight:\n\t\tDayTicks: 100000\n'
+                '\tMedievalWeather:\n\t\tFirstRainTicks: 100000\n'
+                'md.messenger:\n\tMedievalNeedsFood:\n\t\tMealInterval: 100000\n\t\tStarvationDelay: 200000\n') if barter else (
+                    'World:\n\tNetworkAudit:\n'+storm+seasons+'md.militia:\n\tMedievalCombatProbe:\n')
+    (mod/'rules.yaml').write_text(scenario, encoding='utf-8', newline='\n')
     path = ROOT/'mods/medieval/maps'/map_id
     yaml = (path/'map.yaml').read_text(encoding='utf-8')
     count = yaml.count('\t\tPlayable: True')
@@ -85,7 +89,7 @@ def run(map_id, timeout=300, deep_sync=False, source_binary='bin-medieval', outp
             data = json.loads(path.read_text(encoding='utf-8')) if path.exists() and path.stat().st_mtime >= started else None
             reports.append(dict(exitCode=code, result=data, passed=code == 0 and bool(data and data['passed'])))
         identical = bool(reports[0]['result']) and all(r['result'] and r['result']['checkpoints'] == reports[0]['result']['checkpoints'] for r in reports)
-        result = dict(map=map_id, uid=uid, clients=count, seconds=round(time.time()-started, 1), deepSyncChecks=deep_sync, seasonTicks=season_ticks, stormRefuge=storm_refuge,
+        result = dict(map=map_id, uid=uid, clients=count, seconds=round(time.time()-started, 1), deepSyncChecks=deep_sync, seasonTicks=season_ticks, stormRefuge=storm_refuge, barter=barter,
                       identicalCheckpoints=identical, passed=identical and all(r['passed'] for r in reports), reports=reports)
         (output/'result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
         print(json.dumps({k:v for k,v in result.items() if k != 'reports'}), flush=True)
@@ -106,6 +110,8 @@ if __name__ == '__main__':
     parser.add_argument('--output-root', default='analysis/medieval/network-maps', help='Separate reports and private profiles for this run')
     parser.add_argument('--season-ticks', type=int, help='Test-only season length, for exercising transitions within the network scenario')
     parser.add_argument('--storm-refuge', action='store_true', help='Test-only houses and heavy rain to exercise citizen refuge across peers')
+    parser.add_argument('--barter', action='store_true', help='Two clients negotiate, deliver all goods, and refuse a second invitation over TCP')
     args = parser.parse_args()
     if args.season_ticks is not None and args.season_ticks < 1: parser.error('--season-ticks must be positive')
-    raise SystemExit(0 if run(args.map, args.timeout, args.deep_sync, args.binary, args.output_root, args.season_ticks, args.storm_refuge) else 1)
+    if args.barter and args.map != 'deux-bourgs': parser.error('--barter requires the deux-bourgs test arena')
+    raise SystemExit(0 if run(args.map, args.timeout, args.deep_sync, args.binary, args.output_root, args.season_ticks, args.storm_refuge, args.barter) else 1)

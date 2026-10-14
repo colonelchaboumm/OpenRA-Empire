@@ -24,7 +24,9 @@ namespace OpenRA.Mods.Medieval
 			.Where(a => a.IsInWorld && !a.IsDead && a.Info.HasTraitInfo<MobileInfo>())
 			.GroupBy(a => (a.Info.Name, a.Owner.InternalName)).OrderBy(g => g.Key.Name, StringComparer.Ordinal)
 			.ThenBy(g => g.Key.InternalName, StringComparer.Ordinal).Select(g => g.OrderBy(a => a.ActorID).ToArray()).ToArray();
-		Actor[] At(int index) => page * slots + index < groups.Length ? groups[page * slots + index] : [];
+		// Simulation can remove a selected actor between the UI tick and drawing.
+		Actor[] At(int index) => page * slots + index < groups.Length
+			? groups[page * slots + index].Where(a => a.IsInWorld && !a.IsDead).ToArray() : [];
 		static string Name(Actor actor) => actor.Info.TraitInfoOrDefault<TooltipInfo>()?.Name is { } key ? FluentProvider.GetMessage(key) : actor.Info.Name;
 		Sprite Portrait(Actor actor)
 		{
