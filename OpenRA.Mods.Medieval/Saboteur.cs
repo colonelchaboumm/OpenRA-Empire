@@ -119,6 +119,7 @@ namespace OpenRA.Mods.Medieval
 		{
 			if (!CanTarget(self, target, slaughter) || stockyard && (!YardAt(target, cell) || !self.Owner.Shroud.IsVisible(cell))) return false;
 			if (self.TraitOrDefault<MedievalRest>() is { } rest && !rest.Wake(self, true)) return false;
+			self.TraitOrDefault<MedievalPatient>()?.Cancel(self);
 			Cancel(self);
 			self.TraitOrDefault<MedievalHerding>()?.Cancel(self);
 			self.TraitOrDefault<MedievalSiegeCrew>()?.Release(self);

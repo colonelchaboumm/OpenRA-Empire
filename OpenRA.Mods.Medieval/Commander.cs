@@ -138,6 +138,7 @@ namespace OpenRA.Mods.Medieval
 			{
 				var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
 				if (!CanDeploy(self, cell) || !self.Trait<MedievalRest>().Wake(self, true)) return;
+				self.TraitOrDefault<MedievalPatient>()?.Cancel(self);
 				self.CancelActivity(); site = cell; attempts = work = cadence = 0;
 				if (self.Trait<MedievalCampStore>().Stock.Available(1) > 0) stage = 2;
 				else

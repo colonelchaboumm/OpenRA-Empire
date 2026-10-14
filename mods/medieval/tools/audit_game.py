@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / 'analysis/medieval/audit'
 # name, map, report folder. All manifests inherit today's normal gameplay rules.
 CASES = [
+    ('care-orders', 'messenger-test', 'care-orders'),
     ('order-safety', 'messenger-test', 'order-safety'),
     ('hud', 'messenger-test', 'hud/native'),
     ('hud-small', 'messenger-test', 'hud/small'),
@@ -97,7 +98,7 @@ def run(case, binary, timeout, support_root=None):
     source = 'large-maps' if name.startswith('large-') else 'audit-save' if name == 'save' else 'selection' if name == 'selection-small' else name
     direct = 'hud' if name == 'hud-small' else name
     previous = (normal.replace('\nSequences:\n', f'\tmedieval|{direct}-tests.yaml\n\nSequences:\n', 1)
-                if direct in ('order-safety', 'hud', 'barter', 'fleet', 'cemetery', 'pride', 'influence', 'battlefield')
+                if direct in ('care-orders', 'order-safety', 'hud', 'barter', 'fleet', 'cemetery', 'pride', 'influence', 'battlefield')
                 else (ROOT/f'mods/medieval-{source}/mod.yaml').read_text(encoding='utf-8'))
     common = {s.strip() for s in rules(normal)}
     extra = [s.strip() for s in rules(previous) if s.strip() not in common]

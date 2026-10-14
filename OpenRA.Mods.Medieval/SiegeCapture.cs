@@ -77,6 +77,8 @@ namespace OpenRA.Mods.Medieval
 			else if (target.Owner != originalOwner || !manager.CanTarget(targetManager)) Cancel(self);
 			if (!TickChild(self)) return false;
 			if (IsCanceling) return true;
+			// Queued captures leave care only when their valid activity actually starts.
+			self.TraitOrDefault<MedievalPatient>()?.Cancel(self);
 			if (!MedievalAccess.Adjacent(self, target))
 			{
 				manager.CancelCapture(target, targetManager);
