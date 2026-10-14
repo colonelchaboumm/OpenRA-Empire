@@ -1,2 +1,14 @@
 World:
 	MedievalValidation:
+
+^MDFIGHTER:
+	MedievalCombatProbe:
+
+# A durable fixture: ordinary empty salvage correctly disappears on its own.
+md.integrationtarget:
+	Inherits: md.salvage
+	-MedievalSalvage:
+	RenderSprites:
+		Image: md.salvage
+	Health:
+		HP: 5000

@@ -36,10 +36,17 @@ namespace OpenRA.Mods.Medieval
 		readonly bool[] growing = new bool[4];
 		bool builderCarried;
 		bool cancelled;
+		Actor cancelledSite, cancelledPile;
+		MedievalBuilding cancelledBuilding;
+		bool cancellationRefundChecked;
+		int[] cancelledMaterials;
+		readonly int[] recoveredMaterials = new int[Inventory.ResourceCount];
+		readonly HashSet<(uint ActorId, int StartTick)> cancellationLoads = [];
 		bool prematureCompletion;
 		bool finished;
 		int heldMeat;
 		readonly List<Actor> combatTargets = [];
+		readonly List<Actor> combatAttackers = [];
 		readonly List<string> recruitmentChecks = [];
 		readonly List<string> foodChecks = [];
 		readonly List<string> cartChecks = [];
@@ -59,6 +66,8 @@ namespace OpenRA.Mods.Medieval
 		MedievalZoneOrderGenerator zonePlacement;
 		Actor remoteSite;
 		bool remoteBuilderCarried;
+		int remoteSuppliedAt, remoteStartedAt, remoteCompletedAt, remoteStormTicks;
+		int[] remoteMaterialsBefore, remoteMaterialsAfter;
 		Actor famineWorker;
 		Actor famineSoldier;
 		Actor rescuedCitizen;
@@ -196,6 +205,59 @@ namespace OpenRA.Mods.Medieval
 				&& MedievalSettlement.Population(w.LocalPlayer) == population, name + ": wrong payment or population.");
 			recruitmentChecks.Add(name);
 		}
+		void CheckCancellation(World w)
+		{
+			if (cancelledSite == null || cancelledSite.IsInWorld) return;
+			if (!cancellationRefundChecked)
+			{
+				cancellationRefundChecked = true;
+				// Read the retained construction ledger after the order resolves: a builder
+				// may have delivered another load during the order's normal latency.
+				cancelledMaterials = Enumerable.Range(0, Inventory.ResourceCount).Select(cancelledBuilding.Materials.Amount).ToArray();
+				var piles = w.ActorsHavingTrait<MedievalSalvage>().Where(a => a.Owner == w.LocalPlayer && a.Location == Cell(22, 31)).ToArray();
+				Check(piles.Length == 1 && cancelledMaterials.Any(n => n > 0), "Cancellation must create exactly one nonempty salvage pile.");
+				cancelledPile = piles.FirstOrDefault();
+				if (cancelledPile != null)
+					Check(Enumerable.Range(0, Inventory.ResourceCount).Select(cancelledPile.Trait<MedievalStockpile>().Stock.Amount).SequenceEqual(cancelledMaterials),
+						"Cancellation must return exactly the materials actually delivered to the site.");
+			}
+			if (cancelledPile == null) return;
+			foreach (var pair in w.ActorsWithTrait<MedievalWorker>())
+			{
+				var worker = pair.Trait;
+				if (worker.WorkTarget != cancelledPile || !worker.HandlingStock || !worker.HandlingPickup || !worker.HandlingCommitted) continue;
+				if (cancellationLoads.Add((pair.Actor.ActorID, tick - worker.HandlingElapsed)))
+					recoveredMaterials[worker.Resource] += worker.HandlingAmount;
+			}
+		}
+		void TrackRemoteConstruction(World w)
+		{
+			if (remoteSite == null) return;
+			var building = remoteSite.Trait<MedievalBuilding>();
+			if (building.Supplied && remoteSuppliedAt == 0) remoteSuppliedAt = tick;
+			if (building.Progress > 0 && remoteStartedAt == 0) remoteStartedAt = tick;
+			if (building.Complete && remoteCompletedAt == 0) remoteCompletedAt = tick;
+			if (!building.Complete && w.ActorsWithTrait<MedievalWorker>().Any(p => p.Actor.Owner == w.LocalPlayer && p.Trait.Info.Profession == "builder"
+				&& p.Actor.TraitOrDefault<MedievalRest>()?.StormSheltering == true)) remoteStormTicks++;
+		}
+		void CheckRemoteConstruction(World w)
+		{
+			var building = remoteSite?.Trait<MedievalBuilding>();
+			Check(remoteCompletedAt > 0 && building?.Complete == true,
+				$"Builders must finish the remote house using the parked cart (work {building?.Progress}/{building?.Info.Work}, storm pause {remoteStormTicks} ticks).");
+			var stock = supplyCart?.Trait<MedievalStockpile>().Stock;
+			var delivered = remoteBuilderCarried && stock != null && building?.Materials.Amount(0) == 60 && building.Materials.Amount(3) == 20
+				&& stock.Reserved(0) == 0 && stock.Reserved(3) == 0 && stock.Incoming(0) == 0 && stock.Incoming(3) == 0;
+			Check(delivered, "Remote house must consume exactly 60 wood and 20 stone from the cart through builder trips.");
+			remoteMaterialsAfter = ConstructionMaterials(w);
+			Check(remoteMaterialsBefore != null && remoteMaterialsAfter.SequenceEqual(remoteMaterialsBefore),
+				"Remote construction must conserve wood and stone across depots, the cart, carried loads and incorporated materials, including interrupted trips.");
+			if (delivered && building?.Complete == true) cartChecks.Add("Builders finish the remote house after actual delivery of 60 wood and 20 stone from the cart");
+			Game.Renderer.SaveScreenshot(Path.Combine(output, "remote-construction-tested.png"));
+		}
+		static int[] ConstructionMaterials(World w) => new[] { 0, 3 }.Select(r => w.Actors.Where(a => a.Owner == w.LocalPlayer && a.IsInWorld && !a.IsDead)
+			.Sum(a => (a.TraitOrDefault<MedievalStockpile>()?.Stock.Amount(r) ?? 0) + (a.TraitOrDefault<MedievalBuilding>()?.Materials.Amount(r) ?? 0)
+				+ (a.TraitOrDefault<MedievalWorker>() is { EquipmentCargo: false, CampCargo: false } worker && worker.Resource == r ? worker.Cargo : 0))).ToArray();
 		void ITick.Tick(Actor self)
 		{
 			var w = self.World;
@@ -209,6 +271,8 @@ namespace OpenRA.Mods.Medieval
 			tick++;
 			CheckAgriculture(w);
 			CheckAnimations(w);
+			CheckCancellation(w);
+			TrackRemoteConstruction(w);
 			if (tick == 1) Game.Renderer.SaveScreenshot(Path.Combine(output, "paths-start.png"));
 			if (tick == 1500) Game.Renderer.SaveScreenshot(Path.Combine(output, "paths-forming.png"));
 			if (tick == 7300) Game.Renderer.SaveScreenshot(Path.Combine(output, "paths-developed.png"));
@@ -279,8 +343,11 @@ namespace OpenRA.Mods.Medieval
 						.OrderBy(a => a.ActorID).ToArray();
 					for (var i = 0; i < soldiers.Length; i++)
 					{
-						var target = world.CreateActor("md.salvage", [new OwnerInit(world.Players.First(p => p.InternalName == "Neutral")), new LocationInit(Cell(22 + 13 * i, 35))]);
+						// Empty salvage is intentionally removed by the economy. A dedicated
+						// target must survive until a real weapon destroys it.
+						var target = world.CreateActor("md.integrationtarget", [new OwnerInit(world.Players.First(p => p.InternalName == "Neutral")), new LocationInit(Cell(22 + 13 * i, 35))]);
 						combatTargets.Add(target);
+						combatAttackers.Add(soldiers[i]);
 						world.IssueOrder(new Order("ForceAttack", soldiers[i], Target.FromActor(target), false));
 					}
 					var creeps = world.Players.First(p => p.InternalName == "Creeps");
@@ -355,11 +422,18 @@ namespace OpenRA.Mods.Medieval
 			}
 			if (tick == 7800)
 			{
+				// Production has already been exercised. Stop new wood/stone extraction so
+				// conservation can include loads returned to a different depot during a storm.
+				foreach (var worker in w.ActorsWithTrait<MedievalWorker>().Where(p => p.Actor.Owner == w.LocalPlayer && p.Trait.Info.Profession is "lumberjack" or "stonecutter"))
+					w.IssueOrder(new Order("Stop", worker.Actor, false));
 				Place(w, "md.house", Cell(52, 18));
 				Game.Renderer.SaveScreenshot(Path.Combine(output, "cart-loading-tested.png"));
 			}
 			if (tick == 8500 && supplyCart != null)
 			{
+				Check(w.ActorsWithTrait<MedievalWorker>().Where(p => p.Actor.Owner == w.LocalPlayer && p.Trait.Info.Profession is "lumberjack" or "stonecutter")
+					.All(p => !p.Trait.Automatic), "Wood and stone production must be paused for the construction conservation check.");
+				remoteMaterialsBefore = ConstructionMaterials(w);
 				remoteSite = w.Actors.FirstOrDefault(a => a.Owner == w.LocalPlayer && a.Info.Name == "md.house" && a.Location == Cell(52, 18));
 				Check(remoteSite != null, "Remote house must be placeable without a local depot.");
 				if (remoteSite != null)
@@ -384,15 +458,6 @@ namespace OpenRA.Mods.Medieval
 			{
 				Check(supplyCart.Trait<MedievalSupplyCart>().Wants(0), "Remote cargo-change order must be rejected by simulation, not only UI.");
 				cartChecks.Add("Loading choices cannot change outside a market zone");
-			}
-			if (tick == 11000 && supplyCart != null)
-			{
-				var stock = supplyCart.Trait<MedievalStockpile>().Stock;
-				Check(remoteSite?.Trait<MedievalBuilding>().Complete == true, "Builders must finish the remote house using the parked cart.");
-				Check(remoteBuilderCarried && stock.Amount(0) == 0 && stock.Amount(3) == 40 && stock.Reserved(0) == 0 && stock.Reserved(3) == 0,
-					"Remote house must consume exactly 60 wood and 20 stone from the cart through builder trips.");
-				cartChecks.Add("Builders carry cart materials to remote house, consuming exactly its wood/stone cost");
-				Game.Renderer.SaveScreenshot(Path.Combine(output, "remote-construction-tested.png"));
 			}
 			if (tick == 1700)
 			{
@@ -460,6 +525,7 @@ namespace OpenRA.Mods.Medieval
 				if (!cancelled && a.Location == Cell(22, 31) && Enumerable.Range(0, 4).Any(r => b.Materials.Amount(r) > 0))
 				{
 					w.IssueOrder(new Order("MedievalCancel", w.LocalPlayer.PlayerActor, Target.FromActor(a), false));
+					cancelledSite = a; cancelledBuilding = b;
 					cancelled = true;
 				}
 			}
@@ -469,6 +535,13 @@ namespace OpenRA.Mods.Medieval
 			if (w.LocalPlayer.PlayerActor.Trait<MedievalFoodEconomy>().MarketDeliveries.Total > 0) marketReceivedFood = true;
 			if (tick % 500 == 0)
 			{
+				if (remoteSite != null)
+				{
+					var b = remoteSite.Trait<MedievalBuilding>();
+					Console.WriteLine($"REMOTE tick={tick} supplied={b.Supplied} progress={b.Progress}/{b.Info.Work} complete={b.Complete}");
+					foreach (var worker in w.ActorsWithTrait<MedievalWorker>().Where(p => p.Actor.Owner == w.LocalPlayer && p.Trait.Info.Profession == "builder"))
+						Console.WriteLine($"BUILDER {worker.Actor.ActorID}: {worker.Actor.Location} {worker.Trait.Description} idle={worker.Actor.IsIdle} working={worker.Trait.IsWorking} food={worker.Actor.Trait<MedievalNeedsFood>().Description} rest={worker.Actor.TraitOrDefault<MedievalRest>()?.Resting}");
+				}
 				var trace = w.Actors.Where(a => a.Owner == w.LocalPlayer && a.Info.Name.StartsWith("md.", StringComparison.Ordinal)).Select(a => new
 				{
 					id = a.ActorID, type = a.Info.Name, cell = a.Location.ToString(),
@@ -478,7 +551,10 @@ namespace OpenRA.Mods.Medieval
 				});
 				File.WriteAllText(Path.Combine(output, "progress.json"), JsonSerializer.Serialize(new { tick, hauled, produced, growing, foodChecks, cartChecks, agricultureChecks, errors, trace }, new JsonSerializerOptions { WriteIndented = true }));
 			}
-			if (tick < 11000) return;
+			// Real storms and night rest may interrupt the trip and the work. Keep a
+			// hard deadline, but judge completion after the builders have actually resumed.
+			if (tick < 11000 || tick < 16000 && remoteCompletedAt == 0) return;
+			CheckRemoteConstruction(w);
 			foreach (var expected in new[] { "md.builder:work", "md.lumberjack:harvest", "md.stonecutter:harvest", "md.farmer:work", "md.farmer:harvest", "md.breeder:work", "md.hauler:carry-run", "md.supplycart:run", "md.militia:attack", "md.manatarms:attack" })
 				Check(animationChecks.Contains(expected), "Missing real activity animation: " + expected);
 			Check(walkingFrames.Count == 8 && workingFrames.Count == 8 && cropFrames.Count == 8 && cattleFrames.Count == 8,
@@ -491,7 +567,9 @@ namespace OpenRA.Mods.Medieval
 			Check(produced.All(x => x), "All four professions must have carried their production.");
 			Check(builderCarried, "Builder must carry materials physically.");
 			Check(growing[1] && growing[2], "Both farming and cattle breeding must renew after work and growth.");
-			Check(cancelled && w.Actors.Any(a => a.Info.Name == "md.salvage"), "Cancelled materials must remain recoverable.");
+			Check(cancelled && cancellationRefundChecked && cancelledMaterials != null && recoveredMaterials.SequenceEqual(cancelledMaterials),
+				"Workers must physically recover all cancelled materials exactly once.");
+			Check(cancelledPile != null && !cancelledPile.IsInWorld, "An emptied cancellation pile must be removed after recovery.");
 			Check(!prematureCompletion, "Construction completed before receiving materials and work.");
 			foreach (var cell in new[] { Cell(34, 32), Cell(20, 42), Cell(41, 43) })
 				Check(w.Actors.Any(a => a.TraitOrDefault<MedievalBuilding>()?.Complete == true && a.Location == cell), "Unfinished building at " + cell);
@@ -501,10 +579,14 @@ namespace OpenRA.Mods.Medieval
 				"The growing village must sustain its 12 citizens/soldiers including the cart crew.");
 			Check(marketReceivedFood, "Haulers must physically deliver food from depots to a market.");
 			Check(economy.Harvests.PerMinute > 0 && economy.Deliveries.PerMinute > 0, "Budget must observe actual harvests and warehouse deliveries.");
-			Check(combatTargets.Count == 2 && combatTargets.All(a => a.IsDead || !a.IsInWorld), "Both soldiers must reach and destroy their melee targets.");
+			var combatPassed = combatTargets.Count == 2 && combatTargets.All(a => a.IsDead) && combatAttackers.All(a => a.Trait<MedievalCombatProbe>().Shots > 0);
+			Check(combatPassed, "Both soldiers must fire their weapons and kill their melee targets, not merely observe their removal.");
 			Game.Renderer.SaveScreenshot(Path.Combine(output, "village-tested.png"));
 			File.WriteAllText(Path.Combine(output, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, tick, errors, hauled, produced, growing, builderCarried, cancelled, recruitmentChecks,
-				combatPassed = combatTargets.Count == 2 && combatTargets.All(a => a.IsDead || !a.IsInWorld), visibleTrailSamples, establishedTrailSamples, foodChecks, foodConsumed = economy.TotalConsumed,
+				combatPassed, combatShots = combatAttackers.Select(a => new { type = a.Info.Name, shots = a.Trait<MedievalCombatProbe>().Shots }),
+				cancelledMaterials, recoveredMaterials, cancellationRefundChecked, remoteSuppliedAt, remoteStartedAt, remoteCompletedAt, remoteStormTicks,
+				remoteMaterialsBefore, remoteMaterialsAfter,
+				visibleTrailSamples, establishedTrailSamples, foodChecks, foodConsumed = economy.TotalConsumed,
 				foodDemand = MedievalFoodEconomy.Demand(w.LocalPlayer), foodHarvestedPerMinute = economy.Harvests.PerMinute,
 				foodDeliveredPerMinute = economy.Deliveries.PerMinute, marketReceivedFood, cartChecks, remoteBuilderCarried, agricultureChecks,
 				animationChecks = animationChecks.OrderBy(s => s).ToArray(), walkingFrames = walkingFrames.Count, workingFrames = workingFrames.Count,
