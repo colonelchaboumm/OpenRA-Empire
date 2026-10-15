@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Medieval
 		bool Valid(World w) => messenger.IsInWorld && !messenger.IsDead && messenger.Trait<MedievalMessenger>().Revision == revision
 			&& messenger.Trait<MedievalMessenger>().CanCompose(messenger, w.LocalPlayer);
 		Actor At(World w, CPos cell) => w.ActorMap.GetActorsAt(cell).FirstOrDefault(a => messenger.Trait<MedievalMessenger>().CanTarget(messenger, w.LocalPlayer, a)
-			&& (command != "MedievalInviteBarter" || MedievalBarter.Depots(a.Owner).Any()));
+			&& (command != "MedievalInviteBarter" || MedievalBarter.PartnerAvailable(a.Owner) && MedievalBarter.Depots(a.Owner).Any()));
 		public string PreviewText => "Cliquez une caserne visible d'un autre joueur. Clic droit : annuler.";
 		protected override void Tick(World w) { if (!Valid(w)) w.CancelInputMode(); }
 		protected override IEnumerable<Order> OrderInner(World w, CPos cell, int2 pixel, MouseInput mi)

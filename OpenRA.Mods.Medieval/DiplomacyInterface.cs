@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Medieval
 		string Hint()
 		{
 			if (selected == null) return "Aucune autre nation dans cette partie.";
+			if (!diplomacy.Available(selected)) return "Ce joueur a quitté la partie ou ne peut plus négocier. Les nouvelles demandes diplomatiques sont désactivées.";
 			if (diplomacy.Pending(Local, selected) is { } pending && diplomacy.Visible(pending, Local))
 				return pending.Sender == Local ? "Votre messager porte la demande. L’accord de l’autre joueur est nécessaire." : "Une demande vous est adressée. Acceptez-la ou refusez-la ci-dessous.";
 			if (Local.RelationshipWith(selected) == PlayerRelationship.Ally) return "Vision partagée. Livrez les dépôts alliés depuis vos charrettes ; vos charrettes de ravitaillement nourrissent les unités alliées proches.";
@@ -65,6 +66,7 @@ namespace OpenRA.Mods.Medieval
 			{
 				var row = Button(list, "MD_DIPLOMACY_PLAYER_" + nation.InternalName, "", 6, 6 + index++ * 32, 536, () => selected = nation);
 				row.GetText = () => nation.ResolvedPlayerName + "  —  " + MedievalDiplomacy.RelationName(Local.RelationshipWith(nation))
+					+ (diplomacy.HasLeft(nation) ? "  ·  déconnecté" : "")
 					+ (diplomacy.Pending(Local, nation) is { } request && diplomacy.Visible(request, Local) ? "  ·  courrier" : "");
 				row.IsHighlighted = () => selected == nation;
 				row.Align = TextAlign.Left; row.LeftMargin = 14;

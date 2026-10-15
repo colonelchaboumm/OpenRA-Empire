@@ -95,11 +95,26 @@ namespace OpenRA.Platforms.NetworkTest
 				Check(players[0].RelationshipWith(players[1]) == PlayerRelationship.Enemy, "Refusal preserves war on both clients.");
 				Check(!MedievalFoodEconomy.Providers(players[1]).Contains(foodCart), "Alliance rupture removes supply access on both clients."); stage = 13;
 			}
+			else if (stage == 13 && tick >= 1500 && courier.Trait<MedievalMessenger>().CanCompose(courier, players[0]))
+			{ Send(w, MedievalDiplomacy.Request(players[0], courier, target, false)); stage = 14; }
+			else if (stage == 14 && diplomacy.Requests.Last() != request) { request = diplomacy.Requests.Last(); stage = 15; }
+			else if (stage == 15 && diplomacy.CanRespond(request, players[1]))
+			{
+				var stale = MedievalDiplomacy.Respond(players[1], request, true);
+				// Replay the engine's synchronized departure event on both clients, then
+				// send a real TCP response to prove that delayed orders stay invalid.
+				foreach (var trait in w.WorldActor.TraitsImplementing<INotifyPlayerDisconnected>()) trait.PlayerDisconnected(w.WorldActor, players[1]);
+				foreach (var p in w.Players)
+					foreach (var trait in p.PlayerActor.TraitsImplementing<INotifyPlayerDisconnected>()) trait.PlayerDisconnected(p.PlayerActor, players[1]);
+				Check(request.State == DiplomaticRequestState.Cancelled && !diplomacy.CanRequest(players[0], players[1], true), "Departure cancels negotiations on both clients.");
+				Send(w, stale); stage = 16;
+			}
 			if (tick % 100 == 0) checkpoints.Add(new { tick, hash = w.SyncHash(), stage, relations = diplomacy.RelationsHash, requests = diplomacy.RequestsHash,
 				cart = StorageGoods.Amount(cart, 0), depot = StorageGoods.Amount(depot, 0), food = foodCart.Trait<MedievalStockpile>().Stock.Amount(1) });
 			if (tick % 500 == 0) Console.WriteLine($"DIPLOMACY TCP {w.LocalPlayer.InternalName} tick={tick} stage={stage}");
 			if (tick < 4000) return;
-			Check(stage == 13, "All diplomatic and delivery phases completed.");
+			Check(stage == 16 && request.State == DiplomaticRequestState.Cancelled && players[0].RelationshipWith(players[1]) == PlayerRelationship.Enemy,
+				"All phases completed; the delayed response from a departed player remains rejected.");
 			File.WriteAllText(Path.Combine(Platform.SupportDir, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, errors, tick, stage, local = w.LocalPlayer.InternalName, checkpoints }, new JsonSerializerOptions { WriteIndented = true }));
 			done = true; Game.RunAfterDelay(2000, Game.Exit);
 		}

@@ -29,16 +29,22 @@ namespace OpenRA.Mods.Medieval
 	{
 		public override object Create(ActorInitializer init) => new MedievalDiplomacy(init.Self.World);
 	}
-	public sealed class MedievalDiplomacy : IWorldLoaded, ITick, ISync
+	public sealed class MedievalDiplomacy : IWorldLoaded, ITick, ISync, INotifyPlayerDisconnected
 	{
 		readonly World world;
 		readonly List<DiplomaticRequest> requests = [];
+		// Network disconnect notifications run on synchronized frames. Lobby client
+		// states arrive asynchronously and must never decide simulation orders.
+		readonly HashSet<Player> disconnected = [];
 		uint nextId = 1;
 		[VerifySync] int cadence;
 		public IReadOnlyList<DiplomaticRequest> Requests => requests;
 		[VerifySync] public int RequestsHash => requests.Aggregate(unchecked((int)nextId), (h, r) => unchecked(h * 31 + r.Hash));
 		[VerifySync] public int RelationsHash => Nations.SelectMany(p => Nations.Select(q => (int)p.RelationshipWith(q))).Aggregate(17, (h, n) => unchecked(h * 31 + n));
+		[VerifySync] public int DeparturesHash => disconnected.OrderBy(p => p.PlayerActor.ActorID).Aggregate(17, (h, p) => unchecked(h * 31 + (int)p.PlayerActor.ActorID));
 		public static bool Nation(Player p) => p != null && !p.NonCombatant && !p.Spectating;
+		public bool HasLeft(Player p) => p != null && disconnected.Contains(p);
+		public bool Available(Player p) => Nation(p) && p.WinState != WinState.Lost && !HasLeft(p);
 		public IEnumerable<Player> Nations => world.Players.Where(Nation).OrderBy(p => p.PlayerActor.ActorID);
 		public MedievalDiplomacy(World world) { this.world = world; }
 		public static string RelationName(PlayerRelationship relation) => relation == PlayerRelationship.Ally ? "Allié" : relation == PlayerRelationship.Enemy ? "Ennemi" : "Neutre";
@@ -99,15 +105,14 @@ namespace OpenRA.Mods.Medieval
 		bool MessengerPresent(DiplomaticRequest r) => MedievalStockpile.Active(r.Messenger) && !r.Messenger.WillDispose && r.Messenger.Owner == r.Sender
 			&& r.Messenger.Trait<MedievalMessenger>().Revision == r.MailRevision
 			&& r.Messenger.Trait<MedievalMessenger>().Journey is MessengerJourney.Outbound or MessengerJourney.Waiting;
-		bool RecipientReady(DiplomaticRequest r, Player p) => r != null && r.Pending && r.Recipient == p && MessengerPresent(r)
+		bool RecipientReady(DiplomaticRequest r, Player p) => r != null && r.Pending && r.Recipient == p && Available(r.Sender) && Available(r.Recipient) && MessengerPresent(r)
 			&& r.Messenger.Trait<MedievalMessenger>().CanReceive(r.Messenger, p);
 		public bool CanRespond(DiplomaticRequest r, Player p) => r?.State == DiplomaticRequestState.Delivered && RecipientReady(r, p);
 		public Actor Destination(Player sender, Player recipient) => world.Actors.Where(a => a.Owner == recipient && MedievalMessenger.Barracks(a)
 			&& !a.WillDispose && a.CanBeViewedByPlayer(sender)).OrderBy(a => a.ActorID).FirstOrDefault();
 		public Actor Courier(Player p) => world.ActorsHavingTrait<MedievalMessenger>().Where(a => a.Owner == p && !a.WillDispose
 			&& a.Trait<MedievalMessenger>().CanCompose(a, p)).OrderBy(a => a.ActorID).FirstOrDefault();
-		public bool CanRequest(Player p, Player other, bool alliance) => Nation(p) && Nation(other) && p != other
-			&& p.WinState != WinState.Lost && other.WinState != WinState.Lost && Pending(p, other) == null
+		public bool CanRequest(Player p, Player other, bool alliance) => Available(p) && Available(other) && p != other && Pending(p, other) == null
 			&& (alliance ? p.RelationshipWith(other) != PlayerRelationship.Ally : p.RelationshipWith(other) == PlayerRelationship.Enemy);
 		public static Order Request(Player p, Actor courier, Actor destination, bool alliance) =>
 			MedievalMessenger.Command(p, courier, alliance ? "MedievalRequestAlliance" : "MedievalRequestPeace", target: destination);
@@ -121,7 +126,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		public void Resolve(Player p, Order order)
 		{
-			if (!Nation(p) || p.WinState == WinState.Lost) return;
+			if (!Available(p)) return;
 			if (order.OrderString is "MedievalRequestAlliance" or "MedievalRequestPeace")
 			{
 				if (order.Target.Type != TargetType.Actor || order.ExtraActors is not { Length: 1 }) return;
@@ -153,12 +158,18 @@ namespace OpenRA.Mods.Medieval
 			if (--cadence > 0) return; cadence = 10;
 			foreach (var r in requests.Where(r => r.Pending).ToArray())
 			{
-				if (!MessengerPresent(r) || r.Sender.WinState == WinState.Lost || r.Recipient.WinState == WinState.Lost)
+				if (!MessengerPresent(r) || !Available(r.Sender) || !Available(r.Recipient))
 				{ End(r, DiplomaticRequestState.Cancelled, "Messager ou destinataire indisponible : demande annulée."); continue; }
 				if (r.State == DiplomaticRequestState.Travelling && RecipientReady(r, r.Recipient))
 				{ r.State = DiplomaticRequestState.Delivered; r.Arrived = true; r.Revision++; r.Status = "Le messager est arrivé : accepter ou refuser la demande."; }
 			}
 			if (requests.Count > 128) requests.RemoveAll(r => !r.Pending && r.Id < nextId - 64);
+		}
+		void INotifyPlayerDisconnected.PlayerDisconnected(Actor self, Player player)
+		{
+			if (!disconnected.Add(player)) return;
+			foreach (var r in requests.Where(r => r.Pending && (r.Sender == player || r.Recipient == player)).ToArray())
+				End(r, DiplomaticRequestState.Cancelled, "Un joueur s’est déconnecté : demande annulée.");
 		}
 	}
 	public class MedievalDiplomacyOrdersInfo : TraitInfo

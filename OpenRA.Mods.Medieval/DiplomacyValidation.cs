@@ -31,10 +31,14 @@ namespace OpenRA.Mods.Medieval
 		WorldRenderer renderer;
 		Player first, second, third;
 		Actor barracks, otherBarracks, messenger, fighter, victim, secret, citizen, depot, cart, foodCart;
+		Actor commerceCourier, idleCourier, departingCourier, ownDepot, departingDepot, ownCart, departingCart;
+		MedievalBarter barter;
+		BarterDeal trade;
+		Order staleAcceptance;
 		MedievalDiplomacy diplomacy;
 		DiplomaticRequest request;
 		int tick, stage, until, good, beforeShots;
-		bool done;
+		bool done, defeatChecked;
 		string output;
 		static CPos Cell(int x, int y) => new(x + 32, y - 32);
 		void Check(bool ok, string text) { if (!checks.Contains(text)) checks.Add(text); if (!ok && !errors.Contains(text)) { errors.Add(text); Console.WriteLine("DIPLOMACY FAIL: " + text); } }
@@ -48,6 +52,15 @@ namespace OpenRA.Mods.Medieval
 		}
 		void Button(World w, string id) => Sync.RunUnsynced(w, () =>
 		{ var b = Ui.Root.Get<ButtonWidget>(id); Check(!b.IsDisabled(), "Enabled UI: " + id); if (!b.IsDisabled()) b.OnClick(); });
+		static void Disconnect(World w, Player p)
+		{
+			// Use the same notifications as World.OnClientDisconnected, without closing the test client.
+			foreach (var trait in w.WorldActor.TraitsImplementing<INotifyPlayerDisconnected>()) trait.PlayerDisconnected(w.WorldActor, p);
+			foreach (var player in w.Players)
+				foreach (var trait in player.PlayerActor.TraitsImplementing<INotifyPlayerDisconnected>()) trait.PlayerDisconnected(player.PlayerActor, p);
+		}
+		static bool Unreserved(Actor a) => Enumerable.Range(0, StorageGoods.Count).All(g =>
+			StorageGoods.Stock(a, g).Reserved(StorageGoods.Index(g)) == 0 && StorageGoods.Stock(a, g).Incoming(StorageGoods.Index(g)) == 0);
 		void SetStage(int value, int delay = 0) { stage = value; until = tick + delay; Console.WriteLine("DIPLOMACY STAGE " + stage); }
 		void Setup(World w)
 		{
@@ -205,8 +218,70 @@ namespace OpenRA.Mods.Medieval
 					Check(first.RelationshipWith(third) == PlayerRelationship.Neutral, "Sabotage target begins neutral.");
 					Check(saboteur.Trait<MedievalSaboteur>().Start(saboteur, otherBarracks, false, otherBarracks.Location), "Explicit sabotage can target a neutral nation's building.");
 					Check(first.RelationshipWith(third) == PlayerRelationship.Enemy && third.RelationshipWith(first) == PlayerRelationship.Enemy, "Ordering sabotage declares war for both nations.");
-					Finish();
+					saboteur.Trait<MedievalSaboteur>().Cancel(saboteur);
+					barter = w.WorldActor.Trait<MedievalBarter>();
+					ownDepot = Spawn(w, "warehouse", first, 14, 35); departingDepot = Spawn(w, "warehouse", third, 42, 35);
+					ownDepot.Trait<MedievalStockpile>().Stock.Add(0, 90); departingDepot.Trait<MedievalStockpile>().Stock.Add(4, 90);
+					ownCart = Spawn(w, "tradecart", first, 14, 38); departingCart = Spawn(w, "tradecart", third, 42, 38);
+					messenger = Spawn(w, "messenger", first, 18, 23); commerceCourier = Spawn(w, "messenger", first, 19, 23);
+					idleCourier = Spawn(w, "messenger", first, 20, 23); departingCourier = Spawn(w, "messenger", third, 32, 23);
+					Resolve(w, MedievalDiplomacy.Request(first, messenger, otherBarracks, false)); request = diplomacy.Requests.Last();
+					Resolve(w, MedievalMessenger.Command(first, commerceCourier, "MedievalInviteBarter", target: otherBarracks)); trade = barter.Deals.Last();
+					SetStage(21);
 				}); SetStage(20);
+			}
+			else if (stage == 21 && diplomacy.CanRespond(request, third) && commerceCourier.Trait<MedievalMessenger>().CanReceive(commerceCourier, third))
+			{
+				Resolve(w, MedievalBarter.Command(third, trade, "MedievalBarterOpen"));
+				var offer = new int[StorageGoods.Count]; var payment = new int[StorageGoods.Count]; offer[0] = payment[4] = 80;
+				Resolve(w, MedievalBarter.Command(first, trade, "MedievalBarterPropose", BarterOffer.Encode(offer, payment)));
+				if (!defeatChecked)
+				{
+					// Exercise responses in the same frame as defeat, before periodic cleanup.
+					first.WinState = WinState.Lost;
+					Resolve(w, MedievalDiplomacy.Respond(third, request, true));
+					Resolve(w, MedievalBarter.Command(third, trade, "MedievalBarterAccept"));
+					Check(request.State == DiplomaticRequestState.Delivered && first.RelationshipWith(third) == PlayerRelationship.Enemy, "Peace cannot be accepted for a defeated sender before periodic cleanup.");
+					Check(trade.State == BarterState.Refused && trade.Legs.All(l => l == null) && Unreserved(ownDepot) && Unreserved(departingDepot), "An offer from an eliminated player cannot dispatch carts or reserve goods.");
+					first.WinState = WinState.Undefined; defeatChecked = true; SetStage(24); return;
+				}
+				Resolve(w, MedievalBarter.Command(third, trade, "MedievalBarterAccept"));
+				Check(trade.State == BarterState.Delivering, "Agreed wartime trade can coexist with a pending peace request.");
+				staleAcceptance = MedievalDiplomacy.Respond(third, request, true); SetStage(22);
+			}
+			else if (stage == 22 && trade.Legs.All(l => l.Cargo.Travelling > 0 && l.Cargo.Delivered == 0))
+			{
+				Disconnect(w, third);
+				Check(request.State == DiplomaticRequestState.Cancelled && !diplomacy.CanRespond(request, third), "Disconnect cancels the pending treaty immediately.");
+				Resolve(w, staleAcceptance);
+				Check(first.RelationshipWith(third) == PlayerRelationship.Enemy, "A disconnected player's queued acceptance cannot establish peace.");
+				Check(!diplomacy.CanRequest(second, third, true) && !diplomacy.CanRequest(third, second, true), "Disconnected nations cannot send or receive new diplomatic requests.");
+				Check(!barter.CanInvite(departingCourier, third), "A disconnected player cannot initiate new trade.");
+				var count = barter.Deals.Count;
+				Resolve(w, MedievalMessenger.Command(first, idleCourier, "MedievalInviteBarter", target: otherBarracks));
+				Resolve(w, MedievalMessenger.Command(third, departingCourier, "MedievalInviteBarter", target: barracks));
+				Check(barter.Deals.Count == count, "New barter invitations to or from disconnected players are rejected.");
+				Check(trade.State == BarterState.Interrupted && new[] { ownDepot, departingDepot, ownCart, departingCart }.All(Unreserved), "Disconnect interrupts shipping and frees all stock and capacity reservations.");
+				SetStage(23);
+			}
+			else if (stage == 23 && !trade.Returning)
+			{
+				Check(StorageGoods.Amount(ownDepot, 0) == 90 && StorageGoods.Amount(departingDepot, 4) == 90
+					&& StorageGoods.Amount(ownDepot, 4) == 0 && StorageGoods.Amount(departingDepot, 0) == 0
+					&& new[] { ownCart, departingCart }.All(a => Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Amount(a, g) == 0)),
+					"Interrupted wartime trade returns both surviving payments physically without loss or duplication.");
+				if (!Ui.Root.Get("MD_DIPLOMACY_PANEL").IsVisible()) Button(w, "MD_DIPLOMACY_OPEN");
+				Button(w, "MD_DIPLOMACY_PLAYER_Third"); SetStage(25, 5);
+			}
+			else if (stage == 24 && commerceCourier.Trait<MedievalMessenger>().CanCompose(commerceCourier, first))
+			{
+				Resolve(w, MedievalMessenger.Command(first, commerceCourier, "MedievalInviteBarter", target: otherBarracks)); trade = barter.Deals.Last(); SetStage(21);
+			}
+			else if (stage == 25 && tick >= until)
+			{
+				Check(Ui.Root.Get("MD_DIPLOMACY_PANEL").IsVisible() && Ui.Root.Get<ButtonWidget>("MD_DIPLOMACY_PLAYER_Third").GetText().Contains("déconnecté", StringComparison.Ordinal), "The visible diplomacy panel identifies the departed player.");
+				Check(Ui.Root.Get<ButtonWidget>("MD_DIPLOMACY_PEACE").IsDisabled() && Ui.Root.Get<ButtonWidget>("MD_DIPLOMACY_ALLIANCE").IsDisabled(), "The UI disables requests to disconnected nations.");
+				Game.Renderer.SaveScreenshot(Path.Combine(output, "disconnected.png")); Finish();
 			}
 		}
 	}

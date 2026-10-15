@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Medieval
 	public sealed class MedievalBarter : ITick, ISync
 	{
 		public const int MaximumCarts = 100;
+		public static bool PartnerAvailable(Player p) => p != null && p.World.WorldActor.Trait<MedievalDiplomacy>().Available(p);
 		public static IEnumerable<Actor> AvailableCarts(Player p) => p == null ? [] : p.World.ActorsHavingTrait<MedievalTradeCart>()
 			.Where(a => MedievalStockpile.Active(a) && !a.WillDispose && a.Owner == p && a.TraitOrDefault<MedievalBarterCart>() is { Busy: false }
 				&& a.TraitOrDefault<MedievalManualTransfer>()?.Busy != true && a.Trait<MedievalTradeCart>().CanLend && a.TraitOrDefault<MedievalRest>()?.Resting != true
@@ -60,7 +61,7 @@ namespace OpenRA.Mods.Medieval
 		public static Inventory[] Stocks(Actor a) => Enumerable.Range(0, StorageGoods.Count).Select(g => StorageGoods.Stock(a, g)).ToArray();
 		public static string DepotName(Actor a) => a == null ? "Aucun dépôt" : $"Dépôt ({a.Location.X}, {a.Location.Y})";
 		public BarterDeal ForMessenger(Actor a) => deals.LastOrDefault(d => d.Messenger == a && d.Active);
-		public bool CanInvite(Actor a, Player p) => p != null && MedievalStockpile.Active(a) && a.TraitOrDefault<MedievalMessenger>() is { } mail && mail.CanCompose(a, p)
+		public bool CanInvite(Actor a, Player p) => PartnerAvailable(p) && MedievalStockpile.Active(a) && a.TraitOrDefault<MedievalMessenger>() is { } mail && mail.CanCompose(a, p)
 			&& ForMessenger(a) == null && Depots(p).Any() && deals.Count(d => d.Active && d.Side(p) >= 0) < 8;
 		public bool Visible(BarterDeal d, Player p) => d.Side(p) >= 0 && (p == d.First || d.State != BarterState.Invited
 			|| d.Messenger.IsInWorld && d.Messenger.Trait<MedievalMessenger>().CanReceive(d.Messenger, p));
@@ -97,12 +98,12 @@ namespace OpenRA.Mods.Medieval
 		public void Resolve(Player p, Order order)
 		{
 			var w = p.World;
-			if (p.NonCombatant || p.WinState == WinState.Lost) return;
+			if (!PartnerAvailable(p)) return;
 			if (order.OrderString == "MedievalInviteBarter")
 			{
 				if (order.Target.Type != TargetType.Actor || order.ExtraActors is not { Length: 1 }) return;
 				var courier = order.Target.Actor; var target = order.ExtraActors[0];
-				if (!CanInvite(courier, p) || !MedievalMessenger.Barracks(target) || !Depots(target.Owner).Any()
+				if (!CanInvite(courier, p) || !MedievalMessenger.Barracks(target) || !PartnerAvailable(target.Owner) || !Depots(target.Owner).Any()
 					|| deals.Count(d => d.Active && d.Side(target.Owner) >= 0) >= 8) return;
 				var mail = courier.Trait<MedievalMessenger>();
 				if (!mail.CanTarget(courier, p, target) || mail.Revision != order.ExtraData) return;
@@ -118,6 +119,7 @@ namespace OpenRA.Mods.Medieval
 			var fields = (order.TargetString ?? "").Split(';', 2);
 			if (deal == null || deal.Side(p) < 0 || !Visible(deal, p) || fields.Length != 2
 				|| !uint.TryParse(fields[0], NumberStyles.None, CultureInfo.InvariantCulture, out var revision) || revision != deal.Revision) return;
+			if (deal.Active && (!PartnerAvailable(deal.First) || !PartnerAvailable(deal.Second))) { Abort(deal, "Un partenaire ne peut plus négocier."); return; }
 			if (deal.Negotiable && !MessengerPresent(deal)) { Abort(deal, "Le messager n'est plus disponible pour négocier."); return; }
 			if (order.OrderString == "MedievalBarterRefuse" && deal.Negotiable) { Abort(deal, "Marchandage refusé ou annulé."); return; }
 			if (order.OrderString == "MedievalBarterOpen" && deal.State == BarterState.Invited && p == deal.Second
@@ -164,6 +166,7 @@ namespace OpenRA.Mods.Medieval
 			var w = self.World; if (w.WorldTick % 10 != 0) return;
 			foreach (var d in deals)
 			{
+				if (d.Active && (!PartnerAvailable(d.First) || !PartnerAvailable(d.Second))) Abort(d, "Un partenaire ne peut plus négocier.");
 				if (d.Negotiable)
 				{
 					if (!MessengerPresent(d)) Abort(d, "Le messager a quitté la négociation ou a été perdu.");
