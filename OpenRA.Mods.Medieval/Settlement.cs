@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Medieval
 			.Sum(a => a.Trait.Info.Population) + p.World.ActorsHavingTrait<MedievalFoundingCaravan>().Where(a => a.Owner == p && MedievalStockpile.Active(a)).Sum(CitizenCount);
 		public static bool CanPlace(World world, Player player, string type, CPos cell)
 		{
-			if (!world.Map.Rules.Actors.TryGetValue(type, out var actor)) return false;
+			if (string.IsNullOrEmpty(type) || !world.Map.Rules.Actors.TryGetValue(type, out var actor)) return false;
 			var area = actor.TraitInfoOrDefault<MedievalAgriculturalAreaInfo>();
 			var decoration = actor.HasTraitInfo<MedievalDecorationInfo>() || actor.HasTraitInfo<MedievalFortificationInfo>();
 			if (!Buildings.Contains(type) && area == null && !MedievalDecorations.Types.Contains(type) && !MedievalFortifications.Types.Contains(type) && !MedievalMilitaryWorkshop.Types.Contains(type) && type != "md.siegeworkshop" && type != "md.sheepfold" && type != "md.tentweaver" && type != "md.torch" && type != "md.huntinglodge" && type != "md.goldmine" && type != "md.church") return false;
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Medieval
 				if (!zone.ValidSize) { Message = "La zone doit mesurer entre 2 et 10 cases par cote."; return; }
 				Place(self, zone.ActorType(order.TargetString), zone.Start);
 			}
-			else if (order.OrderString == "MedievalPlace")
+			else if (order.OrderString == "MedievalPlace" && order.Target.Type == TargetType.Terrain)
 			{
 				var type = order.TargetString;
 				var cell = self.World.Map.CellContaining(order.Target.CenterPosition);

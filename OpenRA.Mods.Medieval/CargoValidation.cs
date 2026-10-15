@@ -121,6 +121,13 @@ namespace OpenRA.Mods.Medieval
 					var generator = w.OrderGenerator as MedievalLogisticsTargetGenerator; Check(generator != null, "Ground button opens targeting.");
 					if (generator == null) return;
 					var pixel = renderer.Viewport.WorldToViewPx(renderer.ScreenPxPosition(pile.CenterPosition));
+					var previousMouse = Viewport.LastMousePos;
+					try
+					{
+						Viewport.LastMousePos = pixel;
+						Check(((IOrderGenerator)generator).RenderAnnotations(renderer, w).Any(), "Ground recovery preview renders at the hovered cargo pile.");
+					}
+					finally { Viewport.LastMousePos = previousMouse; }
 					var orders = ((IOrderGenerator)generator).Order(w, pile.Location, pixel, new MouseInput(MouseInputEvent.Down, ((OrderGenerator)generator).ActionButton, pixel, int2.Zero, Modifiers.None, 1)).ToArray();
 					Check(orders.Length == 1 && orders[0].OrderString == "MedievalCollectCargo", "Ground targeting emits a valid collection order.");
 					foreach (var order in orders) w.IssueOrder(order);

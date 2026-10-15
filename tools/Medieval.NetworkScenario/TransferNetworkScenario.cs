@@ -14,7 +14,7 @@ namespace OpenRA.Platforms.NetworkTest
 	{
 		public override object Create(ActorInitializer init) => new TransferNetworkAudit();
 	}
-	public sealed class TransferNetworkAudit : IWorldLoaded, ITick
+	public sealed partial class TransferNetworkAudit : IWorldLoaded, ITick
 	{
 		readonly List<string> errors = [];
 		readonly List<object> checkpoints = [];
@@ -80,7 +80,9 @@ namespace OpenRA.Platforms.NetworkTest
 					for (var g = 0; g < StorageGoods.Count; g++) Check(StorageGoods.Amount(carts[p], g) + StorageGoods.Amount(stores[p], g) == 10, "Conservation across inventories: " + p + "/" + g);
 				}
 			}
-			if (tick % 100 == 0) checkpoints.Add(new { tick, hash = w.SyncHash(), stocks = carts.SelectMany(a => Enumerable.Range(0, StorageGoods.Count).Select(g => StorageGoods.Amount(a, g))).ToArray() });
+			if (tick % 100 == 0) checkpoints.Add(new { tick, hash = w.SyncHash(), stocks = carts.Concat(trainingCarts)
+				.Where(a => a != null && a.IsInWorld && !a.IsDead)
+				.SelectMany(a => Enumerable.Range(0, StorageGoods.Count).Select(g => StorageGoods.Amount(a, g))).ToArray() });
 			if (tick == 1880)
 				for (var p = 0; p < players.Length; p++)
 					if (players[p] == w.LocalPlayer) w.IssueOrder(new Order("MedievalRecoverTrade", carts[p], false));
@@ -120,11 +122,14 @@ namespace OpenRA.Platforms.NetworkTest
 				Check(Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Amount(carts[1], g) == (g == 9 ? 2 : 3)), "Enemy collects every commodity over authenticated TCP orders.");
 				if (w.LocalPlayer == players[1]) w.IssueOrder(new Order("MedievalRecoverTrade", carts[1], false));
 			}
-			if (tick < 4300) return;
-			Check(Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Amount(carts[1], g) == 0), "Recovered loot is delivered physically to the enemy market.");
-			for (var g = 0; g < StorageGoods.Count; g++)
-				Check(StorageGoods.Amount(markets[1], g) + StorageGoods.Amount(stores[1], g) == 10 + (g == 9 ? 2 : 3)
-					&& StorageGoods.Stock(markets[1], g).Incoming(StorageGoods.Index(g)) == 0, "Network looting conserves quantities and releases reservations: " + g);
+			if (tick == 4300)
+			{
+				Check(Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Amount(carts[1], g) == 0), "Recovered loot is delivered physically to the enemy market.");
+				for (var g = 0; g < StorageGoods.Count; g++)
+					Check(StorageGoods.Amount(markets[1], g) + StorageGoods.Amount(stores[1], g) == 10 + (g == 9 ? 2 : 3)
+						&& StorageGoods.Stock(markets[1], g).Incoming(StorageGoods.Index(g)) == 0, "Network looting conserves quantities and releases reservations: " + g);
+			}
+			if (tick < 4300 || !TrainingReservations(w)) return;
 			File.WriteAllText(Path.Combine(Platform.SupportDir, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, errors, tick, local = w.LocalPlayer.InternalName, checkpoints }, new JsonSerializerOptions { WriteIndented = true }));
 			finished = true; Game.RunAfterDelay(2000, Game.Exit);
 		}

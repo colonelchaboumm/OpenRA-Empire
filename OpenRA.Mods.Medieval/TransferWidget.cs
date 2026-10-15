@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Medieval
 		int candidatesTick = -1;
 		Actor selected, store, cart, frozenStore, frozenCart;
 		int selectionHash = -1, dragged = -1, proposed = -1;
+		int columns = 3;
+		int ColumnStride => 396 / columns;
+		int SectionHeight => ((StorageGoods.Count + columns - 1) / columns) * 32 + 40;
 		bool loading;
 		bool showNotice;
 		int2 pointer;
@@ -83,6 +86,15 @@ namespace OpenRA.Mods.Medieval
 			AddChild(portrait);
 		}
 		public Sprite Icon(int good) => icons[good] ??= MedievalMenuIcons.Good(world, good);
+		public void FitHeight(int available)
+		{
+			// Keep both inventories and their drop targets visible when the occupancy panel is shown.
+			columns = available < 398 ? 4 : 3;
+			Bounds.Height = chooser.Bounds.Height = 2 * SectionHeight + 62;
+			Get("MD_TRANSFER_PARTNER").Bounds.Y = SectionHeight + 6;
+			Get("MD_TRANSFER_CART_VIEW").Bounds.Y = SectionHeight - 6;
+			Get("MD_TRANSFER_STOP").Bounds.Y = Get("MD_TRANSFER_COLLECT").Bounds.Y = 2 * SectionHeight + 33;
+		}
 		public string StockDetail(bool upper, int good)
 		{
 			var actor = upper ? Store : Cart;
@@ -187,8 +199,9 @@ namespace OpenRA.Mods.Medieval
 				{ ExtraData = (uint)proposed, TargetString = Number.ToString(CultureInfo.InvariantCulture) });
 			notice = "Ordre envoyé à la charrette."; showNotice = false; CloseChoice();
 		}
-		public Rectangle Cell(bool upper, int good) => new(RenderOrigin.X + 9 + good % 3 * 132, RenderOrigin.Y + (upper ? 42 : 210) + good / 3 * 32, 128, 30);
-		Rectangle Area(bool upper) => new(RenderOrigin.X + 5, RenderOrigin.Y + (upper ? 6 : 174), 400, 164);
+		public Rectangle Cell(bool upper, int good) => new(RenderOrigin.X + 9 + good % columns * ColumnStride,
+			RenderOrigin.Y + 42 + (upper ? 0 : SectionHeight) + good / columns * 32, ColumnStride - 4, 30);
+		Rectangle Area(bool upper) => new(RenderOrigin.X + 5, RenderOrigin.Y + 6 + (upper ? 0 : SectionHeight), 400, SectionHeight - 4);
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			pointer = mi.Location;
@@ -227,8 +240,8 @@ namespace OpenRA.Mods.Medieval
 			Text(Store != null && Store.Owner != world.LocalPlayer && Store.TraitOrDefault<MedievalDroppedCargo>() == null
 				? "Dépôt allié : livraison uniquement · " + Store.Owner.ResolvedPlayerName
 				: Store?.TraitOrDefault<MedievalDroppedCargo>() != null ? "Cargaison accessible à tous · chargement sur place" : "Quantité / capacité · survol : détails · glisser : transfert", 9, 23, Color.LightGray);
-			Text(cart == null ? "Aucune charrette disponible" : "Charrette #" + cart.ActorID + (selected == cart ? " sélectionnée" : " à proximité"), 9, 177, Color.FromArgb(232, 203, 143));
-			Text(Store?.TraitOrDefault<MedievalDroppedCargo>() != null ? "Chargement limité à la place disponible" : "Glisser vers le stock du haut ↑", 9, 194, Color.LightGray);
+			Text(cart == null ? "Aucune charrette disponible" : "Charrette #" + cart.ActorID + (selected == cart ? " sélectionnée" : " à proximité"), 9, SectionHeight + 9, Color.FromArgb(232, 203, 143));
+			Text(Store?.TraitOrDefault<MedievalDroppedCargo>() != null ? "Chargement limité à la place disponible" : "Glisser vers le stock du haut ↑", 9, SectionHeight + 26, Color.LightGray);
 			string detail = null;
 			for (var side = 0; side < 2; side++)
 				for (var g = 0; g < StorageGoods.Count; g++)
@@ -244,25 +257,26 @@ namespace OpenRA.Mods.Medieval
 					if (enabled)
 					{
 						var cr = Game.Renderer.RgbaColorRenderer; var at = (cell.TopLeft + new int2(3, 28)).ToVector3();
-						var available = 122f * inventory.Available(index) / inventory.Capacity(index);
-						var physical = 122f * inventory.Amount(index) / inventory.Capacity(index);
-						var incoming = 122f * inventory.Incoming(index) / inventory.Capacity(index);
+						var barWidth = cell.Width - 6f;
+						var available = barWidth * inventory.Available(index) / inventory.Capacity(index);
+						var physical = barWidth * inventory.Amount(index) / inventory.Capacity(index);
+						var incoming = barWidth * inventory.Incoming(index) / inventory.Capacity(index);
 						cr.FillRect(at, at + new Vector3(available, 1, 0), Color.LightGreen);
 						cr.FillRect(at + new Vector3(available, 0, 0), at + new Vector3(physical, 1, 0), Color.Orange);
 						cr.FillRect(at + new Vector3(physical, 0, 0), at + new Vector3(physical + incoming, 1, 0), Color.SkyBlue);
 						if (inventory.Reserved(index) > 0 || inventory.Incoming(index) > 0)
-							font.DrawText(inventory.Reserved(index) > 0 ? "↑" : "↓", (cell.TopLeft + new int2(114, 2)).ToVector2(), inventory.Reserved(index) > 0 ? Color.Orange : Color.SkyBlue);
+							font.DrawText(inventory.Reserved(index) > 0 ? "↑" : "↓", (cell.TopLeft + new int2(cell.Width - 14, 2)).ToVector2(), inventory.Reserved(index) > 0 ? Color.Orange : Color.SkyBlue);
 					}
 					if (Ui.MouseOverWidget == this && cell.Contains(Viewport.LastMousePos)) detail = StockDetail(side == 0, g);
 				}
 			var status = Cart?.TraitOrDefault<MedievalManualTransfer>();
 			var message = detail ?? (showNotice ? notice : status?.Busy == true ? status.Status : MedievalManualTransfer.UnavailableReason(Cart) ?? status?.Status ?? notice);
-			Text(WidgetUtils.WrapText(message, 390, font), 9, 343, Color.LightGray);
+			Text(WidgetUtils.WrapText(message, 390, font), 9, 2 * SectionHeight + 7, Color.LightGray);
 			if (dragged >= 0)
 			{
 				var target = Area(!loading);
 				Game.Renderer.RgbaColorRenderer.DrawRect(target.TopLeft.ToVector3(), target.BottomRight.ToVector3(), 2, Color.Gold);
-				var at = new int2(Math.Clamp(pointer.X, RenderOrigin.X + 6, RenderOrigin.X + 230), Math.Clamp(pointer.Y - 22, RenderOrigin.Y, RenderOrigin.Y + 350));
+				var at = new int2(Math.Clamp(pointer.X, RenderOrigin.X + 6, RenderOrigin.X + 230), Math.Clamp(pointer.Y - 22, RenderOrigin.Y, RenderOrigin.Y + Bounds.Height - 48));
 				WidgetUtils.DrawPanel("md-panel", new Rectangle(at.X, at.Y, 170, 25));
 				font.DrawText(StorageGoods.Names[dragged] + " → choisir quantité", (at + new int2(5, 5)).ToVector2(), Color.Gold);
 			}

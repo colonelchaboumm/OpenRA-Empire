@@ -79,7 +79,14 @@ namespace OpenRA.Mods.Medieval
 				});
 				Check(Panel.IsVisible() && Panel.Cart == cart && Panel.Store == depot, "Depot exposes its stock and nearest available cart.");
 				Check(Panel.RenderBounds.Right <= Game.Renderer.Resolution.Width && Panel.RenderBounds.Bottom < Game.Renderer.Resolution.Height, "Transfer stocks fit screen.");
-				Game.Renderer.SaveScreenshot(Path.Combine(output, "stocks.png")); Drag(w, true, 0); Quantity(w, 17);
+				var viewport = Ui.Root.Get("MD_CONTEXT_SCROLL").RenderBounds;
+				for (var g = 0; g < StorageGoods.Count; g++)
+					foreach (var upper in new[] { true, false })
+						Check(viewport.Contains(Panel.Cell(upper, g).TopLeft) && viewport.Contains(Panel.Cell(upper, g).BottomRight - new int2(1, 1)),
+							"Every resource and drop target fits the visible stock panel: " + upper + "/" + g);
+				Game.Renderer.SaveScreenshot(Path.Combine(output, "stocks.png"));
+				Drag(w, true, StorageGoods.Count - 1); Click(w, "MD_TRANSFER_CANCEL");
+				Drag(w, true, 0); Quantity(w, 17);
 			}
 			if (tick == 80)
 			{

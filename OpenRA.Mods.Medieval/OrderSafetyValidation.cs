@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Medieval
 		readonly List<(string Name, Func<OrderGenerator> Create, CPos[] Cells)> cases = [];
 		readonly Dictionary<string, OrderGenerator> pausedTools = [];
 		WorldRenderer renderer;
-		Actor escort, escorted, fire, well, goldMarket, goldCart;
+		Actor escort, escorted, fire, well, goldMarket, goldCart, campCommander;
 		string output;
 		int tick;
 		bool tested;
@@ -45,6 +45,7 @@ namespace OpenRA.Mods.Medieval
 			Spawn("barracks", 20, 42); var messenger = Spawn("messenger", 21, 45);
 			var target = Spawn("barracks", 42, 42, rival);
 			var commander = Spawn("commander", 39, 30); commander.Trait<MedievalCampStore>().Stock.Add(1, 1);
+			campCommander = commander;
 			var saboteur = Spawn("saboteur", 38, 40);
 			escort = Spawn("militia", 30, 27); escorted = Spawn("tradecart", 35, 28);
 			fire = Spawn("house", 32, 26); well = Spawn("well", 28, 26);
@@ -63,6 +64,16 @@ namespace OpenRA.Mods.Medieval
 			Check(w.Paused == paused, "Simulation pause state: " + paused);
 			foreach (var test in cases)
 			{
+				if (test.Name == "Commander's tent")
+				{
+					// This checks pause handling on a valid target, not whether a particular
+					// tile happens to be free in the current randomized village.
+					var site = w.Map.FindTilesInAnnulus(campCommander.Location, 2, 6)
+						.Where(c => campCommander.Trait<MedievalCommander>().CanDeploy(campCommander, c))
+						.Select(c => (CPos?)c).FirstOrDefault();
+					Check(site.HasValue, "Commander has a valid tent site for the pause scenario");
+					if (site.HasValue) test.Cells[0] = site.Value;
+				}
 				var generator = !paused && pausedTools.TryGetValue(test.Name, out var retained) ? retained : test.Create();
 				w.OrderGenerator = generator;
 				var orders = new List<Order>();
@@ -81,10 +92,25 @@ namespace OpenRA.Mods.Medieval
 			if (!w.Paused && attempts > 0) { Game.RunAfterDelay(50, () => AwaitPause(w, attempts - 1)); return; }
 			Sync.RunUnsynced(w, () => { Test(w, true); w.SetPauseState(false); }); tested = true;
 		}
+		void MalformedConstruction(World w)
+		{
+			try
+			{
+				var order = new Order("MedievalPlace", w.LocalPlayer.PlayerActor, false) { TargetString = "md.house" };
+				using var reader = new BinaryReader(new MemoryStream(order.Serialize()));
+				var received = Order.Deserialize(w, reader);
+				received.Subject.ResolveOrder(received);
+				Check(true, "Construction order without a target is safely ignored");
+			}
+			catch (InvalidOperationException e) { Check(false, "Construction order without a target throws: " + e.Message); }
+			try { Check(!MedievalSettlement.CanPlace(w, w.LocalPlayer, null, Cell(40, 20)), "Missing building type is safely rejected"); }
+			catch (ArgumentNullException e) { Check(false, "Missing building type throws: " + e.ParamName); }
+		}
 		void ITick.Tick(Actor self)
 		{
 			var w = self.World; if (w.LocalPlayer == null) return; tick++;
 			if (tick == 1) { w.LocalPlayer.Shroud.Disabled = true; w.AddFrameEndTask(Setup); }
+			if (tick == 10) MalformedConstruction(w);
 			if (tick == 20) Sync.RunUnsynced(w, () => { Test(w, false); w.SetPauseState(true); Game.RunAfterDelay(50, () => AwaitPause(w, 40)); });
 			if (tick == 40 && tested) Sync.RunUnsynced(w, () => Test(w, false));
 			if (tick == 50)

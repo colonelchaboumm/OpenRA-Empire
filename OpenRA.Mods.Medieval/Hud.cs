@@ -275,6 +275,7 @@ namespace OpenRA.Mods.Medieval
 			var occupancyHeight = occupancy.IsVisible() ? occupancy.Bounds.Height + 4 : 0;
 			root.Get("MD_CONTEXT_TABS").Bounds.Y = 324 + occupancyHeight;
 			sidebar.Bounds.Y = 354 + occupancyHeight;
+			root.Get<MedievalTransferWidget>("MD_TRANSFER_PANEL").FitHeight(Game.Renderer.Resolution.Height - sidebar.Bounds.Y - 16);
 			if (pageOffset >= Available().Length) pageOffset = 0;
 			ReleaseHiddenFocus();
 			// Size the catalogue to the current category instead of keeping a tall empty background.

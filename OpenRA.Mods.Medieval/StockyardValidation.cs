@@ -56,10 +56,10 @@ namespace OpenRA.Mods.Medieval
 		{
 			storage ??= warehouse;
 			var small = storage.TraitOrDefault<MedievalMarketStall>() != null;
+			Check(MedievalAuditUi.OpenContext(w, storage, small ? "Relais" : "Entrepôt"), "Storage management tab is accessible.");
 			Sync.RunUnsynced(w, () =>
 			{
-				w.Selection.Combine(w, [storage], false, true);
-				Check(Ui.Root.Get(small ? "MD_STALL_PANEL" : "MD_YARD_PANEL").IsVisible(), "Selecting storage must expose its exterior storage panel.");
+				Check(Ui.Root.Get(small ? "MD_STALL_PANEL" : "MD_YARD_PANEL").IsVisible(), "Storage tab must expose its exterior storage panel.");
 				if (small) Check(!Ui.Root.Get("MD_YARD_PANEL").IsVisible(), "Stall and warehouse panels must not overlap.");
 				Ui.Root.Get<ButtonWidget>(small ? "MD_STALL_YARD_PLACE" : "MD_YARD_PLACE").OnClick();
 				var generator = w.OrderGenerator as MedievalStockyardOrderGenerator;

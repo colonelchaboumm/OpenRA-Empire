@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Medieval
 		int stoppedArtisanAt;
 		bool animationsPaused, loomStopped;
 		readonly List<string> errors = [];
+		readonly List<object> deployment = [];
 		bool done, woolCarried, tentCarried, slept, resumed, rested, deployed, packed, rain;
 		static CPos Cell(int x, int y) => new(x + 32, y - 32);
 		void Check(bool ok, string message) { if (!ok && !errors.Contains(message)) errors.Add(message); }
@@ -110,7 +111,19 @@ namespace OpenRA.Mods.Medieval
 				});
 			}
 			if (tick == 700) w.IssueOrder(new Order("Move", soldier, Target.FromCell(w, Cell(32, 29)), false));
-			if (tick == 5600 && cart.Trait<MedievalCampStore>().Stock.Available(1) > 0)
+			if (tick is 5600 or 5620 or 5700 or 5900)
+			{
+				var command = commander.Trait<MedievalCommander>();
+				deployment.Add(new { tick, command.Status, command.Busy, command.Progress,
+					groundFree = MedievalCommander.GroundFree(w, commander.Owner, Cell(32, 31)),
+					canDeploy = command.CanDeploy(commander, Cell(32, 31)), carts = command.Carts(commander).Count(),
+					commanderCell = commander.Location.ToString(), cartCell = cart.Location.ToString(), cartIdle = cart.IsIdle,
+					cartTents = cart.Trait<MedievalCampStore>().Stock.Available(1) });
+			}
+			// Haulers can briefly cross the camp footprint. Like the placement UI, wait for
+			// a valid site and retry a rejected order before the deployment deadline.
+			if (tick >= 5600 && tick <= 5700 && tick % 10 == 0 && cart.Trait<MedievalCampStore>().Stock.Available(1) > 0
+				&& commander.Trait<MedievalCommander>().CanDeploy(commander, Cell(32, 31)))
 			{
 				tentsMade = MedievalCampStore.Amount(w.LocalPlayer, 1);
 				Check(maxCloth == 4 && MedievalCampStore.Amount(w.LocalPlayer, MedievalCampStore.Cloth) == 0,
@@ -118,13 +131,13 @@ namespace OpenRA.Mods.Medieval
 				Check(depot.Trait<MedievalStockpile>().Stock.Amount(0) + weaver.Trait<MedievalTentWorkshop>().Inputs.Amount(0) == 96, "One tent must consume exactly four wood.");
 				w.IssueOrder(new Order("MedievalCommanderDeploy", commander, Target.FromCell(w, Cell(32, 31)), false));
 			}
-			if (tick == 5800)
+			if (tick == 5900)
 			{
 				tent = w.ActorsHavingTrait<MedievalPackTent>().FirstOrDefault(); deployed = tent != null;
 				Check(deployed, "The sheep-to-cart production chain must yield a deployable tent before night.");
 				if (tent != null) { Check(cart.Trait<MedievalCampStore>().Stock.Amount(1) == 0, "Deployment must consume the carried tent."); Order(weaver, "MedievalTentTarget"); }
 			}
-			if (tick == 5850) w.IssueOrder(new Order("Move", commander, Target.FromCell(w, Cell(26, 25)), false));
+			if (tick == 5950) w.IssueOrder(new Order("Move", commander, Target.FromCell(w, Cell(26, 25)), false));
 			if (tick == 6150) w.AddFrameEndTask(_ =>
 			{
 				carrier = Spawn(w, "builder", 27, 25);
@@ -177,7 +190,7 @@ namespace OpenRA.Mods.Medieval
 			Check(woolCarried && tentCarried, "Wool and tents must travel on real carriers."); Check(slept && resumed, "Citizens must resume work after dawn.");
 			Check(rain && maxFatigue > 0 && rested, "Rain and marching must cause fatigue, and tent rest must recover it.");
 			File.WriteAllText(Path.Combine(output, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, errors, tick, woolCarried, tentCarried, slept, resumed, rested, deployed, packed, rain, maxFatigue, tentsMade,
-				cartTents = cart.Trait<MedievalCampStore>().Stock.Amount(1), maxCloth, woolRemaining = sheep.Trait<MedievalSource>().Remaining,
+				cartTents = cart.Trait<MedievalCampStore>().Stock.Amount(1), deployment, maxCloth, woolRemaining = sheep.Trait<MedievalSource>().Remaining,
 				sheepFrames = sheepFrames.Count, loomFrames = loomFrames.Count, loomStopped, animationsPaused,
 				artisan = artisan.Trait<MedievalWorker>().Description, shepherd = shepherd.Trait<MedievalWorker>().Description }, new JsonSerializerOptions { WriteIndented = true }));
 			Console.WriteLine("MEDIEVAL CAMPING: " + (errors.Count == 0 ? "PASS" : string.Join("; ", errors))); done = true; Game.RunAfterDelay(1000, Game.Exit);

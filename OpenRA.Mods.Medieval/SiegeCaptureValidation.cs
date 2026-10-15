@@ -67,7 +67,9 @@ namespace OpenRA.Mods.Medieval
 			+ w.ActorsWithTrait<MedievalSiegeEngine>().Sum(p => p.Trait.Sling.Amount(3)) + Engine.Shots * SiegeRules.StonePerShot;
 		void Setup(World w)
 		{
-			rival = w.Players.Single(p => p.InternalName == "Rival"); w.LocalPlayer.EnemyPlayersMask = rival.PlayerMask;
+			rival = w.Players.Single(p => p.InternalName == "Rival");
+			// Nations start neutral: capture requires hostility from the captor's side too.
+			w.LocalPlayer.EnemyPlayersMask = rival.PlayerMask; rival.EnemyPlayersMask = w.LocalPlayer.PlayerMask;
 			MedievalHeraldry.For(w.LocalPlayer).SetEmpire("Lion rubis", 0xB63838, 0);
 			MedievalHeraldry.For(rival).SetEmpire("Aigle azur", 0x356FAD, 1);
 			Sync.RunUnsynced(w, () => { w.Selection.Clear(); renderer.Viewport.AdjustZoom((float)Math.Log(1.75f / renderer.Viewport.Zoom)); });

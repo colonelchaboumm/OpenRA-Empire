@@ -1,6 +1,8 @@
 // Test-only platform: normal engine, assets, simulation and TCP transport;
 // GPU calls are discarded so several clients can run without a display driver.
 using System;
+using System.IO;
+using System.IO.Compression;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Platforms.Default;
@@ -90,17 +92,43 @@ namespace OpenRA.Platforms.NetworkTest
 	sealed class Texture : ITexture
 	{
 		byte[] data = [];
+		int length;
+		bool compressed;
 		public Size Size { get; private set; }
 		public TextureScaleFilter ScaleFilter { get; set; }
-		public void SetData(byte[] colors, int width, int height) { Size = new Size(width, height); data = (byte[])colors.Clone(); }
+		public void SetData(byte[] colors, int width, int height)
+		{
+			Size = new Size(width, height); length = colors.Length;
+			// Real textures live on the GPU. Retaining every atlas uncompressed in each
+			// headless client exhausts RAM in three-player tests. Preserve exact readback.
+			compressed = length >= 65536;
+			if (!compressed) { data = (byte[])colors.Clone(); return; }
+			using var output = new MemoryStream();
+			using (var stream = new DeflateStream(output, CompressionLevel.Fastest, true)) stream.Write(colors);
+			data = output.ToArray();
+		}
 		public void SetSubData(byte[] colors, int x, int y, int width, int height)
 		{
-			for (var row = 0; row < height; row++) Array.Copy(colors, row * width * 4, data, ((row + y) * Size.Width + x) * 4, width * 4);
+			var pixels = GetData();
+			for (var row = 0; row < height; row++)
+			{
+				var offset = ((row + y) * Size.Width + x) * 4;
+				Array.Copy(colors, offset, pixels, offset, width * 4);
+			}
+			SetData(pixels, Size.Width, Size.Height);
 		}
 		public void SetFloatData(float[] colors, int width, int height) { Size = new Size(width, height); }
-		public void SetDataFromReadBuffer(Rectangle rect) { Size = rect.Size; data = new byte[rect.Width * rect.Height * 4]; }
-		public byte[] GetData() => (byte[])data.Clone();
-		public void Dispose() { data = []; }
+		public void SetDataFromReadBuffer(Rectangle rect) => SetData(new byte[rect.Width * rect.Height * 4], rect.Width, rect.Height);
+		public byte[] GetData()
+		{
+			if (!compressed) return (byte[])data.Clone();
+			var pixels = new byte[length];
+			using var input = new MemoryStream(data);
+			using var stream = new DeflateStream(input, CompressionMode.Decompress);
+			stream.ReadExactly(pixels);
+			return pixels;
+		}
+		public void Dispose() { data = []; length = 0; compressed = false; }
 	}
 	sealed class FrameBuffer : IFrameBuffer
 	{

@@ -108,7 +108,11 @@ namespace OpenRA.Mods.Medieval
 					});
 				});
 			}
-			if (tick == 8) { Click(w, workshop, "MD_SIEGE_PRODUCT_3"); Click(w, null, "MD_MENU_TAB_6"); }
+			if (tick == 8) Click(w, workshop, "MD_SIEGE_PRODUCT_3");
+			// Construction tabs belong to a selected builder in the contextual sidebar.
+			if (tick == 10) Sync.RunUnsynced(w, () => w.Selection.Combine(w, [w.Actors.First(a => a.Info.Name == "md.builder")], false, true));
+			if (tick == 12) Click(w, null, "MD_MENU_TAB_6");
+			if (tick == 15) Sync.RunUnsynced(w, () => w.Selection.Combine(w, [workshop], false, true));
 			if (tick == 35)
 			{
 				Check(militia.Trait<MedievalFireWatch>().Supported, "Militia supported by campfire");

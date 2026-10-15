@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Medieval
 		{
 			if ((Info.Forge ? Product : Recruit) < 0) return false;
 			if (!Enumerable.Range(0, 4).All(r => Inputs.Amount(r) >= Required(self)[r])) return false;
-			return Info.Forge || Enumerable.Range(0, 3).All(r => self.Trait<MedievalEquipmentStore>().Stock.Amount(r) >= MedievalEquipment.Kits[Recruit][r])
+			return Info.Forge || Enumerable.Range(0, 3).All(r => self.Trait<MedievalEquipmentStore>().Stock.Available(r) >= MedievalEquipment.Kits[Recruit][r])
 				&& (self.TraitOrDefault<MedievalCampStore>()?.Stock.Available(MedievalCampStore.Cloth) ?? 0) >= RequiredCloth(self);
 		}
 		public int RequiredCloth(Actor self) => Info.Forge || Recruit < 0 ? 0
@@ -81,8 +81,8 @@ namespace OpenRA.Mods.Medieval
 			var missing = Enumerable.Range(0, 4).Where(r => Inputs.Amount(r) < required[r])
 				.Select(r => $"{required[r] - Inputs.Amount(r)} {MedievalStockDisplay.Labels[r]}");
 			if (!Info.Forge && Recruit >= 0)
-				missing = missing.Concat(Enumerable.Range(0, 3).Where(r => self.Trait<MedievalEquipmentStore>().Stock.Amount(r) < MedievalEquipment.Kits[Recruit][r])
-					.Select(r => $"{MedievalEquipment.Kits[Recruit][r] - self.Trait<MedievalEquipmentStore>().Stock.Amount(r)} {MedievalEquipment.Names[r]}"));
+				missing = missing.Concat(Enumerable.Range(0, 3).Where(r => self.Trait<MedievalEquipmentStore>().Stock.Available(r) < MedievalEquipment.Kits[Recruit][r])
+					.Select(r => $"{MedievalEquipment.Kits[Recruit][r] - self.Trait<MedievalEquipmentStore>().Stock.Available(r)} {MedievalEquipment.Names[r]}"));
 			var cloth = RequiredCloth(self) - (self.TraitOrDefault<MedievalCampStore>()?.Stock.Available(MedievalCampStore.Cloth) ?? 0);
 			if (cloth > 0) missing = missing.Append($"{cloth} tissu");
 			return "Attend : " + string.Join(" / ", missing);

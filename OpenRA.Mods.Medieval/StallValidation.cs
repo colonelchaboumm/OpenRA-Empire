@@ -43,7 +43,16 @@ namespace OpenRA.Mods.Medieval
 		});
 		void Place(World w, int index, CPos cell)
 		{
-			Button(w, "MD_BUILD_" + index);
+			if (index == 9)
+			{
+				Check(MedievalAuditUi.OpenContext(w, market, "Commerce"), "Market trade tab is accessible.");
+				Button(w, "MD_BUILD_9");
+			}
+			else
+			{
+				Check(MedievalAuditUi.OpenContext(w, w.Actors.First(a => a.Owner == w.LocalPlayer && a.Info.Name == "md.builder"), "Construire"), "Builder construction tab is accessible.");
+				Button(w, "MD_MENU_TAB_0"); Button(w, "MD_MENU_ITEM_" + index);
+			}
 			Sync.RunUnsynced(w, () =>
 			{
 				var generator = (OrderGenerator)w.OrderGenerator;
@@ -85,7 +94,7 @@ namespace OpenRA.Mods.Medieval
 			if (tick < 20) return;
 			if (tick == 20)
 			{
-				Select(w, market); Check(Ui.Root.Get("MD_TRADE_PANEL").IsVisible(), "Market selection must reveal the stall build button.");
+				Check(MedievalAuditUi.OpenContext(w, market, "Commerce") && Ui.Root.Get("MD_TRADE_PANEL").IsVisible(), "Market trade tab must reveal the stall build button.");
 				Game.Renderer.SaveScreenshot(Path.Combine(output, "market-menu.png"));
 				Place(w, 9, Cell(38, 28)); stage = 1;
 			}
@@ -114,7 +123,7 @@ namespace OpenRA.Mods.Medieval
 			if (stage == 2 && MedievalStockpile.Active(house) && citizenFed && soldierFed)
 			{
 				Check(stall.Trait<MedievalMarketStall>().Desired(stall, 0) == 0 && stall.Trait<MedievalMarketStall>().Desired(stall, 3) == 0, "Finished construction must stop requesting materials.");
-				Select(w, stall); Check(Ui.Root.Get("MD_STALL_PANEL").IsVisible(), "Selecting a stall must show its live stock and parent market.");
+				Check(MedievalAuditUi.OpenContext(w, stall, "Relais") && Ui.Root.Get("MD_STALL_PANEL").IsVisible(), "Stall relay tab must show its live stock and parent market.");
 				stage = 3; until = tick + 800;
 			}
 			if (stage == 3 && tick == until - 650) Game.Renderer.SaveScreenshot(Path.Combine(output, "supplied-stall.png"));

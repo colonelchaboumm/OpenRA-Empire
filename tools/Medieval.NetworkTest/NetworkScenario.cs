@@ -43,6 +43,7 @@ namespace OpenRA.Platforms.NetworkTest
 		readonly List<Actor> fighters = [];
 		readonly List<MedievalCombatProbe> combat = [];
 		Player[] players;
+		bool[] harvested, delivered;
 		CPos[] origins;
 		WorldRenderer renderer;
 		int tick, stage, recruited;
@@ -55,6 +56,7 @@ namespace OpenRA.Platforms.NetworkTest
 		{
 			renderer = wr;
 			players = w.Players.Where(p => p.PlayerReference.Playable).OrderBy(p => p.InternalName).ToArray();
+			harvested = new bool[players.Length]; delivered = new bool[players.Length];
 			origins = players.Select(p => w.Actors.Single(a => a.Owner == p && a.Info.Name == "md.caravan").Trait<MedievalFoundingCaravan>()
 				.Foundation(w.Actors.Single(a => a.Owner == p && a.Info.Name == "md.caravan"))).ToArray();
 			Check(w.LobbyInfo.NonBotPlayers.Count() == players.Length && players.Length >= 2, "Missing real human network clients");
@@ -72,6 +74,14 @@ namespace OpenRA.Platforms.NetworkTest
 			var w = self.World;
 			if (finished || w.LocalPlayer == null) return;
 			tick++;
+			// Food flow totals cover only the latest minute. A winter or storm pause at
+			// the final checkpoint must not erase production observed earlier in the game.
+			for (var p = 0; p < players.Length; p++)
+			{
+				var food = players[p].PlayerActor.Trait<MedievalFoodEconomy>();
+				harvested[p] |= food.Harvests.Total > 0;
+				delivered[p] |= food.Deliveries.Total > 0;
+			}
 			if (tick % 1000 == 0) Console.WriteLine($"NETWORK TICK {tick}");
 			var local = w.LocalPlayer;
 			var index = Array.IndexOf(players, local);
@@ -143,13 +153,15 @@ namespace OpenRA.Platforms.NetworkTest
 					population = MedievalSettlement.Population(p), consumed = p.PlayerActor.Trait<MedievalFoodEconomy>().TotalConsumed,
 					harvest = p.PlayerActor.Trait<MedievalFoodEconomy>().Harvests.Total,
 					delivered = p.PlayerActor.Trait<MedievalFoodEconomy>().Deliveries.Total }).ToArray() });
-			if (tick < 9000) return;
+			// Leave time for the haulers sheltering with cargo to resume their deliveries.
+			if (tick < (stormRefuge ? 12000 : 9000)) return;
 			foreach (var p in players)
 			{
 				Check(MedievalHeraldry.For(p).CountryName == "Pays " + p.InternalName, "Identity order missing or foreign order accepted");
 				Check(MedievalSettlement.Warehouses(p).Any(), "Warehouse not constructed: " + p.InternalName);
 				var food = p.PlayerActor.Trait<MedievalFoodEconomy>();
-				Check(food.TotalConsumed > 0 && food.Harvests.Total > 0 && food.Deliveries.Total > 0, "Economy stalled: " + p.InternalName);
+				var slot = Array.IndexOf(players, p);
+				Check(food.TotalConsumed > 0 && harvested[slot] && delivered[slot], "Missing harvest, delivery or consumption during the game: " + p.InternalName);
 			}
 			var deaths = fighters.Count(a => a.IsDead || !a.IsInWorld);
 			Check(deaths > 0, "Network combat caused no casualties");
@@ -157,7 +169,7 @@ namespace OpenRA.Platforms.NetworkTest
 			Check(shots > 0, "No actual weapon attacks over the network");
 			if (stormRefuge) Check(maxSheltered > 0, "No citizens reached shelter over TCP");
 			File.WriteAllText(Path.Combine(Platform.SupportDir, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, errors, tick,
-				local = local.InternalName, players = players.Length, deaths, shots, stage, stormRefuge, maxSheltered, checkpoints,
+				local = local.InternalName, players = players.Length, deaths, shots, stage, stormRefuge, maxSheltered, harvested, delivered, checkpoints,
 				workers = w.ActorsWithTrait<MedievalWorker>().Select(p => new { type=p.Actor.Info.Name, owner=p.Actor.Owner.InternalName, p.Trait.Status, p.Trait.Cargo }).ToArray() }, new JsonSerializerOptions { WriteIndented = true }));
 			Console.WriteLine("NETWORK AUDIT: " + (errors.Count == 0 ? "PASS" : "FAIL"));
 			finished = true;
