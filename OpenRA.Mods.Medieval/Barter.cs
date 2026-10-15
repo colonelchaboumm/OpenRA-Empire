@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Medieval
 		public const int MaximumCarts = 100;
 		public static IEnumerable<Actor> AvailableCarts(Player p) => p == null ? [] : p.World.ActorsHavingTrait<MedievalTradeCart>()
 			.Where(a => MedievalStockpile.Active(a) && !a.WillDispose && a.Owner == p && a.TraitOrDefault<MedievalBarterCart>() is { Busy: false }
-				&& a.Trait<MedievalTradeCart>().CanLend && a.TraitOrDefault<MedievalRest>()?.Resting != true
+				&& a.TraitOrDefault<MedievalManualTransfer>()?.Busy != true && a.Trait<MedievalTradeCart>().CanLend && a.TraitOrDefault<MedievalRest>()?.Resting != true
 				&& Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Stock(a, g) is { } s && s.Amount(StorageGoods.Index(g)) == 0
 					&& s.Incoming(StorageGoods.Index(g)) == 0 && s.Reserved(StorageGoods.Index(g)) == 0)).OrderBy(a => a.ActorID);
 		readonly List<BarterDeal> deals = [];

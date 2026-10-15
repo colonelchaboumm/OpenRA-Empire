@@ -12,7 +12,7 @@ namespace OpenRA.Mods.Medieval
 	{
 		[VerifySync] public bool LoadTents;
 		public string Status { get; private set; } = "Placez la charrette pres du campement.";
-		public bool AcceptsTents(Actor self) => LoadTents && MedievalStockpile.Active(self) && self.IsIdle
+		public bool AcceptsTents(Actor self) => LoadTents && !MedievalManualTransfer.Manual(self) && MedievalStockpile.Active(self) && self.IsIdle
 			&& MedievalSupplyCart.InMarketZone(self) && self.TraitOrDefault<MedievalConstructionConvoy>()?.Active != true;
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{

@@ -123,6 +123,7 @@ md.stonecart:
 	MedievalStockpile:
 		Capacity: 0, 0, 0, 60
 	MedievalStoneCart:
+	MedievalManualTransfer:
 
 md.siegebrace:
 	Immobile:

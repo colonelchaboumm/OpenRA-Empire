@@ -18,6 +18,7 @@ md.tradecart:
 md.bartercart:
 	Inherits: md.tradecart
 	-MedievalTradeCart:
+	-MedievalManualTransfer:
 	-MedievalRecruitable:
 	-MedievalNeedsFood:
 	-MedievalRest:

@@ -79,13 +79,39 @@ namespace OpenRA.Mods.Medieval
 				new("md.woodtower", "Tour en bois", "Defense et garnison pour deux archers.")])
 		];
 
+		Action refresh = () => { };
+		public override void Tick() => refresh();
+
 		[ObjectCreator.UseCtor]
 		public MedievalConstructionMenuLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
 			var p = world.LocalPlayer;
 			if (p == null) return;
 			var settlement = p.PlayerActor.Trait<MedievalSettlement>();
-			var category = 0; var page = 0;
+			var category = 0; var page = 0; var lastSelection = -1;
+			Actor Selected() => world.Selection.Actors.FirstOrDefault(a => a.Owner == p && a.IsInWorld && !a.IsDead);
+			int Context() => Selected()?.Info.Name switch
+			{
+				null => world.Selection.Actors.Any(a => a.IsInWorld && !a.IsDead) ? -2 : -1,
+				"md.builder" => -1,
+				"md.market" or "md.marketstall" or "md.sawmill" or "md.quarry" or "md.goldmine" or "md.huntinglodge" or "md.tentweaver" => 5,
+				"md.farm" or "md.ranch" or "md.sheepfold" => 1,
+				_ => -2
+			};
+			string[] Filter() => Selected()?.Info.Name switch
+			{
+				"md.farm" => ["md.field", "md.pasture", "md.sheeppasture"], "md.ranch" => ["md.pasture"], "md.sheepfold" => ["md.sheeppasture"],
+				"md.sawmill" => ["md.lumberjack"], "md.quarry" => ["md.stonecutter"], "md.goldmine" => ["md.goldminer"],
+				"md.huntinglodge" => ["md.hunter"], "md.tentweaver" => ["md.weaver"], _ => null
+			};
+			MedievalMenuEntry[] Items() => Filter() is { } filter ? Categories[category].Items.Where(e => filter.Contains(e.Type)).ToArray() : Categories[category].Items;
+			refresh = () =>
+			{
+				if (lastSelection == world.Selection.Hash) return;
+				lastSelection = world.Selection.Hash; category = Math.Max(0, Context()); page = 0;
+			};
+			widget.Get("MD_PANEL").IsVisible = () => Context() != -2 && (Selected()?.TraitOrDefault<MedievalBuilding>()?.Complete != false);
+			refresh();
 			foreach (var id in Enumerable.Range(0, 9).Select(i => "MD_BUILD_" + i)
 				.Concat(Enumerable.Range(0, 8).Select(i => "MD_RECRUIT_" + i))
 				.Concat(new[] { "MD_FORT_OPEN", "MD_DECOR_OPEN", "MD_RECRUIT_COST", "MD_MILITIA_COST", "MD_ARMS_COST" }))
@@ -95,6 +121,7 @@ namespace OpenRA.Mods.Medieval
 				var index = c;
 				var tab = widget.Get<ButtonWidget>("MD_MENU_TAB_" + c);
 				tab.GetText = () => Categories[index].Name;
+				tab.IsVisible = () => Context() == -1 && (Selected() == null || index != 5);
 				tab.IsHighlighted = () => category == index;
 				tab.OnClick = () => { category = index; page = 0; world.CancelInputMode(); };
 			}
@@ -104,19 +131,19 @@ namespace OpenRA.Mods.Medieval
 			{
 				var b = widget.Get<ButtonWidget>(delta < 0 ? "MD_MENU_PREV" : "MD_MENU_NEXT");
 				b.GetText = () => delta < 0 ? "Precedent" : "Suivant";
-				b.IsVisible = () => Categories[category].Items.Length > 8;
-				b.IsDisabled = () => page + delta < 0 || (page + delta) * 8 >= Categories[category].Items.Length;
+				b.IsVisible = () => Items().Length > 8;
+				b.IsDisabled = () => page + delta < 0 || (page + delta) * 8 >= Items().Length;
 				b.OnClick = () => { if (!b.IsDisabled()) { page += delta; world.CancelInputMode(); } };
 			}
-			widget.Get<LabelWidget>("MD_MENU_PAGE").GetText = () => Categories[category].Items.Length > 8 ? $"{page + 1}/{(Categories[category].Items.Length + 7) / 8}" : "";
+			widget.Get<LabelWidget>("MD_MENU_PAGE").GetText = () => Items().Length > 8 ? $"{page + 1}/{(Items().Length + 7) / 8}" : "";
 			widget.Get<LabelWidget>("MD_MENU_STOCK").GetText = () => category == 3
 				? $"Arcs {MedievalEquipment.Amount(p, 0)} | Epees {MedievalEquipment.Amount(p, 1)} | Armures {MedievalEquipment.Amount(p, 2)}\nLaine {MedievalCampStore.Amount(p, 0)} | Pavillons {MedievalCampStore.Amount(p, 1)} | Tissu {MedievalCampStore.Amount(p, 2)}"
 				: category == 5 && settlement.Recruiting ? "Recrutement en cours..." : "B bois / P pierre / O or / N nourriture / T tissu";
 			for (var i = 0; i < 8; i++)
 			{
 				var index = i;
-				bool Visible() => page * 8 + index < Categories[category].Items.Length;
-				MedievalMenuEntry Entry() => Categories[category].Items[page * 8 + index];
+				bool Visible() => page * 8 + index < Items().Length;
+				MedievalMenuEntry Entry() => Items()[page * 8 + index];
 				var button = widget.Get<ButtonWidget>("MD_MENU_ITEM_" + i);
 				button.IsVisible = Visible;
 				button.GetText = () => "";
@@ -133,7 +160,7 @@ namespace OpenRA.Mods.Medieval
 					: CostText(Entry().Type);
 				var icon = widget.Get<SpriteWidget>($"MD_MENU_ITEM_{i}_ICON");
 				icon.GetSprite = () => !Visible() ? null : category == 6 && index == 0 ? world.Map.Sequences.GetSequence("md.fire-icons", "idle").GetSprite(0)
-					: world.Map.Sequences.GetSequence("md.construction-icons", "idle").GetSprite(category == 6 ? 3 * IconSlotsPerCategory + 3 + index : category * IconSlotsPerCategory + page * 8 + index);
+					: world.Map.Sequences.GetSequence("md.construction-icons", "idle").GetSprite(category == 6 ? 3 * IconSlotsPerCategory + 3 + index : category * IconSlotsPerCategory + Array.FindIndex(Categories[category].Items, e => e.Type == Entry().Type));
 				icon.GetPalette = () => (Visible() && Entry().Type is "md.market" or "md.marketstall" ? "md-market-livery" : "md-livery") + p.InternalName;
 				button.GetTooltipText = () => Visible() ? Entry().Name : "";
 				button.GetTooltipDesc = () => Visible() ? Entry().Description + (category == 5 ? "\nUne place d'habitation. Necessite de la nourriture en continu." : "\nLes batisseurs apportent les materiaux sur place.") : "";
@@ -150,13 +177,13 @@ namespace OpenRA.Mods.Medieval
 			}
 			var rotate = widget.Get<ButtonWidget>("MD_MENU_ROTATE");
 			rotate.GetText = () => "Tourner";
-			rotate.IsVisible = () => category is 3 or 4 or 6;
+			rotate.IsVisible = () => Context() == -1 && category is 3 or 4 or 6;
 			rotate.IsDisabled = () => world.Paused || !(world.OrderGenerator is MedievalDecorationOrderGenerator d && MedievalDecorations.Rotatable(d.Kind)
 				|| world.OrderGenerator is MedievalFortificationOrderGenerator f && MedievalFortifications.Rotatable(f.Kind));
 			rotate.OnClick = () => { if (world.OrderGenerator is MedievalDecorationOrderGenerator d) d.Rotate(); else if (world.OrderGenerator is MedievalFortificationOrderGenerator f) f.Rotate(); };
 			var remove = widget.Get<ButtonWidget>("MD_MENU_REMOVE");
 			remove.GetText = () => "Demolir";
-			remove.IsVisible = () => true;
+			remove.IsVisible = () => Context() == -1;
 			remove.IsDisabled = () => world.Paused;
 			remove.IsHighlighted = () => world.OrderGenerator is MedievalDemolitionOrderGenerator;
 			remove.GetTooltipText = () => "Outil bulldozer : demolition";

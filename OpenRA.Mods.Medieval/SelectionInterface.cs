@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Medieval
 			{
 				selectionHash = world.Selection.Hash; groups = Group(world.Selection.Actors); total = groups.Sum(g => g.Length); page = 0;
 			}
-			var width = Math.Max(230, Game.Renderer.Resolution.Width - 270);
+			var width = Math.Max(230, Game.Renderer.Resolution.Width - 462);
 			slots = Math.Clamp((width / 2 - 140) / 46, 1, buttons.Length);
 			page = Math.Clamp(page, 0, Math.Max(0, (groups.Length - 1) / slots));
 			panel.Bounds.Width = 140 + slots * 46; panel.Bounds.Y = Game.Renderer.Resolution.Height - 100;

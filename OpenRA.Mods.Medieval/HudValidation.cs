@@ -44,14 +44,20 @@ namespace OpenRA.Mods.Medieval
 		});
 		void Tab(World w, string name)
 		{
-			var b = Enumerable.Range(0, 3).Select(i => Ui.Root.Get<ButtonWidget>("MD_CONTEXT_TAB_" + i)).FirstOrDefault(b => b.IsVisible() && b.GetText() == name);
+			ButtonWidget b = null;
+			for (var page = 0; page < 8 && b == null; page++)
+			{
+				b = Enumerable.Range(0, 3).Select(i => Ui.Root.Get<ButtonWidget>("MD_CONTEXT_TAB_" + i)).FirstOrDefault(t => t.IsVisible() && t.GetText() == name);
+				if (b == null && Ui.Root.Get("MD_CONTEXT_NEXT").IsVisible()) Click(w, "MD_CONTEXT_NEXT");
+			}
 			Check(b != null, "Context tab: " + name); if (b != null) Click(w, b.Id);
 		}
 		void Fits(string id)
 		{
-			var b = Ui.Root.Get(id).RenderBounds;
-			Check(b.Left >= 0 && b.Right <= Game.Renderer.Resolution.Width && b.Top >= 0 && b.Bottom < Ui.Root.Get("MD_STATUS_PANEL").RenderBounds.Top,
-				"Panel fits above the selection footer: " + id);
+			var panel = Ui.Root.Get(id);
+			var b = panel.Parent is ScrollPanelWidget scroll ? scroll.RenderBounds : panel.RenderBounds;
+			Check(b.Left >= 0 && b.Right <= Game.Renderer.Resolution.Width && b.Top >= 0 && b.Bottom <= Game.Renderer.Resolution.Height,
+				"Panel viewport fits screen: " + id);
 		}
 		void Setup(World w)
 		{
@@ -62,14 +68,14 @@ namespace OpenRA.Mods.Medieval
 			Spawn("warehouse", 20, 24); Spawn("house", 23, 25);
 			church = Spawn("church", 24, 34);
 			cameraCenter = guard.CenterPosition;
-			Sync.RunUnsynced(w, () => renderer.Viewport.Center(cameraCenter));
+			Sync.RunUnsynced(w, () => renderer.Viewport.Center(cameraCenter + new WVec(3500, 0, 0)));
 		}
 		void ITick.Tick(Actor self)
 		{
 			var w = self.World; if (done || w.LocalPlayer == null) return; tick++;
 			if (tick == 1) { w.LocalPlayer.Shroud.Disabled = true; w.AddFrameEndTask(Setup); return; }
 			// Native desktop pointer events must not edge-scroll the test scene off screen.
-			Sync.RunUnsynced(w, () => renderer.Viewport.Center(cameraCenter));
+			Sync.RunUnsynced(w, () => renderer.Viewport.Center(cameraCenter + new WVec(3500, 0, 0)));
 			if (tick == 40) Select(w, guard);
 			if (tick == 80)
 			{
@@ -86,7 +92,7 @@ namespace OpenRA.Mods.Medieval
 				Check(Ui.Root.Get("MD_PATROL_PANEL").IsVisible() && Ui.Root.Get("MD_PATROL_DRAW").IsVisible(), "Militia retains patrol commands after a selection change.");
 				Select(w, market);
 			}
-			if (tick == 220) { Check(Ui.Root.Get("MD_TRADE_PANEL").IsVisible() && !Ui.Root.Get("MD_LOCALITY_PANEL").IsVisible(), "Market defaults to commerce."); Tab(w, "Localité"); }
+			if (tick == 220) { Check(Ui.Root.Get("MD_PANEL").IsVisible() && !Ui.Root.Get("MD_LOCALITY_PANEL").IsVisible(), "Market defaults to citizen recruitment."); Tab(w, "Localité"); }
 			if (tick == 240)
 			{
 				Check(Ui.Root.Get("MD_LOCALITY_PANEL").IsVisible(), "Rename and locality details remain reachable.");
@@ -135,7 +141,7 @@ namespace OpenRA.Mods.Medieval
 				Game.RunAfterDelay(500, () => { pauseChecked = Ui.Root.Get("MD_PATROL_PANEL").IsVisible(); Check(pauseChecked, "Context updates while paused."); Click(w, "MD_CONTEXT_COLLAPSE"); w.SetPauseState(false); });
 			}
 			if (tick == 440) guard.Dispose();
-			if (tick == 480) Check(!Ui.Root.Get("MD_CONTEXT_TABS").IsVisible(), "Disposed selection clears its contextual actions.");
+			if (tick == 480) Check(!Ui.Root.Get("MD_PATROL_PANEL").IsVisible() && Ui.Root.Get("MD_PANEL").IsVisible(), "Disposed selection returns to construction overview.");
 			if (tick == 500) Select(w, church);
 			if (tick == 540)
 			{
@@ -156,13 +162,14 @@ namespace OpenRA.Mods.Medieval
 			if (tick == 640)
 			{
 				Check(Ui.Root.Get("MD_CONTEXT_NEXT").IsVisible(), "Mixed selection exposes additional context pages.");
-				Click(w, "MD_CONTEXT_NEXT"); Click(w, "MD_CONTEXT_TAB_0");
+				Tab(w, "Commerce");
 				Check(Ui.Root.Get("MD_TRADE_PANEL").IsVisible(), "Additional mixed-selection pages can be opened.");
-				Click(w, "MD_MENU_TAB_4");
+				Select(w);
 			}
+			if (tick == 660) Click(w, "MD_MENU_TAB_4");
 			if (tick == 680)
 			{
-				Check(Ui.Root.Get("MD_PANEL").RenderBounds.Bottom <= Game.Renderer.Resolution.Height - 8, "Longest catalogue fits the screen.");
+				Fits("MD_PANEL");
 				Click(w, "MD_MENU_NEXT"); Check(Ui.Root.Get<LabelWidget>("MD_MENU_PAGE").GetText() == "2/3", "Catalogue paging remains reachable.");
 				Game.Renderer.SaveScreenshot(Path.Combine(output, "catalogue.png"));
 			}

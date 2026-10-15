@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Medieval
 		public bool Wants(int resource) => resource >= 0 && resource < Inventory.ResourceCount && (loadMask & (1 << resource)) != 0;
 		public static bool InMarketZone(Actor self) => MedievalMarket.Markets(self.Owner).Any(a => MedievalFoodEconomy.Station(a).Covers(self.CenterPosition));
 		public bool AcceptsDelivery(Actor self, int resource) => MedievalStockpile.Active(self) && self.IsIdle && reloadTarget == null
-			&& Wants(resource) && InMarketZone(self)
+			&& !MedievalManualTransfer.Manual(self) && Wants(resource) && InMarketZone(self)
 			&& (self.TraitOrDefault<MedievalConstructionConvoy>() is not { Active: true } convoy || convoy.CanLoad(self));
 		public int DeliveryFree(Actor self, int resource)
 		{
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		void ITick.Tick(Actor self)
 		{
-			if (self.IsDead || --cadence > 0) return;
+			if (self.IsDead || MedievalManualTransfer.Manual(self) || --cadence > 0) return;
 			cadence = info.LoadInterval;
 			if (!self.IsIdle) return;
 			if (self.TraitOrDefault<MedievalConstructionConvoy>() is { Active: true } convoy && !convoy.CanLoad(self)) return;

@@ -527,6 +527,7 @@ md.supplycart:
 	MedievalFoodProvider:
 		Radius: 4c0
 	MedievalSupplyCart:
+	MedievalManualTransfer:
 	MedievalConstructionConvoy:
 	MedievalConstructionSupply:
 		Radius: 8c0
