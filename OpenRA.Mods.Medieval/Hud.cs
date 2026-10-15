@@ -38,6 +38,10 @@ namespace OpenRA.Mods.Medieval
 		bool collapsed, foodOpen;
 		Widget previousPanel;
 		readonly ScrollPanelWidget sidebar;
+		readonly Widget occupancy;
+		MedievalOccupancy occupancyReport;
+		Actor occupancyActor;
+		int occupancyTick = -1;
 		Page[] Available()
 		{
 			if (cachedSelection != world.Selection.Hash || cachedTick != world.WorldTick)
@@ -78,6 +82,14 @@ namespace OpenRA.Mods.Medieval
 			overview.Get<LabelWidget>("MD_POP").GetText = () => world.LocalPlayer is { } player ? $"Pop. : {MedievalSettlement.Population(player)}/{MedievalSettlement.Housing(player)}" : "";
 			var info = new BackgroundWidget { Id = "MD_BUILDING_INFO", Bounds = new WidgetBounds(0, 0, 410, 94), Background = "md-panel" };
 			Actor Building() => world.Selection.Actors.FirstOrDefault(a => a.IsInWorld && !a.IsDead && a.Owner == world.LocalPlayer && a.TraitOrDefault<MedievalBuilding>() != null);
+			occupancy = new BackgroundWidget { Id = "MD_OCCUPANCY", Bounds = new WidgetBounds(right, 324, 434, 54), Background = "md-panel" };
+			occupancy.IsVisible = () => occupancyReport != null && occupancyActor?.Owner == world.LocalPlayer && occupancyActor.IsInWorld && !occupancyActor.IsDead
+				&& world.Selection.Contains(occupancyActor) && !collapsed && !OverlayOpen();
+			MedievalMenuIcons.Add(occupancy, renderer, "MD_OCCUPANCY_ICON", 9, 10, 30,
+				() => MedievalMenuIcons.Entry(world, "md.house"), () => "md-livery" + world.LocalPlayer?.InternalName);
+			MedievalTransferWidget.Label(occupancy, "MD_OCCUPANCY_RATE", 46, 3, 378, 24, () => occupancyReport?.Title ?? "");
+			MedievalTransferWidget.Label(occupancy, "MD_OCCUPANCY_DETAILS", 46, 27, 378, 21, () => occupancyReport?.Details ?? "");
+			widget.AddChild(occupancy);
 			info.IsVisible = () => Building() != null;
 			MedievalTransferWidget.Label(info, "MD_BUILDING_NAME", 9, 8, 392, 24, () => Building() is { } a ? (MedievalConstructionMenuLogic.Categories.SelectMany(c => c.Items).FirstOrDefault(e => e.Type == a.Info.Name).Name ?? "Bâtiment") + " #" + a.ActorID : "");
 			MedievalTransferWidget.Label(info, "MD_BUILDING_STATE", 9, 36, 392, 48, () => Building()?.Trait<MedievalBuilding>().Complete == true ? "Bâtiment en service.\nSes commandes sont accessibles dans les onglets." : "Chantier en cours. Les bâtisseurs apportent les matériaux.");
@@ -255,6 +267,14 @@ namespace OpenRA.Mods.Medieval
 			cachedTick = -1;
 			var selected = world.Selection.Actors.Where(a => a.IsInWorld && !a.IsDead).ToArray();
 			if (!selection.SequenceEqual(selected)) { selection = selected; chosen = null; pageOffset = 0; collapsed = false; }
+			var building = selected.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.TraitOrDefault<MedievalBuilding>() != null);
+			if (occupancyActor != building || occupancyTick != world.WorldTick)
+			{
+				occupancyActor = building; occupancyTick = world.WorldTick; occupancyReport = MedievalOccupancy.Read(building);
+			}
+			var occupancyHeight = occupancy.IsVisible() ? occupancy.Bounds.Height + 4 : 0;
+			root.Get("MD_CONTEXT_TABS").Bounds.Y = 324 + occupancyHeight;
+			sidebar.Bounds.Y = 354 + occupancyHeight;
 			if (pageOffset >= Available().Length) pageOffset = 0;
 			ReleaseHiddenFocus();
 			// Size the catalogue to the current category instead of keeping a tall empty background.
@@ -269,7 +289,7 @@ namespace OpenRA.Mods.Medieval
 			root.Get("MD_MENU_STOCK").Bounds.Y = bottom;
 			root.Get("MD_PANEL").Bounds.Height = bottom + 36;
 			sidebar.Layout.AdjustChildren();
-			sidebar.Bounds.Height = Math.Min(Game.Renderer.Resolution.Height - 366, sidebar.ContentHeight);
+			sidebar.Bounds.Height = Math.Min(Game.Renderer.Resolution.Height - sidebar.Bounds.Y - 12, sidebar.ContentHeight);
 			state.Hovered.Clear();
 			if (Ui.MouseOverWidget is WorldInteractionControllerWidget or ViewportControllerWidget)
 				foreach (var hit in world.ScreenMap.ActorsAtMouse(renderer.Viewport.ViewToWorldPx(Viewport.LastMousePos)))

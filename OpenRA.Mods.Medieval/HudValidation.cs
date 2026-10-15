@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Medieval
 		readonly List<string> errors = [];
 		WorldRenderer renderer;
 		Actor guard, militia, market, barracks, cart, church;
+		Actor house, foundingMarket, resident, construction;
 		WPos cameraCenter;
 		string output;
 		int tick;
@@ -69,6 +70,32 @@ namespace OpenRA.Mods.Medieval
 			church = Spawn("church", 24, 34);
 			cameraCenter = guard.CenterPosition;
 			Sync.RunUnsynced(w, () => renderer.Viewport.Center(cameraCenter + new WVec(3500, 0, 0)));
+		}
+		void SetupOccupancy(World w)
+		{
+			foreach (var a in w.Actors.Where(a => a.Info.Name.StartsWith("md.", StringComparison.Ordinal)).ToArray()) a.Dispose();
+			Actor Spawn(string type, int x, int y) => w.CreateActor("md." + type, [new OwnerInit(w.LocalPlayer), new LocationInit(new CPos(x + 32, y - 32))]);
+			house = Spawn("house", 24, 25); foundingMarket = Spawn("foundingmarket", 29, 25); market = Spawn("market", 24, 20);
+			var clock = w.WorldActor.Trait<MedievalDayNight>().Clock;
+			while (!clock.Night) clock.Advance();
+			resident = Spawn("hauler", 23, 25);
+			foreach (var (unit, home) in new[] { (resident, house), (Spawn("hauler", 25, 27), house), (Spawn("hauler", 43, 43), house),
+				(Spawn("hauler", 28, 25), foundingMarket), (Spawn("hauler", 29, 27), foundingMarket) })
+			{
+				unit.Trait<MedievalWorker>().Automatic = false;
+				unit.Trait<MedievalRest>().ResumeAfterEmergency(unit, home, false);
+			}
+			cameraCenter = house.CenterPosition;
+			Select(w, house);
+		}
+		void OccupancyFits()
+		{
+			Fits("MD_OCCUPANCY"); Fits("MD_CONTEXT_SCROLL");
+			var panel = Ui.Root.Get("MD_OCCUPANCY");
+			Check(panel.IsVisible(), "Selected housing exposes its occupation without opening a tab.");
+			Check(panel.RenderBounds.Bottom <= Ui.Root.Get("MD_CONTEXT_TABS").RenderBounds.Top, "Occupation does not overlap the context tabs.");
+			foreach (var label in panel.Children.OfType<LabelWidget>())
+				Check(Game.Renderer.Fonts[label.Font].Measure(label.GetText()).X <= label.Bounds.Width, "Occupation text fits: " + label.Id);
 		}
 		void ITick.Tick(Actor self)
 		{
@@ -173,7 +200,61 @@ namespace OpenRA.Mods.Medieval
 				Click(w, "MD_MENU_NEXT"); Check(Ui.Root.Get<LabelWidget>("MD_MENU_PAGE").GetText() == "2/3", "Catalogue paging remains reachable.");
 				Game.Renderer.SaveScreenshot(Path.Combine(output, "catalogue.png"));
 			}
-			if (tick < 700) return;
+			if (tick == 700) w.AddFrameEndTask(SetupOccupancy);
+			if (tick == 720)
+			{
+				Check(Ui.Root.Get<LabelWidget>("MD_OCCUPANCY_RATE").GetText() == "Occupation au repos : 3/8 · 38 %", "House occupation includes reserved arrivals.");
+				Check(Ui.Root.Get<LabelWidget>("MD_OCCUPANCY_DETAILS").GetText() == "2 à l’abri · 1 en route · 5 libres", "Sleeping citizens and arrivals are distinguished.");
+				OccupancyFits(); Game.Renderer.SaveScreenshot(Path.Combine(output, "house-occupancy.png"));
+				Click(w, "MD_CAMP_OPEN"); Check(!Ui.Root.Get("MD_OCCUPANCY").IsVisible(), "Occupation hides behind global reports."); Click(w, "MD_CAMP_CLOSE");
+				resident.Kill(house);
+			}
+			if (tick == 740)
+			{
+				Check(Ui.Root.Get<LabelWidget>("MD_OCCUPANCY_RATE").GetText() == "Occupation au repos : 2/8 · 25 %", "A dead resident immediately frees their displayed bed.");
+				Select(w, foundingMarket);
+			}
+			if (tick == 760)
+			{
+				Check(Ui.Root.Get<LabelWidget>("MD_OCCUPANCY_RATE").GetText() == "Occupation au repos : 2/3 · 67 %", "Founding market uses its own three beds.");
+				OccupancyFits(); Game.Renderer.SaveScreenshot(Path.Combine(output, "market-occupancy.png"));
+				w.IssueOrder(new Order("MedievalWakeShelter", foundingMarket, false));
+			}
+			if (tick == 780)
+			{
+				Check(Ui.Root.Get<LabelWidget>("MD_OCCUPANCY_RATE").GetText() == "Occupation au repos : 0/3 · 0 %", "Waking residents refreshes market occupation.");
+				market.Trait<MedievalStockpile>().Stock.Add(1, 200);
+				w.IssueOrder(new Order("MedievalCreateCart", market, false)); Select(w, market);
+			}
+			if (tick == 800)
+			{
+				Check(Ui.Root.Get<LabelWidget>("MD_OCCUPANCY_RATE").GetText() == "Logements nation : 5/11 · 45 %", "Ordinary market displays national housing including recruitment reservations.");
+				Check(Ui.Root.Get<LabelWidget>("MD_OCCUPANCY_DETAILS").GetText() == "4 habitants · 1 en formation · 6 libres", "The market separates current inhabitants from recruitment.");
+				OccupancyFits(); Game.Renderer.SaveScreenshot(Path.Combine(output, "national-housing.png"));
+				w.AddFrameEndTask(_ =>
+				{
+					construction = w.CreateActor("md.house", [new OwnerInit(w.LocalPlayer), new LocationInit(new CPos(58, -2)), new MedievalConstructionInit()]);
+					Select(w, construction);
+				});
+			}
+			if (tick == 820)
+			{
+				Check(Ui.Root.Get<LabelWidget>("MD_OCCUPANCY_RATE").GetText() == "Occupation indisponible", "An unfinished house cannot advertise free usable beds.");
+				OccupancyFits();
+				w.AddFrameEndTask(_ => construction.ChangeOwner(w.Players.First(p => p.InternalName == "Rival")));
+			}
+			if (tick == 840)
+			{
+				Check(!Ui.Root.Get("MD_OCCUPANCY").IsVisible(), "Enemy housing does not expose private occupation.");
+				house.Dispose(); foundingMarket.Dispose(); Select(w, market);
+			}
+			if (tick == 860)
+			{
+				Check(Ui.Root.Get<LabelWidget>("MD_OCCUPANCY_RATE").GetText() == "Logements nation : 5/0", "Zero housing has no undefined percentage.");
+				Check(Ui.Root.Get<LabelWidget>("MD_OCCUPANCY_DETAILS").GetText().Contains("5 places manquantes", StringComparison.Ordinal), "Housing loss reports the shortage without negative free places.");
+				OccupancyFits();
+			}
+			if (tick < 880) return;
 			File.WriteAllText(Path.Combine(output, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, errors, tick, pauseChecked,
 				resolution = Game.Renderer.Resolution.ToString() }, new JsonSerializerOptions { WriteIndented = true }));
 			done = true; Console.WriteLine("MEDIEVAL HUD: " + (errors.Count == 0 ? "PASS" : string.Join("; ", errors))); Game.RunAfterDelay(500, Game.Exit);

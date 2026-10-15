@@ -6070,6 +6070,7 @@
   "OpenRA.Mods.Medieval/NaturalValidation.cs",
   "OpenRA.Mods.Medieval/NatureGeometry.cs",
   "OpenRA.Mods.Medieval/NightPatrolValidation.cs",
+  "OpenRA.Mods.Medieval/Occupancy.cs",
   "OpenRA.Mods.Medieval/OpenRA.Mods.Medieval.csproj",
   "OpenRA.Mods.Medieval/OrderSafetyValidation.cs",
   "OpenRA.Mods.Medieval/Patrol.cs",
