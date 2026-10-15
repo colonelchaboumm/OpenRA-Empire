@@ -1,0 +1,22 @@
+World:
+	MedievalDiplomacyValidation:
+	MedievalDayNight:
+		DayTicks: 100000
+	MedievalWeather:
+		FirstRainTicks: 100000
+
+^MDWORKER:
+	MedievalNeedsFood:
+		MealInterval: 100000
+		StarvationDelay: 200000
+
+md.builder:
+	MedievalNeedsFood:
+		MealInterval: 50
+
+md.militia:
+	MedievalNeedsFood:
+		MealInterval: 50
+
+^MDFIGHTER:
+	MedievalCombatProbe:

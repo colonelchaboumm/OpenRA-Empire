@@ -197,7 +197,8 @@ namespace OpenRA.Mods.Medieval
 		public static double Demand(Player player) => Needs(player).Sum(n => n.DemandPerMinute);
 		public static int Hungry(Player player) => Citizens(player).Where(a => a.Trait<MedievalNeedsFood>().Need.Hungry).Sum(MedievalSettlement.CitizenCount);
 		public static int Starving(Player player) => Citizens(player).Where(a => a.Trait<MedievalNeedsFood>().Need.Starving).Sum(MedievalSettlement.CitizenCount);
-		public static IEnumerable<Actor> Providers(Player p) => p.World.ActorsHavingTrait<MedievalFoodProvider>().Where(a => a.Owner == p && MedievalStockpile.Active(a)
+		public static IEnumerable<Actor> Providers(Player p) => p.World.ActorsHavingTrait<MedievalFoodProvider>().Where(a => (a.Owner == p
+			|| p.IsAlliedWith(a.Owner) && a.TraitOrDefault<MedievalSupplyCart>() != null) && MedievalStockpile.Active(a)
 			&& a.TraitOrDefault<MedievalFoodProvider>() != null).OrderBy(a => a.ActorID);
 		public static int ReadyFood(Player p) => Providers(p).Sum(a => a.Trait<MedievalStockpile>().Stock.Available((int)Material.Food));
 		public static FoodStation Station(Actor a) => new(a.Trait<MedievalStockpile>().Stock, a.CenterPosition,

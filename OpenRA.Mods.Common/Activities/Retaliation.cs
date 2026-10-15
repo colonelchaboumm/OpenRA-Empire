@@ -53,6 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (autoTarget.IsTraitDisabled || autoTarget.Stance == UnitStance.HoldFire || self.Owner != owner
 				|| attacker == null || !attacker.IsInWorld || attacker.IsDead || attacker.WillDispose || attacker.AppearsFriendlyTo(self)
+				|| !autoTarget.Info.RetaliateAgainstNeutral && self.Owner.RelationshipWith(attacker.Owner) == PlayerRelationship.Neutral
 				|| !attacker.CanBeViewedByPlayer(self.Owner))
 				return false;
 

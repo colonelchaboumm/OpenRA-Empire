@@ -36,6 +36,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly MoveCooldownHelper moveCooldownHelper;
 
 		protected Target target;
+		public bool TargetsPlayer(Player player) => target.Type == TargetType.Actor ? target.Actor.Owner == player
+			: target.Type == TargetType.FrozenActor && target.FrozenActor.Owner == player;
 		Target lastVisibleTarget;
 		WDist lastVisibleMaximumRange;
 		BitSet<TargetableType> lastVisibleTargetTypes;

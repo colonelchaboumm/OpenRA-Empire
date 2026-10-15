@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Medieval
 			&& a.SequenceEqual(current.Goods[current.Side(Local)]) && b.SequenceEqual(current.Goods[1 - current.Side(Local)]);
 		void Show(BarterDeal deal)
 		{
-			foreach (var prefix in new[] { "MD_FOOD", "MD_PRIDE", "MD_PLACES", "MD_CAMP", "MD_HERALDRY", "MD_DECOR", "MD_FORT" })
+			foreach (var prefix in new[] { "MD_FOOD", "MD_PRIDE", "MD_PLACES", "MD_CAMP", "MD_HERALDRY", "MD_DIPLOMACY", "MD_DECOR", "MD_FORT" })
 				if (root.Get(prefix == "MD_FOOD" ? "MD_FOOD_DETAILS" : prefix + "_PANEL").IsVisible())
 					root.Get<ButtonWidget>(prefix + "_CLOSE").OnClick();
 			current = deal; shownRevision = deal.Revision; opened = true;

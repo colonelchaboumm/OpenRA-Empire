@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Medieval
 				Sync.RunUnsynced(w, () =>
 				{
 					Check(orders.Against(cases[^1].Main, ally)?.OrderString is not ("Attack" or "ForceAttack"), "Normal contextual click must not attack own citizens.");
-					Check(orders.Against(cases[^1].Main, neutral)?.OrderString is not ("Attack" or "ForceAttack"), "Normal contextual click must not attack neutral citizens.");
+					Check(orders.Against(cases[^1].Main, neutral)?.OrderString is "Attack" or "ForceAttack", "Explicit contextual attacks can target neutral citizens.");
 				});
 			}
 			else if (wave == 6)

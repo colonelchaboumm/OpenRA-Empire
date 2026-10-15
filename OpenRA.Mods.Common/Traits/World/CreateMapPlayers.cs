@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Attach this to the world actor.")]
 	public class CreateMapPlayersInfo : TraitInfo<CreateMapPlayers>, ICreatePlayersInfo
 	{
+		[Desc("Start combatant nations neutral, including lobby teams, before any map actors reveal terrain.")]
+		public readonly bool NeutralCombatants = false;
+
 		/// <summary>
 		/// Returns a list of GameInformation.Players that matches the indexing of ICreatePlayers.CreatePlayers.
 		/// Non-playable players appear as null in the list.
@@ -134,15 +137,19 @@ namespace OpenRA.Mods.Common.Traits
 
 			w.SetPlayers(worldPlayers, localPlayer);
 
+			var neutralCombatants = w.WorldActor.Info.TraitInfo<CreateMapPlayersInfo>().NeutralCombatants;
 			foreach (var p in w.Players)
 				foreach (var q in w.Players)
-					SetupPlayerMasks(p, q);
+					SetupPlayerMasks(p, q, neutralCombatants);
 		}
 
-		static void SetupPlayerMasks(Player p, Player q)
+		static void SetupPlayerMasks(Player p, Player q, bool neutralCombatants)
 		{
 			if (!p.Spectating)
 				p.World.AllPlayersMask = p.World.AllPlayersMask.Union(p.PlayerMask);
+
+			if (neutralCombatants && p != q && !p.NonCombatant && !q.NonCombatant && !p.Spectating && !q.Spectating)
+				return;
 
 			if (p == q || p.PlayerReference.Allies.Contains(q.InternalName))
 			{

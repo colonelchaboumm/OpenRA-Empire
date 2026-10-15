@@ -41,6 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Maximum distance for a defensive response to damage, followed by a return to the original position. Zero keeps stationary retaliation.")]
 		public readonly WDist RetaliationRange = WDist.Zero;
 
+		[Desc("Retaliate against neutral players. Disable when diplomacy handles declarations of war.")]
+		public readonly bool RetaliateAgainstNeutral = true;
+
 		[Desc("It will try to pivot to face the enemy if stance is not HoldFire.")]
 		public readonly bool AllowTurning = true;
 
@@ -235,6 +238,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			var attacker = e.Attacker;
 			if (attacker == null || attacker.Disposed)
+				return;
+
+			if (!Info.RetaliateAgainstNeutral && self.Owner.RelationshipWith(attacker.Owner) == PlayerRelationship.Neutral)
 				return;
 
 			// Don't change targets when there is a target overriding auto-targeting

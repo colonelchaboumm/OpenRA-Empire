@@ -31,8 +31,8 @@ namespace OpenRA.Mods.Medieval
 		public Actor Cart => Live(cart) && cart.Owner == world.LocalPlayer ? cart : null;
 		public bool Choosing => proposed >= 0;
 		public bool Available => Selected() != null;
-		Actor Selected() => world.Selection.Actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && !a.IsDead && !a.WillDispose
-			&& (MedievalManualTransfer.Store(a, world.LocalPlayer) || a.TraitOrDefault<MedievalManualTransfer>() != null));
+		Actor Selected() => world.Selection.Actors.FirstOrDefault(a => a.IsInWorld && !a.IsDead && !a.WillDispose
+			&& (MedievalManualTransfer.Store(a, world.LocalPlayer) || a.Owner == world.LocalPlayer && a.TraitOrDefault<MedievalManualTransfer>() != null));
 		int Limit => Choosing && frozenCart?.Owner == world.LocalPlayer ? MedievalManualTransfer.Maximum(frozenCart, frozenStore, proposed, loading) : 0;
 		int Number => int.TryParse(quantity.Text, NumberStyles.None, CultureInfo.InvariantCulture, out var n) ? n : 0;
 		public MedievalTransferWidget(World world, WorldRenderer renderer)
@@ -96,6 +96,7 @@ namespace OpenRA.Mods.Medieval
 			if (MedievalManualTransfer.UnavailableReason(carrier) is { } reason) return reason;
 			if (MedievalDroppedCargo.Visible(building, carrier.Owner)) return "Cargaison au sol : utilisez « Récupérer au sol » ou un clic droit avec une charrette.";
 			if (!MedievalManualTransfer.Store(building, carrier.Owner)) return "Aucun bâtiment de stockage disponible.";
+			if (load && building.Owner != carrier.Owner) return "Dépôt allié : livraisons autorisées, prélèvements interdits. Chargez votre charrette dans vos propres stocks.";
 			var from = StorageGoods.Stock(load ? building : carrier, good); var to = StorageGoods.Stock(load ? carrier : building, good); var r = StorageGoods.Index(good);
 			if ((to?.Capacity(r) ?? 0) == 0) return "Destination incompatible avec " + StorageGoods.Names[good] + ". Choisissez un autre stock.";
 			if ((from?.Available(r) ?? 0) == 0) return (from?.Reserved(r) ?? 0) > 0 ? "Tout ce stock est déjà réservé pour un transport." : "Aucune quantité disponible de " + StorageGoods.Names[good] + ".";
@@ -223,7 +224,9 @@ namespace OpenRA.Mods.Medieval
 			var font = Game.Renderer.Fonts["TinyBold"];
 			void Text(string text, int x, int y, Color color) => font.DrawText(text, (RenderOrigin + new int2(x, y)).ToVector2(), color);
 			Text(Name(Store), 9, 6, Color.FromArgb(232, 203, 143));
-			Text(Store?.TraitOrDefault<MedievalDroppedCargo>() != null ? "Cargaison accessible à tous · chargement sur place" : "Quantité / capacité · survol : détails · glisser : transfert", 9, 23, Color.LightGray);
+			Text(Store != null && Store.Owner != world.LocalPlayer && Store.TraitOrDefault<MedievalDroppedCargo>() == null
+				? "Dépôt allié : livraison uniquement · " + Store.Owner.ResolvedPlayerName
+				: Store?.TraitOrDefault<MedievalDroppedCargo>() != null ? "Cargaison accessible à tous · chargement sur place" : "Quantité / capacité · survol : détails · glisser : transfert", 9, 23, Color.LightGray);
 			Text(cart == null ? "Aucune charrette disponible" : "Charrette #" + cart.ActorID + (selected == cart ? " sélectionnée" : " à proximité"), 9, 177, Color.FromArgb(232, 203, 143));
 			Text(Store?.TraitOrDefault<MedievalDroppedCargo>() != null ? "Chargement limité à la place disponible" : "Glisser vers le stock du haut ↑", 9, 194, Color.LightGray);
 			string detail = null;

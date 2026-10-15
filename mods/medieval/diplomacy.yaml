@@ -1,0 +1,35 @@
+World:
+	MedievalDiplomacy:
+	CreateMapPlayers:
+		NeutralCombatants: True
+
+Player:
+	MedievalDiplomacyOrders:
+
+^MDWORKER:
+	MedievalDiplomacyCombat:
+
+^MDBUILDING:
+	MedievalDiplomacyCombat:
+
+^MDFIGHTER:
+	Armament:
+		TargetRelationships: Enemy, Neutral
+	AutoTarget:
+		RetaliateAgainstNeutral: False
+	AutoTargetPriority@DEFAULT:
+		ValidRelationships: Enemy
+
+^MDSIEGE:
+	MedievalSiegeArmament:
+		TargetRelationships: Enemy, Neutral
+	AutoTarget:
+		RetaliateAgainstNeutral: False
+	AutoTargetPriority@DEFAULT:
+		ValidRelationships: Enemy
+
+md.woodtower:
+	AutoTarget:
+		RetaliateAgainstNeutral: False
+	AutoTargetPriority@DEFAULT:
+		ValidRelationships: Enemy

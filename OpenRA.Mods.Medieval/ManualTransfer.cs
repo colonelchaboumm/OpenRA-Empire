@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Medieval
 	public sealed class MedievalManualTransfer : ITick, IIssueOrder, IResolveOrder, INotifyRemovedFromWorld, INotifyOwnerChanged, ISync
 	{
 		Actor building;
+		[VerifySync] Player destinationOwner;
 		ManualCargo cargo;
 		[VerifySync] int good, cadence, attempts, elapsed, handling;
 		[VerifySync] bool loading;
@@ -47,7 +48,8 @@ namespace OpenRA.Mods.Medieval
 		public Actor Building => building;
 		public string Status { get; private set; } = "Glissez une ressource pour préparer un transfert.";
 		public static bool Manual(Actor a) => a.TraitOrDefault<MedievalManualTransfer>()?.ManualControl == true;
-		public static bool Store(Actor a, Player owner) => a != null && MedievalStockpile.Active(a) && !a.WillDispose && a.Owner == owner
+		public static bool Store(Actor a, Player owner) => a != null && owner != null && MedievalStockpile.Active(a) && !a.WillDispose && owner.IsAlliedWith(a.Owner)
+			&& a.CanBeViewedByPlayer(owner)
 			&& a.TraitOrDefault<MedievalBuilding>() is { Complete: true, Demolishing: false }
 			&& Enumerable.Range(0, StorageGoods.Count).Any(g => StorageGoods.Stock(a, g)?.Capacity(StorageGoods.Index(g)) > 0);
 		public static bool Available(Actor a) => a != null && MedievalStockpile.Active(a) && !a.WillDispose
@@ -71,6 +73,8 @@ namespace OpenRA.Mods.Medieval
 		public static int Maximum(Actor cart, Actor store, int commodity, bool load)
 		{
 			if (commodity < 0 || commodity >= StorageGoods.Count || !Available(cart) || !Store(store, cart.Owner)) return 0;
+			// Alliance permits gifts, not unilateral withdrawals from another player's reserves.
+			if (load && store.Owner != cart.Owner) return 0;
 			var from = StorageGoods.Stock(load ? store : cart, commodity);
 			var to = StorageGoods.Stock(load ? cart : store, commodity);
 			var r = StorageGoods.Index(commodity);
@@ -90,7 +94,7 @@ namespace OpenRA.Mods.Medieval
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued) => new("MedievalCollectCargo", self, target, false);
 		void Cancel(Actor self, string status, bool stop)
 		{
-			cargo?.Cancel(); cargo = null; Collecting = false; building = null; attempts = cadence = elapsed = handling = 0;
+			cargo?.Cancel(); cargo = null; Collecting = false; building = null; destinationOwner = null; attempts = cadence = elapsed = handling = 0;
 			if (stop) self.CancelActivity();
 			Status = status;
 		}
@@ -120,6 +124,7 @@ namespace OpenRA.Mods.Medieval
 				if (reserved == null) return;
 				self.CancelActivity(); self.TraitOrDefault<MedievalSupplyCart>()?.CancelReload();
 				cargo = reserved; building = target; good = commodity; loading = load;
+				destinationOwner = target.Owner;
 				ManualControl = true; attempts = cadence = elapsed = handling = 0;
 				lastPosition = self.CenterPosition;
 				Status = "Rejoint le bâtiment pour " + (loading ? "charger " : "décharger ") + quantity + " " + StorageGoods.Names[good] + ".";
@@ -130,7 +135,8 @@ namespace OpenRA.Mods.Medieval
 		void ITick.Tick(Actor self)
 		{
 			if (!Busy) return;
-			if (!MedievalStockpile.Active(self) || self.WillDispose || !(Collecting ? MedievalDroppedCargo.Visible(building, self.Owner) : Store(building, self.Owner)))
+			if (!MedievalStockpile.Active(self) || self.WillDispose || !(Collecting ? MedievalDroppedCargo.Visible(building, self.Owner)
+				: Store(building, self.Owner) && building.Owner == destinationOwner && (!loading || building.Owner == self.Owner)))
 			{ Cancel(self, "Transfert annulé : bâtiment ou charrette indisponible.", true); return; }
 			if (self.CenterPosition != lastPosition) { lastPosition = self.CenterPosition; elapsed = 0; }
 			if (++elapsed > 1500) { Cancel(self, "Accès bloqué trop longtemps. Transfert annulé.", true); return; }
@@ -146,7 +152,7 @@ namespace OpenRA.Mods.Medieval
 				Status = recovered > 0 ? recovered + " marchandises récupérées. Déposez-les dans votre dépôt." : "Plus de marchandise compatible ou charrette pleine.";
 				return;
 			}
-			var count = Quantity; cargo.Complete(); cargo = null; building = null;
+			var count = Quantity; cargo.Complete(); cargo = null; building = null; destinationOwner = null;
 			Status = count + " " + StorageGoods.Names[good] + (loading ? " chargés. Charrette disponible." : " déposés. Charrette disponible.");
 		}
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self) => Cancel(self, "Charrette retirée.", false);

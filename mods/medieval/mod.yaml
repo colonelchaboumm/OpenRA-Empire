@@ -112,6 +112,7 @@ Rules:
 	medieval|shadows.yaml
 	medieval|fire-support.yaml
 	medieval|barter.yaml
+	medieval|diplomacy.yaml
 
 Sequences:
 	ra|sequences/ships.yaml

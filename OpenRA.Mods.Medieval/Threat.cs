@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Medieval
 		[VerifySync] public int AggressorId => unchecked((int)(aggressor?.ActorID ?? 0));
 		public Actor RecentAttacker(Actor observer) => lastHit >= 0 && observer.World.WorldTick - lastHit <= 150
 			&& aggressor?.IsInWorld == true && !aggressor.IsDead && !aggressor.WillDispose
-			&& !aggressor.AppearsFriendlyTo(observer) && aggressor.CanBeViewedByPlayer(observer.Owner) ? aggressor : null;
+			&& aggressor.AppearsHostileTo(observer) && aggressor.CanBeViewedByPlayer(observer.Owner) ? aggressor : null;
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (e.Damage.Value <= 0 || e.Attacker == null || e.Attacker.Disposed || e.Attacker.AppearsFriendlyTo(self)) return;

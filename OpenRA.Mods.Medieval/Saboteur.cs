@@ -112,13 +112,15 @@ namespace OpenRA.Mods.Medieval
 		public MedievalSaboteur(MedievalSaboteurInfo info) { this.info = info; }
 		public static bool Hostile(Actor self, Actor target) => target != null && target.Owner != self.Owner && self.Owner.RelationshipWith(target.Owner) == PlayerRelationship.Enemy;
 		public static bool CanTarget(Actor self, Actor target, bool slaughter) => MedievalStockpile.Active(self) && MedievalStockpile.Active(target)
-			&& Hostile(self, target) && target.CanBeViewedByPlayer(self.Owner)
+			&& (Hostile(self, target) || MedievalDiplomacy.Nation(target.Owner) && target.Owner != self.Owner
+				&& self.Owner.RelationshipWith(target.Owner) == PlayerRelationship.Neutral) && target.CanBeViewedByPlayer(self.Owner)
 			&& (slaughter ? target.TraitOrDefault<MedievalAnimal>() != null : target.TraitOrDefault<MedievalBurnable>() != null);
 		public static bool YardAt(Actor target, CPos cell) => target is { Disposed: false } && target.TraitOrDefault<MedievalStockyard>()?.At(cell) != null;
 		public bool Start(Actor self, Actor target, bool slaughter, CPos cell, bool stockyard = false)
 		{
 			if (!CanTarget(self, target, slaughter) || stockyard && (!YardAt(target, cell) || !self.Owner.Shroud.IsVisible(cell))) return false;
 			if (self.TraitOrDefault<MedievalRest>() is { } rest && !rest.Wake(self, true)) return false;
+			self.World.WorldActor.Trait<MedievalDiplomacy>().DeclareWar(self.Owner, target.Owner);
 			self.TraitOrDefault<MedievalPatient>()?.Cancel(self);
 			Cancel(self);
 			self.TraitOrDefault<MedievalHerding>()?.Cancel(self);

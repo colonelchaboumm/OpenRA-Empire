@@ -154,17 +154,17 @@ namespace OpenRA.Mods.Medieval
 			foodToggle.IsHighlighted = () => foodOpen;
 			var foodClose = widget.Get<ButtonWidget>("MD_FOOD_CLOSE");
 			foodClose.GetText = () => "Fermer"; foodClose.OnClick = () => foodOpen = false;
-			overlays = new[] { "MD_FOOD_DETAILS", "MD_PRIDE_PANEL", "MD_PLACES_PANEL", "MD_CAMP_PANEL", "MD_HERALDRY_PANEL", "MD_BARTER_PANEL", "MD_DECOR_PANEL", "MD_FORT_PANEL" }.Select(widget.Get).ToArray();
+			overlays = new[] { "MD_FOOD_DETAILS", "MD_PRIDE_PANEL", "MD_PLACES_PANEL", "MD_CAMP_PANEL", "MD_HERALDRY_PANEL", "MD_BARTER_PANEL", "MD_DIPLOMACY_PANEL", "MD_DECOR_PANEL", "MD_FORT_PANEL" }.Select(widget.Get).ToArray();
 			var influenceLegend = widget.Get("MD_INFLUENCE_LEGEND");
 			var influenceVisible = influenceLegend.IsVisible;
 			influenceLegend.IsVisible = () => influenceVisible() && !OverlayOpen();
-			foreach (var prefix in new[] { "MD_FOOD", "MD_PRIDE", "MD_PLACES", "MD_CAMP", "MD_HERALDRY", "MD_DECOR", "MD_FORT" })
+			foreach (var prefix in new[] { "MD_FOOD", "MD_PRIDE", "MD_PLACES", "MD_CAMP", "MD_HERALDRY", "MD_DIPLOMACY", "MD_DECOR", "MD_FORT" })
 			{
 				var toggle = widget.Get<ButtonWidget>(prefix == "MD_FOOD" ? "MD_FOOD_TOGGLE" : prefix + "_OPEN");
 				var action = toggle.OnClick;
 				toggle.OnClick = () =>
 				{
-					foreach (var other in new[] { "MD_FOOD", "MD_PRIDE", "MD_PLACES", "MD_CAMP", "MD_HERALDRY", "MD_DECOR", "MD_FORT", "MD_BARTER" })
+					foreach (var other in new[] { "MD_FOOD", "MD_PRIDE", "MD_PLACES", "MD_CAMP", "MD_HERALDRY", "MD_DIPLOMACY", "MD_DECOR", "MD_FORT", "MD_BARTER" })
 						if (other != prefix && widget.Get(other == "MD_FOOD" ? "MD_FOOD_DETAILS" : other + "_PANEL").IsVisible())
 							widget.Get<ButtonWidget>(other + "_CLOSE").OnClick();
 					action(); ReleaseHiddenFocus();

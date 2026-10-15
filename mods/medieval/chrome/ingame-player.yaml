@@ -1,5 +1,5 @@
 Container@PLAYER_WIDGETS:
-	Logic: LoadIngameChatLogic, MedievalEconomyLogic, MedievalMessengerLogic, MedievalLocalityLogic, MedievalSiegeLogic, MedievalHeraldryLogic, MedievalCampLogic, MedievalConstructionMenuLogic, MedievalPatrolLogic, MedievalHerdLogic, MedievalSaboteurLogic, MedievalStartCameraLogic, MedievalSelectionLogic, MedievalBarterLogic, MedievalHudLogic
+	Logic: LoadIngameChatLogic, MedievalEconomyLogic, MedievalMessengerLogic, MedievalLocalityLogic, MedievalSiegeLogic, MedievalHeraldryLogic, MedievalCampLogic, MedievalConstructionMenuLogic, MedievalPatrolLogic, MedievalHerdLogic, MedievalSaboteurLogic, MedievalStartCameraLogic, MedievalSelectionLogic, MedievalDiplomacyLogic, MedievalBarterLogic, MedievalHudLogic
 	Children:
 		Container@CHAT_ROOT:
 		LogicKeyListener@PLAYER_KEYHANDLER:

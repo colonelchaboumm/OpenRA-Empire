@@ -13,6 +13,8 @@ ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / 'analysis/medieval/audit'
 # name, map, report folder. All manifests inherit today's normal gameplay rules.
 CASES = [
+    ('diplomacy', 'messenger-test', 'diplomacy/native'),
+    ('diplomacy-small', 'messenger-test', 'diplomacy/small'),
     ('defense', 'messenger-test', 'defense/native'),
     ('cargo', 'messenger-test', 'cargo/native'),
     ('transfers', 'messenger-test', 'transfers/native'),
@@ -101,9 +103,9 @@ def run(case, binary, timeout, support_root=None):
     target.mkdir(parents=True, exist_ok=True)
     normal = (ROOT/'mods/medieval/mod.yaml').read_text(encoding='utf-8')
     source = 'large-maps' if name.startswith('large-') else 'audit-save' if name == 'save' else 'selection' if name == 'selection-small' else name
-    direct = 'transfers' if name == 'transfers-small' else 'hud' if name == 'hud-small' else name
+    direct = 'diplomacy' if name == 'diplomacy-small' else 'transfers' if name == 'transfers-small' else 'hud' if name == 'hud-small' else name
     previous = (normal.replace('\nSequences:\n', f'\tmedieval|{direct}-tests.yaml\n\nSequences:\n', 1)
-                if direct in ('defense', 'cargo', 'transfers', 'siege-push', 'care-orders', 'order-safety', 'hud', 'barter', 'fleet', 'cemetery', 'pride', 'influence', 'battlefield')
+                if direct in ('diplomacy', 'defense', 'cargo', 'transfers', 'siege-push', 'care-orders', 'order-safety', 'hud', 'barter', 'fleet', 'cemetery', 'pride', 'influence', 'battlefield')
                 else (ROOT/f'mods/medieval-{source}/mod.yaml').read_text(encoding='utf-8'))
     common = {s.strip() for s in rules(normal)}
     extra = [s.strip() for s in rules(previous) if s.strip() not in common]
@@ -125,7 +127,7 @@ def run(case, binary, timeout, support_root=None):
     # Generated manifests must never enter the published mods tree.
     package = target/'mod'
     package.mkdir(exist_ok=True)
-    if name in ('cargo', 'cemetery', 'pride', 'influence', 'battlefield'):
+    if name in ('diplomacy', 'diplomacy-small', 'cargo', 'cemetery', 'pride', 'influence', 'battlefield'):
         test_map = package/'maps'/name
         shutil.copytree(ROOT/'mods/medieval/maps'/map_id, test_map, dirs_exist_ok=True)
         map_file = test_map/'map.yaml'
@@ -143,7 +145,7 @@ def run(case, binary, timeout, support_root=None):
             'Graphics.VSync=False', 'Sound.Mute=True', 'Debug.SyncCheckUnsyncedCode=True']
     if profile:
         args.append('Engine.SupportDir='+str(profile))
-    if name in ('selection-small', 'hud-small', 'transfers-small'):
+    if name in ('diplomacy-small', 'selection-small', 'hud-small', 'transfers-small'):
         args[args.index('Graphics.WindowedSize=1280,800')] = 'Graphics.WindowedSize=1024,768'
     print('START '+name, flush=True)
     with (target/'native.log').open('w', encoding='utf-8') as log:

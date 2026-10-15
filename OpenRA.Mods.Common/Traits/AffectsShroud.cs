@@ -133,6 +133,13 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		// Reapply stationary sources when diplomacy changes their recipients.
+		public void RefreshRelationships(Actor self)
+		{
+			if (self.IsInWorld)
+				UpdateShroudCells(self);
+		}
+
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			var centerPosition = self.CenterPosition;
