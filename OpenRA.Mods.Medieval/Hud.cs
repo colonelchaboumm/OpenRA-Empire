@@ -120,7 +120,13 @@ namespace OpenRA.Mods.Medieval
 			bool Site() => world.Selection.Actors.Any(a => a.IsInWorld && !a.IsDead && a.Owner == world.LocalPlayer && a.TraitOrDefault<MedievalBuilding>()?.Complete == false);
 			widget.Get("MD_WORK_PANEL").IsVisible = () => Workers().Length > 0 || Site();
 			widget.Get<LabelWidget>("MD_WORK_TITLE").GetText = () => "TRAVAIL ET CHANTIERS";
-			widget.Get<LabelWidget>("MD_WORK_HINT").GetText = () => "Reprendre les tâches automatiques des ouvriers sélectionnés.\nAnnuler uniquement les chantiers sélectionnés.";
+			widget.Get<LabelWidget>("MD_WORK_HINT").GetText = () => "Clic droit : affecter à un chantier ou lieu de travail.\nTravail automatique : libérer l’affectation.";
+			widget.Get("MD_WORK_PANEL").Bounds.Height = 138;
+			MedievalTransferWidget.Label(widget.Get("MD_WORK_PANEL"), "MD_WORK_ASSIGNMENT", 9, 106, 392, 24, () =>
+			{
+				var workers = Workers().Select(a => a.Trait<MedievalWorker>()).ToArray();
+				return workers.Length == 1 ? workers[0].AssignmentDescription : $"{workers.Count(w => w.AssignedWorkplace != null)}/{workers.Length} ouvriers affectés";
+			});
 			foreach (var (id, parent, x, y, width) in new[] {
 				("MD_CART_CREATE", "MD_TRADE_PANEL", 9, 326, 392), ("MD_CART_RELOAD", "MD_CART_PANEL", 9, 178, 392),
 				("MD_RESUME", "MD_WORK_PANEL", 9, 32, 192), ("MD_CANCEL", "MD_WORK_PANEL", 207, 32, 194) })
@@ -130,6 +136,7 @@ namespace OpenRA.Mods.Medieval
 			}
 			widget.Get("MD_TRADE_PANEL").Bounds.Height = 360; widget.Get("MD_CART_PANEL").Bounds.Height = 212;
 			widget.Get<ButtonWidget>("MD_RESUME").IsDisabled = () => world.Paused || Workers().Length == 0;
+			widget.Get<ButtonWidget>("MD_RESUME").GetText = () => "Travail automatique";
 			widget.Get<ButtonWidget>("MD_CANCEL").IsDisabled = () => world.Paused || !Site();
 			// Priority selects the most useful action page, with secondary actions in tabs.
 			foreach (var (id, name) in new[] {

@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Medieval
 			{
 				var type = order.TargetString;
 				var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
-				Place(self, type, cell);
+				Place(self, type, cell, order.ExtraActors);
 			}
 			else if (order.OrderString == "MedievalRecruit")
 			{
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Medieval
 				});
 			}
 		}
-		void Place(Actor self, string type, CPos cell)
+		void Place(Actor self, string type, CPos cell, Actor[] builders = null)
 		{
 			self.World.AddFrameEndTask(w =>
 			{
@@ -143,6 +143,10 @@ namespace OpenRA.Mods.Medieval
 					? w.CreateActor(type, [new OwnerInit(self.Owner), new LocationInit(cell), new MedievalConstructionInit(), new MedievalHouseStyleInit(HouseStyleDeck.Next(self.Owner))])
 					: w.CreateActor(type, [new OwnerInit(self.Owner), new LocationInit(cell), new MedievalConstructionInit()]);
 				if (type == "md.house") HousesPlaced++;
+				// Selection is serialized by the sender; never read a local selection in simulation.
+				foreach (var builder in (builders ?? []).Where(a => a != null && a.Owner == self.Owner && MedievalStockpile.Active(a)
+					&& a.TraitOrDefault<MedievalWorker>()?.Info.Profession == "builder").Distinct().OrderBy(a => a.ActorID))
+					builder.Trait<MedievalWorker>().AssignWorkplace(builder, site);
 				Message = MedievalConstructionSupply.Sources(self.Owner, site.CenterPosition).Any()
 					? "Chantier pose. Les batisseurs vont chercher les materiaux."
 					: "Chantier hors portee des depots : amenez une charrette de bois et pierre.";

@@ -45,7 +45,8 @@ namespace OpenRA.Mods.Medieval
 		public string Status { get; private set; } = "Recherche de travail";
 		[VerifySync] public int JobHash => unchecked((int)(source?.ActorID ?? 0) * 31 + (int)(destination?.ActorID ?? 0) * 7 + (destinationReserved ? 1 : 0));
 		public string CargoName => CampCargo ? MedievalCampStore.Names[Resource] : EquipmentCargo ? MedievalEquipment.Names[Resource] : MedievalStockDisplay.Labels[Resource];
-		public string Description => Cargo > 0 ? $"{CargoName} {Cargo} - {Status}" : Status;
+		public string Description => (Cargo > 0 ? $"{CargoName} {Cargo} - {Status}" : Status)
+			+ (AssignedWorkplace == null ? "" : " | " + AssignmentDescription);
 		public MedievalWorker(MedievalWorkerInfo info) { Info = info; Resource = (int)info.Resource; }
 
 		IEnumerable<Actor> Nearby(Actor self, Func<Actor, bool> filter, IEnumerable<Actor> candidates = null) => (candidates ?? self.World.Actors)
@@ -123,7 +124,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		bool CanAssignArea(Actor self, Actor area)
 		{
-			if (!Valid(self, area) || !MedievalStockpile.Active(area)) return false;
+			if (!Valid(self, area) || !MedievalStockpile.Active(area) || !AllowsWorkArea(area)) return false;
 			var zone = area.TraitOrDefault<MedievalAgriculturalArea>();
 			return zone != null && zone.Info.Profession == Info.Profession && zone.Farm(area) != null
 				&& (area == WorkArea || zone.Workers(area) < zone.Capacity);
@@ -142,7 +143,7 @@ namespace OpenRA.Mods.Medieval
 			if (WorkArea == null || !WorkArea.Trait<MedievalSource>().NeedsWork)
 				WorkArea = Nearby(self, a => a.Trait<MedievalSource>().NeedsWork && CanAssignArea(self, a), self.World.ActorsHavingTrait<MedievalAgriculturalArea>()).FirstOrDefault()
 					?? WorkArea ?? Nearby(self, a => CanAssignArea(self, a), self.World.ActorsHavingTrait<MedievalAgriculturalArea>()).FirstOrDefault();
-			if (WorkArea == null) { Status = "Aucune place : agrandissez les zones pres d'une ferme/elevage termine"; return; }
+			if (WorkArea == null) { Status = "Aucune place : agrandissez les zones pres d'une ferme/elevage termine"; WaitAtWorkplace(self); return; }
 			if (Info.Profession is "breeder" or "shepherd" && self.TraitOrDefault<MedievalHerding>()?.TryAutomatic(self, WorkArea) == true) return;
 			var area = WorkArea.Trait<MedievalAgriculturalArea>();
 			var farm = area.Farm(WorkArea);
@@ -170,8 +171,9 @@ namespace OpenRA.Mods.Medieval
 			}
 			else if (Info.Profession == "builder")
 			{
-				if (FindDemolitionJob(self)) return;
-				foreach (var site in Nearby(self, a => a.Owner == self.Owner && a.TraitOrDefault<MedievalBuilding>() is MedievalBuilding b && !b.Complete, self.World.ActorsHavingTrait<MedievalBuilding>()))
+				if (AssignedWorkplace == null && FindDemolitionJob(self)) return;
+				foreach (var site in Nearby(self, a => a.Owner == self.Owner && (AssignedWorkplace == null || a == AssignedWorkplace)
+					&& a.TraitOrDefault<MedievalBuilding>() is MedievalBuilding b && !b.Complete, self.World.ActorsHavingTrait<MedievalBuilding>()))
 				{
 					var building = site.Trait<MedievalBuilding>();
 					if (building.Demolishing) continue;
@@ -183,8 +185,9 @@ namespace OpenRA.Mods.Medieval
 						foreach (var depot in MedievalConstructionSupply.Sources(self.Owner, site.CenterPosition))
 							if (ReserveTrip(depot, depot.Trait<MedievalStockpile>().Stock, site, building.Materials, r, Info.Capacity)) return;
 				}
-				if (FindSiegeJob(self)) return;
+				if (AssignedWorkplace == null && FindSiegeJob(self)) return;
 				Status = "Attend des materiaux : entrepot ou charrette pres du chantier";
+				WaitAtWorkplace(self);
 			}
 			else if (Info.Profession == "hauler")
 			{
@@ -292,7 +295,8 @@ namespace OpenRA.Mods.Medieval
 			else
 			{
 				Resource = (int)Info.Resource;
-				foreach (var depot in Stores(self, false).Where(a => a.Trait<MedievalStockpile>().Info.Profession == Info.Profession))
+				foreach (var depot in Stores(self, false).Where(a => a.Trait<MedievalStockpile>().Info.Profession == Info.Profession
+					&& (AssignedWorkplace == null || a == AssignedWorkplace)))
 				{
 					if (depot.Trait<MedievalStockpile>().Stock.Free(Resource) < Info.Capacity) continue;
 					var range = new WVec(18000, 18000, 0);
@@ -307,6 +311,7 @@ namespace OpenRA.Mods.Medieval
 					phase = 3; countdown = Info.WorkTicks; Status = "Rejoint son lieu de travail"; return;
 				}
 				Status = "Attend un depot, une source ou la croissance";
+				WaitAtWorkplace(self);
 			}
 		}
 
@@ -359,6 +364,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		void ITick.Tick(Actor self)
 		{
+			ValidateAssignment(self);
 			if (self.TraitOrDefault<MedievalPatient>()?.Church != null) return;
 			if (self.TraitOrDefault<MedievalFirefighter>()?.Busy == true) return;
 			if (self.TraitOrDefault<MedievalHerding>()?.Busy == true) return;
@@ -458,10 +464,11 @@ namespace OpenRA.Mods.Medieval
 		}
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "MedievalWork") { self.CancelActivity(); Release(); Automatic = true; }
-			else if (order.OrderString == "Move" || order.OrderString == "Stop") { Release(); WorkArea = null; Automatic = false; Status = "Ordre manuel"; }
+			if (order.OrderString == "MedievalAssignWorkplace" && order.Target.Type == TargetType.Actor) AssignWorkplace(self, order.Target.Actor);
+			else if (order.OrderString == "MedievalWork") { self.CancelActivity(); Release(); AssignedWorkplace = WorkArea = null; Automatic = true; cadence = 0; }
+			else if (order.OrderString == "Move" || order.OrderString == "Stop") { Release(); AssignedWorkplace = WorkArea = null; Automatic = false; Status = "Ordre manuel"; }
 		}
-		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self) { Release(); WorkArea = null; }
-		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { Release(); WorkArea = null; Automatic = false; }
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self) { Release(); AssignedWorkplace = WorkArea = null; }
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { Release(); AssignedWorkplace = WorkArea = null; Automatic = false; }
 	}
 }

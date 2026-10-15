@@ -17,7 +17,7 @@ import time
 ROOT = Path(__file__).resolve().parents[3]
 
 
-def run(map_id, timeout=300, deep_sync=False, source_binary='bin-medieval', output_root='analysis/medieval/network-maps', season_ticks=None, storm_refuge=False, barter=False, siege_push=False, transfers=False, defense=False, diplomacy=False):
+def run(map_id, timeout=300, deep_sync=False, source_binary='bin-medieval', output_root='analysis/medieval/network-maps', season_ticks=None, storm_refuge=False, barter=False, siege_push=False, transfers=False, defense=False, diplomacy=False, worker_assignment=False):
     output = ROOT/output_root/map_id
     output.mkdir(parents=True, exist_ok=True)
     binary = ROOT/'bin-medieval-network-test'
@@ -40,12 +40,14 @@ def run(map_id, timeout=300, deep_sync=False, source_binary='bin-medieval', outp
     storm = '\t\tStormRefuge: True\n\tMedievalWeather:\n\t\tFirstRainTicks: 2000\n\t\tRainTicks: 1600\n\t\tMinimumRainPermille: 850\n' if storm_refuge else ''
     scenario = ('World:\n\tBarterNetworkAudit:\n\tMedievalDayNight:\n\t\tDayTicks: 100000\n'
                 '\tMedievalWeather:\n\t\tFirstRainTicks: 100000\n'
-                '^MDWORKER:\n\tMedievalNeedsFood:\n\t\tMealInterval: 100000\n\t\tStarvationDelay: 200000\n') if barter or siege_push or transfers or defense or diplomacy else (
+                '^MDWORKER:\n\tMedievalNeedsFood:\n\t\tMealInterval: 100000\n\t\tStarvationDelay: 200000\n') if barter or siege_push or transfers or defense or diplomacy or worker_assignment else (
                     'World:\n\tNetworkAudit:\n'+storm+seasons+'md.militia:\n\tMedievalCombatProbe:\n')
     if siege_push:
         scenario = scenario.replace('BarterNetworkAudit:', 'SiegePushNetworkAudit:')
     if transfers:
         scenario = scenario.replace('BarterNetworkAudit:', 'TransferNetworkAudit:')
+    if worker_assignment:
+        scenario = scenario.replace('BarterNetworkAudit:', 'MedievalWorkerAssignmentValidation:\n\t\tNetwork: True')
     if defense:
         scenario = scenario.replace('BarterNetworkAudit:', 'DefenseNetworkAudit:') + '^MDFIGHTER:\n\tMedievalCombatProbe:\n'
     if diplomacy:
@@ -98,7 +100,7 @@ def run(map_id, timeout=300, deep_sync=False, source_binary='bin-medieval', outp
             reports.append(dict(exitCode=code, result=data, passed=code == 0 and bool(data and data['passed'])))
         identical = bool(reports[0]['result']) and all(r['result'] and r['result']['checkpoints'] == reports[0]['result']['checkpoints'] for r in reports)
         result = dict(map=map_id, uid=uid, clients=count, seconds=round(time.time()-started, 1), deepSyncChecks=deep_sync, seasonTicks=season_ticks, stormRefuge=storm_refuge, barter=barter, siegePush=siege_push, transfers=transfers, defense=defense, diplomacy=diplomacy,
-                      identicalCheckpoints=identical, passed=identical and all(r['passed'] for r in reports), reports=reports)
+                      workerAssignment=worker_assignment, identicalCheckpoints=identical, passed=identical and all(r['passed'] for r in reports), reports=reports)
         (output/'result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
         print(json.dumps({k:v for k,v in result.items() if k != 'reports'}), flush=True)
         return result['passed']
@@ -122,9 +124,10 @@ if __name__ == '__main__':
     scenario.add_argument('--barter', action='store_true', help='Two clients negotiate, deliver all goods, and refuse a second invitation over TCP')
     scenario.add_argument('--siege-push', action='store_true', help='Both clients move three siege engines with real servants at their handholds')
     scenario.add_argument('--transfers', action='store_true', help='Both clients load and unload exact quantities of all goods with real carts')
+    scenario.add_argument('--worker-assignment', action='store_true', help='Assign builders, farmers, miners and herders through both real clients')
     scenario.add_argument('--defense', action='store_true', help='Two clients attack convoys and soldiers; escorts retaliate and resume their missions')
     scenario.add_argument('--diplomacy', action='store_true', help='Two clients declare war, negotiate peace and alliance by messenger, and deliver allied supplies')
     args = parser.parse_args()
     if args.season_ticks is not None and args.season_ticks < 1: parser.error('--season-ticks must be positive')
-    if (args.barter or args.siege_push or args.transfers or args.defense or args.diplomacy) and args.map != 'deux-bourgs': parser.error('This scenario requires the deux-bourgs test arena')
-    raise SystemExit(0 if run(args.map, args.timeout, args.deep_sync, args.binary, args.output_root, args.season_ticks, args.storm_refuge, args.barter, args.siege_push, args.transfers, args.defense, args.diplomacy) else 1)
+    if (args.barter or args.siege_push or args.transfers or args.defense or args.diplomacy or args.worker_assignment) and args.map != 'deux-bourgs': parser.error('This scenario requires the deux-bourgs test arena')
+    raise SystemExit(0 if run(args.map, args.timeout, args.deep_sync, args.binary, args.output_root, args.season_ticks, args.storm_refuge, args.barter, args.siege_push, args.transfers, args.defense, args.diplomacy, args.worker_assignment) else 1)

@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / 'analysis/medieval/audit'
 # name, map, report folder. All manifests inherit today's normal gameplay rules.
 CASES = [
+    ('worker-assignment', 'messenger-test', 'worker-assignment'),
     ('diplomacy', 'messenger-test', 'diplomacy/native'),
     ('diplomacy-small', 'messenger-test', 'diplomacy/small'),
     ('defense', 'messenger-test', 'defense/native'),
@@ -105,7 +106,7 @@ def run(case, binary, timeout, support_root=None):
     source = 'large-maps' if name.startswith('large-') else 'audit-save' if name == 'save' else 'selection' if name == 'selection-small' else name
     direct = 'diplomacy' if name == 'diplomacy-small' else 'transfers' if name == 'transfers-small' else 'hud' if name == 'hud-small' else name
     previous = (normal.replace('\nSequences:\n', f'\tmedieval|{direct}-tests.yaml\n\nSequences:\n', 1)
-                if direct in ('diplomacy', 'defense', 'cargo', 'transfers', 'siege-push', 'care-orders', 'order-safety', 'hud', 'barter', 'fleet', 'cemetery', 'pride', 'influence', 'battlefield')
+                if direct in ('worker-assignment', 'diplomacy', 'defense', 'cargo', 'transfers', 'siege-push', 'care-orders', 'order-safety', 'hud', 'barter', 'fleet', 'cemetery', 'pride', 'influence', 'battlefield')
                 else (ROOT/f'mods/medieval-{source}/mod.yaml').read_text(encoding='utf-8'))
     common = {s.strip() for s in rules(normal)}
     extra = [s.strip() for s in rules(previous) if s.strip() not in common]

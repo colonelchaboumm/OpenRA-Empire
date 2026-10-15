@@ -78,10 +78,13 @@ namespace OpenRA.Mods.Medieval
 		{
 			if (Busy) return true;
 			if (self.World.WorldActor.TraitOrDefault<MedievalDayNight>()?.Clock.Night == true) return false;
-			foreach (var a in self.World.ActorsHavingTrait<MedievalAnimal>().Where(a => MedievalStockpile.Active(a) && a.Trait<MedievalAnimal>().RequestedPen?.Owner == self.Owner)
+			var worker = self.TraitOrDefault<MedievalWorker>();
+			if (worker == null) return false;
+			foreach (var a in self.World.ActorsHavingTrait<MedievalAnimal>().Where(a => MedievalStockpile.Active(a) && a.Trait<MedievalAnimal>().RequestedPen?.Owner == self.Owner
+				&& worker.AllowsWorkArea(a.Trait<MedievalAnimal>().RequestedPen))
 				.OrderBy(a => (a.CenterPosition - self.CenterPosition).HorizontalLengthSquared).ThenBy(a => a.ActorID))
 				if (Profession(self, a) && Start(self, a, a.Trait<MedievalAnimal>().RequestedPen)) return true;
-			if (area?.TraitOrDefault<MedievalLivestock>() is not { } herd || herd.Count + herd.Incoming >= Math.Min(2, herd.Capacity)) return false;
+			if (area?.TraitOrDefault<MedievalLivestock>() is not { } herd || !worker.AllowsWorkArea(area) || herd.Count + herd.Incoming >= Math.Min(2, herd.Capacity)) return false;
 			var candidates = self.World.ActorsHavingTrait<MedievalAnimal>().Where(a => MedievalStockpile.Active(a) && a.Trait<MedievalAnimal>().Pen == null
 				&& a.Trait<MedievalAnimal>().Escort == null && !Claimed(a, self.Owner) && herd.Compatible(a) && (a.Owner == self.Owner || a.Owner.NonCombatant)
 				&& a.CanBeViewedByPlayer(self.Owner) && (a.CenterPosition - area.CenterPosition).HorizontalLengthSquared <= 32768L * 32768)

@@ -57,7 +57,12 @@ namespace OpenRA.Mods.Medieval
 			if (world.Paused || type == "md.house" && settlement.HousePlacementPending) yield break;
 			if (!MedievalSettlement.CanPlace(world, world.LocalPlayer, type, cell)) yield break;
 			if (type == "md.house") settlement.AwaitHousePlacement();
-			yield return new Order("MedievalPlace", world.LocalPlayer.PlayerActor, Target.FromCell(world, cell), false) { TargetString = type };
+			yield return new Order("MedievalPlace", world.LocalPlayer.PlayerActor, Target.FromCell(world, cell), false)
+			{
+				TargetString = type,
+				ExtraActors = world.Selection.Actors.Where(a => a.Owner == world.LocalPlayer && MedievalStockpile.Active(a)
+					&& a.TraitOrDefault<MedievalWorker>()?.Info.Profession == "builder").OrderBy(a => a.ActorID).ToArray()
+			};
 			world.CancelInputMode();
 		}
 		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
