@@ -54,6 +54,17 @@ namespace OpenRA.Mods.Medieval
 			&& a.TraitOrDefault<MedievalTradeCart>()?.Active != true
 			&& a.TraitOrDefault<MedievalStoneCart>()?.Active != true
 			&& a.TraitOrDefault<MedievalRest>()?.Resting != true;
+		public static string UnavailableReason(Actor a)
+		{
+			if (a == null) return "Aucune charrette disponible : recrutez-en une ou libérez un transport.";
+			if (!MedievalStockpile.Active(a) || a.WillDispose) return "Cette charrette n’est plus disponible.";
+			if (a.TraitOrDefault<MedievalManualTransfer>() is not { Busy: false }) return "Un transfert est déjà en cours. Attendez ou annulez-le.";
+			if (a.TraitOrDefault<MedievalBarterCart>()?.Busy == true) return "Charrette affectée à un marchandage.";
+			if (a.TraitOrDefault<MedievalConstructionConvoy>()?.Active == true) return "Charrette affectée à un chantier. Arrêtez le convoi d’abord.";
+			if (a.TraitOrDefault<MedievalTradeCart>()?.Active == true) return "Route commerciale active. Mettez-la en pause d’abord.";
+			if (a.TraitOrDefault<MedievalStoneCart>()?.Active == true) return "Ravitaillement du trébuchet actif. Mettez-le en pause d’abord.";
+			return a.TraitOrDefault<MedievalRest>()?.Resting == true ? "Le conducteur se repose." : null;
+		}
 		public static int Maximum(Actor cart, Actor store, int commodity, bool load)
 		{
 			if (commodity < 0 || commodity >= StorageGoods.Count || !Available(cart) || !Store(store, cart.Owner)) return 0;
@@ -68,6 +79,12 @@ namespace OpenRA.Mods.Medieval
 			if (stop) self.CancelActivity();
 			Status = status;
 		}
+		// Only the trait accepting a valid automatic command may replace a manual booking.
+		public void ResumeAutomatic(Actor self)
+		{
+			if (!ManualControl) return;
+			Cancel(self, "Commandes automatiques réactivées.", true); ManualControl = false;
+		}
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString is "MedievalLoadResource" or "MedievalUnloadResource")
@@ -79,16 +96,14 @@ namespace OpenRA.Mods.Medieval
 				var reserved = ManualCargo.Reserve(StorageGoods.Stock(load ? target : self, commodity),
 					StorageGoods.Stock(load ? self : target, commodity), StorageGoods.Index(commodity), quantity);
 				if (reserved == null) return;
-				self.CancelActivity(); cargo = reserved; building = target; good = commodity; loading = load;
+				self.CancelActivity(); self.TraitOrDefault<MedievalSupplyCart>()?.CancelReload();
+				cargo = reserved; building = target; good = commodity; loading = load;
 				ManualControl = true; attempts = cadence = elapsed = handling = 0;
 				lastPosition = self.CenterPosition;
 				Status = "Rejoint le bâtiment pour " + (loading ? "charger " : "décharger ") + quantity + " " + StorageGoods.Names[good] + ".";
 			}
 			else if (order.OrderString is "Move" or "Stop" or "Scatter" or "MedievalCancelTransfer")
 				Cancel(self, "Transfert annulé. Ressources conservées.", order.OrderString == "MedievalCancelTransfer");
-			else if (order.OrderString is "MedievalCartCargo" or "MedievalReloadCart" or "MedievalLoadTents" or "MedievalSupplySite"
-				or "MedievalAssignTrader" or "MedievalResumeTrade" or "MedievalRecoverTrade" or "MedievalSiegeSupply" or "MedievalStonePause" or "MedievalStoneRecover")
-			{ if (ManualControl) { Cancel(self, "Commandes automatiques réactivées.", true); ManualControl = false; } }
 		}
 		void ITick.Tick(Actor self)
 		{

@@ -68,6 +68,14 @@ namespace OpenRA.Mods.Medieval
 				child.Bounds.Y = 2 + index / 3 * 21 + (icon ? 3 : 0);
 				if (!icon) child.Bounds.Width = index >= 4 ? 134 : 114;
 			}
+			for (var index = 4; index <= 5; index++)
+			{
+				var i = index;
+				MedievalMenuIcons.Add(overview, renderer, "MD_OVERVIEW_ICON_" + i, 9 + i % 3 * 140, 26, 17,
+					() => i == 4 ? MedievalMenuIcons.Good(world, 4) : MedievalMenuIcons.Entry(world, "md.builder"), () => "md-livery" + world.LocalPlayer?.InternalName);
+				var label = overview.Get<LabelWidget>(i == 4 ? "MD_RESOURCE_4" : "MD_POP"); label.Bounds.X += 20; label.Bounds.Width = 114;
+			}
+			overview.Get<LabelWidget>("MD_POP").GetText = () => world.LocalPlayer is { } player ? $"Pop. : {MedievalSettlement.Population(player)}/{MedievalSettlement.Housing(player)}" : "";
 			var info = new BackgroundWidget { Id = "MD_BUILDING_INFO", Bounds = new WidgetBounds(0, 0, 410, 94), Background = "md-panel" };
 			Actor Building() => world.Selection.Actors.FirstOrDefault(a => a.IsInWorld && !a.IsDead && a.Owner == world.LocalPlayer && a.TraitOrDefault<MedievalBuilding>() != null);
 			info.IsVisible = () => Building() != null;
@@ -168,14 +176,29 @@ namespace OpenRA.Mods.Medieval
 				var panel = widget.Get(id); panel.Bounds.X = (Game.Renderer.Resolution.Width - panel.Bounds.Width) / 2; panel.Bounds.Y = 108;
 			}
 			var dock = widget.Get("MD_CONTEXT_TABS");
-			dock.Bounds.X = right; dock.Bounds.Y = 324;
+			dock.Bounds.X = right; dock.Bounds.Y = 324; dock.Bounds.Width = 434;
 			sidebar.CollapseHiddenChildren = true;
 			sidebar.IsVisible = () => world.LocalPlayer != null && !collapsed && !OverlayOpen() && Current() != null;
 			dock.IsVisible = () => world.LocalPlayer != null && !OverlayOpen() && Available().Length > 0;
 			for (var i = 0; i < 3; i++)
 			{
 				var slot = i; var tab = dock.Get<ButtonWidget>("MD_CONTEXT_TAB_" + i);
+				tab.Bounds.X = i * 122; tab.Bounds.Width = 118; tab.Align = TextAlign.Left; tab.LeftMargin = 25;
 				Page At() => Available().Skip(pageOffset + slot).FirstOrDefault();
+				string IconType() => At()?.Panel.Id switch
+				{
+					"MD_TRANSFER_PANEL" or "MD_YARD_PANEL" => "md.warehouse",
+					"MD_TRADE_PANEL" or "MD_STALL_PANEL" or "MD_TRADER_PANEL" or "MD_CART_PANEL" => "md.market",
+					"MD_TEXTILE_PANEL" => "md.tentweaver", "MD_SHELTER_PANEL" => "md.house",
+					"MD_BARRACKS_PANEL" or "MD_PATROL_PANEL" or "MD_COMMAND_PANEL" => "md.barracks",
+					"MD_FORGE_PANEL" => "md.forge", "MD_CHURCH_PANEL" => "md.church",
+					"MD_SIEGE_WORKSHOP" or "MD_SIEGE_UNIT" or "MD_CREW_PANEL" => "md.siegeworkshop",
+					"MD_STONE_PANEL" => "md.quarry", "MD_HERD_PANEL" => "md.ranch", "MD_TOWER_PANEL" => "md.woodtower",
+					"MD_PANEL" when world.Selection.Actors.FirstOrDefault()?.Info.Name is "md.farm" or "md.ranch" or "md.sheepfold" => "md.farm",
+					_ => "md.builder"
+				};
+				MedievalMenuIcons.Add(tab, renderer, "ICON", 3, 3, 20, () => MedievalMenuIcons.Entry(world, IconType()),
+					() => (IconType() == "md.market" ? "md-market-livery" : "md-livery") + world.LocalPlayer?.InternalName);
 				tab.IsVisible = () => At() != null;
 				tab.GetText = () => At()?.Panel.Id == "MD_PANEL" ? (world.Selection.Actors.FirstOrDefault()?.Info.Name switch
 				{
@@ -183,12 +206,15 @@ namespace OpenRA.Mods.Medieval
 					"md.builder" or null => "Construire", _ => "Recrutement"
 				}) : At()?.Name ?? "";
 				tab.IsHighlighted = () => !collapsed && At() == Current();
+				tab.GetTooltipText = tab.GetText;
 				tab.OnClick = () => { chosen = At()?.Panel.Id; collapsed = false; ReleaseHiddenFocus(); };
 			}
 			var next = dock.Get<ButtonWidget>("MD_CONTEXT_NEXT"); next.GetText = () => "›";
+			next.Bounds.X = 366;
 			next.IsVisible = () => Available().Length > 3;
 			next.OnClick = () => pageOffset = pageOffset + 3 >= Available().Length ? 0 : pageOffset + 3;
 			var collapse = dock.Get<ButtonWidget>("MD_CONTEXT_COLLAPSE"); collapse.GetText = () => collapsed ? "+" : "−";
+			collapse.Bounds.X = 398;
 			collapse.OnClick = () => { collapsed = !collapsed; ReleaseHiddenFocus(); };
 			collapse.GetTooltipText = () => collapsed ? "Afficher les commandes" : "Replier les commandes";
 			var stocks = widget.Get<ButtonWidget>("MD_STOCKS_TOGGLE");

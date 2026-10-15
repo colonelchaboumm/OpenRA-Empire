@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Medieval
 					&& (d.Trait<MedievalStockpile>().Stock.Available(0) > 0 || d.Trait<MedievalStockpile>().Stock.Available(3) > 0)) ? 0 : 1)
 				.ThenBy(m => (m.CenterPosition - self.CenterPosition).HorizontalLengthSquared).ThenBy(m => m.ActorID).FirstOrDefault();
 			if (market == null) { Status = "Un marche termine est necessaire au depart."; return; }
+			self.TraitOrDefault<MedievalManualTransfer>()?.ResumeAutomatic(self);
 			site = target; Active = true; Loading = true; cadence = 0; attempts = 0; Trips = 0;
 			self.CancelActivity(); self.Trait<MedievalSupplyCart>().PrepareConvoy();
 			Status = "Retour au marche : chargement du convoi.";

@@ -16,7 +16,11 @@ namespace OpenRA.Mods.Medieval
 			&& MedievalSupplyCart.InMarketZone(self) && self.TraitOrDefault<MedievalConstructionConvoy>()?.Active != true;
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "MedievalLoadTents" && MedievalSupplyCart.InMarketZone(self)) LoadTents = !LoadTents;
+			if (order.OrderString == "MedievalLoadTents" && MedievalSupplyCart.InMarketZone(self))
+			{
+				self.TraitOrDefault<MedievalManualTransfer>()?.ResumeAutomatic(self);
+				LoadTents = !LoadTents;
+			}
 		}
 	}
 	public class MedievalPackTentInfo : TraitInfo

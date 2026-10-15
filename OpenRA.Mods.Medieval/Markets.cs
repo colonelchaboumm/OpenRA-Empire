@@ -129,6 +129,7 @@ namespace OpenRA.Mods.Medieval
 				? Math.Max(0, Math.Min(stock.Free(resource), convoy.Desired(self, resource) - stock.Amount(resource) - stock.Incoming(resource))) : stock.Free(resource);
 		}
 		public void PrepareConvoy() { reloadTarget = null; failedMoves = 0; loadMask = (1 << 0) | (1 << 1) | (1 << 3) | (1 << 4); }
+		public void CancelReload() { reloadTarget = null; failedMoves = 0; }
 		public string LoadingDescription => "Charger : " + string.Join(", ", new[] { 1, 0, 3, 4 }.Where(Wants).Select(r => MedievalStockDisplay.Labels[r]));
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
@@ -137,13 +138,17 @@ namespace OpenRA.Mods.Medieval
 				if (self.TraitOrDefault<MedievalConstructionConvoy>()?.Active == true) return;
 				if (order.ExtraData != 0 && order.ExtraData != 1 && order.ExtraData != 3 && order.ExtraData != 4) return;
 				if (!InMarketZone(self)) { Status = "Revenez dans la zone d'un marche pour choisir le chargement."; return; }
+				self.TraitOrDefault<MedievalManualTransfer>()?.ResumeAutomatic(self);
 				loadMask ^= 1 << (int)order.ExtraData;
 				Status = "Chargement modifie. Les ressources deja chargees sont conservees.";
 			}
 			else if (order.OrderString == "MedievalReloadCart")
 			{
-				reloadTarget = MedievalMarket.Markets(self.Owner).OrderBy(a => a.Trait<MedievalStockpile>().Stock.Available(1) > 0 ? 0 : 1)
+				var destination = MedievalMarket.Markets(self.Owner).Where(a => !a.WillDispose).OrderBy(a => a.Trait<MedievalStockpile>().Stock.Available(1) > 0 ? 0 : 1)
 					.ThenBy(a => (a.CenterPosition - self.CenterPosition).HorizontalLengthSquared).ThenBy(a => a.ActorID).FirstOrDefault();
+				if (destination == null) { Status = "Aucun marché terminé. Ordre actuel conservé."; return; }
+				self.TraitOrDefault<MedievalManualTransfer>()?.ResumeAutomatic(self);
+				reloadTarget = destination;
 				self.CancelActivity(); failedMoves = 0;
 				Status = reloadTarget == null ? "Aucun marche termine." : "Retour au marche pour recharger.";
 			}

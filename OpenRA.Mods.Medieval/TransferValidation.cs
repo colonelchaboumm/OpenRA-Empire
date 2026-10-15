@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Medieval
 		WorldRenderer renderer;
 		Actor depot, cart, farther, enemy, market, builder, farm, barracks, siege, forge, church, doomed, weaver, house;
 		string output;
-		int tick;
+		int tick, recoveryStopped;
 		bool done, pauseChecked;
 		MedievalTransferWidget Panel => Ui.Root.Get<MedievalTransferWidget>("MD_TRANSFER_PANEL");
 		void Check(bool ok, string message) { if (!ok && !errors.Contains(message)) errors.Add(message); }
@@ -71,6 +71,12 @@ namespace OpenRA.Mods.Medieval
 			Sync.RunUnsynced(w, () => renderer.Viewport.Center(depot.CenterPosition));
 			if (tick == 60)
 			{
+				Sync.RunUnsynced(w, () =>
+				{
+					for (var g = 0; g < StorageGoods.Count; g++) Check(Panel.Icon(g)?.Bounds.Width > 0, "Resource has a valid icon: " + g);
+					foreach (var tab in Enumerable.Range(0, 3).Select(i => Ui.Root.Get<ButtonWidget>("MD_CONTEXT_TAB_" + i)).Where(t => t.IsVisible()))
+						Check(tab.Get<SpriteWidget>("ICON").GetSprite() != null, "Visible context tab has an icon: " + tab.GetText());
+				});
 				Check(Panel.IsVisible() && Panel.Cart == cart && Panel.Store == depot, "Depot exposes its stock and nearest available cart.");
 				Check(Panel.RenderBounds.Right <= Game.Renderer.Resolution.Width && Panel.RenderBounds.Bottom < Game.Renderer.Resolution.Height, "Transfer stocks fit screen.");
 				Game.Renderer.SaveScreenshot(Path.Combine(output, "stocks.png")); Drag(w, true, 0); Quantity(w, 17);
@@ -87,7 +93,18 @@ namespace OpenRA.Mods.Medieval
 				Check(cart.Trait<MedievalManualTransfer>().Busy, "Confirmed order is travelling.");
 				Check(cart.Trait<MedievalStockpile>().Stock.Amount(0) == 0 && depot.Trait<MedievalStockpile>().Stock.Reserved(0) == 17, "Real stock stays at depot during journey.");
 				Check(!MedievalBarter.AvailableCarts(w.LocalPlayer).Contains(cart), "A manually reserved cart cannot be loaned to barter.");
+				Check(Panel.StockDetail(true, 0).Contains("83 disponibles · 17 réservés", StringComparison.Ordinal)
+					&& Panel.StockDetail(false, 0).Contains("17 attendus", StringComparison.Ordinal), "Stock details distinguish physical, available, reserved and incoming goods.");
+				Game.Renderer.SaveScreenshot(Path.Combine(output, "reserved.png"));
+				w.IssueOrder(new Order("MedievalAssignTrader", cart, Target.FromActor(enemy), false));
+				w.IssueOrder(new Order("MedievalResumeTrade", cart, false));
+				w.IssueOrder(new Order("MedievalCartCargo", cart, false) { ExtraData = uint.MaxValue });
 			}
+			if (tick == 140) Check(cart.Trait<MedievalManualTransfer>().Busy && depot.Trait<MedievalStockpile>().Stock.Reserved(0) == 17,
+				"Rejected and unsupported automatic commands must not cancel a manual transfer.");
+			if (tick == 115) Sync.RunUnsynced(w, () => Ui.HandleInput(new MouseInput(MouseInputEvent.Move, MouseButton.None,
+				Panel.Cell(true, 0).TopLeft + new int2(40, 10), int2.Zero, Modifiers.None, 0)));
+			if (tick == 125) Game.Renderer.SaveScreenshot(Path.Combine(output, "stock-details.png"));
 			if (tick == 650)
 			{
 				Check(!cart.Trait<MedievalManualTransfer>().Busy && cart.Trait<MedievalStockpile>().Stock.Amount(0) == 17, "Physical loading completes exact requested quantity.");
@@ -141,17 +158,83 @@ namespace OpenRA.Mods.Medieval
 				Transfer(w, farther, depot, 0, 10);
 			}
 			if (tick == 1740) w.IssueOrder(new Order("Stop", farther, false));
+			if (tick == 1720)
+			{
+				w.IssueOrder(new Order("MedievalSupplySite", farther, Target.FromActor(depot), false));
+				w.IssueOrder(new Order("MedievalCartCargo", farther, false) { ExtraData = uint.MaxValue });
+			}
+			if (tick == 1735) Check(farther.Trait<MedievalManualTransfer>().Busy, "Invalid supply-cart automatic orders preserve the manual booking.");
 			if (tick == 1780)
 			{
 				Check(!farther.Trait<MedievalManualTransfer>().Busy && farther.Trait<MedievalStockpile>().Stock.Incoming(0) == 0 && depot.Trait<MedievalStockpile>().Stock.Reserved(0) == 0, "Stop cancels travel and releases both bookings.");
+				w.IssueOrder(new Order("MedievalReloadCart", farther, false));
 				Transfer(w, farther, depot, 0, 10); Select(w, farther);
 			}
-			if (tick == 1800) w.AddFrameEndTask(_ => farther.ChangeOwner(enemy.Owner));
+			if (tick == 1800)
+			{
+				Check(farther.Trait<MedievalSupplyCart>().ReloadTarget == 0 && farther.Trait<MedievalManualTransfer>().Busy,
+					"Accepted manual transfer clears an old automatic reload destination.");
+				w.AddFrameEndTask(_ => farther.ChangeOwner(enemy.Owner));
+			}
 			if (tick == 1840)
 			{
 				Check(!farther.Trait<MedievalManualTransfer>().Busy && depot.Trait<MedievalStockpile>().Stock.Reserved(0) == 0, "Captured cart releases previous owner's resource booking.");
 				Check(!Panel.IsVisible() && Panel.Cart == null, "Captured selected cart no longer exposes its stock controls.");
 				Check(pauseChecked, "Pause scenario ran.");
+				Select(w, cart);
+			}
+			if (tick == 1870)
+			{
+				Drag(w, true, 0); Quantity(w, 3);
+				w.IssueOrder(new Order("MedievalRecoverTrade", cart, false));
+			}
+			if (tick == 1890)
+			{
+				Check(Panel.Choosing && Panel.Cart == cart && Ui.Root.Get<ButtonWidget>("MD_TRANSFER_CONFIRM").IsDisabled(),
+					"Cart becoming busy during quantity choice disables confirmation without substituting a different cart.");
+				Click(w, "MD_TRANSFER_CANCEL"); w.IssueOrder(new Order("Stop", cart, false));
+			}
+			if (tick == 1920) Transfer(w, cart, market, 0, 5, false);
+			if (tick == 1940)
+			{
+				Check(cart.Trait<MedievalManualTransfer>().Busy, "Manual unloading is travelling before replacement.");
+				w.IssueOrder(new Order("MedievalRecoverTrade", cart, false));
+			}
+			if (tick == 1960)
+			{
+				Check(!cart.Trait<MedievalManualTransfer>().Busy && !cart.Trait<MedievalManualTransfer>().ManualControl && cart.Trait<MedievalTradeCart>().Active,
+					"Valid automatic recovery replaces manual transfer and releases manual control.");
+			}
+			// A cancelled move may finish its current cell before the next logistics tick books cargo.
+			if (tick >= 1960 && recoveryStopped == 0 && Enumerable.Range(5, 6).All(g => StorageGoods.Stock(market, g).Incoming(StorageGoods.Index(g)) == 2))
+			{
+				recoveryStopped = tick;
+				w.IssueOrder(new Order("Stop", cart, false));
+			}
+			if (recoveryStopped > 0 && tick == recoveryStopped + 20)
+			{
+				for (var g = 5; g < StorageGoods.Count; g++) Check(StorageGoods.Amount(cart, g) == 2 && StorageGoods.Stock(market, g).Incoming(StorageGoods.Index(g)) == 0,
+					"Stopping automatic recovery keeps equipment/camp cargo and releases booked space: " + g);
+				w.IssueOrder(new Order("MedievalRecoverTrade", cart, false));
+			}
+			if (tick == 2600)
+			{
+				Check(recoveryStopped > 0, "Equipment/camp recovery reservations were observed and cancellation was tested.");
+				for (var g = 5; g < StorageGoods.Count; g++)
+					Check(StorageGoods.Amount(cart, g) == 0 && StorageGoods.Stock(market, g).Incoming(StorageGoods.Index(g)) == 0,
+						"Automatic recovery unloads equipment/camp goods and releases destination reservations: " + g);
+				Check(!cart.Trait<MedievalTradeCart>().Active && StorageGoods.Amount(cart, 0) == 0 && cart.Trait<MedievalStockpile>().Stock.Reserved(0) == 0,
+					"Automatic recovery after manual transfer reaches its destination and leaves no departure reservation.");
+				Transfer(w, cart, depot, 0, 3);
+			}
+			if (tick == 2610)
+			{
+				market.Dispose(); w.IssueOrder(new Order("MedievalRecoverTrade", cart, false));
+			}
+			if (tick == 2630)
+			{
+				Check(cart.Trait<MedievalManualTransfer>().Busy && depot.Trait<MedievalStockpile>().Stock.Reserved(0) == 3,
+					"A vanished recovery market must not cancel the current manual transfer.");
 				File.WriteAllText(Path.Combine(output, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, errors, tick, pauseChecked }, new JsonSerializerOptions { WriteIndented = true }));
 				done = true; Console.WriteLine("MEDIEVAL TRANSFERS: " + (errors.Count == 0 ? "PASS" : string.Join("; ", errors))); Game.RunAfterDelay(300, Game.Exit);
 			}

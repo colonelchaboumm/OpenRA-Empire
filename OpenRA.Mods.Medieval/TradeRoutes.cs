@@ -147,6 +147,7 @@ namespace OpenRA.Mods.Medieval
 		Actor second;
 		Actor target;
 		TradeShipment shipment;
+		TradeShipment equipmentRecovery, campRecovery;
 		[VerifySync] int cadence;
 		[VerifySync] int attempts;
 		[VerifySync] bool recovering;
@@ -155,12 +156,12 @@ namespace OpenRA.Mods.Medieval
 		[VerifySync] public int FirstId => unchecked((int)(first?.ActorID ?? 0));
 		[VerifySync] public int SecondId => unchecked((int)(second?.ActorID ?? 0));
 		[VerifySync] public int TargetId => unchecked((int)(target?.ActorID ?? 0));
-		[VerifySync] public int ShipmentHash => shipment?.Hash ?? 0;
+		[VerifySync] public int ShipmentHash => unchecked(((shipment?.Hash ?? 0) * 31 + (equipmentRecovery?.Hash ?? 0)) * 31 + (campRecovery?.Hash ?? 0));
 		public string Status { get; private set; } = "Affectez cette charrette a un marche relie.";
 		public bool ValidRoute(Actor self) => MedievalLogistics.Market(first, self.Owner) && MedievalLogistics.Market(second, self.Owner)
 			&& first.Trait<MedievalTradeMarket>().Partner == second && second.Trait<MedievalTradeMarket>().Partner == first;
 		public bool Serves(Actor market) => market == first || market == second;
-		public bool CanLend => shipment == null && !recovering;
+		public bool CanLend => shipment == null && equipmentRecovery == null && campRecovery == null && !recovering;
 		public bool Lend(Actor self)
 		{
 			var resume = Active; Pause(self, "Charrette réservée pour un marchandage."); return resume;
@@ -175,6 +176,7 @@ namespace OpenRA.Mods.Medieval
 		{
 			if (self.TraitOrDefault<MedievalBarterCart>()?.Busy == true) return;
 			if (!MedievalLogistics.Market(origin, self.Owner) || !origin.Trait<MedievalTradeMarket>().Linked(origin)) return;
+			self.TraitOrDefault<MedievalManualTransfer>()?.ResumeAutomatic(self);
 			Pause(self, "");
 			first = origin; second = origin.Trait<MedievalTradeMarket>().Partner;
 			target = first; Active = true; recovering = false; cadence = 0;
@@ -182,10 +184,21 @@ namespace OpenRA.Mods.Medieval
 		}
 		void Pause(Actor self, string status, bool cancelMovement = true)
 		{
-			shipment?.Cancel(); shipment = null;
+			ReleaseShipments();
 			Active = false; attempts = 0; recovering = false;
 			if (cancelMovement) self.CancelActivity();
 			Status = status;
+		}
+		void ReleaseShipments()
+		{
+			shipment?.Cancel(); equipmentRecovery?.Cancel(); campRecovery?.Cancel();
+			shipment = equipmentRecovery = campRecovery = null;
+		}
+		TradeShipment RecoverGoods(Actor self, int first)
+		{
+			var from = StorageGoods.Stock(self, first); var to = StorageGoods.Stock(target, first);
+			if (from == null || to == null) return null;
+			var recovery = new TradeShipment(from, to); recovery.BookCarriedCargo(); return recovery;
 		}
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
@@ -194,15 +207,19 @@ namespace OpenRA.Mods.Medieval
 			else if (order.OrderString is "Move" or "Stop" or "MedievalPauseTrade") Pause(self, "Route en pause. Cargaison conservee.", order.OrderString == "MedievalPauseTrade");
 			else if (order.OrderString == "MedievalResumeTrade" && ValidRoute(self))
 			{
+				self.TraitOrDefault<MedievalManualTransfer>()?.ResumeAutomatic(self);
 				Active = true; recovering = false; cadence = 0;
 				if (!MedievalLogistics.Market(target, self.Owner)) target = first;
 			}
 			else if (order.OrderString == "MedievalRecoverTrade")
 			{
+				var destination = MedievalMarket.Markets(self.Owner).Where(a => !a.WillDispose)
+					.OrderBy(a => (a.CenterPosition - self.CenterPosition).HorizontalLengthSquared).ThenBy(a => a.ActorID).FirstOrDefault();
+				if (destination == null) { Status = "Aucun marché pour décharger. Ordre actuel conservé."; return; }
+				self.TraitOrDefault<MedievalManualTransfer>()?.ResumeAutomatic(self);
 				Pause(self, "");
-				target = MedievalMarket.Markets(self.Owner).OrderBy(a => (a.CenterPosition - self.CenterPosition).HorizontalLengthSquared).ThenBy(a => a.ActorID).FirstOrDefault();
-				Active = target != null; recovering = true; cadence = 0;
-				Status = target == null ? "Aucun marche pour decharger. Cargaison conservee." : "Rapatrie sa cargaison au marche.";
+				target = destination; Active = true; recovering = true; cadence = 0;
+				Status = "Rapatrie sa cargaison au marché.";
 			}
 		}
 		void ITick.Tick(Actor self)
@@ -218,9 +235,17 @@ namespace OpenRA.Mods.Medieval
 				shipment = new TradeShipment(cargo, target.Trait<MedievalStockpile>().Stock);
 				shipment.BookCarriedCargo();
 			}
+			if (recovering)
+			{
+				equipmentRecovery ??= RecoverGoods(self, 5);
+				campRecovery ??= RecoverGoods(self, 8);
+			}
 			if (!MedievalLogistics.Approach(self, target, ref attempts)) { Status = "En route vers " + MedievalLogistics.Name(target) + " (attend si passage bloque)"; return; }
 			if (shipment != null) { Delivered += shipment.Unload(); shipment = null; }
-			if (Enumerable.Range(0, Inventory.ResourceCount).Any(r => cargo.Amount(r) > 0)) { Status = "Marche plein : attend de la place pour decharger."; return; }
+			if (equipmentRecovery != null) { Delivered += equipmentRecovery.Unload(); equipmentRecovery = null; }
+			if (campRecovery != null) { Delivered += campRecovery.Unload(); campRecovery = null; }
+			if (Enumerable.Range(0, recovering ? StorageGoods.Count : Inventory.ResourceCount).Any(g => StorageGoods.Amount(self, g) > 0))
+			{ Status = "Marché plein : attend de la place pour décharger la cargaison."; return; }
 			if (recovering) { Pause(self, "Cargaison rapatriee. Choisissez une route pour repartir."); return; }
 			var next = target == first ? second : first;
 			var origin = target.Trait<MedievalTradeMarket>();
@@ -240,7 +265,7 @@ namespace OpenRA.Mods.Medieval
 				Status = "Attend des marchandises ou de la place a destination.";
 			}
 		}
-		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self) { shipment?.Cancel(); shipment = null; }
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self) => ReleaseShipments();
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) => Pause(self, "Nouvel ordre commercial requis.");
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{

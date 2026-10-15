@@ -6043,6 +6043,7 @@
   "OpenRA.Mods.Medieval/ManualTransfer.cs",
   "OpenRA.Mods.Medieval/Markets.cs",
   "OpenRA.Mods.Medieval/MarketStalls.cs",
+  "OpenRA.Mods.Medieval/MenuIcons.cs",
   "OpenRA.Mods.Medieval/Messenger.cs",
   "OpenRA.Mods.Medieval/MessengerInterface.cs",
   "OpenRA.Mods.Medieval/MessengerValidation.cs",

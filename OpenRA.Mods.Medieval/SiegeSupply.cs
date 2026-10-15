@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Medieval
 		public bool Assign(Actor self, Actor engine)
 		{
 			if (!SiegeRules.Live(engine, self.Owner) || engine.TraitOrDefault<MedievalSiegeEngine>()?.Info.Trebuchet != true) return false;
+			self.TraitOrDefault<MedievalManualTransfer>()?.ResumeAutomatic(self);
 			Pause(self, "Rejoint le stock de pierres le plus proche."); target = engine; recovering = false; Active = true; return true;
 		}
 		public void LostEngine(Actor self, Actor engine)
@@ -52,11 +53,12 @@ namespace OpenRA.Mods.Medieval
 			else if (order.OrderString is "Move" or "Stop" or "Scatter") Pause(self, "Ordre manuel. Pierres conservees : reprendre ou rapatrier.", false);
 			else if (order.OrderString == "MedievalStoneRecover")
 			{
-				Pause(self, "Rapatrie les pierres au stockage.");
-				target = Stores(self.Owner).Where(a => a.Trait<MedievalStockpile>().Stock.Free(3) > 0)
+				var destination = Stores(self.Owner).Where(a => !a.WillDispose && a.Trait<MedievalStockpile>().Stock.Free(3) > 0)
 					.OrderBy(a => (a.CenterPosition - self.CenterPosition).HorizontalLengthSquared).ThenBy(a => a.ActorID).FirstOrDefault();
-				recovering = true; Active = target != null;
-				if (!Active) Status = "Aucun stockage disponible. Pierres conservees.";
+				if (destination == null) { Status = "Aucun stockage disponible. Ordre actuel conservé."; return; }
+				self.TraitOrDefault<MedievalManualTransfer>()?.ResumeAutomatic(self);
+				Pause(self, "Rapatrie les pierres au stockage.");
+				target = destination; recovering = true; Active = true;
 			}
 		}
 		void ITick.Tick(Actor self)

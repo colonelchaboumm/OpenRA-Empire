@@ -18,7 +18,7 @@ namespace OpenRA.Platforms.NetworkTest
 	{
 		readonly List<string> errors = [];
 		readonly List<object> checkpoints = [];
-		readonly List<Actor> stores = [], carts = [];
+		readonly List<Actor> stores = [], carts = [], markets = [];
 		Player[] players;
 		int tick;
 		bool finished;
@@ -37,9 +37,11 @@ namespace OpenRA.Platforms.NetworkTest
 				Actor Spawn(string type, CPos cell) => w.CreateActor("md." + type, [new OwnerInit(players[p]), new LocationInit(cell)]);
 				var origin = new CPos(47, -14 + p * 24);
 				var depot = Spawn("warehouse", origin); stores.Add(depot); carts.Add(Spawn("tradecart", origin + new CVec(8, 4)));
+				var market = Spawn("market", origin + new CVec(0, 12)); markets.Add(market);
 				for (var g = 0; g < StorageGoods.Count; g++)
 				{
 					var stock = StorageGoods.Stock(depot, g); var r = StorageGoods.Index(g); stock.Take(r, int.MaxValue); stock.Add(r, 10);
+					StorageGoods.Stock(market, g)?.Take(r, int.MaxValue);
 				}
 			}
 		}
@@ -54,6 +56,13 @@ namespace OpenRA.Platforms.NetworkTest
 			Check(!NetworkAuditLoadScreen.Orders.IsOutOfSync, "Native TCP synchronization mismatch.");
 			if (tick == 1) { w.AddFrameEndTask(Setup); return; }
 			if (tick == 30) for (var p = 0; p < players.Length; p++) Order(w, p, 0, 7, true);
+			if (tick == 60)
+				for (var p = 0; p < players.Length; p++)
+					if (players[p] == w.LocalPlayer)
+					{
+						w.IssueOrder(new Order("MedievalResumeTrade", carts[p], false));
+						w.IssueOrder(new Order("MedievalAssignTrader", carts[p], Target.FromActor(markets[1 - p]), false));
+					}
 			if (tick == 650)
 			{
 				Check(carts.All(a => StorageGoods.Amount(a, 0) == 7), "Both clients loaded exact quantities after real movement.");
@@ -71,7 +80,17 @@ namespace OpenRA.Platforms.NetworkTest
 				}
 			}
 			if (tick % 100 == 0) checkpoints.Add(new { tick, hash = w.SyncHash(), stocks = carts.SelectMany(a => Enumerable.Range(0, StorageGoods.Count).Select(g => StorageGoods.Amount(a, g))).ToArray() });
-			if (tick < 1900) return;
+			if (tick == 1880)
+				for (var p = 0; p < players.Length; p++)
+					if (players[p] == w.LocalPlayer) w.IssueOrder(new Order("MedievalRecoverTrade", carts[p], false));
+			if (tick < 2500) return;
+			for (var p = 0; p < players.Length; p++)
+			{
+				Check(!carts[p].Trait<MedievalTradeCart>().Active && !carts[p].Trait<MedievalManualTransfer>().ManualControl, "Automatic recovery after manual orders completes on both clients.");
+				for (var g = 5; g < StorageGoods.Count; g++)
+					Check(StorageGoods.Amount(carts[p], g) == 0 && StorageGoods.Amount(markets[p], g) + StorageGoods.Amount(stores[p], g) == 10
+						&& StorageGoods.Stock(markets[p], g).Incoming(StorageGoods.Index(g)) == 0, "Equipment/camp recovery conserves goods and releases reservations: " + p + "/" + g);
+			}
 			File.WriteAllText(Path.Combine(Platform.SupportDir, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, errors, tick, local = w.LocalPlayer.InternalName, checkpoints }, new JsonSerializerOptions { WriteIndented = true }));
 			finished = true; Game.RunAfterDelay(2000, Game.Exit);
 		}
