@@ -82,14 +82,16 @@ namespace OpenRA.Mods.Medieval
 			if (mail.Revision == d.MailRevision)
 				mail.Resolve(d.Messenger, d.First, MedievalMessenger.Command(d.First, d.Messenger, "MedievalRecallMessenger"));
 		}
-		public void Abort(BarterDeal d, string reason)
+		public void Abort(BarterDeal d, string reason, Actor keepActivity = null)
 		{
 			if (!d.Active) return;
 			var shipping = d.State == BarterState.Delivering;
 			d.State = shipping ? BarterState.Interrupted : BarterState.Refused;
-			d.Status = reason + (shipping ? " Cargaisons survivantes rapatriées ; les livraisons déjà reçues restent au dépôt." : " Aucune marchandise envoyée.");
+			d.Status = reason + (shipping ? keepActivity != null
+				? " Charrette libérée avec sa cargaison ; les autres convois rentrent au dépôt. Les livraisons déjà reçues sont conservées."
+				: " Cargaisons survivantes rapatriées ; les livraisons déjà reçues restent au dépôt." : " Aucune marchandise envoyée.");
 			Changed(d, d.First.World);
-			foreach (var leg in d.Legs) leg?.Cancel();
+			foreach (var leg in d.Legs) leg?.Cancel(keepActivity);
 			ReturnMessenger(d);
 		}
 		public void Resolve(Player p, Order order)
@@ -219,7 +221,7 @@ namespace OpenRA.Mods.Medieval
 			Side = side; Owner = deal.Player(side); Source = deal.Depots[side]; Destination = deal.Depots[1 - side]; Cargo = cargo;
 			Journeys = carts.Select(a => new BarterJourney(deal, this, a)).ToArray();
 		}
-		public void Cancel() { Cargo.Cancel(); foreach (var j in Journeys.Where(j => !j.Done)) j.Cancel(); }
+		public void Cancel(Actor keepActivity = null) { Cargo.Cancel(); foreach (var j in Journeys.Where(j => !j.Done)) j.Cancel(keepActivity); }
 		public void Tick(World w) { foreach (var j in Journeys) j.Tick(w); }
 	}
 	public sealed class BarterJourney
@@ -244,25 +246,30 @@ namespace OpenRA.Mods.Medieval
 			cart.Trait<MedievalBarterCart>().Journey = this;
 		}
 		public int Hash => unchecked((((((int)Travel * 31 + (int)Cart.ActorID) * 31 + attempts) * 31 + (int)(recoveryDepot?.ActorID ?? 0)) * 2 + (resumeRoute ? 1 : 0)) * 31 + Loads);
-		public void Abort() => Cart.World.WorldActor.Trait<MedievalBarter>().Abort(deal, "Mission interrompue par un nouvel ordre à une charrette.");
+		public void Abort()
+		{
+			Cart.World.WorldActor.Trait<MedievalBarter>().Abort(deal, "Mission interrompue par un nouvel ordre à une charrette.", Cart);
+			// Let this cart obey the player's escape/stop order; surviving peers recover normally.
+			Cargo.Cancel(); Finish(Cart.World, false);
+		}
 		public string Status => Travel switch
 		{
 			BarterTravel.Loading => "Rejoint le dépôt pour charger", BarterTravel.Outbound => "Livraison chez le partenaire",
 			BarterTravel.Returning => Cargo.Waiting > 0 ? "Retour pour le prochain chargement" : "Retour au dépôt d'origine",
 			BarterTravel.Recovering => "Échange interrompu : rapatriement de la cargaison", _ => "Trajet terminé"
 		};
-		public void Cancel()
+		public void Cancel(Actor keepActivity = null)
 		{
 			Cargo.Cancel(); Travel = BarterTravel.Recovering; attempts = 0;
-			if (MedievalStockpile.Active(Cart)) Cart.CancelActivity();
+			if (Cart != keepActivity && MedievalStockpile.Active(Cart)) Cart.CancelActivity();
 		}
-		void Finish(World w)
+		void Finish(World w, bool resume = true)
 		{
 			Travel = BarterTravel.Done;
 			if (MedievalStockpile.Active(Cart))
 			{
 				Cart.Trait<MedievalBarterCart>().Journey = null;
-				Cart.Trait<MedievalTradeCart>().ReturnFromLoan(Cart, resumeRoute && Cart.Owner == Owner);
+				Cart.Trait<MedievalTradeCart>().ReturnFromLoan(Cart, resume && resumeRoute && Cart.Owner == Owner);
 			}
 		}
 		public void Tick(World w)
@@ -313,7 +320,7 @@ namespace OpenRA.Mods.Medieval
 		public string Status => Journey?.Status ?? "Disponible pour le marchandage si vide";
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (Busy && order.OrderString is "Stop" or "Move" or "MedievalAssignTrader" or "MedievalResumeTrade" or "MedievalPauseTrade" or "MedievalRecoverTrade") Journey.Abort();
+			if (Busy && order.OrderString is "Stop" or "Move" or "Scatter") Journey.Abort();
 		}
 	}
 }

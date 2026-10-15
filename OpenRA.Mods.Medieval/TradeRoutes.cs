@@ -204,12 +204,13 @@ namespace OpenRA.Mods.Medieval
 		{
 			if (self.TraitOrDefault<MedievalBarterCart>()?.Busy == true) return;
 			if (order.OrderString == "MedievalAssignTrader" && order.Target.Type == TargetType.Actor) Assign(self, order.Target.Actor);
-			else if (order.OrderString is "Move" or "Stop" or "MedievalPauseTrade") Pause(self, "Route en pause. Cargaison conservee.", order.OrderString == "MedievalPauseTrade");
+			else if (order.OrderString is "Move" or "Stop" or "Scatter" or "MedievalPauseTrade") Pause(self, "Route en pause. Cargaison conservee.", order.OrderString == "MedievalPauseTrade");
 			else if (order.OrderString == "MedievalResumeTrade" && ValidRoute(self))
 			{
 				self.TraitOrDefault<MedievalManualTransfer>()?.ResumeAutomatic(self);
-				Active = true; recovering = false; cadence = 0;
-				if (!MedievalLogistics.Market(target, self.Owner)) target = first;
+				if (recovering) { ReleaseShipments(); self.CancelActivity(); }
+				Active = true; recovering = false; cadence = attempts = 0;
+				if (target != first && target != second) target = first;
 			}
 			else if (order.OrderString == "MedievalRecoverTrade")
 			{

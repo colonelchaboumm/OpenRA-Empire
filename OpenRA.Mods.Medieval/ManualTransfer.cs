@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -30,7 +32,7 @@ namespace OpenRA.Mods.Medieval
 	{
 		public override object Create(ActorInitializer init) => new MedievalManualTransfer();
 	}
-	public sealed class MedievalManualTransfer : ITick, IResolveOrder, INotifyRemovedFromWorld, INotifyOwnerChanged, ISync
+	public sealed class MedievalManualTransfer : ITick, IIssueOrder, IResolveOrder, INotifyRemovedFromWorld, INotifyOwnerChanged, ISync
 	{
 		Actor building;
 		ManualCargo cargo;
@@ -38,9 +40,10 @@ namespace OpenRA.Mods.Medieval
 		[VerifySync] bool loading;
 		[VerifySync] WPos lastPosition;
 		[VerifySync] public bool ManualControl { get; private set; }
+		[VerifySync] public bool Collecting { get; private set; }
 		[VerifySync] public int BuildingId => unchecked((int)(building?.ActorID ?? 0));
 		[VerifySync] public int Quantity => cargo?.Quantity ?? 0;
-		public bool Busy => cargo != null;
+		public bool Busy => cargo != null || Collecting;
 		public Actor Building => building;
 		public string Status { get; private set; } = "Glissez une ressource pour préparer un transfert.";
 		public static bool Manual(Actor a) => a.TraitOrDefault<MedievalManualTransfer>()?.ManualControl == true;
@@ -73,9 +76,21 @@ namespace OpenRA.Mods.Medieval
 			var r = StorageGoods.Index(commodity);
 			return Math.Max(0, Math.Min(from?.Available(r) ?? 0, to?.Free(r) ?? 0));
 		}
+		public static bool CanCollect(Actor cart, Actor pile) => Available(cart) && MedievalDroppedCargo.Visible(pile, cart.Owner)
+			&& Enumerable.Range(0, StorageGoods.Count).Any(g => (StorageGoods.Stock(pile, g)?.Available(StorageGoods.Index(g)) ?? 0) > 0
+				&& (StorageGoods.Stock(cart, g)?.Free(StorageGoods.Index(g)) ?? 0) > 0);
+		sealed class CargoTargeter : UnitOrderTargeter
+		{
+			public CargoTargeter() : base("MedievalCollectCargo", 7, "enter", true, true) { }
+			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor) =>
+				!modifiers.HasModifier(TargetModifiers.ForceMove) && CanCollect(self, target);
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor) => false;
+		}
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders { get { yield return new CargoTargeter(); } }
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued) => new("MedievalCollectCargo", self, target, false);
 		void Cancel(Actor self, string status, bool stop)
 		{
-			cargo?.Cancel(); cargo = null; building = null; attempts = cadence = elapsed = handling = 0;
+			cargo?.Cancel(); cargo = null; Collecting = false; building = null; attempts = cadence = elapsed = handling = 0;
 			if (stop) self.CancelActivity();
 			Status = status;
 		}
@@ -87,6 +102,13 @@ namespace OpenRA.Mods.Medieval
 		}
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
+			if (order.OrderString == "MedievalCollectCargo")
+			{
+				if (order.Target.Type != TargetType.Actor || !CanCollect(self, order.Target.Actor)) return;
+				self.CancelActivity(); self.TraitOrDefault<MedievalSupplyCart>()?.CancelReload();
+				building = order.Target.Actor; Collecting = ManualControl = true; attempts = cadence = elapsed = handling = 0; lastPosition = self.CenterPosition;
+				Status = "Rejoint la cargaison abandonnée. Chargement sur place, selon la capacité libre."; return;
+			}
 			if (order.OrderString is "MedievalLoadResource" or "MedievalUnloadResource")
 			{
 				if (order.Target.Type != TargetType.Actor || order.ExtraData >= StorageGoods.Count
@@ -108,15 +130,22 @@ namespace OpenRA.Mods.Medieval
 		void ITick.Tick(Actor self)
 		{
 			if (!Busy) return;
-			if (!MedievalStockpile.Active(self) || self.WillDispose || !Store(building, self.Owner))
+			if (!MedievalStockpile.Active(self) || self.WillDispose || !(Collecting ? MedievalDroppedCargo.Visible(building, self.Owner) : Store(building, self.Owner)))
 			{ Cancel(self, "Transfert annulé : bâtiment ou charrette indisponible.", true); return; }
 			if (self.CenterPosition != lastPosition) { lastPosition = self.CenterPosition; elapsed = 0; }
 			if (++elapsed > 1500) { Cancel(self, "Accès bloqué trop longtemps. Transfert annulé.", true); return; }
 			if (--cadence > 0) return; cadence = 10;
 			if (!self.IsIdle) return;
 			if (!MedievalLogistics.Approach(self, building, ref attempts)) { handling = 0; return; }
-			Status = (loading ? "Chargement" : "Déchargement") + " : " + Quantity + " " + StorageGoods.Names[good] + "…";
+			Status = Collecting ? "Récupération de la cargaison abandonnée…" : (loading ? "Chargement" : "Déchargement") + " : " + Quantity + " " + StorageGoods.Names[good] + "…";
 			if (++handling < 3) return;
+			if (Collecting)
+			{
+				var recovered = CargoRecovery.Transfer(MedievalBarter.Stocks(building), MedievalBarter.Stocks(self));
+				Collecting = false; building = null;
+				Status = recovered > 0 ? recovered + " marchandises récupérées. Déposez-les dans votre dépôt." : "Plus de marchandise compatible ou charrette pleine.";
+				return;
+			}
 			var count = Quantity; cargo.Complete(); cargo = null; building = null;
 			Status = count + " " + StorageGoods.Names[good] + (loading ? " chargés. Charrette disponible." : " déposés. Charrette disponible.");
 		}

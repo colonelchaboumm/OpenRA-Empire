@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Medieval
 		int2 pointer;
 		string notice = "Glissez une ressource d’un stock vers l’autre.";
 		static bool Live(Actor a) => a != null && a.IsInWorld && !a.IsDead && !a.WillDispose;
-		public Actor Store => MedievalManualTransfer.Store(store, world.LocalPlayer) ? store : null;
+		public Actor Store => MedievalManualTransfer.Store(store, world.LocalPlayer) || MedievalDroppedCargo.Visible(store, world.LocalPlayer) ? store : null;
 		public Actor Cart => Live(cart) && cart.Owner == world.LocalPlayer ? cart : null;
 		public bool Choosing => proposed >= 0;
 		public bool Available => Selected() != null;
@@ -68,6 +68,14 @@ namespace OpenRA.Mods.Medieval
 			stop.Bounds.Height = 24;
 			stop.IsVisible = () => !Choosing && Cart?.TraitOrDefault<MedievalManualTransfer>()?.Busy == true;
 			stop.IsDisabled = () => world.Paused;
+			var collect = Button(this, "MD_TRANSFER_COLLECT", "Récupérer au sol", 203, 369, 197, () =>
+			{
+				if (Cart is { } carrier && MedievalManualTransfer.Available(carrier))
+					world.OrderGenerator = new MedievalLogisticsTargetGenerator(world, renderer, carrier, "MedievalCollectCargo");
+			});
+			collect.Bounds.Height = 24;
+			collect.IsVisible = () => !Choosing && dragged < 0 && Cart != null;
+			collect.IsDisabled = () => world.Paused || !MedievalManualTransfer.Available(Cart);
 			var portrait = new SpriteWidget(renderer) { Id = "MD_TRANSFER_CART_VIEW", Bounds = new WidgetBounds(241, 162, 60, 44), IsVisible = () => !Choosing && Cart != null };
 			portrait.GetSprite = CartPortrait;
 			portrait.GetPalette = () => cart == null ? null : "md-livery" + cart.Owner.InternalName;
@@ -86,6 +94,7 @@ namespace OpenRA.Mods.Medieval
 		static string Blocked(Actor carrier, Actor building, int good, bool load)
 		{
 			if (MedievalManualTransfer.UnavailableReason(carrier) is { } reason) return reason;
+			if (MedievalDroppedCargo.Visible(building, carrier.Owner)) return "Cargaison au sol : utilisez « Récupérer au sol » ou un clic droit avec une charrette.";
 			if (!MedievalManualTransfer.Store(building, carrier.Owner)) return "Aucun bâtiment de stockage disponible.";
 			var from = StorageGoods.Stock(load ? building : carrier, good); var to = StorageGoods.Stock(load ? carrier : building, good); var r = StorageGoods.Index(good);
 			if ((to?.Capacity(r) ?? 0) == 0) return "Destination incompatible avec " + StorageGoods.Names[good] + ". Choisissez un autre stock.";
@@ -123,7 +132,7 @@ namespace OpenRA.Mods.Medieval
 		}
 		static string Name(Actor a) => a == null ? "Aucun dépôt disponible" : (a.Info.Name switch
 		{
-			"md.warehouse" => "Dépôt", "md.market" => "Grand marché", "md.marketstall" => "Petit marché", "md.farm" => "Ferme",
+			"md.droppedcargo" => "Cargaison au sol", "md.warehouse" => "Dépôt", "md.market" => "Grand marché", "md.marketstall" => "Petit marché", "md.farm" => "Ferme",
 			"md.ranch" => "Élevage", "md.sheepfold" => "Bergerie", "md.forge" => "Forge", "md.sawmill" => "Scierie",
 			"md.quarry" => "Carrière", "md.goldmine" => "Mine d’or", "md.tentweaver" => "Tisseur", "md.huntinglodge" => "Cabane de chasse",
 			_ => "Stock du bâtiment"
@@ -214,9 +223,9 @@ namespace OpenRA.Mods.Medieval
 			var font = Game.Renderer.Fonts["TinyBold"];
 			void Text(string text, int x, int y, Color color) => font.DrawText(text, (RenderOrigin + new int2(x, y)).ToVector2(), color);
 			Text(Name(Store), 9, 6, Color.FromArgb(232, 203, 143));
-			Text("Quantité / capacité · survol : détails · glisser : transfert", 9, 23, Color.LightGray);
+			Text(Store?.TraitOrDefault<MedievalDroppedCargo>() != null ? "Cargaison accessible à tous · chargement sur place" : "Quantité / capacité · survol : détails · glisser : transfert", 9, 23, Color.LightGray);
 			Text(cart == null ? "Aucune charrette disponible" : "Charrette #" + cart.ActorID + (selected == cart ? " sélectionnée" : " à proximité"), 9, 177, Color.FromArgb(232, 203, 143));
-			Text("Glisser vers le stock du haut ↑", 9, 194, Color.LightGray);
+			Text(Store?.TraitOrDefault<MedievalDroppedCargo>() != null ? "Chargement limité à la place disponible" : "Glisser vers le stock du haut ↑", 9, 194, Color.LightGray);
 			string detail = null;
 			for (var side = 0; side < 2; side++)
 				for (var g = 0; g < StorageGoods.Count; g++)

@@ -23,6 +23,10 @@ namespace OpenRA.Mods.Medieval
 		WorldRenderer renderer;
 		MedievalBarter barter;
 		Actor home, target, courier, firstDepot, secondDepot, backupDepot;
+		Actor escaping;
+		CPos escapeFrom;
+		int[] escapeCargo;
+		bool escapeChecked;
 		Player first, second, third;
 		BarterDeal deal;
 		Order duplicate;
@@ -49,6 +53,11 @@ namespace OpenRA.Mods.Medieval
 			((IResolveOrder)received.Subject.Trait<MedievalBarterOrders>()).ResolveOrder(received.Subject, received);
 		}
 		void Command(World w, Player p, string name, string text = "") => Remote(w, MedievalBarter.Command(p, deal, name, text));
+		void CartOrder(World w, Order order)
+		{
+			using var reader = new BinaryReader(new MemoryStream(order.Serialize()));
+			var received = Order.Deserialize(w, reader); received.Subject.ResolveOrder(received);
+		}
 		void Button(World w, string id) => Sync.RunUnsynced(w, () =>
 		{ var b = Ui.Root.Get<ButtonWidget>(id); Check(!b.IsDisabled(), "Button must be enabled: " + id); if (!b.IsDisabled()) b.OnClick(); });
 		void Invite(World w, bool ui = false)
@@ -194,6 +203,8 @@ namespace OpenRA.Mods.Medieval
 				Check(Amounts(firstDepot).SequenceEqual(interruptionA.Select((n, g) => n - lost[g])), "Destroyed cargo must not be duplicated or magically refunded.");
 				Check(Amounts(secondDepot).SequenceEqual(interruptionB), "Surviving counter-payment returns physically to its owner's depot.");
 				Check(NoReservations(firstDepot) && NoReservations(secondDepot), "Interception releases all pending stock and capacity reservations.");
+				var pile = w.ActorsHavingTrait<MedievalDroppedCargo>().SingleOrDefault();
+				Check(pile != null && Amounts(pile).SequenceEqual(lost) && NoReservations(pile), "Destroyed barter cargo remains physically recoverable, without delivery reservations.");
 				stage = 15;
 				w.AddFrameEndTask(_ => backupDepot = Spawn(w, "warehouse", second, 43, 39));
 			}
@@ -214,7 +225,34 @@ namespace OpenRA.Mods.Medieval
 			}
 			else if (stage == 17 && deal.Legs.All(l => l?.Cargo.Travelling > 0 && l.Cart != null && l.Cargo.Delivered == 0))
 			{
-				recoveredToBackup = Amounts(deal.Legs[1].Cart); secondDepot.Dispose(); stage = 18;
+				if (!escapeChecked)
+				{
+					escaping = deal.Legs[0].Cart; escapeFrom = escaping.Location; escapeCargo = Amounts(escaping);
+					CartOrder(w, new Order("MedievalAssignTrader", escaping, Target.FromActor(secondDepot), false));
+					CartOrder(w, new Order("MedievalResumeTrade", escaping, false));
+					Check(deal.State == BarterState.Delivering, "Invalid automatic orders must not cancel an agreed exchange.");
+					CartOrder(w, new Order("Move", escaping, Target.FromCell(w, Cell(18, 42)), false));
+					Check(deal.State == BarterState.Interrupted && !escaping.Trait<MedievalBarterCart>().Busy && NoReservations(escaping), "Manual escape frees the cart and its cargo from the interrupted agreement.");
+					stage = 30; until = tick + 180;
+				}
+				else { recoveredToBackup = Amounts(deal.Legs[1].Cart); secondDepot.Dispose(); stage = 18; }
+			}
+			else if (stage == 30 && tick >= until)
+			{
+				Check(escaping.Location != escapeFrom && Amounts(escaping).SequenceEqual(escapeCargo), "An escape move actually moves the cart and preserves all goods.");
+				Check(!escaping.Trait<MedievalTradeCart>().Active, "Escape must not silently restart an old trade route.");
+				stage = 31;
+			}
+			else if (stage == 31 && !escaping.Trait<MedievalManualTransfer>().Busy)
+			{
+				var good = Enumerable.Range(0, StorageGoods.Count).FirstOrDefault(g => StorageGoods.Amount(escaping, g) > 0, -1);
+				if (good >= 0) CartOrder(w, new Order("MedievalUnloadResource", escaping, Target.FromActor(firstDepot), false)
+					{ ExtraData = (uint)good, TargetString = StorageGoods.Amount(escaping, good).ToString(System.Globalization.CultureInfo.InvariantCulture) });
+				else if (!deal.Returning)
+				{
+					Check(NoReservations(firstDepot) && NoReservations(secondDepot), "Escape and manual recovery release every depot reservation.");
+					escapeChecked = true; stage = 15;
+				}
 			}
 			else if (stage == 18 && deal.State == BarterState.Interrupted && !deal.Returning)
 			{

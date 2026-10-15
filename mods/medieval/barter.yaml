@@ -1,6 +1,27 @@
 World:
 	MedievalBarter:
 
+md.supplycart:
+	MedievalCartCargo:
+
+md.stonecart:
+	MedievalCartCargo:
+
+md.droppedcargo:
+	Inherits: md.salvage
+	-MedievalConstructionSupply:
+	-RevealsShroud:
+	HiddenUnderFog:
+		Type: CenterPosition
+		AlwaysVisibleRelationships: None
+	MedievalDroppedCargo:
+	RenderSprites:
+		Image: md.salvage
+	Tooltip:
+		Name: medieval-dropped-cargo
+	Targetable:
+		TargetTypes: DroppedCargo
+
 Player:
 	MedievalBarterOrders:
 

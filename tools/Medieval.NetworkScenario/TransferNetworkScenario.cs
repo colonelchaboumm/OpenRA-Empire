@@ -20,8 +20,9 @@ namespace OpenRA.Platforms.NetworkTest
 		readonly List<object> checkpoints = [];
 		readonly List<Actor> stores = [], carts = [], markets = [];
 		Player[] players;
+		Actor victim, attacker, pile;
 		int tick;
-		bool finished;
+		bool finished, collectSent;
 		void Check(bool ok, string error) { if (!ok && !errors.Contains(error)) errors.Add(error); }
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
@@ -83,14 +84,47 @@ namespace OpenRA.Platforms.NetworkTest
 			if (tick == 1880)
 				for (var p = 0; p < players.Length; p++)
 					if (players[p] == w.LocalPlayer) w.IssueOrder(new Order("MedievalRecoverTrade", carts[p], false));
-			if (tick < 2500) return;
-			for (var p = 0; p < players.Length; p++)
+			if (tick == 2500)
 			{
-				Check(!carts[p].Trait<MedievalTradeCart>().Active && !carts[p].Trait<MedievalManualTransfer>().ManualControl, "Automatic recovery after manual orders completes on both clients.");
-				for (var g = 5; g < StorageGoods.Count; g++)
-					Check(StorageGoods.Amount(carts[p], g) == 0 && StorageGoods.Amount(markets[p], g) + StorageGoods.Amount(stores[p], g) == 10
-						&& StorageGoods.Stock(markets[p], g).Incoming(StorageGoods.Index(g)) == 0, "Equipment/camp recovery conserves goods and releases reservations: " + p + "/" + g);
+				for (var p = 0; p < players.Length; p++)
+				{
+					Check(!carts[p].Trait<MedievalTradeCart>().Active && !carts[p].Trait<MedievalManualTransfer>().ManualControl, "Automatic recovery after manual orders completes on both clients.");
+					for (var g = 5; g < StorageGoods.Count; g++)
+						Check(StorageGoods.Amount(carts[p], g) == 0 && StorageGoods.Amount(markets[p], g) + StorageGoods.Amount(stores[p], g) == 10
+							&& StorageGoods.Stock(markets[p], g).Incoming(StorageGoods.Index(g)) == 0, "Equipment/camp recovery conserves goods and releases reservations: " + p + "/" + g);
+				}
+				w.AddFrameEndTask(_ =>
+				{
+					victim = w.CreateActor("md.tradecart", [new OwnerInit(players[0]), new LocationInit(new CPos(61, 12)), new HealthInit(1)]);
+					for (var g = 0; g < StorageGoods.Count; g++) StorageGoods.Stock(victim, g).Add(StorageGoods.Index(g), g == 9 ? 2 : 3);
+					attacker = w.CreateActor("md.archer", [new OwnerInit(players[1]), new LocationInit(new CPos(64, 12))]);
+				});
 			}
+			if (tick == 2530 && w.LocalPlayer == players[1] && !victim.IsDead) w.IssueOrder(new Order("Attack", attacker, Target.FromActor(victim), false));
+			if (tick > 2530 && tick < 3500 && pile == null)
+			{
+				pile = w.ActorsHavingTrait<MedievalDroppedCargo>().SingleOrDefault();
+				if (pile != null)
+				{
+					Check(Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Amount(pile, g) == (g == 9 ? 2 : 3)), "Network combat drops the exact cargo on both clients.");
+					attacker.Dispose();
+				}
+			}
+			if (tick > 2600 && pile != null && !collectSent && w.LocalPlayer == players[1])
+			{
+				w.IssueOrder(new Order("MedievalCollectCargo", carts[1], Target.FromActor(pile), false)); collectSent = true;
+			}
+			if (tick == 3500)
+			{
+				Check(victim.IsDead && pile != null && !pile.IsInWorld, "Destroyed cart and emptied cargo pile are removed on both clients.");
+				Check(Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Amount(carts[1], g) == (g == 9 ? 2 : 3)), "Enemy collects every commodity over authenticated TCP orders.");
+				if (w.LocalPlayer == players[1]) w.IssueOrder(new Order("MedievalRecoverTrade", carts[1], false));
+			}
+			if (tick < 4300) return;
+			Check(Enumerable.Range(0, StorageGoods.Count).All(g => StorageGoods.Amount(carts[1], g) == 0), "Recovered loot is delivered physically to the enemy market.");
+			for (var g = 0; g < StorageGoods.Count; g++)
+				Check(StorageGoods.Amount(markets[1], g) + StorageGoods.Amount(stores[1], g) == 10 + (g == 9 ? 2 : 3)
+					&& StorageGoods.Stock(markets[1], g).Incoming(StorageGoods.Index(g)) == 0, "Network looting conserves quantities and releases reservations: " + g);
 			File.WriteAllText(Path.Combine(Platform.SupportDir, "result.json"), JsonSerializer.Serialize(new { passed = errors.Count == 0, errors, tick, local = w.LocalPlayer.InternalName, checkpoints }, new JsonSerializerOptions { WriteIndented = true }));
 			finished = true; Game.RunAfterDelay(2000, Game.Exit);
 		}

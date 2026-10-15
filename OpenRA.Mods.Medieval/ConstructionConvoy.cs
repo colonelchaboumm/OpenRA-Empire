@@ -93,13 +93,16 @@ namespace OpenRA.Mods.Medieval
 		public MedievalLogisticsTargetGenerator(World world, WorldRenderer renderer, Actor origin, string command) : base(world)
 		{ this.origin = origin; this.command = command; this.renderer = renderer; }
 		bool ValidOrigin => origin.IsInWorld && !origin.IsDead && origin.Owner == origin.World.LocalPlayer;
-		Actor At(World w, CPos cell) => w.ActorMap.GetActorsAt(cell).Where(a => a.IsInWorld && !a.IsDead && a.Owner == origin.Owner && a != origin)
+		Actor At(World w, CPos cell) => command == "MedievalCollectCargo"
+			? w.ActorsHavingTrait<MedievalDroppedCargo>().Where(a => a.Location == cell && MedievalManualTransfer.CanCollect(origin, a)).OrderBy(a => a.ActorID).FirstOrDefault()
+			: w.ActorMap.GetActorsAt(cell).Where(a => a.IsInWorld && !a.IsDead && a.Owner == origin.Owner && a != origin)
 			.FirstOrDefault(a => command == "MedievalSupplySite" ? a.TraitOrDefault<MedievalBuilding>()?.Complete == false
 				: MedievalLogistics.Market(a, origin.Owner) && (command != "MedievalAssignTrader" || a.Trait<MedievalTradeMarket>().Linked(a)));
 		public string PreviewText
 		{
 			get
 			{
+				if (command == "MedievalCollectCargo") return "Cliquez une cargaison abandonnée visible. Chargement sur place ; le surplus reste au sol. Clic droit : annuler.";
 				if (ValidOrigin && command != "MedievalSupplySite" && At(origin.World, renderer.Viewport.ViewToWorld(Viewport.LastMousePos)) is Actor target)
 					return command == "MedievalAssignTrader" ? "Affecter la charrette a " + MedievalLogistics.Name(target) + ". Cliquez pour confirmer."
 						: command == "MedievalLinkStall" ? MedievalLogistics.Name(target) + " -> " + MedievalLogistics.Name(origin) + ". Cliquez pour relier."
