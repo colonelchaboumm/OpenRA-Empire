@@ -321,32 +321,32 @@ button-command-bar-queue-orders =
     Hold <(Shift)> to activate temporarily while commanding units.
 
 button-stance-bar-attackanything =
-    .tooltip = Attack Anything Stance
+    .tooltip = Attitude offensive
     .tooltipdesc =
-    Set the selected units to Attack Anything stance:
-     - Units will attack enemy units and structures on sight
-     - Units will pursue attackers across the battlefield
+    Les unités attaquent les ennemis à vue
+    et peuvent les poursuivre sur le champ de bataille.
 
 button-stance-bar-defend =
-    .tooltip = Defend Stance
+    .tooltip = Défendre
     .tooltipdesc =
-    Set the selected units to Defend stance:
-     - Units will attack enemy units on sight
-     - Units will not move or pursue enemies
+    Attaque les ennemis à portée. En cas d'attaque,
+    les soldats peuvent riposter jusqu'à 8 cases,
+    puis revenir à leur position. Les escortes protègent
+    leur convoi et le rejoignent après le combat.
 
 button-stance-bar-returnfire =
-    .tooltip = Return Fire Stance
+    .tooltip = Riposter uniquement
     .tooltipdesc =
-    Set the selected units to Return Fire stance:
-     - Units will retaliate against enemies that attack them
-     - Units will not move or pursue enemies
+    Riposte lorsqu'une unité est attaquée, ou lorsque
+    son convoi est attaqué. Les soldats peuvent rejoindre
+    l'agresseur dans un rayon de 8 cases, puis reviennent
+    à leur position ou reprennent leur escorte.
 
 button-stance-bar-holdfire =
-    .tooltip = Hold Fire Stance
+    .tooltip = Cessez-le-feu
     .tooltipdesc =
-    Set the selected units to Hold Fire stance:
-     - Units will not fire upon enemies
-     - Units will not move or pursue enemies
+    Aucune attaque automatique, même sous le feu ennemi.
+    Les ordres de déplacement et d'escorte sont conservés.
 
 productionpalette-sidebar-production-palette =
     .ready = READY

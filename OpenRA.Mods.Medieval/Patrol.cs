@@ -125,13 +125,17 @@ namespace OpenRA.Mods.Medieval
 		public override bool Tick(Actor self)
 		{
 			if (IsCanceling || !patrol.Active) return TickChild(self);
-			if ((ChildActivity == null || moving) && !autoTarget.IsTraitDisabled && autoTarget.Stance >= UnitStance.Defend)
+			if ((ChildActivity == null || moving) && !autoTarget.IsTraitDisabled && autoTarget.Stance >= UnitStance.ReturnFire)
 			{
-				var target = autoTarget.ScanForTarget(self, autoTarget.AllowMove, true);
+				var attacker = self.TraitOrDefault<MedievalThreat>()?.RecentAttacker(self);
+				if (attacker != null && ((attacker.CenterPosition - self.CenterPosition).HorizontalLengthSquared > 8192L * 8192
+					|| !autoTarget.ActiveAttackBases.Any(a => a.HasAnyValidWeapons(Target.FromActor(attacker))))) attacker = null;
+				var target = attacker != null ? Target.FromActor(attacker) : autoTarget.Stance >= UnitStance.Defend ? autoTarget.ScanForTarget(self, autoTarget.AllowMove, true) : Target.Invalid;
 				if (target.Type != TargetType.Invalid)
 				{
 					ChildActivity?.Cancel(self); moving = false;
-					foreach (var attack in autoTarget.ActiveAttackBases)
+					if (attacker != null) QueueChild(new Retaliation(self, attacker, new WDist(8192), returnToOrigin: false));
+					else foreach (var attack in autoTarget.ActiveAttackBases)
 						QueueChild(attack.GetAttackActivity(self, AttackSource.AutoTarget, target, autoTarget.AllowMove, false));
 				}
 			}

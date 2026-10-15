@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("It will try to hunt down the enemy if it is set to AttackAnything.")]
 		public readonly bool AllowMovement = true;
 
+		[Desc("Maximum distance for a defensive response to damage, followed by a return to the original position. Zero keeps stationary retaliation.")]
+		public readonly WDist RetaliationRange = WDist.Zero;
+
 		[Desc("It will try to pivot to face the enemy if stance is not HoldFire.")]
 		public readonly bool AllowTurning = true;
 
@@ -227,11 +230,11 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Don't retaliate against healers
-			if (e.Damage.Value < 0)
+			if (e.Damage.Value <= 0)
 				return;
 
 			var attacker = e.Attacker;
-			if (attacker.Disposed)
+			if (attacker == null || attacker.Disposed)
 				return;
 
 			// Don't change targets when there is a target overriding auto-targeting
@@ -261,7 +264,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Respect AutoAttack priorities.
-			if (Stance > UnitStance.ReturnFire)
+			var defensiveResponse = !AllowMove && allowMovement && Info.RetaliationRange.Length > 0;
+			if (!defensiveResponse && Stance > UnitStance.ReturnFire)
 			{
 				var autoTarget = ScanForTarget(self, AllowMove, true);
 
@@ -270,8 +274,10 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			Aggressor = attacker;
-
-			Attack(Target.FromActor(Aggressor), AllowMove);
+			if (defensiveResponse)
+				self.QueueActivity(new Activities.Retaliation(self, attacker, Info.RetaliationRange));
+			else
+				Attack(Target.FromActor(Aggressor), AllowMove);
 		}
 
 		void INotifyIdle.TickIdle(Actor self)

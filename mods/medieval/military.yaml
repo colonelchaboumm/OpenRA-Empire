@@ -2,7 +2,12 @@ Player:
 	MedievalEquipmentEconomy:
 	MedievalCorrespondence:
 
+^MDWORKER:
+	MedievalThreat:
+
 ^MDFIGHTER:
+	AutoTarget:
+		RetaliationRange: 8c0
 	MedievalMorale:
 	MedievalNeedsFood:
 		HungryFirepowerPercent: 100

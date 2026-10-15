@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -60,27 +61,35 @@ namespace OpenRA.Mods.Medieval
 		readonly int mission;
 		readonly AutoTarget autoTarget;
 		readonly Mobile mobile;
+		Actor engaged;
 		bool moving;
 		public EscortActivity(Actor self, MedievalEscort escort, Actor target)
 		{ this.escort = escort; this.target = target; owner = self.Owner; mission = escort.Mission; autoTarget = self.Trait<AutoTarget>(); mobile = self.Trait<Mobile>(); ChildHasPriority = false; }
+		bool CanEngage(Actor attacker) => attacker != null
+			&& (attacker.CenterPosition - target.CenterPosition).HorizontalLengthSquared <= 8192L * 8192
+			&& autoTarget.ActiveAttackBases.Any(a => a.HasAnyValidWeapons(Target.FromActor(attacker)));
 		public override bool Tick(Actor self)
 		{
 			if (IsCanceling || escort.Mission != mission || escort.Protected != target || self.Owner != owner || !MedievalEscort.FriendlyUnit(self, target))
 			{ ChildActivity?.Cancel(self); return TickChild(self); }
-			var far = (self.CenterPosition - target.CenterPosition).HorizontalLengthSquared > 6144L * 6144;
+			var far = (self.CenterPosition - target.CenterPosition).HorizontalLengthSquared > 8192L * 8192;
 			if (far && !moving) { ChildActivity?.Cancel(self); moving = true; }
-			if (!far && (ChildActivity == null || moving) && !autoTarget.IsTraitDisabled && autoTarget.Stance >= UnitStance.Defend)
+			if (!far && !autoTarget.IsTraitDisabled && autoTarget.Stance >= UnitStance.ReturnFire)
 			{
-				var enemy = autoTarget.ScanForTarget(self, autoTarget.AllowMove, true);
-				if (enemy.Type != TargetType.Invalid)
+				var aggressor = target.TraitOrDefault<MedievalThreat>()?.RecentAttacker(self);
+				if (!CanEngage(aggressor)) aggressor = self.TraitOrDefault<MedievalThreat>()?.RecentAttacker(self);
+				var enemy = CanEngage(aggressor) ? Target.FromActor(aggressor) : Target.Invalid;
+				if (enemy.Type == TargetType.Invalid && (ChildActivity == null || moving) && autoTarget.Stance >= UnitStance.Defend)
+					enemy = autoTarget.ScanForTarget(self, autoTarget.Info.AllowMovement, true);
+				if (enemy.Type == TargetType.Actor && (engaged != enemy.Actor || ChildActivity == null || moving)
+					&& CanEngage(enemy.Actor))
 				{
-					ChildActivity?.Cancel(self); moving = false;
-					foreach (var attack in autoTarget.ActiveAttackBases)
-						QueueChild(attack.GetAttackActivity(self, AttackSource.AutoTarget, enemy, autoTarget.AllowMove, false));
+					ChildActivity?.Cancel(self); moving = false; engaged = enemy.Actor;
+					QueueChild(new Retaliation(self, engaged, new WDist(8192), target, false));
 				}
 			}
 			if (ChildActivity == null)
-			{ moving = true; QueueChild(mobile.MoveFollow(self, Target.FromActor(target), WDist.Zero, new WDist(2048), targetLineColor: Color.Gold)); }
+			{ moving = true; engaged = null; QueueChild(mobile.MoveFollow(self, Target.FromActor(target), WDist.Zero, new WDist(2048), targetLineColor: Color.Gold)); }
 			TickChild(self); return false;
 		}
 		protected override void OnLastRun(Actor self) => escort.Clear(mission);

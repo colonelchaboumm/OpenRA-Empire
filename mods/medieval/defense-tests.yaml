@@ -1,0 +1,14 @@
+World:
+	MedievalDefenseValidation:
+	MedievalDayNight:
+		DayTicks: 100000
+	MedievalWeather:
+		FirstRainTicks: 100000
+
+^MDWORKER:
+	MedievalNeedsFood:
+		MealInterval: 100000
+		StarvationDelay: 200000
+
+^MDFIGHTER:
+	MedievalCombatProbe:
