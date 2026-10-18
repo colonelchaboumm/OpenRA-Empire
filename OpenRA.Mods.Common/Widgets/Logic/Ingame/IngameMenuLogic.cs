@@ -404,7 +404,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateLoadGameButton()
 		{
-			if (world.Type != WorldType.Regular || !world.LobbyInfo.GlobalSettings.EnableGameSaves || world.IsReplay)
+			if (world.Type != WorldType.Regular || !world.LobbyInfo.GlobalSettings.EnableGameSaves || world.IsReplay || !isSinglePlayer)
 				return;
 
 			var button = AddButton("LOAD_GAME", LoadGameButton);
@@ -422,7 +422,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateSaveGameButton()
 		{
-			if (world.Type != WorldType.Regular || !world.LobbyInfo.GlobalSettings.EnableGameSaves || world.IsReplay)
+			if (world.Type != WorldType.Regular || !world.LobbyInfo.GlobalSettings.EnableGameSaves || world.IsReplay || !Game.IsHost)
 				return;
 
 			var button = AddButton("SAVE_GAME", SaveGameButton);

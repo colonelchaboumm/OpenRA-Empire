@@ -382,7 +382,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var name = parent.Get<TextFieldWidget>("NAME");
 			name.IsVisible = () => true;
-			name.IsDisabled = () => orderManager.LocalClient.IsReady;
+			name.IsDisabled = () => orderManager.LocalClient.IsReady || orderManager.LobbyInfo.GlobalSettings.RestoringGameSave;
 
 			name.Text = c.Name;
 			var escPressed = false;
@@ -445,7 +445,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var slot = parent.Get<DropDownButtonWidget>("SLOT_OPTIONS");
 			slot.IsVisible = () => true;
-			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
+			slot.IsDisabled = () => orderManager.LocalClient.IsReady || orderManager.LobbyInfo.GlobalSettings.RestoringGameSave;
 
 			var truncated = new CachedTransform<string, string>(name =>
 				WidgetUtils.TruncateText(name, slot.Bounds.Width - slot.Bounds.Height - slot.LeftMargin - slot.RightMargin,
@@ -481,7 +481,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var name = parent.Get<LabelWidget>("NAME");
 			name.IsVisible = () => true;
-			name.GetText = () => c != null ? c.Name : s.Closed
+			name.GetText = () => c != null ? c.Name : !string.IsNullOrEmpty(s.SavedPlayerName) ? s.SavedPlayerName : s.Closed
 				? FluentProvider.GetMessage(Closed)
 				: FluentProvider.GetMessage(Open);
 

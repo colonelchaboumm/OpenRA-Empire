@@ -228,6 +228,10 @@ namespace OpenRA.Mods.Common.Server
 					return false;
 				}
 
+				if (server.LobbyInfo.GlobalSettings.RestoringGameSave &&
+					command.Split(' ')[0] is not ("state" or "startgame" or "slot" or "spectate" or "make_spectator"))
+					return false;
+
 				return true;
 			}
 		}
@@ -366,6 +370,16 @@ namespace OpenRA.Mods.Common.Server
 				if (slot.Closed || server.LobbyInfo.ClientInSlot(s) != null)
 					return false;
 
+				if (server.LobbyInfo.GlobalSettings.RestoringGameSave)
+				{
+					if (!server.GameSave.SlotClients.TryGetValue(s, out var saved) || saved.Bot != null || saved.IsAdmin != client.IsAdmin)
+						return false;
+					saved.ApplyTo(client);
+					server.SyncLobbyClients();
+					CheckAutoStart(server);
+					return true;
+				}
+
 				// If the previous slot had a locked spawn then we must not carry that to the new slot
 				var oldSlot = client.Slot != null ? server.LobbyInfo.Slots[client.Slot] : null;
 				if (oldSlot != null && oldSlot.LockSpawn)
@@ -404,6 +418,9 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfoLock)
 			{
+				if (server.LobbyInfo.GlobalSettings.RestoringGameSave && client.IsAdmin &&
+					server.GameSave.SlotClients.Values.Any(c => c.IsAdmin))
+					return false;
 				if (server.LobbyInfo.GlobalSettings.AllowSpectators || client.IsAdmin)
 				{
 					client.Slot = null;

@@ -147,6 +147,7 @@ namespace OpenRA.Network
 			public string Bot; // Bot type, null for real clients
 			public int BotControllerClientIndex; // who added the bot to the slot
 			public bool IsAdmin;
+			public int GameSaveOrder = int.MaxValue;
 			public bool IsReady => State == ClientState.Ready;
 			public bool IsInvalid => State == ClientState.Invalid;
 			public bool IsObserver => Slot == null;
@@ -173,6 +174,7 @@ namespace OpenRA.Network
 			public bool LockHandicap;
 			public bool LockSpawn;
 			public bool Required;
+			public string SavedPlayerName;
 
 			public static Slot Deserialize(MiniYaml data)
 			{
@@ -217,6 +219,10 @@ namespace OpenRA.Network
 			public bool EnableGameSaves;
 			public bool EnableSyncReports;
 			public bool Dedicated;
+			public bool RestoringGameSave;
+			public bool MultiplayerGameSave;
+			public int GameSaveHostOrder = int.MaxValue;
+			public int[] GameSaveDisabledSpawns = [];
 
 			// 120ms network frame interval for 40ms local tick
 			public int NetFrameInterval = 3;

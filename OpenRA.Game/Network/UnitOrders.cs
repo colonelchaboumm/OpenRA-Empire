@@ -201,6 +201,9 @@ namespace OpenRA.Network
 
 				case "SaveTraitData":
 				{
+					if (OrderNotFromServerOrWorldIsReplay(clientId, world) ||
+						(orderManager.LobbyInfo.GlobalSettings.MultiplayerGameSave && orderManager.LocalClient?.IsAdmin != true))
+						break;
 					var data = MiniYaml.FromString(order.TargetString, order.OrderString).First();
 					var traitIndex = Exts.ParseInt32Invariant(data.Key);
 
@@ -217,7 +220,7 @@ namespace OpenRA.Network
 				case "PauseGame":
 				{
 					var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
-					if (client != null)
+					if (client != null && (!client.IsObserver || client.IsAdmin))
 					{
 						var pause = order.TargetString == "Pause";
 

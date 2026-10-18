@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			root.IsVisible = () => true;
 
 			// Open the options menu
-			if (!world.IsReplay)
+			if (!world.IsReplay && !world.LobbyInfo.GlobalSettings.MultiplayerGameSave)
 			{
 				var optionsButton = root.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
 				world.SetPauseState(false);

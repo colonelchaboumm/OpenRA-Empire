@@ -58,6 +58,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var hasMaps = modData.MapCache.Any(p => !p.Visibility.HasFlag(MapVisibility.Shellmap));
 			createServerButton.Disabled = !hasMaps;
 
+			var resumeButton = widget.GetOrNull<ButtonWidget>("RESUME_BUTTON");
+			if (resumeButton != null)
+			{
+				resumeButton.IsDisabled = () => !LoadGameBrowserLogic.IsLoadPanelEnabled(modData.Manifest);
+				resumeButton.OnClick = () =>
+				{
+					Ui.CloseWindow();
+					Ui.OpenWindow("LOAD_GAME_BROWSER_PANEL", new WidgetArgs
+					{
+						{ "onStart", onStart },
+						{ "onExit", (Action)(() => Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
+							{
+								{ "onStart", onStart }, { "onExit", onExit }, { "directConnectEndPoint", null }
+							})) }
+					});
+				};
+			}
+
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			if (directConnectEndPoint != null)

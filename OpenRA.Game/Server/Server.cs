@@ -546,7 +546,7 @@ namespace OpenRA.Server
 				{
 					lock (LobbyInfoLock)
 					{
-						client.Slot = LobbyInfo.FirstEmptySlot();
+						client.Slot = LobbyInfo.GlobalSettings.RestoringGameSave ? null : LobbyInfo.FirstEmptySlot();
 						client.IsAdmin = !LobbyInfo.Clients.Any(c => c.IsAdmin);
 
 						if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
@@ -1032,9 +1032,14 @@ namespace OpenRA.Server
 						break;
 					}
 
+					case "BeginGameSave":
+						if (GameSave != null && GetClient(conn)?.IsAdmin == true && State == ServerState.GameStarted)
+							GameSave.TraitData.Clear();
+						break;
+
 					case "GameSaveTraitData":
 					{
-						if (GameSave != null)
+						if (GameSave != null && GetClient(conn)?.IsAdmin == true && State == ServerState.GameStarted)
 						{
 							var data = MiniYaml.FromString(o.TargetString, o.OrderString).First();
 							GameSave.AddTraitData(OpenRA.Exts.ParseInt32Invariant(data.Key), data.Value);
@@ -1045,8 +1050,13 @@ namespace OpenRA.Server
 
 					case "CreateGameSave":
 					{
-						if (GameSave != null)
+						if (GameSave != null && GetClient(conn)?.IsAdmin == true && State == ServerState.GameStarted)
 						{
+							if (!GameSave.CanSave)
+							{
+								SendOrderTo(conn, "Message", "Sauvegarde indisponible : attendez le début de la partie et gardez tous les joueurs connectés.");
+								break;
+							}
 							// Sanitize potentially malicious input
 							var filename = o.TargetString;
 							var invalidIndex = -1;
@@ -1060,11 +1070,17 @@ namespace OpenRA.Server
 								ModData.Manifest.Id,
 								ModData.Manifest.Metadata.Version);
 
-							if (!Directory.Exists(baseSavePath))
+							try
+							{
 								Directory.CreateDirectory(baseSavePath);
-
-							GameSave.Save(Path.Combine(baseSavePath, filename));
-							DispatchServerOrdersToClients(Order.FromTargetString("GameSaved", filename, true, o.ExtraData));
+								GameSave.Save(Path.Combine(baseSavePath, filename));
+								DispatchServerOrdersToClients(Order.FromTargetString("GameSaved", filename, true, o.ExtraData));
+							}
+							catch (Exception e) when (e is IOException or UnauthorizedAccessException or ArgumentException)
+							{
+								Log.Write("server", $"Unable to save game: {e}");
+								SendOrderTo(conn, "Message", "La sauvegarde a échoué. Vérifiez l’espace disque et les droits du dossier de sauvegardes.");
+							}
 						}
 
 						break;
@@ -1072,7 +1088,7 @@ namespace OpenRA.Server
 
 					case "LoadGameSave":
 					{
-						if (Type == ServerType.Dedicated || State >= ServerState.GameStarted)
+						if (Type == ServerType.Dedicated || State >= ServerState.GameStarted || GetClient(conn)?.IsAdmin != true)
 							break;
 
 						// Sanitize potentially malicious input
@@ -1089,26 +1105,59 @@ namespace OpenRA.Server
 							ModData.Manifest.Metadata.Version,
 							filename);
 
-						GameSave = new GameSave(savePath);
-						LobbyInfo.GlobalSettings = GameSave.GlobalSettings;
-						LobbyInfo.Slots = GameSave.Slots;
+						GameSave loadedSave;
+						try
+						{
+							loadedSave = new GameSave(savePath);
+							if (loadedSave.GlobalSettings.Map != Map.Uid || loadedSave.LastOrdersFrame < 1)
+								throw new InvalidDataException("Saved map does not match the server.");
+						}
+						catch (Exception e) when (e is IOException or UnauthorizedAccessException or ArgumentException or YamlException or InvalidOperationException or FormatException)
+						{
+							Log.Write("server", $"Unable to load game: {e}");
+							SendOrderTo(conn, "Message", "Impossible de charger cette sauvegarde. Le fichier est absent, incompatible ou endommagé.");
+							break;
+						}
 
-						// Reassign clients to slots
-						//  - Bot ordering is preserved
-						//  - Humans are assigned on a first-come-first-serve basis
-						//  - Leftover humans become spectators
+						GameSave = loadedSave;
+						LobbyInfo.GlobalSettings = Session.Global.Deserialize(GameSave.GlobalSettings.Serialize().Value);
+						LobbyInfo.GlobalSettings.ServerName = Settings.Name;
+						LobbyInfo.GlobalSettings.RestoringGameSave = true;
+						LobbyInfo.GlobalSettings.MultiplayerGameSave = GameSave.IsMultiplayer;
+						LobbyInfo.GlobalSettings.AllowSpectators = true;
+						LobbyInfo.GlobalSettings.EnableMapGeneration = false;
+						LobbyInfo.GlobalSettings.GameUid = Guid.NewGuid().ToString();
+						foreach (var option in LobbyInfo.GlobalSettings.LobbyOptions.Values)
+							option.IsLocked = true;
+						LobbyInfo.Slots = GameSave.Slots.ToDictionary(kv => kv.Key, kv => Session.Slot.Deserialize(kv.Value.Serialize().Value));
+						LobbyInfo.DisabledSpawnPoints = GameSave.GlobalSettings.GameSaveDisabledSpawns.ToHashSet();
+						foreach (var slot in LobbyInfo.Slots.Values)
+						{
+							var occupied = GameSave.SlotClients.TryGetValue(slot.PlayerReference, out var saved);
+							slot.Closed = !occupied;
+							slot.Required = occupied;
+							slot.AllowBots = false;
+							slot.LockColor = slot.LockFaction = slot.LockTeam = slot.LockSpawn = slot.LockHandicap = true;
+							slot.SavedPlayerName = saved?.Name;
+						}
+
+						// Restore bots and the host's nation. Guests select their saved nations
+						// in the lobby, independently of their new connection identifiers.
 
 						// Start by removing all bots and assigning all players as spectators
-						foreach (var c in LobbyInfo.Clients)
+						foreach (var c in LobbyInfo.Clients.ToArray())
 						{
 							if (c.Bot != null)
 								LobbyInfo.Clients.Remove(c);
 							else
+							{
 								c.Slot = null;
+								c.State = Session.ClientState.NotReady;
+								c.GameSaveOrder = c.IsAdmin ? GameSave.GlobalSettings.GameSaveHostOrder : int.MaxValue;
+							}
 						}
 
 						// Rebuild/remap the saved client state
-						// TODO: Multiplayer saves should leave all humans as spectators so they can manually pick slots
 						var adminClientIndex = LobbyInfo.Clients.First(c => c.IsAdmin).Index;
 						foreach (var kv in GameSave.SlotClients)
 						{
@@ -1124,11 +1173,9 @@ namespace OpenRA.Server
 								kv.Value.ApplyTo(bot);
 								LobbyInfo.Clients.Add(bot);
 							}
-							else
+							else if (!GameSave.IsMultiplayer || kv.Value.IsAdmin)
 							{
-								// This will throw if the server doesn't have enough human clients to fill all player slots
-								// See TODO above - this isn't a problem in practice because MP saves won't use this
-								var client = LobbyInfo.Clients.First(c => c.Slot == null);
+								var client = LobbyInfo.Clients.First(c => c.IsAdmin);
 								kv.Value.ApplyTo(client);
 							}
 						}
@@ -1141,7 +1188,7 @@ namespace OpenRA.Server
 
 					case "GenerateMap":
 					{
-						if (!GetClient(conn).IsAdmin || State >= ServerState.GameStarted)
+						if (!GetClient(conn).IsAdmin || State >= ServerState.GameStarted || LobbyInfo.GlobalSettings.RestoringGameSave)
 							break;
 
 						if (!LobbyInfo.GlobalSettings.EnableMapGeneration)
@@ -1215,6 +1262,7 @@ namespace OpenRA.Server
 		{
 			lock (LobbyInfoLock)
 			{
+				GameSave?.ClientDisconnected(toDrop.PlayerIndex);
 				orderBuffer?.RemovePlayer(toDrop.PlayerIndex);
 				Conns.Remove(toDrop);
 
@@ -1350,6 +1398,10 @@ namespace OpenRA.Server
 		{
 			lock (LobbyInfoLock)
 			{
+				if (LobbyInfo.GlobalSettings.RestoringGameSave &&
+					(LobbyInfo.Slots.Any(s => s.Value.Required && LobbyInfo.ClientInSlot(s.Key) == null) ||
+					LobbyInfo.NonBotPlayers.Any(c => !c.IsAdmin && !c.IsReady)))
+					return;
 				WriteLineWithTimeStamp(FluentProvider.GetMessage(GameStarted));
 
 				// Drop any players who are not ready
@@ -1359,9 +1411,11 @@ namespace OpenRA.Server
 					DropClient(c);
 				}
 
-				// Enable game saves for singleplayer missions only
-				// TODO: Enable for multiplayer (non-dedicated servers only) once the lobby UI has been created
-				LobbyInfo.GlobalSettings.EnableGameSaves = Type != ServerType.Dedicated && LobbyInfo.NonBotClients.Count() == 1;
+				LobbyInfo.GlobalSettings.EnableGameSaves = Type != ServerType.Dedicated;
+				LobbyInfo.GlobalSettings.MultiplayerGameSave = IsMultiplayer || LobbyInfo.NonBotClients.Count() > 1;
+				if (GameSave == null)
+					for (var i = 0; i < LobbyInfo.Clients.Count; i++)
+						LobbyInfo.Clients[i].GameSaveOrder = i;
 
 				// Player list for win/loss tracking
 				// HACK: NonCombatant and non-Playable players are set to null to simplify replay tracking

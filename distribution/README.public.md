@@ -26,6 +26,24 @@ pour une partie multijoueur.
 Les autres fichiers des Releases (`full`, `patch`, manifeste, sources) servent au
 lanceur ou aux developpeurs. Pour jouer, seul le ZIP Windows est necessaire.
 
+## Sauvegarder et reprendre une partie multijoueur
+
+Dans une partie hebergee depuis le jeu, l'hote ouvre le menu de partie et choisit
+**Sauvegarder**. Attendez la confirmation avant de quitter : tous les joueurs
+doivent encore etre connectes au moment de la sauvegarde. Le fichier est conserve
+sur l'ordinateur de l'hote.
+
+Pour reprendre, l'hote ouvre **Multijoueur → Reprendre**, choisit la sauvegarde,
+puis **Heberger** et cree le salon. Les autres joueurs rejoignent ce salon,
+choisissent leur ancienne nation et se declarent prets. L'hote retrouve sa nation
+automatiquement. La carte et les regles restent celles de la partie sauvegardee.
+Toutes les nations humaines doivent etre reprises avant le demarrage.
+
+Utilisez la meme version du jeu que pour la sauvegarde. Cette fonction concerne
+les parties hebergees depuis le jeu, pas les serveurs dedies. Une partie sauvegardee
+pendant une pause reste en pause apres chargement ; utilisez le raccourci de pause
+(touche **Pause** par defaut) pour reprendre.
+
 ## Construire et publier
 
 Le SDK .NET 10, Python 3.11 ou plus recent, Git et GitHub CLI sont necessaires.

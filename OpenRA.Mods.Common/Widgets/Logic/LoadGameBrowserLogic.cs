@@ -155,6 +155,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string HumanPlayer = "label-load-game-browser-panel-human-player";
 
+		[FluentReference]
+		const string HostSavedGame = "button-loadgame-host";
+
 		static Filter filter = new();
 
 		readonly Widget panel;
@@ -166,6 +169,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollItemWidget dateHeaderTemplate;
 		readonly List<SaveEntry> saves = [];
 		readonly Action onStart;
+		readonly Action onExit;
 		readonly ModData modData;
 		readonly string baseSavePath;
 
@@ -185,6 +189,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			this.modData = modData;
 			this.onStart = onStart;
+			this.onExit = onExit;
 			Game.BeforeGameStart += OnGameStart;
 
 			var mod = modData.Manifest;
@@ -204,6 +209,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var loadButton = panel.Get<ButtonWidget>("LOAD_BUTTON");
 			loadButton.IsDisabled = () => selectedSave == null || modData.MapCache[selectedSave.GlobalSettings.Map].Status != MapStatus.Available;
 			loadButton.OnClick = Load;
+			var loadText = loadButton.GetText;
+			loadButton.GetText = () => selectedSave?.IsMultiplayer == true ? FluentProvider.GetMessage(HostSavedGame) : loadText();
 
 			var mapPreviewRoot = panel.Get("MAP_PREVIEW_ROOT");
 			mapPreviewRoot.IsVisible = () => selectedPath != null;
@@ -968,7 +975,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						? FluentProvider.GetMessage(EnumeratedBotName,
 							"name", FluentProvider.GetMessage(slotClient.BotName),
 							"number", botOrdinals[slotKey])
-						: FluentProvider.GetMessage(HumanPlayer);
+						: slotClient.Name ?? FluentProvider.GetMessage(HumanPlayer);
 
 					var color = slotClient.Color;
 					var item = ScrollItemWidget.Setup(playerTemplate, () => false, () => { });
@@ -999,6 +1006,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			Ui.CloseWindow();
+
+			if (selectedSave.IsMultiplayer)
+			{
+				Game.BeforeGameStart -= OnGameStart;
+				Ui.OpenWindow("MULTIPLAYER_CREATESERVER_PANEL", new WidgetArgs
+				{
+					{ "initialMap", mapPreview.Uid },
+					{ "gameSave", Path.GetFileName(selectedPath) },
+					{ "onExit", onExit },
+					{ "openLobby", (Action)(() => Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
+						{
+							{ "onStart", onStart },
+							{ "onExit", (Action)(() => { Game.Disconnect(); onExit(); }) },
+							{ "skirmishMode", false }
+						})) }
+				});
+				return;
+			}
 
 			var orders = new List<Order>
 			{

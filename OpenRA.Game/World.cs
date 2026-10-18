@@ -564,9 +564,14 @@ namespace OpenRA
 
 		public void RequestGameSave(string filename, bool isAutosave)
 		{
+			if (!LobbyInfo.GlobalSettings.EnableGameSaves || IsReplay || IsLoadingGameSave ||
+				OrderManager.LocalClient?.IsAdmin != true || OrderManager.IsOutOfSync)
+				return;
+
 			// Allow traits to save arbitrary data that will be passed back via IGameSaveTraitData.ResolveTraitData
 			// at the end of the save restoration
-			// TODO: This will need to be generalized to a request / response pair for multiplayer game saves
+			// Bot state is owned by the host. Private UI data is also restored only there.
+			IssueOrder(Order.FromTargetString("BeginGameSave", "", true));
 			var i = 0;
 			foreach (var tp in TraitDict.ActorsWithTrait<IGameSaveTraitData>())
 			{

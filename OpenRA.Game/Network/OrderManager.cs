@@ -100,7 +100,7 @@ namespace OpenRA.Network
 			if (GameStarted)
 				return;
 
-			foreach (var client in LobbyInfo.Clients)
+			foreach (var client in LobbyInfo.Clients.OrderBy(c => c.GameSaveOrder))
 				if (!client.IsBot)
 					pendingOrders.Add(client.Index, new Queue<(int, OrderPacket)>());
 

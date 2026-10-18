@@ -29,6 +29,8 @@ namespace OpenRA.Network
 		public readonly string Slot;
 		public readonly string Bot;
 		public readonly bool IsAdmin;
+		public readonly string Name;
+		public readonly int OrderIndex = int.MaxValue;
 
 		public readonly string BotName;
 
@@ -44,6 +46,8 @@ namespace OpenRA.Network
 			Slot = client.Slot;
 			Bot = client.Bot;
 			IsAdmin = client.IsAdmin;
+			Name = client.Name;
+			OrderIndex = client.GameSaveOrder;
 
 			if (client.Bot != null)
 				BotName = client.Name;
@@ -58,7 +62,9 @@ namespace OpenRA.Network
 			client.Handicap = Handicap;
 			client.Slot = Slot;
 			client.Bot = Bot;
-			client.IsAdmin = IsAdmin;
+			client.GameSaveOrder = OrderIndex;
+			if (!string.IsNullOrEmpty(Name))
+				client.Name = Name;
 
 			if (Bot != null)
 				client.Name = BotName;
@@ -86,7 +92,7 @@ namespace OpenRA.Network
 		// Loaded from file and updated during gameplay
 		public int LastOrdersFrame { get; private set; }
 		public int LastSyncFrame { get; private set; }
-		byte[] lastSyncPacket = [];
+		byte[] lastSyncPacket = new byte[Order.SyncHashOrderLength];
 
 		// Loaded from file or set on game start
 		public Session.Global GlobalSettings { get; private set; }
@@ -97,7 +103,17 @@ namespace OpenRA.Network
 
 		// Set on game start
 		int[] clientsBySlotIndex = [];
-		int firstBotSlotIndex = -1;
+		int hostClientIndex;
+		readonly Dictionary<int, int> framesByClient = [];
+		public bool IsMultiplayer => GlobalSettings.MultiplayerGameSave || SlotClients.Values.Count(c => c.Bot == null) > 1;
+		public bool CanSave => LastSyncFrame > 0 && LastOrdersFrame >= LastSyncFrame && !PlayerDisconnected;
+		public bool PlayerDisconnected { get; private set; }
+
+		public void ClientDisconnected(int clientIndex)
+		{
+			if (framesByClient.ContainsKey(clientIndex))
+				PlayerDisconnected = true;
+		}
 
 		public GameSave()
 		{
@@ -109,10 +125,12 @@ namespace OpenRA.Network
 		{
 			using (var rs = File.OpenRead(filepath))
 			{
+				if (rs.Length < 12)
+					throw new InvalidDataException("Truncated orasav file");
 				rs.Seek(-12, SeekOrigin.End);
 				var metadataOffset = rs.ReadInt32();
 				var traitDataOffset = rs.ReadInt32();
-				if (rs.ReadInt32() != EOFMarker)
+				if (rs.ReadInt32() != EOFMarker || metadataOffset < 0 || traitDataOffset <= metadataOffset || traitDataOffset >= rs.Length - 12)
 					throw new InvalidDataException("Invalid orasav file");
 
 				rs.Seek(metadataOffset, SeekOrigin.Begin);
@@ -121,6 +139,8 @@ namespace OpenRA.Network
 
 				LastOrdersFrame = rs.ReadInt32();
 				LastSyncFrame = rs.ReadInt32();
+				if (LastOrdersFrame < 0 || LastSyncFrame < 0 || LastSyncFrame > LastOrdersFrame)
+					throw new InvalidDataException("Invalid saved frame range");
 				lastSyncPacket = rs.ReadBytes(Order.SyncHashOrderLength);
 
 				var globalSettings = MiniYaml.FromString(rs.ReadLengthPrefixedString(Encoding.UTF8, Connection.MaxOrderLength), $"{filepath}:globalSettings");
@@ -163,17 +183,25 @@ namespace OpenRA.Network
 			if (map.Class == MapClassification.Generated)
 				MapGenerationArgs = map.GenerationArgs;
 
-			// Game orders are mapped from a client index to the slot that they occupy
-			// Orders from spectators are ignored, which is not a problem in practice
-			// because all immediate orders are also ignored
+			// Persist nation slots instead of transient connection identifiers.
 			clientsBySlotIndex = lobbyInfo.Slots.Keys.Select(s =>
 			{
 				var client = lobbyInfo.ClientInSlot(s);
 				return client != null ? client.Index : -1;
 			}).ToArray();
+			hostClientIndex = lobbyInfo.NonBotClients.First(c => c.IsAdmin).Index;
+			framesByClient.Clear();
+			foreach (var c in lobbyInfo.NonBotClients.Where(c => !c.IsObserver || c.IsAdmin))
+				framesByClient.Add(c.Index, Math.Max(0, LastOrdersFrame));
+
+			// Keep the original lobby and player order when saving a resumed game again.
+			if (GlobalSettings != null)
+				return;
 
 			// Perform a deep clone by round-tripping the data
 			GlobalSettings = Session.Global.Deserialize(lobbyInfo.GlobalSettings.Serialize().Value);
+			GlobalSettings.GameSaveHostOrder = lobbyInfo.ClientWithIndex(hostClientIndex).GameSaveOrder;
+			GlobalSettings.GameSaveDisabledSpawns = lobbyInfo.DisabledSpawnPoints.ToArray();
 			Slots = [];
 			SlotClients = [];
 			foreach (var s in lobbyInfo.Slots)
@@ -186,20 +214,17 @@ namespace OpenRA.Network
 				// Only save the client state relevant to the game (faction, team, etc).
 				// Admin and bot controller state is inherited and/or reassigned by the server at load time
 				if (playerReference.Playable && client != null)
-				{
 					SlotClients[s.Key] = new SlotClient(client);
-
-					// See HACK comment in DispatchOrders about reassigning bot orders
-					if (client.Bot != null && firstBotSlotIndex < 0)
-						firstBotSlotIndex = clientsBySlotIndex.IndexOf(client.Index);
-				}
 			}
 		}
 
 		public void DispatchOrders(Connection conn, int frame, byte[] data)
+			=> RecordOrders(conn.PlayerIndex, frame, data);
+
+		public void RecordOrders(int clientIndex, int frame, byte[] data)
 		{
-			// Sync packet - we only care about the last value
-			if (data.Length > 0 && data[0] == (byte)OrderType.SyncHash && frame > LastSyncFrame)
+			// Sync packets must never occupy an orders frame. Use the saving host's hash.
+			if (data.Length > 0 && data[0] == (byte)OrderType.SyncHash)
 			{
 				if (data.Length != Order.SyncHashOrderLength)
 				{
@@ -207,38 +232,38 @@ namespace OpenRA.Network
 					return;
 				}
 
-				LastSyncFrame = frame;
-				lastSyncPacket = data;
+				if (clientIndex == hostClientIndex && frame > LastSyncFrame)
+				{
+					LastSyncFrame = frame;
+					lastSyncPacket = data;
+				}
+				return;
 			}
 
-			if (frame <= LastOrdersFrame)
+			if (!framesByClient.TryGetValue(clientIndex, out var previousFrame) || frame <= previousFrame)
 				return;
 
 			// Ignore immediate orders
 			if (data.Length > 0 && data[0] == 0xFE)
 				return;
 
-			var clientSlot = clientsBySlotIndex.IndexOf(conn.PlayerIndex);
+			var clientSlot = clientsBySlotIndex.IndexOf(clientIndex);
 
 			// Handle orders that were sent by spectators
 			if (clientSlot == -1)
 			{
-				// HACK: Assume that this is a bot order sent by its controller client
-				// who is a spectator. The network data doesn't contain enough information
-				// for us to confirm this, or to know which bot this is supposed to belong to...
-				//
-				// For skirmish games it is sufficient to map everything to the first bot,
-				// because even if the bot choice is wrong, the bot-to-client remapping in ParseOrders
-				// will give the right client as there is only one human client to choose from!
-				// TODO: This will need to be fixed properly before implementing multiplayer saves
-				clientSlot = firstBotSlotIndex;
+				// Only the host may issue simulation orders while observing.
+				clientSlot = clientsBySlotIndex.Length;
 			}
 
+			// A failed disk write may have left the stream cursor inside the history.
+			ordersStream.Seek(0, SeekOrigin.End);
 			ordersStream.Write(data.Length + 8);
 			ordersStream.Write(frame);
 			ordersStream.Write(clientSlot);
 			ordersStream.Write(data);
-			LastOrdersFrame = frame;
+			framesByClient[clientIndex] = frame;
+			LastOrdersFrame = framesByClient.Values.Min();
 		}
 
 		public void ParseOrders(Session lobbyInfo, Action<int, int, byte[]> packetFn)
@@ -259,13 +284,19 @@ namespace OpenRA.Network
 				var data = ordersStream.ReadBytes(dataLength);
 
 				// Remap bot orders to their controller client
-				var clientIndex = clientsBySlotIndex[slot];
+				var clientIndex = slot == clientsBySlotIndex.Length ? hostClientIndex : clientsBySlotIndex[slot];
 				var client = lobbyInfo.ClientWithIndex(clientIndex);
 				if (client.Bot != null)
 					clientIndex = client.BotControllerClientIndex;
 
 				packetFn(frame, clientIndex, data);
 			}
+
+			// Observers do not contribute simulation orders, but each connected peer needs
+			// an empty packet for every restored frame before normal networking can resume.
+			foreach (var observer in lobbyInfo.NonBotClients.Where(c => c.IsObserver && !c.IsAdmin))
+				for (var frame = 1; frame <= LastOrdersFrame; frame++)
+					packetFn(frame, observer.Index, []);
 
 			// Send sync hash to validate restore
 			packetFn(LastSyncFrame, 0, lastSyncPacket);
@@ -278,12 +309,19 @@ namespace OpenRA.Network
 
 		public void Save(string path)
 		{
+			if (!CanSave)
+				throw new InvalidOperationException("A complete synchronized frame is required to save the game.");
+
+			// Pending future packets can be incomplete across peers. Only restore through
+			// the last frame that the host actually simulated and supplied a hash for.
+			var saveFrame = IsMultiplayer ? LastSyncFrame : LastOrdersFrame;
+			var temporaryPath = path + ".tmp";
 			// File format:
 			// - List of orders in network frame format
 			// - Metadata start marker
 			//   - Last frame number containing orders (int32)
 			//   - Last frame number containing sync hash (int32)
-			//   - Last sync packet (5 x byte)
+			//   - Last sync packet (13 x byte)
 			//   - Lobby global settings (yaml)
 			//   - Lobby slots (yaml)
 			//   - Lobby slot-client data (yaml)
@@ -292,12 +330,23 @@ namespace OpenRA.Network
 			// - File offset of metadata start marker
 			// - File offset of custom trait data
 			// - Metadata end marker
-			using (var file = File.Create(path))
+			using (var file = File.Create(temporaryPath))
 			{
 				ordersStream.Seek(0, SeekOrigin.Begin);
-				ordersStream.CopyTo(file);
+				while (ordersStream.Position < ordersStream.Length)
+				{
+					var length = ordersStream.ReadInt32();
+					var frame = ordersStream.ReadInt32();
+					var packet = ordersStream.ReadBytes(length - 4);
+					if (frame > saveFrame)
+						continue;
+					file.Write(length);
+					file.Write(frame);
+					file.Write(packet);
+				}
+				var metadataOffset = file.Position;
 				file.Write(MetadataMarker);
-				file.Write(LastOrdersFrame);
+				file.Write(saveFrame);
 				file.Write(LastSyncFrame);
 				file.Write(lastSyncPacket, 0, Order.SyncHashOrderLength);
 
@@ -324,10 +373,12 @@ namespace OpenRA.Network
 					.ToList();
 				file.WriteLengthPrefixedString(Encoding.UTF8, traitDataNodes.WriteToString());
 
-				file.Write((int)ordersStream.Length);
+				file.Write((int)metadataOffset);
 				file.Write((int)traitDataOffset);
 				file.Write(EOFMarker);
+				file.Flush(true);
 			}
+			File.Move(temporaryPath, path, true);
 		}
 	}
 }

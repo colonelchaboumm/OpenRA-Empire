@@ -623,6 +623,9 @@ selected-units-across-map =
     }
 
 ## ServerCreationLogic
+
+button-loadgame-host = Host
+button-multiplayer-resume = Resume
 label-internet-server-nat-A = Internet Server (UPnP/NAT-PMP
 label-internet-server-nat-B-enabled = Enabled
 label-internet-server-nat-B-not-supported = Not Supported

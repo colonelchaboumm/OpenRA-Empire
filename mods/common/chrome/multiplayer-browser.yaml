@@ -227,11 +227,18 @@ Background@MULTIPLAYER_PANEL:
 					Children:
 						LogicTicker@ANIMATION:
 		Label@PLAYER_COUNT:
-			X: 254
+			X: 212
 			Y: PARENT_HEIGHT - HEIGHT - 20
-			Width: 190
+			Width: 165
 			Height: 25
 			Align: Center
+			Font: Bold
+		Button@RESUME_BUTTON:
+			X: 380
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: 100
+			Height: 25
+			Text: button-multiplayer-resume
 			Font: Bold
 		Button@DIRECTCONNECT_BUTTON:
 			X: 490

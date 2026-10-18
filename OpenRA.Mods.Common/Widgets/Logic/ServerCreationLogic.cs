@@ -57,16 +57,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget noticesLabelA, noticesLabelB, noticesLabelC;
 		readonly Action onCreate;
 		readonly Action onExit;
+		readonly string gameSave;
 		MapPreview map = MapCache.UnknownMap;
 		bool advertiseOnline;
 
 		[ObjectCreator.UseCtor]
-		public ServerCreationLogic(Widget widget, ModData modData, Action onExit, Action openLobby)
+		public ServerCreationLogic(Widget widget, ModData modData, Action onExit, Action openLobby, string gameSave = null, string initialMap = null)
 		{
 			panel = widget;
 			this.modData = modData;
 			onCreate = openLobby;
 			this.onExit = onExit;
+			this.gameSave = gameSave;
 
 			var settings = Game.Settings;
 
@@ -74,6 +76,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				modData.MapCache.ChooseInitialMap(
 					modData.MapCache.PickLastModifiedMap(MapVisibility.Lobby) ?? Game.Settings.Server.Map,
 					Game.CosmeticRandom)];
+			if (initialMap != null)
+				map = modData.MapCache[initialMap];
 
 			Ui.LoadWidget("MAP_PREVIEW", panel.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
 			{
@@ -83,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "getSpawnOccupants", null },
 				{ "getDisabledSpawnPoints", null },
 				{ "showUnoccupiedSpawnpoints", false },
-				{ "mapUpdatesEnabled", true },
+				{ "mapUpdatesEnabled", gameSave == null },
 				{ "onMapUpdate", (Action<string>)(uid => map = modData.MapCache[uid]) },
 			});
 
@@ -93,6 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapButton = panel.GetOrNull<ButtonWidget>("MAP_BUTTON");
 			if (mapButton != null)
 			{
+				mapButton.IsDisabled = () => gameSave != null;
 				panel.Get<ButtonWidget>("MAP_BUTTON").OnClick = () =>
 				{
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
@@ -237,7 +242,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var endpoint = Game.CreateServer(settings);
 
 				Ui.CloseWindow();
-				ConnectionLogic.Connect(endpoint, password, onCreate, onExit);
+				ConnectionLogic.Connect(endpoint, password, onCreate, () => { Game.Disconnect(); onExit(); },
+					gameSave == null ? null : [Order.FromTargetString("LoadGameSave", gameSave, true)]);
 			}
 			catch (System.Net.Sockets.SocketException e)
 			{

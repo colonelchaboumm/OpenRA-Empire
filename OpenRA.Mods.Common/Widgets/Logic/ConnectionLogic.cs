@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -70,16 +71,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDesc;
 		}
 
-		public static void Connect(ConnectionTarget endpoint, string password, Action onConnect, Action onAbort)
+		public static void Connect(ConnectionTarget endpoint, string password, Action onConnect, Action onAbort, IEnumerable<Order> setupOrders = null)
 		{
-			Game.JoinServer(endpoint, password);
-			Action<string> onRetry = newPassword => Connect(endpoint, newPassword, onConnect, onAbort);
+			var om = Game.JoinServer(endpoint, password);
+			// A TCP connection is not yet an authenticated lobby connection. Sending setup
+			// orders in onConnect can race the handshake and cause the server to reject us.
+			void LobbyReady()
+			{
+				if (om.LocalClient == null)
+					return;
+				Game.LobbyInfoChanged -= LobbyReady;
+				foreach (var order in setupOrders)
+					om.IssueOrder(order);
+			}
+			if (setupOrders != null)
+				Game.LobbyInfoChanged += LobbyReady;
+			Action<string> onRetry = newPassword =>
+			{
+				Game.LobbyInfoChanged -= LobbyReady;
+				Connect(endpoint, newPassword, onConnect, onAbort, setupOrders);
+			};
 
 			Ui.OpenWindow("CONNECTING_PANEL", new WidgetArgs()
 			{
 				{ "endpoint", endpoint },
 				{ "onConnect", onConnect },
-				{ "onAbort", onAbort },
+				{ "onAbort", (Action)(() => { Game.LobbyInfoChanged -= LobbyReady; onAbort(); }) },
 				{ "onRetry", onRetry }
 			});
 		}

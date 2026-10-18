@@ -244,7 +244,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (mapButton != null)
 			{
 				mapButton.IsVisible = () => panel != PanelType.Servers;
-				mapButton.IsDisabled = () => gameStarting || panel == PanelType.Kick || panel == PanelType.ForceStart ||
+				mapButton.IsDisabled = () => orderManager.LobbyInfo.GlobalSettings.RestoringGameSave || gameStarting || panel == PanelType.Kick || panel == PanelType.ForceStart ||
 					orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 				mapButton.OnClick = () =>
 				{
@@ -473,6 +473,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			bool StartDisabled() => map.Status != MapStatus.Available ||
+				(orderManager.LobbyInfo.GlobalSettings.RestoringGameSave && orderManager.LobbyInfo.NonBotPlayers.Any(c => !c.IsAdmin && !c.IsReady)) ||
 				orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
 				orderManager.LobbyInfo.Slots.All(sl => orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
 				(!orderManager.LobbyInfo.GlobalSettings.EnableSingleplayer && orderManager.LobbyInfo.NonBotPlayers.Count() < 2) ||
@@ -784,14 +785,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != emptySlotTemplate.Id)
 						template = emptySlotTemplate.Clone();
 
-					if (isHost)
+					if (isHost && !orderManager.LobbyInfo.GlobalSettings.RestoringGameSave)
 						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, map, modData);
 					else
 						LobbyUtils.SetupSlotWidget(template, modData, slot, client);
 
 					var join = template.Get<ButtonWidget>("JOIN");
 					join.IsVisible = () => !slot.Closed;
-					join.IsDisabled = () => orderManager.LocalClient.IsReady;
+					join.IsDisabled = () => orderManager.LocalClient.IsReady || (isHost && orderManager.LobbyInfo.GlobalSettings.RestoringGameSave);
 					join.OnClick = () => orderManager.IssueOrder(Order.Command("slot " + key));
 				}
 				else if ((client.Index == orderManager.LocalClient.Index) ||
